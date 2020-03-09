@@ -26,7 +26,7 @@ for line in sys.stdin:
     d[s] += (dd - bd) * r[s]
     p[s].stdin.write(str(d[s]) + "\n")
     r[s]  = getrand()
-    b    += float(p[s].stdout.readline()) / r[s]
+    b    += float(p[s].stdout.readline()) * r[s]
   s += (dd - bd) * bb
   bd = dd
   bb = b
