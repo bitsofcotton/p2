@@ -10,3 +10,11 @@ p0:=p(d_k), pp:=p(d_k + d_{k-1}), pm:=p(d_k - d_{k-1}),
 and then concat them with p0 + pp + pm, it shouldn't works becacuse when pp != pm, ||(pp - pm)(d_k - d_{k-1})||
 part increases constantly. And when we pick with 0 < pp * pm only, it makes cherry picking ones.
 But with p0, the method can be used as recursive ones.
+
+N.B. d_k + d_{k-1} part is almost in L2(R) in sampling meaning. And, one of the d_k part or
+d_k - d_{k-1} part might be in L2(R) part in that meaning according to some numerical tests.
+This might be because of differential-integral space norm conditions.  
+And if so, p2-unpredictable method should be the one like the chain:
+d_k unpredictable then d_k inverse sign then d_k-d_{k-1} unpredictable then d_k-d_{k-1} inverse sign and so on.
+To get this data, some PRNGS pseudo-makes this chain on some ranges, then, accelerate numerical patterns so to avoid
+range-dependant vulnerabilities.
