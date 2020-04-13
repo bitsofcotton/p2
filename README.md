@@ -5,12 +5,6 @@ Generic predictor corrector with random. This suppose the random stream we make 
 Change p2.py getrand functions and pp subprocess initializer.
 
 # Tips
-If we use original better predictor with divice and conquer method like:
-p0:=p(d_k), pp:=p(d_k + d_{k-1}), pm:=p(d_k - d_{k-1}),
-and then concat them with p0 + pp + pm, it shouldn't works becacuse when pp != pm, ||(pp - pm)(d_k - d_{k-1})||
-part increases constantly. And when we pick with 0 < pp * pm only, it makes cherry picking ones.
-But with p0, the method can be used as recursive ones.
-
 N.B. d_k + d_{k-1} part is almost in L2(R) in sampling meaning. And, one of the d_k part or
 d_k - d_{k-1} part might be in L2(R) part in that meaning according to some numerical tests.
 This might be because of differential-integral space norm conditions.  
