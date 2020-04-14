@@ -10,8 +10,9 @@ d_k - d_{k-1} part might be in L2(R) part in that meaning according to some nume
 This might be because of differential-integral space norm conditions.  
 And if so, p2-unpredictable method should be the one like the chain:
 d_k unpredictable then d_k inverse sign then d_k-d_{k-1} unpredictable then d_k-d_{k-1} inverse sign and so on.
-To get this data, some PRNGS pseudo-makes this chain on some ranges, then, accelerate numerical patterns so to avoid
+To get this data, some PRNGs pseudo-makes this chain on some ranges, then, accelerate numerical patterns so to avoid
 range-dependant vulnerabilities.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
+And, one of linear-space or exp-space or log-space, tetration-space or inverse-tetration-space is unpredictable in that meaning, others can be exists by some numerical tests.
