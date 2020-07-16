@@ -4,11 +4,10 @@ import subprocess
 import sys
 
 tbl   = [36, 38, 40, 41, 43, 45, 47]
-for s in range(0, 7):
-  tbl.append(tbl[s] + 12)
-for s in range(0, 7):
-  tbl.append(tbl[s] + 24)
-rng   = 8000
+for u in range(1, 4):
+  for s in range(0, 7):
+    tbl.append(tbl[s] + 12 * u)
+rng   = 20000
 
 # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
 mid   = MidiFile()
@@ -25,16 +24,17 @@ for line in sys.stdin:
     continue
   t += 1
   b += int(l)
-  if(t % 2 != 0):
+  if(t % 6 != 0):
     b *= 10
     continue
   # XXX: This only places note randomly with corrected manner.
   #      So this is not a music in certain definition.
-  if(len(tbl) <= b):
+  mul = int(sys.argv[1])
+  if(len(tbl) * mul <= b):
    try:
-    p.stdin.write((str(b % len(tbl)) + "\n").encode("utf-8"))
+    p.stdin.write((str(b % (len(tbl) * mul)) + "\n").encode("utf-8"))
     p.stdin.flush()
-    f = tbl[int(float(p.stdout.readline().decode("utf-8").split(",")[0])) % len(tbl)]
+    f = tbl[int((int(float(p.stdout.readline().decode("utf-8").split(",")[0])) % (len(tbl) * mul)) / mul)]
     track.append(Message('note_on',  note=f, velocity=127, time=80))
     track.append(Message('note_off', note=f, time=80))
     print(f)
