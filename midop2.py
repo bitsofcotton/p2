@@ -14,12 +14,13 @@ rng   = 20000
 mid   = MidiFile()
 track = MidiTrack()
 mid.tracks.append(track)
-track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(110)))
+track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(118)))
 
 p = subprocess.Popen(['./p'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 t = 0
 b = 0
 nbuf = []
+nb   = 0
 for line in sys.stdin:
  for l in line:
   if(l == '\n' or l == '.' or l == '-'):
@@ -36,16 +37,29 @@ for line in sys.stdin:
     p.stdin.write((str(b % (len(tbl) * mul)) + "\n").encode("utf-8"))
     p.stdin.flush()
     f = tbl[int((int(float(p.stdout.readline().decode("utf-8").split(",")[0])) % (len(tbl) * mul)) / mul)]
+    if(36 + 12 * 2 <= f):
+      nb = f
+    else:
+      f = 0
     nbuf.append(f)
-    track.append(Message('note_on',  note=f, velocity=127, time=80))
-    track.append(Message('note_off', note=f, time=80))
+    if(f == 0):
+      track.append(Message('note_on',  note=nb, velocity=0, time=80))
+      track.append(Message('note_off', note=nb, time=80))
+    else:
+      track.append(Message('note_on',  note=f, velocity=127, time=80))
+      track.append(Message('note_off', note=f, time=80))
     print(f)
     if(len(tbl) * mul * 2 < b):
      try:
       for u in range(0, int(b / float(len(tbl)) / float(mul) / 2) % 4):
         for v in range(0, len(nbuf)):
-          track.append(Message('note_on',  note=nbuf[v], velocity=127, time=80))
-          track.append(Message('note_off', note=nbuf[v], time=80))
+          if(nbuf[v] == 0):
+            track.append(Message('note_on',  note=nb, velocity=0, time=0))
+            track.append(Message('note_off', note=nb, time=120))
+          else:
+            track.append(Message('note_on',  note=nbuf[v], velocity=127, time=0))
+            track.append(Message('note_off', note=nbuf[v], time=120))
+            nb = nbuf[v]
       nbuf = []
      except:
       pass
