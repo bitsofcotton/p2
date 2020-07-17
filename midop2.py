@@ -2,7 +2,6 @@ import mido
 from mido import Message, MidiFile, MidiTrack, MetaMessage
 import subprocess
 import sys
-import random
 
 tbl = [36, 38, 40, 41, 43, 45, 47]
 for u in range(1, 5):
@@ -31,18 +30,17 @@ for line in sys.stdin:
   # XXX: This only places note on corrected random way.
   #      So this is not a music in certain definition.
   mul = int(sys.argv[1])
-  if(len(tbl) * mul <= b):
-    p.stdin.write((str(b % (len(tbl) * mul)) + "\n").encode("utf-8"))
-    p.stdin.flush()
-    f = tbl[int((int(float(p.stdout.readline().decode("utf-8").split(",")[0]) / int(sys.argv[2])) % (len(tbl) * mul)) / mul)]
-    #f = tbl[b % len(tbl)]
-    if(36 + 12 * 2 <= f):
-      track.append(Message('note_on',  note=f, velocity=127, time=0))
-      track.append(Message('note_off', note=f, time=120))
-    else:
-      track.append(Message('note_on',  note=0, velocity=0, time=0))
-      track.append(Message('note_off', note=0, time=120))
-    print(f)
+  p.stdin.write((str(b % (len(tbl) * mul)) + "\n").encode("utf-8"))
+  p.stdin.flush()
+  f = tbl[int((int(float(p.stdout.readline().decode("utf-8").split(",")[0]) / int(sys.argv[2])) % (len(tbl) * mul)) / mul)]
+  #f = tbl[b % len(tbl)]
+  if(36 + 12 * 2 <= f):
+    track.append(Message('note_on',  note=f, velocity=127, time=0))
+    track.append(Message('note_off', note=f, time=120))
+  else:
+    track.append(Message('note_on',  note=0, velocity=0, time=0))
+    track.append(Message('note_off', note=0, time=120))
+  print(f)
   b = 0
   if(rng < t):
     break
