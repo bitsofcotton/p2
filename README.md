@@ -17,4 +17,4 @@ If we predict with p0, what we treat L2(R) and m + 1 bits steps is L matrix mult
 If we predict with p1 it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them.
 
 # General Tips:
-If we convert original R^n series {f(x)} to {exp(exists a \* f(x))} in R^+n, what the expansion of below is described as: {exp(a\* sum b_k\*cos(c_k\*x'+d_k))} (Re cis(x) == cos(x)), and this is also {exp(d' + sum b_k'\*cos(c_k\*x'))}, this is better predictable by some of tests on p0.
+If we convert original R^n series {f(x)} to {exp(exists a \* f(x))} in R^+n, what the expansion of below is described as: {exp(a\* sum b_k\*cos(c_k\*x'+d_k))} (Re cis(x) == cos(x)), and this is also {exp(d' + sum b_k'\*cos(c_k\*x'))}, this is better predictable by some of tests on p0. This might be caused by linear and laurent series residue of 1/x part is ignored in that form if we predict with both side.
