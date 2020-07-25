@@ -3,11 +3,17 @@ from mido import Message, MidiFile, MidiTrack, MetaMessage
 import subprocess
 import sys
 
+"""
 tbl = [36, 38, 40, 41, 43, 45, 47]
 for u in range(1, 5):
   for s in range(0, 7):
     tbl.append(tbl[s] + 12 * u)
-rng = 20000
+"""
+
+tbl = []
+for u in range(0, 5 * 12):
+  tbl.append(36 + u)
+rng = int(sys.argv[1]) * int(sys.argv[2])
 
 # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
 mid   = MidiFile()
@@ -16,35 +22,28 @@ mid.tracks.append(track)
 track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(100)))
 
 p = subprocess.Popen(['./p'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-t = 0
-b = 0
-for line in sys.stdin:
- for l in line:
-  if(l == '\n' or l == '.' or l == '-' or l == ' '):
-    continue
-  t += 1
-  b += int(l)
-  if(t % 6 != 0):
-    b *= 10
+t = s = bb = 0
+for t in range(0, rng * int(sys.argv[1])):
+  # convert unpredictable to a little predictable ones.
+  try:
+    b  = int(pow(1.5, float(sys.stdin.readline().split(",")[0].split(" ")[0]) / 2000.) * 100)
+  except:
     continue
   # XXX: This only places note on corrected random way.
   #      So this is not a music in certain definition.
-  mul = int(sys.argv[1])
-  p.stdin.write((str(b % (len(tbl) * mul)) + "\n").encode("utf-8"))
+  p.stdin.write((str(b % len(tbl)) + "\n").encode("utf-8"))
   p.stdin.flush()
-  f = tbl[int((int(float(p.stdout.readline().decode("utf-8").split(",")[0]) / int(sys.argv[2])) % (len(tbl) * mul)) / mul)]
-  #f = tbl[b % len(tbl)]
-  if(36 + 12 * 2 <= f):
+  w  = p.stdout.readline().decode("utf-8").split(",")
+  fl = False
+  if(bb == w[1]):
+    s += 1
+    fl = True
+  bb = w[1]
+  f  = tbl[int(float(w[0])) % len(tbl)]
+  if(not fl and (t - s) % int(sys.argv[1]) == 0):
     track.append(Message('note_on',  note=f, velocity=127, time=0))
     track.append(Message('note_off', note=f, time=120))
-  else:
-    track.append(Message('note_on',  note=0, velocity=0, time=0))
-    track.append(Message('note_off', note=0, time=120))
   print(f)
-  b = 0
-  if(rng < t):
-    break
- if(rng < t):
-   break
+  t += 1
 mid.save('rand_correct.mid')
 
