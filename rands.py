@@ -24,11 +24,15 @@ def getrand(mm, r):
       bw += sr.gauss(0., 1.)
   return bw
 
-s  = 0
+s  = t = 0
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
 while(True):
-  s += getrand(a1, a2) / getrand(a1, a2)
-  #s += getrand(a1, a2)
-  print 1. / s
+  ss = s
+  s += getrand(a1, a2)
+  if(t % 20 == 0):
+    print s + ss
+  t += 1
+  #print int(s)
+  #print s - int(s)
 
