@@ -9,8 +9,7 @@ If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,
 And, one of linear-space or exp-space or log-space, tetration-space or inverse-tetration-space is unpredictable in that meaning, others can be exists by some numerical tests.
 
 # Important General Tips
-With bitsofcotton/randtools, any fixed operations on N is described as fixed A_k in F_p_k^{n\*n} chain, large enough p_k in P, and p_k is increasingly function, with the form x_k in each, x_{k+1} := A_k\* x_k. So the result is y=...\*((A_k\*...) mod p_k).  
-Alternate to this, 2^x:=\[1,x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\] form, the operation 'and' and 'not' can be described as each taylor series that is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.  
+With 2^x:=\[1,x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\] form, the operation 'and' and 'not' can be described as each taylor series that is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.  
 With this A, IDFT \* A'^k \* DFT \* 2^x = IDFT\* (U L U^t)^k\[1, x', 1, x'\] = IDFT \* U L^k U^t \[1, x', 1, x'\]. So with DFT meaning, freq:= DFT \* x'', x_k = IDFT \* U \* L^large num\* U^t \* freq, abs value on freq_k needs to be near the fixed point from first. this concludes: 2^x -> IDFT * \[..., a_k \* cis(x\*(2^x)'\_k + x'\_k), ...\] = B\*\[..., cos(&alpha;\_k\*x), ...\], &alpha;\_k in \[-&pi;,&pi;].  
 
 If we predict with p0, what we treat L2(R) is cosine value with bit table opreation, (with fixed startpoint and no change algorithm, this is valid, and if the series have the long periods and circular results, this also valid.), but there still exists sampling theorem.  
