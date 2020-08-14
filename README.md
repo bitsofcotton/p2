@@ -5,16 +5,16 @@ Generic predictor corrector with random. This suppose the random stream we make 
 Change p2.py getrand functions and pp subprocess initializer.
 
 # General Tips
-If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
+If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
 And, one of linear-space or exp-space or log-space, tetration-space or inverse-tetration-space is unpredictable in that meaning, others can be exists by some numerical tests.
 
 # Important General Tips
 With bitsofcotton/randtools, any fixed operations on N is described as fixed A_k in F_p_k^{n\*n} chain, large enough p_k in P, and p_k is increasingly function, with the form x_k in each, x_{k+1} := A_k\* x_k. So the result is y=...\*((A_k\*...) mod p_k).  
-Alternate to this, 2^x:=\[x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\], and, not can be described as each taylor series, and, taylor series is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.
+Alternate to this, 2^x:=\[1,x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\], and, not can be described as each taylor series, and, taylor series is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.  
 With this A, IDFT \* A'^k \* DFT \* 2^x = IDFT\* (U L U^t)^k\[1, x', 1, x'\] = IDFT \* U L^k U^t \[1, x', 1, x'\]. So with DFT meaning, freq:= DFT \* x'', x_k = IDFT \* U \* L^large num\* U^t \* freq, abs value on freq_k needs to be near the fixed point from first. this concludes: 2^x -> IDFT * \[..., a_k \* cis(x\*(2^x)'\_k + x'\_k), ...\] = B\*\[..., cos(&alpha;\_k\*x), ...\], &alpha;\_k in \[-&pi;,&pi;].  
 
-If we predict with p0, what we treat L2(R) and m + 1 bits steps is L matrix multiply on the space : the rotation on the frequency space with bit table opreation, (and with fixed startpoint and no change algorithm, this is valid, and if the series backward can be large steps, also valid.), and if we predict with original functions, it's on same prediction because the taylor series exists. (But there still exists sampling theorem) (from y = B \* ... cos ...)  
-If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them from first meaning (y = A \* x each mod 2).
+If we predict with p0, what we treat L2(R) cosine value with bit table opreation, (with fixed startpoint and no change algorithm, this is valid, and if the series backward can be large steps (long periods and circular), also valid.), but there still exists sampling theorem.  
+If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them from first meaning (x_next = A \* x).
 
 # General Tips:
-If original series is skew corrected ones, there's skew ones in each predicts between lower bits and upper bits. This is able to be also caused by 2 independent algorithm concat.
+If original series is skew corrected ones, there's skew ones on each predicts between lower bits and upper bits. This is able to be also caused by 2 independent algorithm concat.
