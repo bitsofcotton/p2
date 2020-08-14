@@ -14,11 +14,9 @@ Alternate to this, with good a_k=a_k-1\*...\*a_0 chain and large enough each a_k
 Or we can only say 'a and b' := a \* b, 'a xor b' := a + b, and so on, recursive, they also in A\* 2^x.  
 convert A into R^{n\*n}, IDFT \* A'^k \* DFT \* 2^x = IDFT\* (U L U^t)^k\[1, x', 1, x'\] = IDFT \* U L^k U^t \[1, x', 1, x'\]. So with DFT meaning, freq:= DFT \* x'', x_k = IDFT \* U \* L^large num\* U^t \* freq, abs value on freq_k needs to be near the fixed point from first. this concludes: 2^x -> IDFT * \[..., a_k \* cis(x\*(2^x)'\_k + x'\_k), ...\] = B\*\[..., cos(&alpha;\_k\*x), ...\] mod a_n then mod 2, &alpha;\_k in \[-&pi;,&pi;].  
 And if we replace mod operation with exp and log operations (mod a_0 to mod a_1 is similar to non linear expansion on 2^x.), this also can be described as y = A\*2^x each mod 2, and causes y = B\*\[..., cos(&alpha;\_k\*x), ...\] each mod 2.  
-If we predict with p0, what we treat L2(R) and m + 1 bits steps is L matrix multiply on the space : the rotation on the frequency space with bit table opreation, (and with fixed startpoint and no change algorithm, this is valid, and if the series backward can be large steps, also valid.), and if we predict with original functions, it's on same prediction because the taylor series exists. (But there still exists sampling theorem)  
-If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them.
+
+If we predict with p0, what we treat L2(R) and m + 1 bits steps is L matrix multiply on the space : the rotation on the frequency space with bit table opreation, (and with fixed startpoint and no change algorithm, this is valid, and if the series backward can be large steps, also valid.), and if we predict with original functions, it's on same prediction because the taylor series exists. (But there still exists sampling theorem) (from y = B \* ... cos ... each mod 2)  
+If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them from first meaning (y = A \* x each mod 2).
 
 # General Tips:
-If we convert original R^n series {f(x)} to {exp(exists a \* f(x))} in R^+n, what the expansion of below is described as: {exp(a\* sum b_k\*cos(c_k\*x'+d_k))} (Re cis(x) == cos(x)), and this is also {exp(d' + sum b_k'\*cos(c_k\*x'))}, this is better predictable by some of tests on p0. This might be caused by taylor series of exp(a\* cos(b\*x)) == Theta(1) + Theta(x^2) + ... + Theta(x^(2\*k)) + ..., and we ignore Theta(x) part on p0.
-
-# General Tips:
-If original series is skew corrected ones, there's skew ones in each predicts of lower bits and upper bits. This is able to be also caused by 2 independent algorithm concat.
+If original series is skew corrected ones, there's skew ones in each predicts between lower bits and upper bits. This is able to be also caused by 2 independent algorithm concat.
