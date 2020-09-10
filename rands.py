@@ -30,26 +30,20 @@ def getrand(mm, r):
       bw += sr.gauss(0., 1.)
   return bw
 
-s  = t = s0 = s1 = 0
+s  = s0 = s1 = 0
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
 while(True):
-  #ss = s
+  ss = s
   # N.B. this is raw random:
-  s += getrand(a1, a2)
-  """
-  # N.B. if rand() is created with both side random walk/values:
-  s0 *= .125
-  s1 *= .125
-  s0 += getrand(a1, a2)
-  s1 += getrand(a1, a2)
-  s  += s0 / (s1 + 2000.)
-  """
-  #print s
-  # N.B. 2 status average with stepped:
-  #if(t % 20 == 0):
-  #  print s + ss
-  #t += 1
+  #s += getrand(a1, a2)
+  # N.B. this is both side raw random.
+  s  += getrand(a1, a2) / getrand(a1, a2)
+  # N.B. if rand() is created with both side random walk:
+  #s0 += getrand(a1, a2)
+  #s1 += getrand(a1, a2)
+  #s  += s0 / s1
+  print s
   # N.B. exchange higher frequency and lower frequency:
   #print 1. / s
   # N.B. continuous, hacks sampling theorem:
