@@ -11,7 +11,7 @@ def getrand():
 p = []
 r = []
 d = []
-for s in range(0, nproc + 1):
+for s in range(0, nproc):
   p.append(subprocess.Popen(pp, stdin=subprocess.PIPE, stdout=subprocess.PIPE))
   r.append(0)
   d.append(0)
@@ -25,10 +25,13 @@ for line in sys.stdin:
   for s in range(0, nproc):
     d[s] += (dd - bd) * r[s]
     p[s].stdin.write(str(d[s]) + "\n")
+    p[s].stdin.flush()
     r[s]  = getrand()
     b    += float(p[s].stdout.readline()) * r[s]
   ss += (dd - bd) * bb
-  bd = dd
-  bb = b
-  print ss
+  # with beat:
+  #ss += (dd - bd) * bb * getrand()
+  bd  = dd
+  bb  = b
+  print ss, ",", b, ",", dd
 
