@@ -19,4 +19,7 @@ If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k o
 If original series is skew corrected ones, there's skew ones on each predicts between lower bits and upper bits. This is able to be also caused by 2 independent algorithm concat.
 
 # Uncertain Tips:
-With beating with normal PRNGs by p2.py beat option and re-predict them, the result is flat 0 delta line with ideal prediction function. So with this, non C^&omega;\[R\] one-function-recursion results can be tested by such beat.py with prediction. If the result isn't flat enough, it might mean the original series isn't consisted by such function.
+With beating with normal PRNGs by p2.py beat option and re-predict them, the result is flat 0 delta line with ideal prediction function. So with this, non C^0\[R\] one-function-recursion results can be tested by such beat.py with prediction. If the result isn't flat enough, it might mean the original series isn't consisted by such function.
+
+# Tips:
+If there exists ||f, &lt; x_0||&lt;delta x_0 gulf or similar things, it's not C_0.
