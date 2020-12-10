@@ -46,6 +46,8 @@ while(True):
   print s
   # N.B. exchange higher frequency and lower frequency:
   #print 1. / s
+  # N.B. ]-infty, infty[ to [-1, 1], distribution fix.
+  #print numpy.arctan(s)
   # N.B. continuous, hacks sampling theorem:
   #print s + ss
   # N.B. lower bit parts, upper bit parts, if they are skew ones:
@@ -53,13 +55,3 @@ while(True):
   #print s - int(s)
   # N.B. predict diff (diff x):
   #print getrand(a1, a2)
-  # N.B. shifts frequency space:
-  """
-  if(0 < s):
-    print   numpy.exp(  s)
-    print   numpy.log(  s)
-  else:
-    print - numpy.exp(- s)
-    print - numpy.log(- s)
-  """
-
