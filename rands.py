@@ -38,12 +38,16 @@ while(True):
   # N.B. this is raw random:
   #s += getrand(a1, a2)
   # N.B. this is both side raw random.
-  s  += getrand(a1, a2) / getrand(a1, a2)
+  #s  += getrand(a1, a2) / getrand(a1, a2)
   # N.B. if rand() is created with both side random walk:
   #s0 += getrand(a1, a2)
   #s1 += getrand(a1, a2)
   #s  += s0 / s1
-  print s
+  #print s
+  # N.B. instead of sum, ratio:
+  s = getrand(a1, a2) / getrand(a1, a2)
+  if(ss != 0.):
+    print s / ss
   # N.B. exchange higher frequency and lower frequency:
   #print 1. / s
   # N.B. ]-infty, infty[ to [-1, 1], distribution fix.
