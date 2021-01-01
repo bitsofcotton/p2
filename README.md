@@ -15,11 +15,10 @@ With this A, A'^k \* 2^x = (U L U^t)^k\[1, x', 1, x'\] = U L^k U^t \[1, x', 1, x
 If we predict with p0, what we treat L2(R) is cosine value with bit table opreation, (with fixed startpoint and no change algorithm, this is valid, and if the series have the long periods and circular results, this also valid.), but there still exists sampling theorem.  
 If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them from first meaning (x_next = A \* x).
 
-# General Tips:
-If original series is skew corrected ones, there's skew ones on each predicts between lower bits and upper bits. This is able to be also caused by 2 independent algorithm concat.
-
-# Uncertain Tips:
-With beating with normal PRNGs by p2.py beat option and re-predict them, the result is flat 0 delta line with ideal prediction function. So with this, non C^0\[R\] one-function-recursion results can be tested by such beat.py with prediction. If the result isn't flat enough, it might mean the original series isn't consisted by such function.
-
 # Tips:
-If there exists ||f|\_(&lt; x_0)||&lt;|deltaf(x_0)| gulf or similar things, it's not C_0. Even integrate on them too.
+If there exists ||f|\_(&lt; x_0)||&lt;|deltaf(x_0)| gulf or similar things, it's not C_0. Even integrate on them too.  
+Both p0 and p1 predicts opposite between f < 0 case and 0 < f case. This is because linearlity. So to avoid this, please place offset.
+
+# Another Download Sites
+* https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
+* https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
