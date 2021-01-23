@@ -22,7 +22,7 @@ Both p0 and p1 predicts opposite between f < 0 case and 0 < f case. This is beca
 
 # Tips:
 With p2 beat option, we can test whether original function is one function recursion function.
-If prediction after p2 beat option (which has p\_apply:=p/||p||\_1 on each) doesn't have contraction function,
+If prediction after p2 beat option (which has &delta;x\_apply:=&delta;x/||&delta;x||\_1 on each) doesn't have contraction function,
 it might be non one function recursion C0 function in that range.
 
 # Another Download Sites
