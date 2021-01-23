@@ -1,9 +1,6 @@
 # p2
 Generic predictor corrector with random. This suppose the random stream we make is better than original random source and the one we made is a little predictable with some prediction method. If so, this slices a little amount of random entropy. This is because short length of original prediction method divides 3 parts, bet ok, bet ng, or no bet. So with blending no periodical datas, it flatten 33%, 33%, 33% of them idealy, but with a little predictable part, it shifts original to a little predictable parts. But in fact, this only changes sliding window distribution.
 
-# How to use
-Change p2.py getrand functions and pp subprocess initializer.
-
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
 And, one of linear-space or exp-space or log-space, tetration-space or inverse-tetration-space is unpredictable in that meaning, others can be exists by some numerical tests.
@@ -22,6 +19,11 @@ We can test this continuous condition with cont.py, first 2 array insists the mo
 
 # Tips:
 Both p0 and p1 predicts opposite between f < 0 case and 0 < f case. This is because of linear function. So to avoid this, please place offset.
+
+# Tips:
+With p2 beat option, we can test whether original function is one function recursion function.
+If prediction after p2 beat option (which has p\_apply:=p/||p||\_1 on each) doesn't have contraction function,
+it might be non one function recursion C0 function in that range.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
