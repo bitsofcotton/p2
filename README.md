@@ -13,7 +13,7 @@ If we predict with p0, what we treat L2(R) is cosine value with bit table opreat
 If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k on each steps, and if we average the status length, this is valid for them from first meaning (x_next = A \* x).
 
 # Tips:
-If there exists ||f|\_(&lt; x_0)||&lt;|deltaf(x_0)| gulf or similar things, it's not C_0. Even integrate on them too. In this case, please transfer original points distribution into nonlinear projected ones. (eg. arctan).   
+If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it's not C_0. Even integrate on them too. In this case, please transfer original points distribution into nonlinear projected ones. (eg. arctan).   
 
 We can test this continuous condition with cont.py, first 2 array insists the most continuous ranges (so predict p0 with raw), last 2 as the most non continuous ranges (so predict p0 with error collecting).   
 
@@ -22,7 +22,7 @@ Both p0 and p1 predicts opposite between f < 0 case and 0 < f case. This is beca
 
 # Tips:
 With p2 beat option, we can test whether original function is one function recursion function.
-If prediction after p2 beat option (which has &delta;x\_apply:=&delta;x/||&delta;x||\_1 on each) doesn't have contraction function,
+If prediction after p2 beat option (which has &Delta;x\_apply:=&Delta;x/||&Delta;x||\_1 on each) doesn't have contraction function,
 it might be non one function recursion C0 function in that range.
 
 # Another Download Sites
