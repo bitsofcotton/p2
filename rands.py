@@ -34,28 +34,19 @@ s  = s0 = s1 = 0
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
 while(True):
-  ss = s
+  # N.B. predict diff (diff x):
+  #s   = getrand(a1, a2)
   # N.B. this is raw random:
-  #s += getrand(a1, a2)
+  #s  += getrand(a1, a2)
   # N.B. this is both side raw random.
   #s  += getrand(a1, a2) / getrand(a1, a2)
   # N.B. if rand() is created with both side random walk:
   #s0 += getrand(a1, a2)
   #s1 += getrand(a1, a2)
   #s  += s0 / s1
+  # N.B. raw things:
   #print s
-  # N.B. instead of sum, ratio:
-  s = getrand(a1, a2) / getrand(a1, a2)
-  if(ss != 0.):
-    print s / ss
-  # N.B. exchange higher frequency and lower frequency:
-  #print 1. / s
-  # N.B. ]-infty, infty[ to [-1, 1], distribution fix.
-  #print numpy.arctan(s)
-  # N.B. continuous, hacks sampling theorem:
-  #print s + ss
-  # N.B. lower bit parts, upper bit parts, if they are skew ones:
-  #print int(s)
-  #print s - int(s)
-  # N.B. predict diff (diff x):
-  #print getrand(a1, a2)
+  # N.B. ]-infty, infty[ cap bar(]- 1, 1[) to [-1, 1], distribution fix.
+  #      hacks continuous conditions:
+  #print numpy.arctan(float(int(s * 10000)))
+
