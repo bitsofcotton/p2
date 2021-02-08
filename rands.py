@@ -39,14 +39,12 @@ while(True):
   # N.B. this is raw random:
   #s  += getrand(a1, a2)
   # N.B. this is both side raw random.
+  #s   = getrand(a1, a2) / getrand(a1, a2)
   #s  += getrand(a1, a2) / getrand(a1, a2)
   # N.B. if rand() is created with both side random walk:
   #s0 += getrand(a1, a2)
   #s1 += getrand(a1, a2)
+  #s   = s0 / s1
   #s  += s0 / s1
-  # N.B. raw things:
-  #print s
-  # N.B. ]-infty, infty[ cap bar(]- 1, 1[) to [-1, 1], distribution fix.
-  #      hacks continuous conditions:
-  #print numpy.arctan(float(int(s * 10000)))
+  print s
 
