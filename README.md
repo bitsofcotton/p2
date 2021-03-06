@@ -1,5 +1,9 @@
 # p2
-Generic predictor corrector with random. This suppose the random stream we make is better than original random source and the one we made is a little predictable with some prediction method. If so, this slices a little amount of random entropy. This is because short length of original prediction method divides 3 parts, bet ok, bet ng, or no bet. So with blending no periodical datas, it flatten 33%, 33%, 33% of them idealy, but with a little predictable part, it shifts original to a little predictable parts. But in fact, this only changes sliding window distribution.
+Subtract little stable invariant from the series by p1, then, predict with p0.
+
+# Description:
+If we don't have better prediction with p0 nor p1, p01 handles them by subtracting stable spaces can causes large amount of noise that we can handle with p0.  
+N.B. the structure we subtract by p1 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
@@ -16,21 +20,12 @@ If we predict with p1, it depends: A \* x_nows 's a.row(k) is stable for any k o
 # Tips:
 If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it's not C_0. Even integrate on them either. In this case, please transfer some original points distribution into arctan projected ones.
 
-A p0 predicts opposite between f < 0 case and 0 < f case. This is because of linear function. So to avoid this, predict with p1, then, cdot.
-
-# Tips:
-With p2 beat option, we can test whether original function is one function recursion function.
-If prediction after p2 beat option (which has &Delta;x\_apply:=&Delta;x/||&Delta;x||\_1 on each) doesn't have contraction function,
-it might be non one function recursion C0 function in that range.
-
-# Tips:
-If we don't have better prediction with p0 nor p1, grit.py handles them by subtracting stable spaces can causes large amount of noise
-that we can handle with p0.  
-N.B. the structure we subtract by p1 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.
+A p0 predicts opposite between f < 0 case and 0 < f case. This is because of linear function. So to avoid this, please add offset.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
+* https://ja.osdn.net/users/bitsofcotton/
 
 # Archive
 This repository is archived, so without bugreport, will no change.
