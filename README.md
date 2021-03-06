@@ -23,6 +23,10 @@ With p2 beat option, we can test whether original function is one function recur
 If prediction after p2 beat option (which has &Delta;x\_apply:=&Delta;x/||&Delta;x||\_1 on each) doesn't have contraction function,
 it might be non one function recursion C0 function in that range.
 
+# Tips:
+If we don't have better prediction with p0 nor p1 with eduring and recursive use of them, the result should always have out of the statistics values.
+To beat with them, we can handle the delta with arctan(delta).
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
