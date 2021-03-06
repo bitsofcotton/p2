@@ -61,7 +61,7 @@ int main(int argc, const char* argv[]) {
   const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
   P0<num_t>  p0;
   P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange));
-  SimpleVector<num_t> buf(vrange);
+  SimpleVector<num_t> buf(abs(vrange) - 1);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = num_t(0);
   std::string s;
@@ -71,6 +71,7 @@ int main(int argc, const char* argv[]) {
   auto  s1(d);
   auto  s2(d);
   auto  s3(d);
+  auto  s4(d);
   int   t2(0);
   auto  t3(t2);
   auto  M(d);
@@ -91,6 +92,7 @@ int main(int argc, const char* argv[]) {
         s1 += delta - M;
         s2 += delta * M * num_t(t2);
         s3 -= delta * M * num_t(t3);
+        s4 += delta * M;
       }
       for(int i = 0; i < buf.size() - 1; i ++)
         buf[i] = buf[i + 1];
@@ -99,7 +101,7 @@ int main(int argc, const char* argv[]) {
         auto avg(p.invariant[0]);
         for(int i = 1; i < p.invariant.size(); i ++)
           avg += p.invariant[i];
-        auto pp(p0.next(abs(vrange)));
+        auto pp(p0.next(abs(vrange) - 1));
         auto qq(pp);
         for(int i = 0; i < qq.size(); i ++)
           qq[i] = avg[i];
@@ -108,13 +110,13 @@ int main(int argc, const char* argv[]) {
         qq /= nq;
         const auto pq(pp - qq * pp.dot(qq));
         const auto npq(sqrt(pq.dot(pq)));
-        M = (pq.dot(buf) - C) / npq;
+        M = (pq.dot(buf) - C - num_t(origin) / nq * avg[abs(vrange) - 1]) / npq;
       }
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s2) s2 = num_t(t2 = 0);
       if(0 < s3) s3 = num_t(t3 = 0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 << ", " << s4 << std::endl << std::flush;
   }
   return 0;
 }
