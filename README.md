@@ -24,8 +24,8 @@ If prediction after p2 beat option (which has &Delta;x\_apply:=&Delta;x/||&Delta
 it might be non one function recursion C0 function in that range.
 
 # Tips:
-If we don't have better prediction with p0 nor p1, grit.py handles them by higher prediction order hierarchy on bet amount.
-If they fails on the hierarchy, it's essential data from prediction itself.
+If we don't have better prediction with p0 nor p1, grit.py handles them by subtracting stable spaces can causes large amount of noise
+that we can handle with p0.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
