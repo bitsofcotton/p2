@@ -110,7 +110,7 @@ int main(int argc, const char* argv[]) {
         qq /= nq;
         const auto pq(pp - qq * pp.dot(qq));
         const auto npq(sqrt(pq.dot(pq)));
-        M = (pq.dot(buf) - C - num_t(origin) / nq * avg[abs(vrange) - 1]) / npq;
+        M = (pq.dot(buf) + pp.dot(qq) * (C - num_t(origin) / nq * avg[abs(vrange) - 1])) / npq;
       }
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s2) s2 = num_t(t2 = 0);
