@@ -67,16 +67,18 @@ int main(int argc, const char* argv[]) {
   std::string s;
   num_t d(0);
   auto  d0(d);
+  auto  bd(d);
   auto  s0(d);
   auto  s1(d);
   auto  s2(d);
   auto  s3(d);
   auto  s4(d);
-  int   t2(0);
-  auto  t3(t2);
+  auto  s5(d);
+  auto  s6(d);
+  int   tp(0);
+  auto  tm(tp);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
-    const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
     d *= num_t(mul);
@@ -85,14 +87,16 @@ int main(int argc, const char* argv[]) {
       d = atan(d - d0);
     }
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
-    if(d != bd) {
+    if(num_t(1) <= abs(d - bd)) {
       if(bd != num_t(0) && M != num_t(0)) {
-        t2 ++; t3 ++;
-        s0 += delta * M * num_t(t2 - t3);
-        s1 += delta - M;
-        s2 += delta * M * num_t(t2);
-        s3 -= delta * M * num_t(t3);
-        s4 += delta * M;
+        tp ++; tm ++;
+        s0 += delta - M;
+        s1 += delta * M;
+        s2 += delta * M * num_t(tp - tm);
+        s3 += (d - bd) * M;
+        s4 += (d - bd) * M * num_t(tp - tm);
+        s5 += delta * M * num_t(tp);
+        s6 -= delta * M * num_t(tm);
       }
       for(int i = 0; i < buf.size() - 1; i ++)
         buf[i] = buf[i + 1];
@@ -110,13 +114,14 @@ int main(int argc, const char* argv[]) {
         qq /= nq;
         const auto pq(pp - qq * pp.dot(qq));
         const auto npq(sqrt(pq.dot(pq)));
-        M = (pq.dot(buf) + pp.dot(qq) * (C + num_t(origin) / nq * avg[abs(vrange) - 1])) / npq;
+        M = (pq.dot(buf) + pp.dot(qq) * (C - num_t(origin) / nq * avg[abs(vrange) - 1])) / npq / num_t(origin ? abs(origin) : 1);
       }
       if(! isfinite(M) || isnan(M)) M = num_t(0);
-      if(0 < s2) s2 = num_t(t2 = 0);
-      if(0 < s3) s3 = num_t(t3 = 0);
+      if(0 < s5) s5 = num_t(tp = 0);
+      if(0 < s6) s6 = num_t(tm = 0);
+      bd = d;
     }
-    std::cout << M << ", " << s0 << ", " << s1 << ", " << s4 << std::endl << std::flush;
+    std::cout << M << ", " << (tp - tm) << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
   }
   return 0;
 }
