@@ -3,7 +3,8 @@ Subtract little stable invariant from the series by p1, then, predict with p0.
 
 # Description:
 If we don't have better prediction with p0 nor p1, p01 handles them by subtracting stable spaces can causes large amount of noise that we can handle with p0.  
-N.B. the structure we subtract by p1 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.
+N.B. the structure we subtract by p1 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.  
+Command line option on p01 is same as p1.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)

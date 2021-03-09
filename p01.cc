@@ -43,31 +43,26 @@
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int eslen(0);
-  int vrange(12);
+  int vrange(- 12);
   int ignore(- 4);
-  int mul(1);
-  int origin(0);
-  if(argc < 4) {
-    std::cerr << "p1 <extra status> <variable> <ignore> <mul>? <origin>?" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << " " << mul << " " << origin << std::endl;
+  int eslen(0);
+  if(argc < 3) {
+    std::cerr << "p1 <variable> <ignore> <extra>?" << std::endl;
+    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << std::endl;
   } else {
-    eslen  = std::atoi(argv[1]);
-    vrange = std::atoi(argv[2]);
-    ignore = std::atoi(argv[3]);
-    if(4 < argc) mul    = std::atoi(argv[4]);
-    if(5 < argc) origin = std::atoi(argv[5]);
+    vrange = std::atoi(argv[1]);
+    ignore = std::atoi(argv[2]);
+    if(3 < argc) eslen  = std::atoi(argv[3]);
   }
-  const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
+  const auto origin(vrange < 0 ? atan2(num_t(1), num_t(1)) * num_t(4) + num_t(1) : num_t(0));
+  assert(0 <= eslen);
   P0<num_t>  p0;
-  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange));
+  P1I<num_t> p(eslen + abs(ignore), abs(vrange));
   SimpleVector<num_t> buf(abs(vrange) - 1);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = num_t(0);
   std::string s;
   num_t d(0);
-  auto  d0(d);
-  auto  bd(d);
   auto  s0(d);
   auto  s1(d);
   auto  s2(d);
@@ -79,15 +74,11 @@ int main(int argc, const char* argv[]) {
   auto  tm(tp);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
+    const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    d *= num_t(mul);
-    if(ee) {
-      if(d0 == num_t(0)) d0 = d;
-      d = atan(d - d0);
-    }
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
-    if(num_t(1) <= abs(d - bd)) {
+    if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
         tp ++; tm ++;
         s0 += delta - M;
@@ -100,7 +91,7 @@ int main(int argc, const char* argv[]) {
       }
       for(int i = 0; i < buf.size() - 1; i ++)
         buf[i] = buf[i + 1];
-      p.next(buf[buf.size() - 1] = delta, - ignore, num_t(origin));
+      p.next(buf[buf.size() - 1] = delta, - ignore, origin);
       if(p.invariant.size()) {
         auto avg(p.invariant[0]);
         for(int i = 1; i < p.invariant.size(); i ++)
@@ -114,12 +105,11 @@ int main(int argc, const char* argv[]) {
         qq /= nq;
         const auto pq(pp - qq * pp.dot(qq));
         const auto npq(sqrt(pq.dot(pq)));
-        M = (pq.dot(buf) + pp.dot(qq) * (C - num_t(origin) / nq * avg[abs(vrange) - 1])) / npq / num_t(origin ? abs(origin) : 1);
+        M = (pq.dot(buf) + pp.dot(qq) * (C - origin / nq * avg[abs(vrange) - 1])) / npq;
       }
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s5) s5 = num_t(tp = 0);
       if(0 < s6) s6 = num_t(tm = 0);
-      bd = d;
     }
     std::cout << M << ", " << (tp - tm) << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
   }
