@@ -56,11 +56,8 @@ int main(int argc, const char* argv[]) {
   }
   const auto origin(vrange < 0 ? atan2(num_t(1), num_t(1)) * num_t(4) + num_t(1) : num_t(0));
   assert(0 <= eslen);
-  P0<num_t>  p0;
-  P1I<num_t> p(eslen + abs(ignore), abs(vrange));
-  SimpleVector<num_t> buf(abs(vrange) - 1);
-  for(int i = 0; i < buf.size(); i ++)
-    buf[i] = num_t(0);
+  P0B<num_t> p(abs(vrange));
+  P1I<num_t> q(eslen + abs(ignore), abs(vrange));
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -89,24 +86,7 @@ int main(int argc, const char* argv[]) {
         s5 += delta * M * num_t(tp);
         s6 -= delta * M * num_t(tm);
       }
-      for(int i = 0; i < buf.size() - 1; i ++)
-        buf[i] = buf[i + 1];
-      p.next(buf[buf.size() - 1] = delta, - ignore, origin);
-      if(p.invariant.size()) {
-        auto avg(p.invariant[0]);
-        for(int i = 1; i < p.invariant.size(); i ++)
-          avg += p.invariant[i];
-        auto pp(p0.next(abs(vrange) - 1));
-        auto qq(pp);
-        for(int i = 0; i < qq.size(); i ++)
-          qq[i] = avg[i];
-        const auto nq(sqrt(qq.dot(qq)));
-        const auto C(avg[abs(vrange)] / sqrt(num_t((abs(eslen) + abs(vrange) - 1) * 2 + 1) * num_t(abs(vrange) + 1)) / nq);
-        qq /= nq;
-        const auto pq(pp - qq * pp.dot(qq));
-        const auto npq(sqrt(pq.dot(pq)));
-        M = (pq.dot(buf) + pp.dot(qq) * (C - origin / nq * avg[abs(vrange) - 1])) / npq;
-      }
+      M = p.next(delta) - q.next(delta, - ignore, origin);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s5) s5 = num_t(tp = 0);
       if(0 < s6) s6 = num_t(tm = 0);

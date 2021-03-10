@@ -2,8 +2,8 @@
 Subtract little stable invariant from the series by p1, then, predict with p0.
 
 # Description:
-If we don't have better prediction with p0 nor p1, p01 handles them by subtracting stable spaces can causes large amount of noise that we can handle with p0.  
-N.B. the structure we subtract by p1 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.  
+If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0.  
+N.B. the structure we subtract by p01 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.  
 Command line option on p01 is same as p1.
 
 # General Tips
