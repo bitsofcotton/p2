@@ -23,6 +23,10 @@ If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it
 
 A p0 predicts opposite between f < 0 case and 0 < f case. This is because of linear function. So to avoid this, please add offset.
 
+# Tips:
+After p1 subtract invariant with enough variable length, next predictor p1's variable length is decreased.
+This is an analogy to QR decomposition.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
