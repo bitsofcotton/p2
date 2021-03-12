@@ -78,14 +78,14 @@ int main(int argc, const char* argv[]) {
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
         tp ++; tm ++;
-        s0 += delta - M;
+        s0 += vrange < 0 ? d - bd - tan(M) : delta - M;
         s1 += delta * M;
         s2 += delta * M * num_t(tp - tm);
         s3 += (d - bd) * M;
         s4 += (d - bd) * M * num_t(tp - tm);
         s5 += delta * M * num_t(tp);
         s6 -= delta * M * num_t(tm);
-      }
+      } else if(M == num_t(0)) std::cerr << "!" << std::flush;
       M = p.next(delta) - q.next(delta, - ignore, origin);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s5) s5 = num_t(tp = 0);
