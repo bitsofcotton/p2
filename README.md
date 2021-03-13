@@ -34,6 +34,7 @@ This is an analogy to QR decomposition.
 
 # Tips:
 If we can't statistically predict original stream by {p2, p1, p0}, the original data stream is data seed itself meaning to {p2, p1, p0}.
+This means the given data stream doesn't have rational stable inner structure. So it is random stream itself in the meaning of given argument range.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
