@@ -1,10 +1,15 @@
 # p2
-Subtract little stable invariant from the series by p1, then, predict with p0.
+(i)  Subtract little stable invariant from the series by p1, then, predict with p0.
+(ii) Categorize input stream and predict with them.
 
 # Description:
 If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0.  
 N.B. the structure we subtract by p01 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.  
 Command line option on p01 is same as p1.
+
+# Description:
+If we don't have better prediction with p01, we categorize series of input and predict with them by catgp.
+In this case, if there's pattenizable jamming into data series, we can correct them.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
@@ -26,6 +31,9 @@ A p0 predicts opposite between f < 0 case and 0 < f case. This is because of lin
 # Tips:
 After p1 subtract invariant with enough variable length, next predictor p1's variable length is decreased.
 This is an analogy to QR decomposition.
+
+# Tips:
+If we can't statistically predict original stream by {p2, p1, p0}, the original data stream is data seed itself meaning to {p2, p1, p0}.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
