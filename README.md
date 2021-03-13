@@ -1,6 +1,7 @@
 # p2
-(i)  Subtract little stable invariant from the series by p1, then, predict with p0.
-(ii) Categorize input stream and predict with them.
+(i)   Subtract little stable invariant from the series by p1, then, predict with p0.  
+(ii)  Categorize input stream and predict with them.  
+(iii) Predict with short range, long range (structure itself), middle range (pseudo learning), and get average prediction.
 
 # Description:
 If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0.  
