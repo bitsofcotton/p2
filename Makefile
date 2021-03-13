@@ -11,9 +11,9 @@ CXXFLAGS+=	-std=c++11 -Ofast -gfull -mtune=native
 LDFLAGS+=	-lc++
 #LDFLAGS+=	-static
 
-CLEANFILES= *.o *.dSYM p01
+CLEANFILES= *.o *.dSYM p01 catgp
 
-all:		p01
+all:		p01 catgp
 clean:
 	@rm -rf ${CLEANFILES}
 

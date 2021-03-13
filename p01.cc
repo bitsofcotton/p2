@@ -47,8 +47,8 @@ int main(int argc, const char* argv[]) {
   int ignore(- 4);
   int eslen(0);
   if(argc < 3) {
-    std::cerr << "p1 <variable> <ignore> <extra>?" << std::endl;
-    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << std::endl;
+    std::cerr << "p01 <variable> <ignore> <extra>?" << std::endl;
+    std::cerr << "continue with p01 " << vrange << " " << ignore << " " << eslen << std::endl;
   } else {
     vrange = std::atoi(argv[1]);
     ignore = std::atoi(argv[2]);
