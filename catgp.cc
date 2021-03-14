@@ -78,12 +78,9 @@ int main(int argc, const char* argv[]) {
     std::cerr << "catgp <range> <stat> <slide> <cutintensity>" << std::endl;
     std::cerr << "./catgp " << range << " " << stat << " " << slide << " " << intensity << std::endl;
   }
-  SimpleVector<num_t> v(abs(range));
-  Decompose<num_t>    dec(v.size());
-  std::vector<SimpleVector<num_t> > va;
-  std::vector<SimpleVector<num_t> > pp;
-  va.reserve(stat);
+  P012L<num_t> p(abs(range), stat, slide, intensity);
   num_t d(0);
+  auto  S(d);
   auto  s0(d);
   auto  s1(d);
   auto  s2(d);
@@ -111,44 +108,8 @@ int main(int argc, const char* argv[]) {
         s5 += delta * M * num_t(tp);
         s6 -= delta * M * num_t(tm);
       }
-      if(t ++ < v.size()) {
-        v[t % v.size()] = d;
-        continue;
-      }
-      v[v.size() - 1] = d;
-      const auto vvv(dec.next(v));
-      va.emplace_back(vvv / sqrt(vvv.dot(vvv)));
-      for(int i = 0; i < v.size() - 1; i ++)
-        v[i] = v[i + 1];
-      v[v.size() - 2] = d;
-      if(stat <= va.size()) {
-        const auto cat(crush<num_t>(va, v.size(), intensity, - 1, true));
-        pp = std::vector<SimpleVector<num_t> >();
-        pp.reserve(cat.size());
-        for(int i = 0; i < cat.size(); i ++) {
-          pp.emplace_back(cat[i].first[0].first);
-          for(int j = 1; j < cat[i].first.size(); j ++)
-            pp[i] += cat[i].first[j].first;
-          pp[i] /= sqrt(pp[i].dot(pp[i]));
-        }
-        const auto va0(va);
-        va = std::vector<SimpleVector<num_t> >();
-        va.reserve(va0.size());
-        for(int i = 0; i < slide; i ++)
-          va.emplace_back(va0[i - slide + va0.size()]);
-      }
-      M   = num_t(0);
-      num_t MM(0);
-      for(int i = 0; i < pp.size(); i ++) {
-        const auto& p(pp[i]);
-        const auto  vdp(dec.next(v).dot(p));
-        const auto  ldlt(p[p.size() - 1] - p[p.size() - 2]);
-        if(! isfinite(vdp)) continue;
-        if(MM <= abs(vdp) && ldlt != num_t(0)) {
-          MM = abs(vdp);
-          M  = ldlt * vdp;
-        }
-      }
+      S += delta;
+      M  = p.next(S) - S;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s5) s5 = num_t(tp = 0);
       if(0 < s6) s6 = num_t(tm = 0);
