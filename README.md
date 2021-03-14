@@ -1,7 +1,6 @@
 # p2
-(i)   Subtract little stable invariant from the series by p1, then, predict with p0.  
-(ii)  Categorize input stream and predict with them.  
-(iii) Predict with short range, long range (structure itself), middle range (pseudo learning), and get average prediction.
+(i)  Subtract little stable invariant from the series by p1, then, predict with p0.  
+(ii) Categorize input stream and predict with them.  
 
 # Description:
 If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0.  
@@ -36,7 +35,8 @@ This is an analogy to QR decomposition.
 # Tips:
 If we can't statistically predict original stream by {p2, p1, p0}, the original data stream is data seed itself meaning to {p2, p1, p0}.
 This means the given data stream doesn't have rational stable inner structure. So it is random stream itself in the meaning of given argument range.
-This doesn't mean there's no correlation on the data because we can categorize them by catg itself after all data received (not before).
+This doesn't mean there's no correlation on the data because we can categorize them by catg itself after all data received (not before).  
+This is checked by perverse.py with some range modifications. So taking another ranges, we may have another results.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

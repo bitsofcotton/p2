@@ -62,23 +62,13 @@
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int  range(8);
-  int  stat(2000);
-  int  slide(1500);
-  auto intensity(- num_t(1) / num_t(2));
-  if(1 < argc) {
-    range = std::atoi(argv[1]);
-    if(2 < argc)
-      stat  = std::atoi(argv[2]);
-    if(3 < argc)
-      slide = std::atoi(argv[3]);
-    if(4 < argc)
-      intensity = std::atof(argv[4]);
-  } else {
-    std::cerr << "catgp <range> <stat> <slide> <cutintensity>" << std::endl;
-    std::cerr << "./catgp " << range << " " << stat << " " << slide << " " << intensity << std::endl;
-  }
-  P012L<num_t> p(abs(range), stat, slide, intensity);
+  assert(3 < argc);
+  const auto  range(std::atoi(argv[1]));
+  const num_t rslide(std::atof(argv[2]));
+  const auto  intensity(- num_t(1) / num_t(2));
+  std::vector<P012L<num_t> > p;
+  for(int i = 0; i < argc; i ++)
+    p.emplace_back(P012L<num_t>(abs(range), std::atoi(argv[2]), int(num_t(std::atoi(argv[2])) * rslide), intensity));
   num_t d(0);
   auto  S(d);
   auto  s0(d);
@@ -109,7 +99,10 @@ int main(int argc, const char* argv[]) {
         s6 -= delta * M * num_t(tm);
       }
       S += delta;
-      M  = p.next(S) - S;
+      M  = num_t(0);
+      for(int i = 0; i < p.size(); i ++)
+        M += p[i].next(S) - S;
+      M /= num_t(p.size());
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s5) s5 = num_t(tp = 0);
       if(0 < s6) s6 = num_t(tm = 0);
