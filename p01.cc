@@ -86,7 +86,7 @@ int main(int argc, const char* argv[]) {
         s5 += delta * M * num_t(tp);
         s6 -= delta * M * num_t(tm);
       } else if(M == num_t(0)) std::cerr << "!" << std::flush;
-      M = p.next(delta) - q.next(delta, - ignore, origin);
+      M = p.next(delta) - q.next(delta, - ignore, origin) + origin;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(0 < s5) s5 = num_t(tp = 0);
       if(0 < s6) s6 = num_t(tm = 0);
