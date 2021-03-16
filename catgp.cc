@@ -67,8 +67,8 @@ int main(int argc, const char* argv[]) {
   const num_t rslide(std::atof(argv[2]));
   const auto  intensity(- num_t(1) / num_t(2));
   std::vector<P012L<num_t> > p;
-  for(int i = 0; i < argc; i ++)
-    p.emplace_back(P012L<num_t>(abs(range), std::atoi(argv[2]), int(num_t(std::atoi(argv[2])) * rslide), intensity));
+  for(int i = 3; i < argc; i ++)
+    p.emplace_back(P012L<num_t>(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
   num_t d(0);
   auto  S(d);
   auto  s0(d);
