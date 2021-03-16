@@ -58,6 +58,8 @@ int main(int argc, const char* argv[]) {
   assert(0 <= eslen);
   P0B<num_t> p(abs(vrange));
   P1I<num_t> q(eslen + abs(ignore), abs(vrange));
+  auto  pp(p);
+  auto  qq(q);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -66,9 +68,7 @@ int main(int argc, const char* argv[]) {
   auto  s3(d);
   auto  s4(d);
   auto  s5(d);
-  auto  s6(d);
-  int   tp(0);
-  auto  tm(tp);
+  auto  ss(d);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
@@ -77,21 +77,18 @@ int main(int argc, const char* argv[]) {
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
-        tp ++; tm ++;
         s0 += vrange < 0 ? d - bd - tan(M) : delta - M;
         s1 += delta * M;
-        s2 += delta * M * num_t(tp - tm);
+        s2 += delta * M * ss;
         s3 += (d - bd) * M;
-        s4 += (d - bd) * M * num_t(tp - tm);
-        s5 += delta * M * num_t(tp);
-        s6 -= delta * M * num_t(tm);
+        s4 += (d - bd) * M * (vrange < 0 ? tan(ss) : ss);
+        s5 += delta - M;
+        ss  = s5 + p.next(delta - M) - q.next(delta - M, - ignore, origin) + origin;
       } else if(M == num_t(0)) std::cerr << "!" << std::flush;
       M = p.next(delta) - q.next(delta, - ignore, origin) + origin;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
-      if(0 < s5) s5 = num_t(tp = 0);
-      if(0 < s6) s6 = num_t(tm = 0);
     }
-    std::cout << M << ", " << (tp - tm) << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
   }
   return 0;
 }

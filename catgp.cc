@@ -69,6 +69,7 @@ int main(int argc, const char* argv[]) {
   std::vector<P012L<num_t> > p;
   for(int i = 3; i < argc; i ++)
     p.emplace_back(P012L<num_t>(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+  auto  q(p);
   num_t d(0);
   auto  S(d);
   auto  s0(d);
@@ -77,10 +78,8 @@ int main(int argc, const char* argv[]) {
   auto  s3(d);
   auto  s4(d);
   auto  s5(d);
-  auto  s6(d);
+  auto  ss(d);
   int   t(- 1);
-  int   tp(0);
-  auto  tm(tp);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
@@ -89,14 +88,17 @@ int main(int argc, const char* argv[]) {
     const auto delta(range < 0 ? atan(d - bd) : d - bd);
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
-        tp ++; tm ++;
         s0 += range < 0 ? d - bd - tan(M) : delta - M;
         s1 += delta * M;
-        s2 += delta * M * num_t(tp - tm);;
+        s2 += delta * s5;
         s3 += (d - bd) * M;
-        s4 += (d - bd) * M * num_t(tp - tm);;
-        s5 += delta * M * num_t(tp);
-        s6 -= delta * M * num_t(tm);
+        s4 += (d - bd) * (range < 0 ? tan(s5) : s5);
+        s5 += delta - M;
+        ss  = num_t(0);
+        for(int i = 0; i < q.size(); i ++)
+          ss += q[i].next(s5) - s5;
+        ss /= num_t(q.size());
+        ss += s5;
       }
       S += delta;
       M  = num_t(0);
@@ -104,10 +106,8 @@ int main(int argc, const char* argv[]) {
         M += p[i].next(S) - S;
       M /= num_t(p.size());
       if(! isfinite(M) || isnan(M)) M = num_t(0);
-      if(0 < s5) s5 = num_t(tp = 0);
-      if(0 < s6) s6 = num_t(tm = 0);
     }
-    std::cout << M << ", " << (tp - tm) << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
   }
   return 0;
 }
