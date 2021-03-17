@@ -3,8 +3,7 @@
 (ii) Categorize input stream and predict with them.  
 
 # Description:
-If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0.  
-N.B. the structure we subtract by p01 depends status length, so if status length is enough, the invariant found first is subtracted, this causes the most part that effects prediction itself, and if status length is not enough, this also subtract partial invariant that effects prediction itself.  
+If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0. This is for dummy adopted jamming.
 Command line option on p01 is same as p1.
 
 # Description:
@@ -33,10 +32,8 @@ After p1 subtract invariant with enough variable length, next predictor p1's var
 This is an analogy to QR decomposition.
 
 # Tips:
-If we can't statistically predict original stream by {p2, p1, p0}, the original data stream is data seed itself meaning to {p2, p1, p0}.
-This means the given data stream doesn't have rational stable inner structure. So it is random stream itself in the meaning of given argument range.
-This doesn't mean there's no correlation on the data because we can categorize them by catg itself after all data received (not before).  
-This is checked by perverse.py with some range modifications. So taking another ranges, we may have another results.
+So we suppose all of {p0, p1, p2}, some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg after all data is received.
+So to avoid this, we should make rand() before points and feed it some function, but this is also in p1 if data stream has enough length. But with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. So we can only beat with this large enough turing programs. So this is also p1 invariant, which we need large status bits.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
