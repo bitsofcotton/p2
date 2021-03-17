@@ -33,12 +33,12 @@ def getrand(mm, r):
 s  = t = s0 = s1 = 0
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
-a3 = int(sys.argv[3])
 while(True):
+  ss = s
   # N.B. predict diff (diff x):
   #s   = getrand(a1, a2)
   # N.B. this is raw random:
-  #s  += getrand(a1, a2)
+  s  += getrand(a1, a2)
   # N.B. this is both side raw random.
   #s   = getrand(a1, a2) / getrand(a1, a2)
   #s  += getrand(a1, a2) / getrand(a1, a2)
@@ -47,8 +47,7 @@ while(True):
   #s1 += getrand(a1, a2)
   #s   = s0 / s1
   #s  += s0 / s1
-  if(t % a3 == 0):
-    print s
-    s = 0
+  if(t % 2 == 0):
+    print s + ss
   t += 1
 
