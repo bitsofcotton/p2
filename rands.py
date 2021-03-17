@@ -30,9 +30,10 @@ def getrand(mm, r):
       bw += sr.gauss(0., 1.)
   return bw
 
-s  = s0 = s1 = 0
+s  = t = s0 = s1 = 0
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
+a3 = int(sys.argv[3])
 while(True):
   # N.B. predict diff (diff x):
   #s   = getrand(a1, a2)
@@ -46,5 +47,8 @@ while(True):
   #s1 += getrand(a1, a2)
   #s   = s0 / s1
   #s  += s0 / s1
-  print s
+  if(t % a3 == 0):
+    print s
+    s = 0
+  t += 1
 
