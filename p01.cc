@@ -55,7 +55,6 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) eslen  = std::atoi(argv[3]);
   }
   assert(0 <= eslen);
-  const auto origin(atan2(num_t(1), num_t(1)) * num_t(4) + num_t(1) / num_t(2));
   P0B<num_t> p(abs(vrange));
   P1I<num_t> q(eslen + abs(ignore), vrange);
   std::string s;
@@ -73,7 +72,7 @@ int main(int argc, const char* argv[]) {
         s1 += (d - bd) * M;
       }
       const auto pn(p.next(d) - d);
-      M = pn - tan(q.next(atan(d - bd), - ignore, origin) - origin);
+      M = pn - q.next(d - bd, - ignore);
       if(! isfinite(M) || isnan(M)) M = pn;
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
