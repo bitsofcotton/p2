@@ -72,8 +72,9 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M = p.next(d) - d - tan(q.next(atan(d - bd), - ignore, origin) + origin);
-      if(! isfinite(M) || isnan(M)) M = num_t(0);
+      const auto pn(p.next(d) - d);
+      M = pn - tan(q.next(atan(d - bd), - ignore, origin) - origin);
+      if(! isfinite(M) || isnan(M)) M = pn;
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
