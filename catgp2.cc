@@ -79,7 +79,14 @@ int main(int argc, const char* argv[]) {
   auto  M0(d);
   std::vector<num_t> dd(p.size(), num_t(0));
   auto  rr(dd);
-  auto  M(dd);
+  auto  M(rr);
+  {
+    std::getline(std::cin, s, '\n');
+    std::stringstream ins(s);
+    ins >> dd[0];
+    for(int i = 1; i < dd.size(); i ++)
+      dd[i] = dd[0];
+  }
   while(std::getline(std::cin, s, '\n')) {
     const auto bd0(d);
     std::stringstream ins(s);
@@ -91,14 +98,14 @@ int main(int argc, const char* argv[]) {
       }
       const auto bd(dd);
       for(int i = 0; i < p.size(); i ++) {
-        dd[i] += (d - bd0) * rr[i];
+        dd[i] += (d - bd0) * abs(rr[i]);
         const auto bf(M[i] * (dd[i] - bd[i]));
         rr[i] += num_t(arc4random_uniform(0x10000) + arc4random_uniform(0x10000) - 0x8000 * 2) / num_t(0x8000);
         if(dd[i] != num_t(0)) {
           M[i] = num_t(0);
           for(int j = 0; j < p[i].size(); j ++)
             M[i] += p[i][j].next(dd[i]) - dd[i];
-          M0  += (M[i] /= num_t(p[i].size())) * bf * rr[i];
+          M0  += (M[i] /= num_t(p[i].size())) * bf * abs(rr[i]);
         }
       }
       M0 /= num_t(p.size());
