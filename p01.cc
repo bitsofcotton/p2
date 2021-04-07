@@ -44,19 +44,19 @@
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int vrange(12);
-  int ignore(- 4);
   int eslen(0);
+  int ratio(20);
   if(argc < 3) {
-    std::cerr << "p01 <variable> <ignore> <extra>?" << std::endl;
-    std::cerr << "continue with p01 " << vrange << " " << ignore << " " << eslen << std::endl;
+    std::cerr << "p01 <variable> <extra>? <ratio>?" << std::endl;
+    std::cerr << "continue with p01 " << vrange << " " << eslen << " " << ratio << std::endl;
   } else {
     vrange = std::atoi(argv[1]);
-    ignore = std::atoi(argv[2]);
-    if(3 < argc) eslen  = std::atoi(argv[3]);
+    if(2 < argc) eslen = std::atoi(argv[2]);
+    if(3 < argc) ratio = std::atoi(argv[3]);
   }
   assert(0 <= eslen);
   P0B<num_t> p(abs(vrange));
-  P1I<num_t> q(eslen + abs(ignore), vrange);
+  P1I<num_t> q(eslen, vrange);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -72,7 +72,7 @@ int main(int argc, const char* argv[]) {
         s1 += (d - bd) * M;
       }
       const auto pn(p.next(d) - d);
-      M = pn - q.next(d - bd, - ignore);
+      M = pn - q.next(d - bd, ratio);
       if(! isfinite(M) || isnan(M)) M = pn;
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
