@@ -42,7 +42,7 @@ So they means deterministic PRNG that have small enough status length cannot be 
 
 # General Tips:
 If we predict with some prediction method and bet them, satistification on the hypothesis continuous condition causes continuous result,
-otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis is the matter.
+otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
