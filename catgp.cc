@@ -65,10 +65,13 @@ int main(int argc, const char* argv[]) {
   assert(3 < argc);
   const auto  range(std::atoi(argv[1]));
   const num_t rslide(std::atof(argv[2]));
-  const auto  intensity(- num_t(1) / num_t(2));
-  std::vector<P012L<num_t> > p;
-  for(int i = 3; i < argc; i ++)
-    p.emplace_back(P012L<num_t>(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+  const auto  intensity(- num_t(1) / num_t(8));
+  std::vector<P012L<num_t, false> > p;
+  std::vector<P012L<num_t, true > > q;
+  for(int i = 3; i < argc; i ++) {
+    p.emplace_back(P012L<num_t, false>(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+    q.emplace_back(P012L<num_t, true >(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+  }
   num_t d(0);
   auto  s0(d);
   auto  s1(d);
@@ -84,7 +87,7 @@ int main(int argc, const char* argv[]) {
       }
       M  = num_t(0);
       for(int i = 0; i < p.size(); i ++)
-        M += p[i].next(d) - d;
+        M += (range < 0 ? p[i].next(d) : q[i].next(d)) - d;
       M /= num_t(p.size());
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }

@@ -65,13 +65,18 @@ int main(int argc, const char* argv[]) {
   assert(4 < argc);
   const auto  range(std::atoi(argv[1]));
   const num_t rslide(std::atof(argv[3]));
-  const auto  intensity(- num_t(1) / num_t(2));
-  std::vector<std::vector<P012L<num_t> > > p;
+  const auto  intensity(- num_t(1) / num_t(8));
+  std::vector<std::vector<P012L<num_t, false> > > p;
+  std::vector<std::vector<P012L<num_t, true > > > q;
   {
-    std::vector<P012L<num_t> > pp;
-    for(int i = 4; i < argc; i ++)
-      pp.emplace_back(P012L<num_t>(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+    std::vector<P012L<num_t, false> > pp;
+    std::vector<P012L<num_t, true > > qq;
+    for(int i = 4; i < argc; i ++) {
+      pp.emplace_back(P012L<num_t, false>(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+      qq.emplace_back(P012L<num_t, true >(abs(range), std::atoi(argv[i]), int(num_t(std::atoi(argv[i])) * rslide), intensity));
+     }
      p.resize(std::atoi(argv[2]), pp);
+     q.resize(std::atoi(argv[2]), qq);
   }
   num_t d(0);
   auto  s0(d);
@@ -104,7 +109,7 @@ int main(int argc, const char* argv[]) {
         if(dd[i] != num_t(0)) {
           M[i] = num_t(0);
           for(int j = 0; j < p[i].size(); j ++)
-            M[i] += p[i][j].next(dd[i]) - dd[i];
+            M[i] += (range < 0 ? p[i][j].next(dd[i]) : q[i][j].next(dd[i])) - dd[i];
           M0  += (M[i] /= num_t(p[i].size())) * bf * rr[i];
         }
       }
