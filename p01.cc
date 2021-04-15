@@ -55,7 +55,7 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) ratio = std::atoi(argv[3]);
   }
   assert(0 <= eslen);
-  P0B<num_t> p(abs(vrange));
+  P0<num_t> p(abs(vrange));
   P1I<num_t> q(eslen, vrange);
   std::string s;
   num_t d(0);

@@ -12,7 +12,7 @@
   using namespace std;
   typedef long double num_t;
 #else
-  #include "ifloat.hh"
+  #include "../catg/ifloat.hh"
   template <typename T> using complex = Complex<T>;
 # if _FLOAT_BITS_ == 8
     typedef uint8_t myuint;

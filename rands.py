@@ -30,11 +30,10 @@ def getrand(mm, r):
       bw += sr.gauss(0., 1.)
   return bw
 
-s  = t = s0 = s1 = 0
+s  = s0 = s1 = 0
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
 while(True):
-  ss = s
   # N.B. predict diff (diff x):
   #s   = getrand(a1, a2)
   # N.B. this is raw random:
@@ -47,7 +46,5 @@ while(True):
   #s1 += getrand(a1, a2)
   #s   = s0 / s1
   #s  += s0 / s1
-  if(t % 2 == 0):
-    print s + ss
-  t += 1
+  print s
 
