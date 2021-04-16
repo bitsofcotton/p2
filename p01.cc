@@ -4,39 +4,11 @@
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <assert.h>
 
-#if !defined(_FLOAT_BITS_)
-  #include <complex>
-  #include <cmath>
-  using namespace std;
-  typedef long double num_t;
-  #include <limits>
-#else
-  #include "ifloat.hh"
-  template <typename T> using complex = Complex<T>;
-# if _FLOAT_BITS_ == 32
-    typedef uint32_t myuint;
-    typedef int32_t  myint;
-    typedef SimpleFloat<myuint, uint64_t, 32, int64_t> num_t;
-    #define mybits 32
-# elif _FLOAT_BITS_ == 64
-    typedef uint64_t myuint;
-    typedef int64_t  myint;
-    typedef SimpleFloat<myuint, DUInt<myuint, 64>, 64, int64_t> num_t;
-    #define mybits 64
-# elif _FLOAT_BITS_ == 128
-    typedef DUInt<uint64_t, 64> uint128_t;
-    typedef Signed<uint128_t, 128> int128_t;
-    typedef uint128_t myuint;
-    typedef int128_t  myint;
-    typedef SimpleFloat<myuint, DUInt<myuint, 128>, 128, int64_t> num_t;
-    #define mybits 128
-# else
-#   error cannot handle float
-# endif
-#endif
-
+#include "../p1/ifloat.hh"
+typedef myfloat num_t;
 #include "../p1/simplelin.hh"
 #include "../p0/p0.hh"
 #include "../p1/p1.hh"
@@ -55,7 +27,7 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) ratio = std::atoi(argv[3]);
   }
   assert(0 <= eslen);
-  P0<num_t> p(abs(vrange));
+  P0<num_t>  p(abs(vrange));
   P1I<num_t> q(eslen, vrange);
   std::string s;
   num_t d(0);
