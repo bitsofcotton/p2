@@ -1,6 +1,7 @@
 # p2
-(i)  Subtract little stable invariant from the series by p1, then, predict with p0.  
-(ii) Categorize input stream and predict with them (with nonlinear ones).  
+(i)   Subtract little stable invariant from the series by p1, then, predict with p0.  
+(ii)  Categorize input stream and predict with them (with nonlinear ones).  
+(iii) predict their error with some another methods.
 
 # Description:
 If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0. This is for dummy adopted jamming.
@@ -9,6 +10,8 @@ Command line option on p01 is same as p1.
 If we don't have better prediction with p01, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 This is equivalent to suppose input depends some switched program series, and, same data results same result on the range.
+
+A implicit.py predicts them with error correcting method. So impc.py is a sample that middle-range prediction, short-range, then, whole-range.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
@@ -32,6 +35,9 @@ After p1 subtract invariant with enough variable length, next predictor p1's var
 This is an analogy to QR decomposition.
 
 P1 often returns overlearned result, this causes unstable result.
+
+# General Tips:
+The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program.
 
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
