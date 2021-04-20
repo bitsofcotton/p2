@@ -21,7 +21,7 @@ int main(int argc, const char* argv[]) {
   // XXX atof:
   //const num_t rslide(num_t(99) / num_t(100));
   const num_t rslide(std::atof(argv[3]));
-  const auto  intensity(- num_t(1) / num_t(8));
+  const auto  intensity(- num_t(1) / num_t(3));
   std::vector<std::vector<P012L<num_t, false> > > p;
   std::vector<std::vector<P012L<num_t, true > > > q;
   {
