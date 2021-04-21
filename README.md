@@ -1,13 +1,9 @@
 # p2
-(i)   Subtract little stable invariant from the series by p1, then, predict with p0.  
-(ii)  Categorize input stream and predict with them (with nonlinear ones).  
-(iii) predict their error with some another methods.
+(i)  Categorize input stream and predict with them (with nonlinear ones).  
+(ii) predict their error with some another methods.
 
 # Description:
-If we don't have better prediction with p0 nor p1, p01 handles differ on each of them that causes noise that we can handle with p0. This is for dummy adopted jamming.
-Command line option on p01 is same as p1.
-
-If we don't have better prediction with p01, we categorize series of input and predict with them by catgp.
+If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 This is equivalent to suppose input depends some switched program series, and, same data results same result on the range.
 
