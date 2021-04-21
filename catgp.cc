@@ -15,20 +15,16 @@ typedef myfloat num_t;
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  const int   vrange(2);
-        int   stat(200);
-        num_t inten(- num_t(1));
-        int   comp(- 8);
-  if(argc < 4)
-    std::cerr << "catgp <condition>? <intensity>? <complexity>?" << std::endl;
+  int stat(200);
+  int comp(- 8);
+  if(argc < 2)
+    std::cerr << "catgp <condition>? <complexity>?" << std::endl;
   else {
     if(1 < argc) stat  = std::atoi(argv[1]);
-    // XXX: atof
-    if(2 < argc) inten = std::atof(argv[2]);
-    if(3 < argc) comp  = std::atoi(argv[3]);
+    if(2 < argc) comp  = std::atoi(argv[2]);
   }
-  std::cerr << "continue with catgp " << stat << " " << inten << " " << comp << std::endl;
-  P012L<num_t, false> p(vrange, stat, comp, inten);
+  std::cerr << "continue with catgp " << stat << " " << comp << std::endl;
+  P012L<num_t, false> p(2, stat, comp);
   std::string s;
   num_t d(0);
   auto  s0(d);
