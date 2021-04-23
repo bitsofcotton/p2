@@ -16,7 +16,7 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int stat(200);
-  int comp(- 8);
+  int comp(8);
   if(argc < 2)
     std::cerr << "catgp <condition>? <complexity>?" << std::endl;
   else {
@@ -33,24 +33,25 @@ int main(int argc, const char* argv[]) {
   auto  s2(d);
   auto  M0(d);
   auto  M(d);
+  auto  bdelta(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
     if(d != bd) {
       if(bd != num_t(0) && M0 != num_t(0)) {
-        s2 += (d - bd) - M0;
+        s2 = (d - bd) - M0;
         if(M != num_t(0)) {
-          s0 += (d - bd) - M;
-          s1 += (d - bd) * M;
+          s1 = (d - bd) * (M + bdelta);
+          s0 = (bdelta = (d - bd) - M);
         }
       }
-      M0 = p.next(d) - d;
+      M0 = p.next(d);
       if(s2 != num_t(0))
         M = M0 + q.next(s2) - s2;
-//      if(! isfinite(M) || isnan(M)) M = num_t(0);
+      if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M + bdelta << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
   return 0;
 }
