@@ -49,7 +49,7 @@ int main(int argc, const char* argv[]) {
       }
       M0 = p.next(d);
       if(s2 != num_t(0))
-        M = M0 + q.next(s2) - s2;
+        M = M0 + q.next(s2);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M + bdelta << ", " << s0 << ", " << s1 << std::endl << std::flush;
