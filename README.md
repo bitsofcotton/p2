@@ -1,10 +1,10 @@
 # p2
-Categorize input stream and predict with them (with nonlinear ones), and do twice them to get constant then correct it. 
+Categorize input stream and predict with them (with nonlinear ones), and do twice them to get constant.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
-Do twice this causs vanishing variable on result in dimension meaning, then, const. correct returns rational better result.
+Do twice this causs vanishing variable on result in dimension meaning, then, const. returns rational better result.
 This is equivalent to suppose input depends some switched program series, and, same data results same result on the range.
 
 # General Tips
