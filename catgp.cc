@@ -15,20 +15,20 @@ typedef myfloat num_t;
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int   stat(200);
-  num_t inten0(- num_t(1) / sqrt(num_t(2)));
-  num_t inten1(- num_t(1) / sqrt(num_t(2)));
+  int   pcount(6);
+  num_t inten(- num_t(1) / sqrt(num_t(2)));
   if(argc < 2)
-    std::cerr << "catgp <condition>? <intensity0>? <intensity1>?" << std::endl;
+    std::cerr << "catgp <pred_count>? <intensity>?" << std::endl;
   else {
-    if(1 < argc) stat   = std::atoi(argv[1]);
+    if(1 < argc) pcount = std::atoi(argv[1]);
     // XXX: atof.
-    if(2 < argc) inten0 = std::atof(argv[2]);
-    if(3 < argc) inten1 = std::atof(argv[3]);
+    if(2 < argc) inten  = std::atof(argv[2]);
   }
-  std::cerr << "continue with catgp " << stat << " " << inten0 << " " << inten1 << std::endl;
-  P012L<num_t, false> p(2, stat, inten0);
-  P012L<num_t, false> q(2, stat, inten1);
+  std::cerr << "continue with catgp " << pcount << " " << inten << std::endl;
+  std::vector<P012L<num_t, false> > p;
+  for(int i = 0, pc = 8; i < pcount; i ++, pc *= 2)
+    p.emplace_back(P012L<num_t, false>(2, pc, inten));
+  auto  q(p);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -49,7 +49,15 @@ int main(int argc, const char* argv[]) {
           s0 += (bdelta = (d - bd) - M);
         }
       }
-      M = (M0 = p.next(d - bd)) + q.next(s2);
+      M0 = num_t(0);
+      for(int i = 0; i < p.size(); i ++)
+        M0 += p[i].next(d - bd);
+      M0 /= num_t(p.size());
+      M  = num_t(0);
+      for(int i = 0; i < q.size(); i ++)
+        M  += q[i].next(s2);
+      M /= num_t(p.size());
+      M += M0;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M + bdelta << ", " << s0 << ", " << s1 << std::endl << std::flush;
