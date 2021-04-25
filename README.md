@@ -1,10 +1,11 @@
 # p2
-Categorize input stream and predict with them (with nonlinear ones), and do twice them to get constant.
+Categorize input stream and predict with them (with nonlinear ones), and do implicit p0 prediction.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
-Do twice this causs vanishing variable on result in dimension meaning, then, const. returns rational better result.
+Do implicit p0 causes vanishing last variable on result, because of the status dimension (suppose infinite accuracy) is vanished,
+last one dimension had to be predictable by p0.
 This is equivalent to suppose input depends some switched program series, and, same data results same result on the range.
 
 # General Tips
