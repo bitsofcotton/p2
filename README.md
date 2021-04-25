@@ -1,11 +1,9 @@
 # p2
-Categorize input stream and predict with them (with nonlinear ones), and do implicit p0 prediction.
+Categorize input stream and predict with them (with nonlinear ones).
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
-Do implicit p0 causes vanishing last variable on result, because of the status dimension (suppose infinite accuracy) is vanished,
-last one dimension had to be predictable by p0.
 This is equivalent to suppose input depends some switched program series, and, same data results same result on the range.
 
 # General Tips
@@ -34,7 +32,7 @@ P1 often returns overlearned result, this causes unstable result.
 # General Tips:
 The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catg represents them if calculation dimension is larger than original function.
 
-If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg.
+If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. So make some valid prediction twice causes vanish variant from output in infinite accuracy input and there's finite status bits and dimensions.
 
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
