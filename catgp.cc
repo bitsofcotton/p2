@@ -17,11 +17,15 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int stat(256);
+  int var(256);
   if(argc < 2)
-    std::cerr << "catgp <condition>?" << std::endl;
-  else if(1 < argc) stat = std::atoi(argv[1]);
-  std::cerr << "continue with catgp " << stat << std::endl;
-  P012L<num_t, false> p(2, stat);
+    std::cerr << "catgp <condition>? <context>?" << std::endl;
+  else {
+    if(1 < argc) stat = std::atoi(argv[1]);
+    if(2 < argc) var  = std::atoi(argv[2]);
+  }
+  std::cerr << "continue with catgp " << stat << " " << var << std::endl;
+  P012L<num_t, false> p(stat, var);
   std::string s;
   num_t d(0);
   auto  s0(d);
