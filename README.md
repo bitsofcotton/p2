@@ -1,10 +1,9 @@
 # p2
-Categorize input stream and predict with them (with nonlinear ones).
+Categorize input stream and predict with them.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
-This is equivalent to suppose input depends some switched program series, and, same data results same result on the range.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
@@ -30,17 +29,15 @@ This is an analogy to QR decomposition.
 P1 often returns overlearned result, this causes unstable result.
 
 # General Tips:
-The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catg represents them if calculation dimension is larger than original function.
+The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catgp behaves as if calculation dimension is smaller than original function.
 
-If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. So make some valid prediction twice causes vanish variant from output in infinite accuracy input and there's finite status bits and dimensions.
+If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. So make some valid prediction twice causes vanish variant from output in infinite accuracy input and there's finite status bits and dimensions. This causes the range of jamming itself is smaller or equal to 2, so average every input pair and skip covered them causes a little predictable ones, this is because every input pair is jammed related to whole input. So otherwise, we should predict a little better if jamming range is longer than them or multiple jamming range we have (because in that case, whole prediction has to have bias).
 
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
 Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
-A p2 is standing on hypothesis there exists a function that extends small region makes no difference from before. This often results p0 stable result.
-
-So they means deterministic PRNG that have small enough status length cannot be exist if we have any better length.
+A p2 is standing on hypothesis there exists a function that extends small region makes no difference from before. And, catgp prediction needs the context on the range we categorize, so varlen == 2 cannot be used to them.
 
 # General Tips:
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,

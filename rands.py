@@ -46,5 +46,5 @@ while(True):
   #s1 += getrand(a1, a2)
   #s   = s0 / s1
   #s  += s0 / s1
-  print s
+  print(s)
 

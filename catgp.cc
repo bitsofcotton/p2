@@ -17,7 +17,7 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int stat(256);
-  int var(256);
+  int var(8);
   if(argc < 2)
     std::cerr << "catgp <condition>? <context>?" << std::endl;
   else {
