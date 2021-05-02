@@ -22,6 +22,8 @@ with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
     if(M[t % 2] * (d - bd) < 0):
       M[2 + (t % 2)] = M[t % 2]
       M[t % 2] = 0.
+    else:
+      M[2 + (t % 2)] = 0.
     MM = 0.
     for u in range(0, 4):
       p[2 + u].stdin.write((str(dd[u]) + "\n").encode("utf-8"))
