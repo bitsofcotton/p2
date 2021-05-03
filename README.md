@@ -33,6 +33,8 @@ The vector size to predict depends on the dimension the original functions have 
 
 If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. So make some valid prediction twice causes vanish variant from output in infinite accuracy input and there's finite status bits and dimensions. This causes the range of jamming itself is smaller or equal to 2, so average every input pair and skip covered them causes a little predictable ones, this is because every input pair is jammed related to whole input. So otherwise, we should predict a little better if jamming range is longer than them or multiple jamming range we have (because in that case, whole prediction has to have bias).
 
+N.B. if the accuracy we have is not enough to structure, varlen == 2 isn't represents whole of the function.
+
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
