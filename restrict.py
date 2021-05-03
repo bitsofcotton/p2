@@ -19,7 +19,7 @@ bd = M = N = s = t = 0.
 with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
   for line in stdin:
     d  = float(line.decode("utf-8").split(",")[0])
-    t += (d - bd) - N
+    t += (d - bd) - N / 4.
     s += (d - bd) * M
     q.stdin.write((str(d) + "\n").encode("utf-8"))
     q.stdin.flush()

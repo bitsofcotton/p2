@@ -28,6 +28,8 @@ def getrand(mm, r):
       bw += sr.uniform(- 1., 1.)
     else:
       bw += sr.gauss(0., 1.)
+  if((m / 4) % 2 == 1):
+    return bw / getrand(abs(m) % 4, r)
   return bw
 
 def harden(x, m):
@@ -51,21 +53,15 @@ s  = 0
 m  = []
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
-n  = int(sys.argv[3])
+n  = abs(int(sys.argv[3]))
 while(True):
-  # N.B. raw random.
-  #d   = getrand(a1, a2)
-  # N.B. this is both side raw random.
-  #d   = getrand(a1, a2) / getrand(a1, a2)
-  # N.B. harden normal rands.
   d, m = harden(getrand(a1, a2), m)
-  #d, m = harden(getrand(a1, a2) / getrand(a1, a2), m)
   if(m != []):
     continue
-  # N.B. random value.
-  #s    = d
-  # N.B. random walk.
-  s   += d
+  if(int(sys.argv[3]) < 0):
+    s  = d
+  else:
+    s += d
   print(s)
   sys.stdout.flush()
 

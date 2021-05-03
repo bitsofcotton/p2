@@ -43,7 +43,7 @@ int main(int argc, const char* argv[]) {
         s1 += (d - bd) * nM;
         M0  = d - bd - M;
       }
-      M  = p.next(d - bd);
+      M  = p.next(d) - d;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << nM << ", " << s0 << ", " << s1 << std::endl << std::flush;
