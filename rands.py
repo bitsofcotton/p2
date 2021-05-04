@@ -21,13 +21,13 @@ def getrand(mm, r):
   # sum up prng nums.
   for u in range(0, int(work)):
     if(m % 4 == 0):
-      bw += rr.uniform(- 1., 1.)
+      bw = rr.uniform(- 1., 1.)
     elif(m % 4 == 1):
-      bw += rr.gauss(0., 1.)
+      bw = rr.gauss(0., 1.)
     elif(m % 4 == 2):
-      bw += sr.uniform(- 1., 1.)
+      bw = sr.uniform(- 1., 1.)
     else:
-      bw += sr.gauss(0., 1.)
+      bw = sr.gauss(0., 1.)
   if((m / 4) % 2 == 1):
     return bw / getrand(abs(m) % 4, r)
   return bw
@@ -58,6 +58,10 @@ while(True):
   d, m = harden(getrand(a1, a2), m)
   if(m != []):
     continue
+  if(d < 0):
+    d = - pow(- d, 1. / 3.)
+  else:
+    d =   pow(  d, 1. / 3.)
   if(int(sys.argv[3]) < 0):
     s  = d
   else:
