@@ -24,11 +24,11 @@ with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
     q.stdin.write((str(d) + "\n").encode("utf-8"))
     q.stdin.flush()
     bf = q.stdout.readline().decode("utf-8").split(",")
-    p.stdin.write((str(int(t)) + "\n").encode("utf-8"))
+    p.stdin.write((str(int(t * float(sys.argv[1]))) + "\n").encode("utf-8"))
     p.stdin.flush()
     cf = p.stdout.readline().decode("utf-8").split(",")
     N  = float(bf[0])
-    M  = float(bf[0]) + float(cf[0])
+    M  = float(bf[0]) + float(cf[0]) / float(sys.argv[1])
     bd = d
     print(str(M) + ", " + str(s) + ", " + str(float(cf[1])))
     sys.stdout.flush()
