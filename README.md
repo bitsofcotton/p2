@@ -45,6 +45,9 @@ A p2 is standing on hypothesis there exists a function that extends small region
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.
 
+# General Tips:
+A plog.py predicts the stream on the ratio and ignore illegal values. This causes p0 valid because illegal values are ignored. So if original function is made from large enough matrix, there causes illegal values, and real world problems has noises on them. So ignoring some of input stream is needed to predict statistical ok. But in theoretical, if we have better large enough matrix or better decompositions we have, there's better algorithms to predict the input stream that we had treated as illegal values.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
