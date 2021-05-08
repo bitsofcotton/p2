@@ -8,9 +8,8 @@
 #include <iomanip>
 #include <assert.h>
 
-#include "../catg/ifloat.hh"
+#include "../catg/lieonn.hh"
 typedef myfloat num_t;
-#include "../catg/simplelin.hh"
 #include "../catg/decompose.hh"
 #include "../catg/catg.hh"
 
