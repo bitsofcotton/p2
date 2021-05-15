@@ -42,7 +42,7 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M  = (stat < 0 ? q.next(d) : p.next(d)) - d;
+      M  = (stat < 0 ? q.next(d - bd) : p.next(d - bd));
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
