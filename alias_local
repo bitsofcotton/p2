@@ -1,0 +1,1 @@
+env OMP_NUM_THREADS=4 ./catgp $1 4 $2 | python3 ~/Created/Work1/Rands/cut.py 2 1 1 | env OMP_NUM_THREADS=4 ./catgp $1 4 5 | python3 ~/Created/Work1/Rands/cut.py 2 1 1
