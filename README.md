@@ -46,7 +46,8 @@ If we predict with some prediction method and bet with them, satistification on 
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.
 
 # General Tips:
-A p1 and catgp complement length is often (n 2) + ... + (2 2) == n(n-1)/2 + (n-1)\*(n-2)/2 + ... = (n - 1) \* n \* (n + 1) / 6, n == varlen or n == varlen + 1. This is because the dimension we have on the calculation needs to depend on calculation depth and variable numbers.
+A p1 and catgp complement length is depends on variables and calculation depths whole. So in general, n variables whole input output, if we can use one variable only once in them (if we can reduce two operand operators on them whole), the size is n\*ceil(lg(n)), for n == whole variable + 1.
+The reductions on two operand operator is obscure because there exists any tensor that to describe relations. If hypothesis is true, two operand operator describes each matrix slices, three operand operator's third operand itself switches for each matrix itself, not the operator itself, but, if first two operand opeartor produces them with indices, it's ok.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
