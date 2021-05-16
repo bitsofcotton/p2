@@ -46,7 +46,7 @@ If we predict with some prediction method and bet with them, satistification on 
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.
 
 # General Tips:
-A p1 and catgp complement length is often 2^varlen or 2^(varlen + 1). This is because the dimension we have on the calculation needs to depend on calculation depth and variable numbers.
+A p1 and catgp complement length is often (n 2) + ... + (2 2) == n(n-1)/2 + (n-1)\*(n-2)/2 + ... = (n - 1) \* n \* (n + 1) / 6, n == varlen or n == varlen + 1. This is because the dimension we have on the calculation needs to depend on calculation depth and variable numbers.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
