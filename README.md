@@ -45,6 +45,9 @@ A p2 is standing on hypothesis there exists a function that extends small region
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.
 
+# General Tips:
+A p1 and catgp complement length is often 2^varlen or 2^(varlen + 1). This is because the dimension we have on the calculation needs to depend on calculation depth and variable numbers.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU

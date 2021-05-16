@@ -1,1 +1,1 @@
-./catgp $1 4 $2 | cut -f 3 -d "," | ./catgp $1 4 $2 | cut -f 3 -d "," | ./catgp $1 4 $2 | ../p0/p0 4
+./catgp $1 4 16 | cut -f 3 -d "," | ./catgp $1 4 8 | cut -f 3 -d "," | ../p0/p0 4
