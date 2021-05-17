@@ -1,4 +1,4 @@
 # 4 point deltas have 3 dimension so complement to (3+1)*lg(3+1).
 # then, deltas have 2 dimension, last 1 dimension is predicted by p0.
 # assumes const. delta result.
-./catgp $1 4 8 | cut -f 3 -d "," | ./catgp $1 4 5 | cut -f 3 -d "," | ../p0/p0
+./catgp $1 4 | cut -f 3 -d "," | ./catgp $1 4 | cut -f 3 -d "," | ../p0/p0
