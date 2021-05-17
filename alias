@@ -1,4 +1,7 @@
-# ./catgp default uses 4 status dimension all.
-# if is needed 2 dimension and complement some, but to complement, 4 is needed.
-# so 4th times do predict causes no status dimension, it is predictable by p0.
-./catgp $1 | cut -f 3 -d "," | ./catgp $1 | cut -f 3 -d "," | ./catgp $1 | cut -f 3 -d "," | ./catgp $1 | cut -f 3 -d "," | ../p0/p0
+# ./catgp default uses 4 status dimension.
+# it is needed 2 dimension and complement some, but to complement, 4 is needed.
+# so predict 4 times causes no status dimension, then, last one predicts.
+# but to do so, the accuracy we need is large because subtract invariant
+# causes far from y=0 line, so float operator +/- should use large accuracy.
+len=$(($1/5+1))
+./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len
