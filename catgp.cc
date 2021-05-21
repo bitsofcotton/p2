@@ -15,17 +15,21 @@ typedef myfloat num_t;
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int stat(256);
-  int var(4);
+  int  stat(256);
+  int  var(4);
+  bool whole(false);
   if(argc < 2)
-    std::cerr << "catgp <condition>? <context>?" << std::endl;
+    std::cerr << "catgp <condition>? <context>? <whole|partial>?" << std::endl;
   else {
-    if(1 < argc) stat = std::atoi(argv[1]);
-    if(2 < argc) var  = std::atoi(argv[2]);
+    if(1 < argc) stat  = std::atoi(argv[1]);
+    if(2 < argc) var   = std::atoi(argv[2]);
+    if(3 < argc) whole = argv[3][0] == 'w';
   }
-  std::cerr << "continue with catgp " << stat << " " << var << std::endl;
-  P012L<num_t, false> p(abs(stat), var);
-  P012L<num_t, true>  q(abs(stat), var);
+  std::cerr << "continue with catgp " << stat << " " << var << " " << (const char*)(whole ? "whole" : "partial") << std::endl;
+  P012L<num_t, linearFeeder<num_t>, false> pp(abs(stat), var);
+  P012L<num_t, linearFeeder<num_t>, true>  qp(abs(stat), var);
+  P012L<num_t, arctanFeeder<num_t>, false> pw(abs(stat), var);
+  P012L<num_t, arctanFeeder<num_t>, true>  qw(abs(stat), var);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -40,8 +44,8 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M  = (stat < 0 ? q.next(d) : p.next(d));
-      if(M != num_t(0)) M -= d;
+      M  = (stat < 0 ? (whole ? qw.next(d - bd) : qp.next(d - bd))
+                     : (whole ? pw.next(d - bd) : pp.next(d - bd)));
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;

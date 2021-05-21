@@ -5,4 +5,4 @@
 # but to do so, the accuracy we need is large because subtract invariant
 # causes far from y=0 line, so float operator +/- should use large accuracy.
 len=$(($1/5+1))
-./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len
+./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ./catgp $len | cut -f 3 -d "," | ../p0/p0
