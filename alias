@@ -1,8 +1,3 @@
 # ./catgp default uses 4 status dimension.
 # it is needed 2 dimension and complement some, but to complement, 4 is needed.
-# so predict 4 times causes no status dimension, then, last one predicts
-# causes noise that p0 can handle with.
-# but to do so, the accuracy we need is large because subtract invariant
-# causes far from y=0 line, so float operator +/- should use large accuracy.
-len=$(($1/5+1))
-./catgp $len | cut -f 4 -d "," | ./catgp $len | cut -f 4 -d "," | ./catgp $len | cut -f 4 -d "," | ./catgp $len | cut -f 4 -d "," | ./catgp $len | cut -f 3 -d "," | ../p0/p0
+./catgp $1 4 w | cut -f 4 -d "," | ./catgp $1 4 w | cut -f 3 -d "," | ../p0/p0 3 p

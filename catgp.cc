@@ -17,19 +17,21 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int  stat(256);
   int  var(4);
+  int  ext(8);
   bool whole(false);
   if(argc < 2)
-    std::cerr << "catgp <condition>? <context>? <whole|partial>?" << std::endl;
+    std::cerr << "catgp <condition>? <context>? <extcomp>? <whole|partial>?" << std::endl;
   else {
     if(1 < argc) stat  = std::atoi(argv[1]);
     if(2 < argc) var   = std::atoi(argv[2]);
-    if(3 < argc) whole = argv[3][0] == 'w';
+    if(3 < argc) ext   = std::atoi(argv[3]);
+    if(4 < argc) whole = argv[4][0] == 'w';
   }
-  std::cerr << "continue with catgp " << stat << " " << var << " " << (const char*)(whole ? "whole" : "partial") << std::endl;
-  P012L<num_t, linearFeeder<num_t>, false> pp(abs(stat), var);
-  P012L<num_t, linearFeeder<num_t>, true>  qp(abs(stat), var);
-  P012L<num_t, arctanFeeder<num_t, true>, false> pw(abs(stat), var);
-  P012L<num_t, arctanFeeder<num_t, true>, true>  qw(abs(stat), var);
+  std::cerr << "continue with catgp " << stat << " " << var << " " << ext << " " << (const char*)(whole ? "whole" : "partial") << std::endl;
+  P012L<num_t, linearFeeder<num_t>, false> pp(abs(stat), var, ext);
+  P012L<num_t, linearFeeder<num_t>, true>  qp(abs(stat), var, ext);
+  P012L<num_t, arctanFeeder<num_t, true>, false> pw(abs(stat), var, ext);
+  P012L<num_t, arctanFeeder<num_t, true>, true>  qw(abs(stat), var, ext);
   std::string s;
   num_t d(0);
   auto  s0(d);

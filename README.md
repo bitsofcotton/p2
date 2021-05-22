@@ -48,6 +48,7 @@ otherwise, uncontinuous result and statistical illegal value encounted. So first
 # General Tips:
 A p1 and catgp complement length is depends on variables and calculation depths whole. So in general, n variables whole input output, if we can use one variable only once in them (if we can reduce two operand operators on them whole), the extra dimension size is ceil(n / 2) + ceil(ceil(n / 2) / 2) + ... + 1, for n == whole variable + 1.
 The reductions on two operand operator is obscure because there exists any tensor that to describe relations. If hypothesis is true, two operand operator describes each matrix slices, three operand operator's third operand itself switches for each matrix itself, not the operator itself, but, if first two operand opeartor produces them with indices, it's ok.
+But with complement dimension, below is optimal case, so non optimal case, the dimension we complement with linear should larger than them, not just them.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
