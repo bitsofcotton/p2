@@ -47,8 +47,8 @@ int main(int argc, const char* argv[]) {
         s0 += d - M;
         s1 += (s2 = d * M);
       }
-      M  = stat < 0 ? (whole ? qw.next(d) : qp.next(d))
-                    : (whole ? pw.next(d) : pp.next(d));
+      M  = tan(stat < 0 ? (whole ? qw.next(atan(d)) : qp.next(atan(d)))
+                        : (whole ? pw.next(atan(d)) : pp.next(atan(d))) );
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << ", " << s2 << std::endl << std::flush;
