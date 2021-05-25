@@ -66,8 +66,7 @@ while(True):
   if(w <= 0):
     print(s)
     if(int(sys.argv[3]) < 0):
-      w = int(harden(getrand(a1, a2), m) * 30)
-  else:
-    s += d
+      w = abs(int(harden(getrand(a1, a2), m) * 30))
+  s += d
   sys.stdout.flush()
 
