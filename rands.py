@@ -63,10 +63,11 @@ while(True):
     d = - pow(- d, 1. / 3.)
   else:
     d =   pow(  d, 1. / 3.)
-  if(w <= 0):
-    print(s)
-    if(int(sys.argv[3]) < 0):
-      w = abs(int(harden(getrand(a1, a2), m) * 30))
   s += d
+  if(w <= 0):
+    if(int(sys.argv[3]) < 0):
+      w = abs(int(d)) % 4
+    print(s)
+  w -= 1
   sys.stdout.flush()
 
