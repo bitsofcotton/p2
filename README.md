@@ -50,6 +50,9 @@ A p1 and catgp complement length is depends on variables and calculation depths 
 The reductions on two operand operator is obscure because there exists any tensor that to describe relations. If hypothesis is true, two operand operator describes each matrix slices, three operand operator's third operand itself switches for each matrix itself, not the operator itself, but, if first two operand opeartor produces them with indices, it's ok.
 But with complement dimension, below is optimal case, so non optimal case, the dimension we complement with linear should larger than them, not just them.
 
+# General Tips:
+p0 returns the matrix size limit to infinity on p1, because of this, p0 is often stable enough.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU

@@ -54,6 +54,7 @@ m  = []
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
 n  = abs(int(sys.argv[3]))
+w  = 0
 while(True):
   d, m = harden(getrand(a1, a2), m)
   if(m != []):
@@ -62,10 +63,11 @@ while(True):
     d = - pow(- d, 1. / 3.)
   else:
     d =   pow(  d, 1. / 3.)
-  if(int(sys.argv[3]) < 0):
-    s  = d
+  if(w <= 0):
+    print(s)
+    if(int(sys.argv[3]) < 0):
+      w = int(harden(getrand(a1, a2), m) * 30)
   else:
     s += d
-  print(s)
   sys.stdout.flush()
 
