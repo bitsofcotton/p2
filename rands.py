@@ -64,10 +64,12 @@ while(True):
   else:
     d =   pow(  d, 1. / 3.)
   s += d
-  if(w <= 0):
-    if(int(sys.argv[3]) < 0):
-      w = abs(int(d)) % 4
+  if(w < 0 and int(sys.argv[3]) < 0):
+    w = abs(int(d)) % 4
+  if(w == 0):
     print(s)
-  w -= 1
+  if(int(sys.argv[3]) < 0):
+    w -= 1
+  if(w < - 1): w = 0
   sys.stdout.flush()
 
