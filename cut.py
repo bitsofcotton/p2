@@ -6,7 +6,7 @@ def ifloat(x):
   b = x.split("*")
   return float(b[0]) * pow(2., float(b[1][2:]))
 
-t = bd = 0
+t = bd = dS = s = 0
 with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
   for line in stdin:
     ll = line.decode("utf-8").split(",")[int(sys.argv[1])]
@@ -29,7 +29,15 @@ with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
       t += 1
       continue
     if(4 < len(sys.argv)):
-      print(d - bd)
+      if(sys.argv[4][0] == 'd'):
+        print(d - bd)
+      elif(sys.argv[4][0] == 'b'):
+        dS /= 2.
+        print(d * dS)
+        dS += d
+      elif(sys.argv[4][0] == 's'):
+        s += d
+        print(s)
     else:
       print(d)
     t += 1

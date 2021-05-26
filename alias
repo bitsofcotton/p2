@@ -1,3 +1,3 @@
 # it is needed 2 dimension and complement some, but to complement,
 # p1 and catgp needs 4 dimension.
-./catgp $1 4 $2 w | python3 cut.py 3 1 1 | ./catgp $1 4 $2 w
+./catgp $1 4 $2 w | python3 cut.py 3 1 1 b | ./catgp $1 4 $2 w | python3 cut.py 3 1 1 b | python3 cut.py 0 1 1 s
