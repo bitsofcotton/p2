@@ -1,4 +1,4 @@
 # it is needed 2 dimension and complement some, but to complement,
 # p1 and catgp needs 4 dimension.
 # and last of them, p0 can correct the noise.
-../p0/p0 $2 w | python3 cut.py 3 1 1 | ./catgp $1 4 $2 w | python3 cut.py 3 1 1 | ../p0/p0 $2 p
+./catgp $1 4 $2 w | python3 cut.py 3 1 1 | ./catgp $1 4 $2 w | python3 cut.py 3 1 1 | ../p0/p0 -$2 p
