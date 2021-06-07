@@ -13,6 +13,12 @@ import subprocess
 # do them twice causes illegal values' illegal value.
 # since it's normal value, divide input by illegal to illegal^2 prediction
 # causes prediction itself.
+#
+# N.B.
+# if we set shorter range relative from prng, the result
+# can be triangular wave or so on.
+# and modern prngs uses some techniques to enlarge originals
+# with some periods.
 
 comma = 1
 for t in range(1, len(sys.argv)):

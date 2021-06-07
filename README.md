@@ -53,6 +53,9 @@ But with complement dimension, below is optimal case, so non optimal case, the d
 # General Tips:
 p0 returns the matrix size limit to infinity on p1, because of this, p0 is often stable enough.
 
+# General Tips
+If we set catgp to shorter range relative from PRG itself, the result can be triangular wave or so on. The modern PRNGs have the techniques to enlarge original PRNG matrix size as block diagonal ones or so on....
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
