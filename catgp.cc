@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <iomanip>
+#include <algorithm>
 #include <assert.h>
 
 #include "../catg/lieonn.hh"
