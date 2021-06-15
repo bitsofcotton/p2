@@ -9,12 +9,21 @@
 #include <algorithm>
 #include <assert.h>
 
+#if defined(_FLOAT_BITS_)
+#define int int64_t
+#endif
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
 #include "../catg/decompose.hh"
 #include "../catg/catg.hh"
 
+#if defined(_FLOAT_BITS_)
+#undef int
+#endif
 int main(int argc, const char* argv[]) {
+#if defined(_FLOAT_BITS_)
+#define int int64_t
+#endif
   std::cout << std::setprecision(30);
   int  stat(256);
   int  var(4);
