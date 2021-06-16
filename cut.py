@@ -25,12 +25,16 @@ with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
             d = int(float(ll) * abs(float(sys.argv[2])))
           except:
             d = int(ifloat(ll) * abs(float(sys.argv[2])))
+      else:
+        t += 1
+        continue
     except:
       t += 1
       continue
     if(4 < len(sys.argv)):
       if(sys.argv[4][0] == 'd'):
         print(d - bd)
+        bd = d
       elif(sys.argv[4][0] == 'b'):
         dS /= 2.
         print(d * dS)
@@ -41,6 +45,5 @@ with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
     else:
       print(d)
     t += 1
-    bd = d
     sys.stdout.flush()
 
