@@ -30,7 +30,7 @@ p = subprocess.Popen(sys.argv[1:comma], stdin = subprocess.PIPE, stdout = subpro
 q = subprocess.Popen(sys.argv[comma + 1:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
 
 def ifloat(x):
-  #return float(x)
+  return float(x)
   s = x.split("*")
   return float(s[0]) * pow(2., float(s[1][2:]))
 
