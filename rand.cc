@@ -24,10 +24,11 @@ num_t mmt(std::mt19937& mt, bool arc4 = false, int c = 3) {
 }
 
 int main(int argc, char* argv[]) {
-  assert(4 <= argc);
+  assert(5 <= argc);
   std::random_device rnd;
   std::mt19937 mt(rnd());
-  while(true) {
+  auto cnt(std::atoi(argv[4]));
+  for(int i = 0; cnt < 0 || i < cnt; i ++) {
     if(std::atoi(argv[3])) {
       num_t s(0);
       for(int i = 0; i < std::atoi(argv[3]); i ++) {

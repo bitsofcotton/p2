@@ -30,13 +30,16 @@ p = subprocess.Popen(sys.argv[1:comma], stdin = subprocess.PIPE, stdout = subpro
 q = subprocess.Popen(sys.argv[comma + 1:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
 
 def ifloat(x):
-  return float(x)
-  s = x.split("*")
-  return float(s[0]) * pow(2., float(s[1][2:]))
+  try:
+    s = x.split("*")
+    return float(s[0]) * pow(2., float(s[1][2:]))
+  except:
+    return float(x)
+  return 0.
 
 s = M = bd = 0.
 for line in sys.stdin:
-  d   = float(line.split(",")[0])
+  d   = ifloat(line.split(",")[0])
   s  += (d - bd) * M
   p.stdin.write((line[:- 1].split(",")[0] + "\n").encode("utf-8"))
   p.stdin.flush()
