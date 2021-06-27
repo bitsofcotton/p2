@@ -37,17 +37,18 @@ def ifloat(x):
     return float(x)
   return 0.
 
-s = M = 0.
+s = M = bd = 0.
 for line in sys.stdin:
   d   = ifloat(line.split(",")[0])
-  s  += d * M
+  s  += (d - bd) * M
   p.stdin.write((line[:- 1].split(",")[0] + "\n").encode("utf-8"))
   p.stdin.flush()
   m0  = p.stdout.readline().decode("utf-8")[:- 1].split(",")
   M   = ifloat(m0[0])
-  q.stdin.write((m0[3] + "\n").encode("utf-8"))
+  q.stdin.write((m0[2] + "\n").encode("utf-8"))
   q.stdin.flush()
   M  += ifloat(q.stdout.readline().decode("utf-8").split(",")[0])
   print(s)
+  bd  = d
   sys.stdout.flush()
 
