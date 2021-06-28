@@ -49,15 +49,9 @@ int main(int argc, const char* argv[]) {
   auto  s2(d);
   auto  s3(d);
   auto  M(d);
-  auto  MM(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto bMM(MM);
-    if(MM < abs(d))
-      MM = abs(d) * num_t(2);
-    if(bMM != num_t(0))
-      d /= bMM;
     if(d != num_t(0)) {
       if(M != num_t(0)) {
         s0 += (s3 = d - M);
