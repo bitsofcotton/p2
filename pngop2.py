@@ -28,6 +28,7 @@ mA  = []
 mC  = []
 ms  = 0
 ctr = 0
+cnt = 0
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
@@ -65,5 +66,7 @@ for line in sys.stdin:
         for v in range(0, len(mA[u])):
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
       savePng(ffu, s)
-    break
+    if(len(sys.argv) <= 2 or int(sys.argv[2]) <= cnt):
+      break
+    cnt += 1
 

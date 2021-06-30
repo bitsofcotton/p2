@@ -5,8 +5,8 @@ import sys
 import random
 import numpy as np
 
-#tbl0 = [0, 2, 4, 5, 7, 9, 11]
-tbl0 = [0, 7, 11]
+tbl0 = [0, 2, 4, 5, 7, 9, 11]
+#tbl0 = [0, 7, 11]
 tbl = []
 for u in range(0, 5 * len(tbl0)):
   tbl.append(36 + tbl0[u % len(tbl0)] + int(u / len(tbl0) * 12))
@@ -25,6 +25,7 @@ flg = False
 mA  = []
 mC  = []
 ms  = 0
+cnt = 0
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
@@ -72,6 +73,8 @@ for line in sys.stdin:
         f = tbl[int(np.arctan(float(w) / n2) / np.pi * len(tbl)) % len(tbl)]
         track.append(Message('note_on',  note=f, velocity=127, time=0))
         track.append(Message('note_off', note=f, time=120))
-    break
+    if(len(sys.argv) <= 2 or int(sys.argv[2]) < cnt):
+      break
+    cnt += 1
 mid.save('rand_correct.mid')
 
