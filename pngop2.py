@@ -5,7 +5,7 @@ import random
 import numpy as np
 
 def savePng(ff, ctr):
-  sq = int(pow(float(len(ff)), .5))
+  sq = int(pow(float(len(ff) + 1), .5))
   im = Image.new("RGB", (sq, sq), (256, 256, 256))
   norm = 0.
   for f in ff:
@@ -13,14 +13,13 @@ def savePng(ff, ctr):
   norm = pow(norm, .5)
   x = y = 0
   for f in ff:
-    v = int(float(f) * 127. / norm + 128)
+    v = int(np.arctan(float(f) / norm) / np.pi * 127. + 128)
     im.putpixel((x, y), (v, v, v))
     x += 1
     if(sq <= x):
       x = 0
       y += 1
-      if(sq <= y):
-        break
+      if(sq <= y): break
   im.save("./rand_png-" + str(ctr) + ".png")
   return
 
@@ -28,7 +27,6 @@ mA  = []
 mC  = []
 ms  = 0
 ctr = 0
-cnt = 0
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
@@ -65,8 +63,8 @@ for line in sys.stdin:
         ffu.append(0.)
         for v in range(0, len(mA[u])):
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
-      savePng(ffu, s)
-    if(len(sys.argv) <= 2 or int(sys.argv[2]) <= cnt):
-      break
-    cnt += 1
+      savePng(ffu, s + ctr * int(sys.argv[1]))
+    ctr += 1
+    mA   = []
+    mC   = []
 

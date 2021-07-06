@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
       else
         std::cout << - pow(- s, num_t(1) / num_t(3)) << std::endl;
     } else
-      std::cout <<  mmt(mt, std::atoi(argv[1]), std::atoi(argv[2])) << std::endl;
+      std::cout << mmt(mt, std::atoi(argv[1]), std::atoi(argv[2])) << std::endl;
   }
   return 0;
 }

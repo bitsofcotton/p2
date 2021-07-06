@@ -25,7 +25,6 @@ flg = False
 mA  = []
 mC  = []
 ms  = 0
-cnt = 0
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
@@ -68,13 +67,12 @@ for line in sys.stdin:
         for v in range(0, len(mA[u])):
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
         n2 += ffu[- 1] * ffu[- 1]
-      n2  = np.sqrt(n2)
+      n2  = pow(n2, .5)
       for w in ffu:
         f = tbl[int(np.arctan(float(w) / n2) / np.pi * len(tbl)) % len(tbl)]
         track.append(Message('note_on',  note=f, velocity=127, time=0))
         track.append(Message('note_off', note=f, time=120))
-    if(len(sys.argv) <= 2 or int(sys.argv[2]) < cnt):
-      break
-    cnt += 1
+    mA = []
+    mC = []
 mid.save('rand_correct.mid')
 
