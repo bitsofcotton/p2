@@ -9,7 +9,7 @@ tbl0 = [0, 2, 4, 5, 7, 9, 11]
 #tbl0 = [0, 7, 11]
 tbl = []
 for u in range(0, 5 * len(tbl0)):
-  tbl.append(36 + tbl0[u % len(tbl0)] + int(u / len(tbl0) * 12))
+  tbl.append(64 - 12 * 3 + tbl0[u % len(tbl0)] + int(u / len(tbl0) * 12))
 tbl2 = []
 for t in range(0, len(tbl)):
   tbl2.append(tbl[(int(len(tbl) / 2) + t) % len(tbl)])
