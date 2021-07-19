@@ -9,7 +9,7 @@ tbl0 = [0, 2, 4, 5, 7, 9, 11]
 #tbl0 = [0, 7, 11]
 tbl = []
 for u in range(0, 5 * len(tbl0)):
-  tbl.append(64 - 12 * 3 + tbl0[u % len(tbl0)] + int(u / len(tbl0) * 12))
+  tbl.append(64 - 12 * 2 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
 tbl2 = []
 for t in range(0, len(tbl)):
   tbl2.append(tbl[(int(len(tbl) / 2) + t) % len(tbl)])
@@ -25,16 +25,21 @@ flg = False
 mA  = []
 mC  = []
 ms  = 0
+cnt = 0
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
   if(len(sys.argv) <= 1):
-    ff.extend(ff)
+#    ff.extend(ff)
     print(ff)
     for w in ff:
       f = tbl[int(float(w)) % len(tbl)]
-      track.append(Message('note_on',  note=f, velocity=127, time=0))
-      track.append(Message('note_off', note=f, time=120))
+      if(f < 64):
+        track.append(Message('note_on',  note=f, velocity=0, time=0))
+        track.append(Message('note_off', note=f, time=120))
+      else:
+        track.append(Message('note_on',  note=f, velocity=127, time=0))
+        track.append(Message('note_off', note=f, time=120))
   else:
     if(ms == 0):
       ms  = int(np.log(len(ff)) / np.log(2.))
@@ -50,7 +55,7 @@ for line in sys.stdin:
       mA.append(ff)
       continue
     for s in range(0, int(sys.argv[1])):
-      ff[0] = float(s) / float(sys.argv[1])
+      ff[0] = float(s) / float(sys.argv[1]) * 2. - 1.
       ff[1] = 1.
       tt = []
       for u in range(0, len(mA)):
@@ -61,18 +66,17 @@ for line in sys.stdin:
           buf += float(ff[v]) * float(mC[u][v])
         tt.append(np.tan(buf))
       ffu = []
-      n2  = 0.
       for u in range(0, len(mA)):
         ffu.append(0.)
         for v in range(0, len(mA[u])):
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
-        n2 += ffu[- 1] * ffu[- 1]
-      n2  = pow(n2, .5)
       for w in ffu:
-        f = tbl[int(np.arctan(float(w) / n2) / np.pi * len(tbl)) % len(tbl)]
-        track.append(Message('note_on',  note=f, velocity=127, time=0))
-        track.append(Message('note_off', note=f, time=120))
-    mA = []
-    mC = []
+        f = tbl[int(np.arctan(np.arctan(np.tan(float(w) * np.pi)) / np.pi) / np.pi * 4 * len(tbl)) % len(tbl)]
+        if(f < 64):
+          track.append(Message('note_on',  note=f, velocity=0, time=0))
+          track.append(Message('note_off', note=f, time=120))
+        else:
+          track.append(Message('note_on',  note=f, velocity=127, time=0))
+          track.append(Message('note_off', note=f, time=120))
 mid.save('rand_correct.mid')
 
