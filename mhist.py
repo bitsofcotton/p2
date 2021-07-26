@@ -18,5 +18,6 @@ with io.open(sys.stdin.fileno(), 'rb', closefd=False) as stdin:
       for s in range(0, len(dh)):
         dd += dh[s] / (s + 1.)
       print(dd, ",", dh[- 1])
+      #dh = dh[1:]
     sys.stdout.flush()
 
