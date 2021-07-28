@@ -37,8 +37,8 @@ int main(int argc, const char* argv[]) {
   std::cerr << "continue with catgp " << stat << " " << var << std::endl;
   P012L<num_t, linearFeeder<num_t>, false> pp(abs(stat), abs(var));
   P012L<num_t, linearFeeder<num_t>, true>  qp(abs(stat), abs(var));
-  P012L<num_t, arctanFeeder<num_t, true>, false> pw(abs(stat), abs(var));
-  P012L<num_t, arctanFeeder<num_t, true>, true>  qw(abs(stat), abs(var));
+  P012L<num_t, arctanFeeder<num_t>, false> pw(abs(stat), abs(var));
+  P012L<num_t, arctanFeeder<num_t>, true>  qw(abs(stat), abs(var));
   std::string s;
   num_t d(0);
   auto  s0(d);
