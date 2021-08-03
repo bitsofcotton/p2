@@ -20,7 +20,8 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
   if(d != 0.):
     bvy = vy
     vy  = (d - bd + bbd) / d
-    y  *= vy / bvy
+    if(bvy != 0 and vy != 0):
+      y *= vy / bvy
   print(d * y + bd * by)
   bbd = bd
   bd  = d
