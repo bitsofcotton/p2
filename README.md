@@ -40,7 +40,7 @@ We suppose all of {p0, p1, p2}: some middle point, left part and right part is t
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
 Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
 A p2 is standing on hypothesis there exists a function that extends small region makes no difference from before. And, catgp prediction needs the context on the range we categorize, so varlen == 2 cannot be used to them.
-cont.py adds a little amount of continuous ones without attaching delta.
+cont.py adds a little amount of continuous ones without attaching delta. And if it's continuous enough in C1 meaning, just flip one step before can correct with enough stablility.
 
 # General Tips:
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
