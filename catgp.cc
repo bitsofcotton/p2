@@ -53,7 +53,7 @@ int main(int argc, const char* argv[]) {
     if(d != bd) {
       if(M != num_t(0)) {
         s0 += (s3 = (d - bd) - (M - bd));
-        s1 += (s2 = (M - bd) / (d - bd));
+        s1 += (s2 = (d - bd) * (M - bd));
       }
       M  = tan(var < 0 ? (stat < 0 ? qw.next(atan(d)) : qp.next(atan(d)))
                        : (stat < 0 ? pw.next(atan(d)) : pp.next(atan(d))) );
