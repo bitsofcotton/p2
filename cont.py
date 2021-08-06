@@ -13,15 +13,18 @@ def ifloat(x):
   return 0.
 
 bd = bbd = 0
-y  = vy = 1.
+vy = y = 1.
 for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
-  d  = ifloat(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1])])
+  d  = ifloat(line.decode("utf-8")[:- 1].split(",")[0])
   by = y
   if(d != 0.):
     bvy = vy
-    vy  = (d - bd + bbd) / d
+    vy  = (d - bd - bbd) / d
     if(bvy != 0 and vy != 0):
       y *= vy / bvy
+  # (d * y + bd * by) - (bd * by - bbd * bby)
+  # == (d - bd - bbd) * bby + bd * by - bd * by + bbd * bby
+  # == (d - bd) * bby
   print(d * y + bd * by)
   bbd = bd
   bd  = d

@@ -34,12 +34,8 @@ for line in sys.stdin:
     print(ff)
     for w in ff:
       f = tbl[int(float(w)) % len(tbl)]
-      if(f < 64):
-        track.append(Message('note_on',  note=f, velocity=0, time=0))
-        track.append(Message('note_off', note=f, time=120))
-      else:
-        track.append(Message('note_on',  note=f, velocity=127, time=0))
-        track.append(Message('note_off', note=f, time=120))
+      track.append(Message('note_on',  note=f, velocity=127, time=0))
+      track.append(Message('note_off', note=f, time=120))
   else:
     if(ms == 0):
       ms  = int(np.log(len(ff)) / np.log(2.))
@@ -72,11 +68,7 @@ for line in sys.stdin:
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
       for w in ffu:
         f = tbl[int(np.arctan(np.arctan(np.tan(float(w) * np.pi)) / np.pi) / np.pi * 4 * len(tbl)) % len(tbl)]
-        if(f < 64):
-          track.append(Message('note_on',  note=f, velocity=0, time=0))
-          track.append(Message('note_off', note=f, time=120))
-        else:
-          track.append(Message('note_on',  note=f, velocity=127, time=0))
-          track.append(Message('note_off', note=f, time=120))
+        track.append(Message('note_on',  note=f, velocity=127, time=0))
+        track.append(Message('note_off', note=f, time=120))
 mid.save('rand_correct.mid')
 
