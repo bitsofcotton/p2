@@ -26,11 +26,12 @@ mA  = []
 mC  = []
 ms  = 0
 cnt = 0
+# XXX: these doesn't include any of empathys.
+#      it's only the categorized (chilled?) heat.
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
   if(len(sys.argv) <= 1):
-#    ff.extend(ff)
     print(ff)
     for w in ff:
       f = tbl[int(float(w)) % len(tbl)]

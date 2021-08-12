@@ -29,6 +29,8 @@ mC  = []
 ms  = 0
 ctr = 0
 cnt = 0
+# XXX: these doesn't include any of objects that we recognize.
+#      it's only the categorized heats.
 for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
