@@ -40,6 +40,10 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
       elif(sys.argv[4][0] == 's'):
         s += d
         print(s)
+      elif(sys.argv[4][0] == 'u'):
+        if(d != bd):
+          print(d)
+        bd = d
     else:
       print(d)
   t += 1

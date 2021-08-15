@@ -17,29 +17,26 @@ int main(int argc, const char* argv[]) {
   std::string s;
   num_t d(0);
   auto  bbd(d);
-  auto  D(d);
   num_t y(1);
   auto  bby(y);
   auto  z(y);
+  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     const auto by(y);
     const auto bz(z);
     std::stringstream ins(s);
     ins >> d;
-    // y++ * d++ = (d++ - bd++ - bbd++) / d++ * y * d++
-    //   = (d++ - bd++ - bbd++) * y
+    // y * d = (d - bd - bbd) / d * y * d
+    //   = (d - bd - bbd) * y
     y  *= (z = (d - bd - bbd) / d) / bz;
-    // (d * y + bd * by) - (bd * by - bbd * bby)
-    // == (d - bd - bbd) * bby + bd * by - bd * by + bbd * bby
-    // == (d - bd) * bby
-    // OK:
-    std::cout << (d * y + bd * by) << std::endl;
-    // std::cout << (d - bd - bbd) * bby + bd * by << std::endl;
-    // NG:
-    // std::cout << (D += (d - bd) * bby) << std::endl;
-    // test:
-    // std::cout << (d - bd - bbd) * bby << ", " << d * y << std::endl;
+    // (-1)^n * ((d * y - bd * by) - -(bd * by - bbd * bby))
+    // == (-1)^n * ((d - bd + bbd) * bby - bbd * bby)
+    // == (-1)^n * (d - bd) * bby
+    if(bbd != num_t(0))
+      std::cout << num_t((t ++) & 1 ? 1 : - 1) * (d * y - bd * by) << std::endl;
+    else
+      std::cout << "0, 0" << std::endl;
     bbd = bd;
     bby = by;
   }
