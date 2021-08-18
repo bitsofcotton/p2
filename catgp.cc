@@ -15,7 +15,6 @@
 #endif
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
-#include "../catg/decompose.hh"
 #include "../catg/catg.hh"
 
 #if defined(_FLOAT_BITS_)
@@ -35,10 +34,8 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) var  = std::atoi(argv[2]);
   }
   std::cerr << "continue with catgp " << stat << " " << var << std::endl;
-  P012L<num_t, linearFeeder<num_t>, false> pp(abs(stat), abs(var));
-  P012L<num_t, linearFeeder<num_t>, true>  qp(abs(stat), abs(var));
-  P012L<num_t, arctanFeeder<num_t>, false> pw(abs(stat), abs(var));
-  P012L<num_t, arctanFeeder<num_t>, true>  qw(abs(stat), abs(var));
+  P012L<num_t, continuousFeeder<num_t, continuousFeeder<num_t, linearFeeder<num_t> > > > p(abs(stat), abs(var));
+  P012L<num_t, continuousFeeder<num_t, continuousFeeder<num_t, arctanFeeder<num_t> > > > q(abs(stat), abs(var));
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -50,13 +47,12 @@ int main(int argc, const char* argv[]) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    if(d != bd) {
+    if(d != num_t(0)) {
       if(M != num_t(0)) {
-        s0 += (s3 = (d - bd) - (M - bd));
-        s1 += (s2 = (d - bd) * (M - bd));
+        s0 += (s3 = (d - bd) - (M - d));
+        s1 += (s2 = (d - bd) * (M - d));
       }
-      M  = tan(var < 0 ? (stat < 0 ? qw.next(atan(d)) : qp.next(atan(d)))
-                       : (stat < 0 ? pw.next(atan(d)) : pp.next(atan(d))) );
+      M  = tan(stat < 0 ? q.next(atan(d)) : p.next(atan(d)));
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M - d << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << std::endl << std::flush;
