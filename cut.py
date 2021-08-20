@@ -50,6 +50,7 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
           s += d - bd
         else:
           s -= d - bd
+        bd = d
         print(s)
       elif(sys.argv[4][0] == 'h'):
         if(d != 0. and bd != 0. and d != - bd):
