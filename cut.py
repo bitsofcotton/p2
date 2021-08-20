@@ -47,16 +47,15 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
       elif(sys.argv[4][0] == 'f'):
         tt += 1
         if(tt % 2 == 0):
-          print(d)
-        else:
-          print(- d)
-      elif(sys.argv[4][0] == 'F'):
-        tt += 1
-        if(tt % 2 == 0):
           s += d - bd
         else:
           s -= d - bd
         print(s)
+      elif(sys.argv[4][0] == 'h'):
+        if(d != 0. and bd != 0. and d != - bd):
+          s += 2. / (1. / d + 1. / bd)
+        print(s)
+        bd = d
     else:
       print(d)
   t += 1
