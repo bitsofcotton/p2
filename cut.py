@@ -33,10 +33,6 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
         print(s)
         bbd = bd
         bd  = d
-      elif(sys.argv[4][0] == 'b'):
-        dS /= 2.
-        print(d * dS)
-        dS += d
       elif(sys.argv[4][0] == 's'):
         s += d
         print(s)
@@ -44,18 +40,8 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
         if(d != bd):
           print(d)
         bd = d
-      elif(sys.argv[4][0] == 'f'):
-        tt += 1
-        if(tt % 2 == 0):
-          s += d - bd
-        else:
-          s -= d - bd
-        bd = d
-        print(s)
-      elif(sys.argv[4][0] == 'h'):
-        if(d != 0. and bd != 0. and d != - bd):
-          s += 2. / (1. / d + 1. / bd)
-        print(s)
+      elif(sys.argv[4][0] == 'p'):
+        print(d + bd)
         bd = d
     else:
       print(d)
