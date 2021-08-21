@@ -34,28 +34,25 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) var  = std::atoi(argv[2]);
   }
   std::cerr << "continue with catgp " << stat << " " << var << std::endl;
-  P012L<num_t, linearFeeder<num_t> > p(abs(stat), abs(var));
-  P012L<num_t, arctanFeeder<num_t> > q(abs(stat), abs(var));
+  P012L<num_t, linearFeeder<num_t> > p(abs(stat), var);
+  P012L<num_t, arctanFeeder<num_t> > q(abs(stat), var);
   std::string s;
   num_t d(0);
+  auto  M(d);
   auto  s0(d);
   auto  s1(d);
   auto  s2(d);
   auto  s3(d);
-  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
     if(d != bd) {
-      if(M != num_t(0)) {
-        s0 += (s3 = (d - bd) - M);
-        s1 += (s2 = (d - bd) * M);
-      }
-      M  = (stat < 0 ? q.next(d) : p.next(d)) - d;
-      if(! isfinite(M) || isnan(M)) M = num_t(0);
+      s0 += (d - bd) - M;
+      s1 += (d - bd) * M;
+      M   = (stat < 0 ? q.next(d) : p.next(d)) - d;
     }
-    std::cout << M << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
   return 0;
 }
