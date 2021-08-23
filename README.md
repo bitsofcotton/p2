@@ -40,7 +40,6 @@ We suppose all of {p0, p1, p2}: some middle point, left part and right part is t
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
 Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
 A p2 is standing on hypothesis there exists a function that extends small region makes no difference from before. And, catgp prediction needs the context on the range we categorize, so varlen == 2 cannot be used to them.
-There's some methods they add continuity on original function, so with them, this with a little patch works fine.
 
 # General Tips:
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
@@ -55,12 +54,10 @@ But with complement dimension, below is optimal case, so non optimal case, the d
 p0 returns the matrix size limit to infinity on p1, because of this, p0 is often stable enough.
 
 # General Tips
-If we set catgp to shorter range relative from PRG itself, the result can be triangular wave or so on. The modern PRNGs have the techniques to enlarge original PRNG matrix size as block diagonal ones or so on....
+If we set catgp to shorter range relative from PRNG itself, the result can be triangular wave or so on. The modern PRNGs have the techniques to enlarge original PRNG matrix size as block diagonal ones or so on....
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
 
-# Refresh Archived
-This repository is close state without external library.
