@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int  stat(256);
-  int  var(3);
+  int  var(2);
   if(argc < 2)
     std::cerr << "catgp <condition>? <var>?" << std::endl;
   else {
@@ -34,8 +34,8 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) var  = std::atoi(argv[2]);
   }
   std::cerr << "continue with catgp " << stat << " " << var << std::endl;
-  P012L<num_t, linearFeeder<num_t> > p(abs(stat), abs(var));
-  P012L<num_t, arctanFeeder<num_t> > q(abs(stat), abs(var));
+  P012L<num_t, linearFeeder<num_t> > p(abs(stat), var);
+  P012L<num_t, arctanFeeder<num_t> > q(abs(stat), var);
   std::string s;
   num_t d(0);
   auto  M(d);
@@ -44,10 +44,8 @@ int main(int argc, const char* argv[]) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    if(d != bd) {
-      S += (d - bd) * (var < 0 ? sgn(M) : M);
-      M  = (stat < 0 ? q.next(d) : p.next(d)) - d;
-    }
+    S += (d - bd) * M;
+    M  = (stat < 0 ? q.next(d) : p.next(d)) - d;
     std::cout << S << ", " << M << std::endl << std::flush;
   }
   return 0;

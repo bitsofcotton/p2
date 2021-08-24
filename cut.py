@@ -12,7 +12,7 @@ def ifloat(x):
       pass
   return 0.
 
-s = t = bd = bbd = 0
+t = s = bd = 0
 for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
   ll = line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1])]
   if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
@@ -33,8 +33,7 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
       elif(sys.argv[4][0] == 'u'):
         if(d != bd):
           print(d)
-      bbd = bd
-      bd  = d
+      bd = d
     else:
       print(d)
   t += 1
