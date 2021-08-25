@@ -33,6 +33,11 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
       elif(sys.argv[4][0] == 'u'):
         if(d != bd):
           print(d)
+      elif(sys.argv[4][0] == 'p'):
+        print(d + bd)
+      elif(sys.argv[4][0] == 'c'):
+        s += d * bd
+        print(s)
       bd = d
     else:
       print(d)
