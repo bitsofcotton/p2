@@ -56,6 +56,10 @@ p0 returns the matrix size limit to infinity on p1, because of this, p0 is often
 # General Tips
 If we set catgp to shorter range relative from PRNG itself, the result can be triangular wave or so on. The modern PRNGs have the techniques to enlarge original PRNG matrix size as block diagonal ones or so on....
 
+# General Tips
+The average delta step causes only exists next step if parameter is large enough(larger than status block number), this causes stable result.
+But if there's a real world problem, there's a per scale periodical status dimensions causes the prediction harder. So when the special conditions occur, we meet the gulf if we're unlucky enough.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
