@@ -34,10 +34,9 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
         if(d != bd):
           print(d)
       elif(sys.argv[4][0] == 'p'):
-        print(d + bd)
+        print((d + bd) / 2.)
       elif(sys.argv[4][0] == 'c'):
-        s += d * bd
-        print(s)
+        print(d * bd)
       bd = d
     else:
       print(d)
