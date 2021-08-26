@@ -32,38 +32,30 @@ def getrand(mm, r):
     return bw / getrand(abs(m) % 4, r)
   return bw
 
-def harden(x, m):
+def harden(x, v):
   global n
   res = 0.
-  if(len(m) == 0):
-    m.append([])
-  m[- 1].append(x)
-  if(len(m[- 1]) == n):
-    if(n + 2 <= len(m)):
-      M = numpy.matrix(m[:- 2])
-      A = numpy.matrix(m[- 2])
-      x = numpy.matrix(m[- 1])
-      res = numpy.arctan(numpy.inner(A, x * M)[0, 0])
-      m = []
-    else:
-      m.append([])
-  return [res, m]
+  v.append(x)
+  if(len(v) == 2 * n):
+    a = numpy.matrix(v[:n])
+    x = numpy.matrix(v[n:])
+    res = numpy.inner(a, x)[0, 0]
+    for xx in v[n:]:
+      res *= xx
+    v = []
+  return [res, v]
 
 s  = 0
-m  = []
+v  = []
 a1 = int(sys.argv[1])
 a2 = int(sys.argv[2])
 n  = abs(int(sys.argv[3]))
 w  = 0
 t  = 0
 while(True):
-  d, m = harden(getrand(a1, a2), m)
-  if(m != []):
+  d, v = harden(getrand(a1, a2), v)
+  if(v != []):
     continue
-  if(d < 0):
-    d = - pow(- d, 1. / 3.)
-  else:
-    d =   pow(  d, 1. / 3.)
   s += d
   if(w < 0 and int(sys.argv[3]) < 0):
     w = abs(int(d)) % 4
