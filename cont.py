@@ -19,7 +19,7 @@ def sgn(x):
   return 0.
 
 p  = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-bd = D = M = 0
+bd = D = bD = M = 0
 dh = [0]
 for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
   d  = ifloat(line.decode("utf-8")[:- 1].split(",")[0])
@@ -29,6 +29,7 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
   dh = dh[- int(sys.argv[1]):]
   for s in dh:
     dd += s
+  bbD = bD
   bD = D
   p.stdin.write((str(dd) + "\n").encode('utf-8'))
   p.stdin.flush()
@@ -38,7 +39,7 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
     D -= dd
   if(2 * M < abs(D)):
     D = 0.
-  print(bD * d, ",", D, ",", bf[0])
+  print(bD * d * bbD * bd, ",", D, ",", bf[0])
   sys.stdout.flush()
   bd = dd
 
