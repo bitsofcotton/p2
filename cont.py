@@ -13,17 +13,26 @@ def ifloat(x):
       pass
   return 0.
 
+def sgn(x):
+  if(x < 0): return - 1.
+  elif(0 < x): return 1.
+  return 0.
+
 p = subprocess.Popen(sys.argv[1:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
 
-s = D = bd = bbd = 0
+bd = D = DD = M = 0
 for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
-  d  = ifloat(line.decode("utf-8")[:- 1].split(",")[0])
-  s += D * (d - bd)
-  p.stdin.write((str(d - bbd) + "\n").encode('utf-8'))
+  d   = ifloat(line.decode("utf-8")[:- 1].split(",")[0])
+  M   = max(M, abs(d))
+  p.stdin.write((str(d + bd) + "\n").encode('utf-8'))
   p.stdin.flush()
-  D  = ifloat(p.stdout.readline().decode('utf-8').split(",")[1]) - (d - bd)
-  print(s)
+  bDD = DD
+  bD  = D
+  DD  = ifloat(p.stdout.readline().decode('utf-8').split(",")[1]) - d
+  D   = DD * sgn(bDD * (d + bd))
+  if(M < abs(D)):
+    D = 0
+  print(bD * d, ",", D)
   sys.stdout.flush()
-  bbd = bd
-  bd  = d
+  bd = d
 
