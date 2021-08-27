@@ -34,22 +34,21 @@ catgp prediction has opposite predicts with some frequency threshold alike p0 ha
 # General Tips:
 The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catgp behaves as if calculation dimension is smaller than original function.
 
-If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. So make some valid prediction twice causes vanish variant from output in infinite accuracy input and there's finite status bits and dimensions. This causes the range of jamming itself is smaller or equal to 2, so average every input pair causes predictable ones, this is because every input pair is jammed related to whole input.).
+If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. This causes the range of jamming itself is smaller or equal to 2, so average every input pair causes often predictable ones, this is also because every input pair is jammed related to whole input.).
 
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
 Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
-A p2 is standing on hypothesis there exists a function that extends small region makes no difference from before. And, catgp prediction needs the context on the range we categorize, so varlen == 2 cannot be used to them.
 
-After prediction edit the result, the continuous condition nor each flip condition will be gained.
-So we had to correct by one step before result on each.
+If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
+otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
-(If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
- otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
+So after prediction edit the result, the continuous condition nor each flip condition will be gained if the prediction is valid,
+we had to correct by one step before result on each.
 
 # General Tips:
-p0 returns the matrix size limit to infinity on p1, because of this, p0 is often stable enough.
+p0 returns the matrix size limit to infinity on p1 on C0 condition, because of this, p0 is often stable enough.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
