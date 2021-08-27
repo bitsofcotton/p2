@@ -18,21 +18,27 @@ def sgn(x):
   elif(0 < x): return 1.
   return 0.
 
-p = subprocess.Popen(sys.argv[1:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-
-bd = D = DD = M = 0
+p  = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+bd = D = M = 0
+dh = [0]
 for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
-  d   = ifloat(line.decode("utf-8")[:- 1].split(",")[0])
-  M   = max(M, abs(d))
-  p.stdin.write((str(d + bd) + "\n").encode('utf-8'))
+  d  = ifloat(line.decode("utf-8")[:- 1].split(",")[0])
+  M  = max(M, abs(d))
+  dd = 0
+  dh.append(d)
+  dh = dh[- int(sys.argv[1]):]
+  for s in dh:
+    dd += s
+  bD = D
+  p.stdin.write((str(dd) + "\n").encode('utf-8'))
   p.stdin.flush()
-  bDD = DD
-  bD  = D
-  DD  = ifloat(p.stdout.readline().decode('utf-8').split(",")[1]) - d
-  D   = DD * sgn(bDD * (d + bd))
-  if(M < abs(D)):
-    D = 0
-  print(bD * d, ",", D)
+  bf = p.stdout.readline().decode('utf-8').split(",")
+  D  = ifloat(bf[1])
+  if(1 < int(sys.argv[1])):
+    D -= dd
+  if(2 * M < abs(D)):
+    D = 0.
+  print(bD * d, ",", D, ",", bf[0])
   sys.stdout.flush()
-  bd = d
+  bd = dd
 
