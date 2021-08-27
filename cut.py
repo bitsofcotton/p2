@@ -1,5 +1,6 @@
 import sys
 import io
+import numpy as np
 
 def ifloat(x):
   try:
@@ -35,6 +36,16 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
           print(d)
       elif(sys.argv[4][0] == 'c'):
         print(d * bd)
+      elif(sys.argv[4][0] == 'e'):
+        if(d != 0.):
+          print(d)
+      elif(sys.argv[4][0] == 'l'):
+        if(d == 0):
+          print(d)
+        elif(d < 0):
+          print(- np.log(- d + 1.))
+        else:
+          print(  np.log(  d + 1.))
       bd = d
     else:
       print(d)

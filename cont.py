@@ -1,6 +1,7 @@
 import sys
 import io
 import subprocess
+import numpy
 
 def ifloat(x):
   try:
@@ -39,7 +40,12 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
     D -= dd
   if(2 * M < abs(D)):
     D = 0.
-  print(bD * d * bbD * bd, ",", D, ",", bf[0])
+  bt = bD * bbD * bd
+  if(bt < 0):
+    bt = - numpy.log(- bt + 1.)
+  else:
+    bt =   numpy.log(  bt + 1.)
+  print(d * bt, ",", D, ",", bf[0])
   sys.stdout.flush()
   bd = dd
 

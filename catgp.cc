@@ -50,7 +50,7 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     D = d * M;
     M = stat < 0 ? q.next(d) : p.next(d);
-    std::cout << D << ", " << M << std::endl << std::flush;
+    std::cout << D << ", " << M << ", " << d << std::endl << std::flush;
   }
   return 0;
 }
