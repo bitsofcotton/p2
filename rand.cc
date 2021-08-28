@@ -28,18 +28,19 @@ int main(int argc, char* argv[]) {
   assert(5 <= argc);
   std::random_device rnd;
   std::mt19937 mt(rnd());
-  auto  cnt(std::atoi(argv[4]));
-  num_t s0(0);
+  auto cnt(std::atoi(argv[4]));
   for(int i = 0; cnt < 0 || i < cnt; i ++) {
     if(std::atoi(argv[3])) {
       num_t s(0);
-      num_t r(1);
       for(int j = 0; j < std::atoi(argv[3]); j ++)
         s += mmt(mt, std::atoi(argv[1]), std::atoi(argv[2])) *
-             (r *= mmt(mt, std::atoi(argv[1]), std::atoi(argv[2])));
-      std::cout << (s0 += s * r) << std::endl;
+             mmt(mt, std::atoi(argv[1]), std::atoi(argv[2]));
+      s += num_t(0x4000);
+      s -= floor(s / num_t(0x8000)) * num_t(0x8000);
+      s -= num_t(0x4000);
+      std::cout << s << std::endl;
     } else
-      std::cout << (s0 += mmt(mt, std::atoi(argv[1]), std::atoi(argv[2]))) << std::endl;
+      std::cout << mmt(mt, std::atoi(argv[1]), std::atoi(argv[2])) << std::endl;
   }
   return 0;
 }

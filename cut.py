@@ -35,7 +35,10 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
         if(d != bd):
           print(d)
       elif(sys.argv[4][0] == 'c'):
-        print(d * bd)
+        if(bd < 0):
+          print(- d)
+        else:
+          print(  d)
       elif(sys.argv[4][0] == 'e'):
         if(d != 0.):
           print(d)
