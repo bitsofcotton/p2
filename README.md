@@ -31,6 +31,9 @@ P1 often returns overlearned result, this causes unstable result.
 # Tips on p2:
 catgp prediction has opposite predicts with some frequency threshold alike p0 have.
 
+# Tips on p1, p2:
+p1, p2 using makeProgramInvariant and revert... with the form randtools invariant. So it has a little difference on the description itself. Because of them, they has a little glitch on the prediction if there's no invariant nor multiple invariants on the original stream.
+
 # General Tips:
 The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catgp behaves as if calculation dimension is smaller than original function.
 
@@ -49,6 +52,12 @@ we had to correct by one step before result on each.
 
 # General Tips:
 p0 returns the matrix size limit to infinity on p1 on C0 condition, because of this, p0 is often stable enough.
+
+# General Tips:
+If we input some of linear combination into the predictors and skip the length, it is included in larger variable numbers in them. So variable number is same as the status block number. In ideal condition, the number 2 is enough to use with them. So if we predict with p1, catgp, only the condition length is the matter.
+
+# Tips:
+./rand n m | ../catg/catgr n0 0 | python high.py | ... | python midoop2.py makes one of the phrase on midi. pngop2 is the same for graphics. (n0 \> n1 \> ...)
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
