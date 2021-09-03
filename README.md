@@ -22,39 +22,28 @@ If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it
 
 p0 predicts opposite with some frequency threshold.
 
-# Tips on p1:
-After p1 subtract invariant with enough variable length, next predictor p1's variable length is decreased.
-This is an analogy to QR decomposition.
+p0 returns the matrix size limit to infinity on p1 on C0 condition, because of this, p0 is often stable enough.
 
+# Tips on p1:
 P1 often returns overlearned result, this causes unstable result.
 
-# Tips on p2:
-catgp prediction has opposite predicts with some frequency threshold alike p0 have.
+We can always choose linear invariant if varlen is larger than status block size and data rank is also larger than them. This is because tan(\<a,\[x, f(x)\]\>) == 0 can be rewrited into the form arccos(cos(\<b,\[x, f(x)\]\>*(x_1...f_n\*f(x))^m0)) == abs(\<c,\[x, f(x)\]\>\*(x_1...x_n\*f(x))^m) == epsilon. Which f is F_2^n to F_2 any combination.
 
 # Tips on p1, p2:
-p1, p2 using makeProgramInvariant and revert... with the form randtools invariant. So it has a little difference on the description itself. Because of them, they has a little glitch on the prediction if there's no invariant nor multiple invariants on the original stream.
+p1, p2 is using makeProgramInvariant and revert... with the form randtools invariant. So it has a little difference on the description itself. Because of them, they has a little glitch on the prediction.
 
-# General Tips:
 The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catgp behaves as if calculation dimension is smaller than original function.
 
 If we input finite exponent and finite mantissa bits, with infinite accuracy computer, we can make the status dimension into 1 dimension at all, so in this case, varlen == 2 on p1 and catg. This causes the range of jamming itself is smaller or equal to 2, so average every input pair causes often predictable ones, this is also because every input pair is jammed related to whole input.).
+
+But this condition isn't satisfised in the case original input has not enough data on each of input, in such case, we should use enough varlen.
 
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
 Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
-
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
-
-So after prediction edit the result, the continuous condition nor each flip condition will be gained if the prediction is valid,
-we had to correct by one step before result on each.
-
-# General Tips:
-p0 returns the matrix size limit to infinity on p1 on C0 condition, because of this, p0 is often stable enough.
-
-# General Tips:
-If we input some of linear combination into the predictors and skip the length, it is included in larger variable numbers in them. So variable number is same as the status block number. In ideal condition, the number 2 is enough to use with them. So if we predict with p1, catgp, only the condition length is the matter.
 
 # Tips:
 ./rand n m | ../catg/catgr n0 0 | python high.py | ... | python midoop2.py makes one of the phrase on midi. pngop2 is the same for graphics. (n0 \> n1 \> ...)
