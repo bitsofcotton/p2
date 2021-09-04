@@ -31,13 +31,14 @@ int main(int argc, const char* argv[]) {
 */
   std::cout << std::setprecision(30);
   int  stat(256);
-  int  var(2);
+  int  var(sqrt(sqrt(num_t(stat))));
   int  step(1);
   if(argc < 2)
     std::cerr << "catgp <condition>? <var>? <step>?" << std::endl;
   else {
     if(1 < argc) stat = std::atoi(argv[1]);
     if(2 < argc) var  = std::atoi(argv[2]);
+    else var = max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))));
     if(3 < argc) step = std::atoi(argv[3]);
   }
   std::cerr << "continue with catgp " << stat << " " << var << " " << step << std::endl;
