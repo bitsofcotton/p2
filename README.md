@@ -38,6 +38,10 @@ The two operand operator is described in R^4 vector, so collect another pairs an
 
 This is because we can collect multiple of linear invariants in their dimension because if there exists (x, f(x)) pair, for each f(x) == const. value collection, with lagrange multiplier, (x) has linear invariant (can be 0 vector). So recursive on this, there's multiple of (x in R^8) invariants at all because two operand (x in R, y in R) has the dimension.
 
+The case varlen == 2 is valid in the case all of status variable is in the each data condition.
+The case varlen == 8 is valid in the case all of status difference is in the each data condition.
+The case otherwise, we should choose valren \> 8 condition. This is the case clipped status datas on the data series and we can't get max rank on them in varlen == 8.
+
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
