@@ -30,33 +30,24 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int  stat(256);
-  int  var(sqrt(sqrt(num_t(stat))));
-  int  step(1);
+  int  stat(4096);
   if(argc < 2)
-    std::cerr << "catgp <condition>? <var>? <step>?" << std::endl;
-  else {
-    if(1 < argc) stat = std::atoi(argv[1]);
-    if(2 < argc) var  = std::atoi(argv[2]);
-    else var = max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))));
-    if(3 < argc) step = std::atoi(argv[3]);
-  }
-  std::cerr << "continue with catgp " << stat << " " << var << " " << step << std::endl;
-  P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat), var, step);
-  P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat), var, step);
+    std::cerr << "catgp <condition>?" << std::endl;
+  if(1 < argc) stat = std::atoi(argv[1]);
+  const auto var(min(8, max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))))));
+  std::cerr << "continue with catgp " << stat << std::endl;
+  P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat), var);
+  P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat), var);
   std::string s;
   num_t d(0);
   auto  D(d);
-  std::vector<num_t> M;
-  M.resize(step, num_t(0));
+  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    D  = d * M[0];
-    for(int i = 1; i < M.size(); i ++)
-      M[i - 1] = M[i];
-    M[M.size() - 1] = stat < 0 ? q.next(d) : p.next(d);
-    std::cout << D << ", " << M[M.size() - 1] << ", " << M[0] << ", " << d << std::endl << std::flush;
+    D  = d * M;
+    M = stat < 0 ? q.next(d) : p.next(d);
+    std::cout << D << ", " << M << ", " << d << std::endl << std::flush;
   }
   return 0;
 }
