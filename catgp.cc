@@ -30,11 +30,13 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int  stat(1296);
+  // N.B. R^4 using index, so without index with symmetrize, R^6.
+  //      we use const twice, so at last we use only R^5.
+  int  stat(625);
   if(argc < 2)
     std::cerr << "catgp <condition>?" << std::endl;
   if(1 < argc) stat = std::atoi(argv[1]);
-  stat = max(min(stat, int(1296)), - int(1296));
+  stat = max(min(stat, int(625)), - int(625));
   const auto var(min(6, max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))))));
   std::cerr << "continue with catgp " << stat << std::endl;
   P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat), var);
