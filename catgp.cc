@@ -30,11 +30,12 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int  stat(4096);
+  int  stat(1296);
   if(argc < 2)
     std::cerr << "catgp <condition>?" << std::endl;
   if(1 < argc) stat = std::atoi(argv[1]);
-  const auto var(min(8, max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))))));
+  stat = max(min(stat, int(1296)), - int(1296));
+  const auto var(min(6, max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))))));
   std::cerr << "continue with catgp " << stat << std::endl;
   P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat), var);
   P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat), var);
