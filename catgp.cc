@@ -36,7 +36,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2)
     std::cerr << "catgp <condition>?" << std::endl;
   if(1 < argc) stat = std::atoi(argv[1]);
-  const auto var(min(6, max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))))));
+  const auto var(min(5, max(2, int(sqrt(sqrt(num_t(int(abs(stat)))))))));
   std::cerr << "continue with catgp " << stat << std::endl;
   P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat), var);
   P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat), var);
