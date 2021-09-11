@@ -41,7 +41,7 @@ public:
     sh[sh.size() - 1] = in;
     const auto resq(recur < 0 ? q1.next(d * bM) : q0.next(d * bM));
     for(int i = 1; i < Mh.size(); i ++) Mh[i - 1] = move(Mh[i]);
-    Mh[Mh.size() - 1] = recur < 0 ? p1.next(in - sh[0]) : p0.next(in - sh[0]);
+    Mh[Mh.size() - 1] = (recur < 0 ? p1.next(in - sh[0]) : p0.next(in - sh[0])) + in;
     for(int i = 1; i < mh.size(); i ++) mh[i - 1] = move(mh[i]);
     mh[mh.size() - 1] = T(0);
     for(int i = 0; i < Mh.size(); i ++)
@@ -82,8 +82,8 @@ int main(int argc, const char* argv[]) {
   if(argc < 2)
     std::cerr << "catgq <percent>?" << std::endl;
   if(1 < argc) percent = std::atoi(argv[1]);
-  // N.B. wikipedia 陪審員定理
-  //   (2 - sqrt(2) - .5) * c1 + .5 == percent.
+  // N.B. wikipedia Condorcet's jury theorem.
+  //   (2 - sqrt(2) - .5) * c1 + .5 ~ percent.
   //   c1 = sqrt(2n + 1) / sqrt(pi) * (1 + 1/ 16n^2 + O(n^-3))
   // c1 = (percent - .5) / (1.5 - sqrt(2))
   //    ~ sqrt(2n + 1) / sqrt(pi)
