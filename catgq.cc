@@ -28,10 +28,10 @@ public:
     Mh.resize(abs(recur), T(0));
     mh.resize(abs(recur), T(0));
     if((this->recur = recur) < 0) {
-      p1 = P012L<T, arctanFeeder<T, idFeeder<T> > >(625 * 2, 5);
+      p1 = P012L<T, arctanFeeder<T, idFeeder<T> > >(625, 5);
       q1 = P0<T, arctanFeeder<T, sumFeeder<T, idFeeder<T> > > >(25);
     } else {
-      p0 = P012L<T, linearFeeder<T, idFeeder<T> > >(625 * 2, 5);
+      p0 = P012L<T, linearFeeder<T, idFeeder<T> > >(625, 5);
       q0 = P0<T, linearFeeder<T, sumFeeder<T, idFeeder<T> > > >(25);
     }
   }
@@ -99,14 +99,19 @@ int main(int argc, const char* argv[]) {
   auto  D(d);
   auto  S(d);
   auto  M(d);
+  auto  MM(d);
   auto  SS(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
+    MM = max(MM, abs(d) < num_t(1) ? abs(d) : abs(d) * abs(d));
     D  = d * M;
-    M = num_t(0);
+    M  = num_t(0);
+    S += d;
     for(int i = 0; i < p.size(); i ++)
-      M += p[i].next(S += d, d);
+      M += p[i].next(S, d);
+    M /= num_t(p.size());
+    if(MM < abs(M)) M = num_t(0);
     std::cout << D << ", " << M << ", " << d << ", " << S << ", " << (SS += D) << std::endl << std::flush;
   }
   return 0;
