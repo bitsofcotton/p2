@@ -16,16 +16,19 @@ for t in range(0, len(tbl)):
 tbl = tbl2
 
 # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
-mid   = MidiFile()
-track = MidiTrack()
-mid.tracks.append(track)
-track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(120)))
+mid    = MidiFile()
+tracks = []
+for t in range(0, 7):
+  tracks.append(MidiTrack())
+  mid.tracks.append(tracks[- 1])
+  tracks[- 1].append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(120)))
 
 flg = False
 mA  = []
 mC  = []
 ms  = 0
 cnt = 0
+ucnt = 0
 # XXX: these doesn't include any of empathys.
 #      it's only the categorized (chilled?) heat.
 for line in sys.stdin:
@@ -35,8 +38,9 @@ for line in sys.stdin:
     print(ff)
     for w in ff:
       f = tbl[int(float(w)) % len(tbl)]
-      track.append(Message('note_on',  note=f, velocity=127, time=0))
-      track.append(Message('note_off', note=f, time=120))
+      tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
+      tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
+    ucnt += 1
   else:
     if(ms == 0):
       ms  = int(np.log(len(ff)) / np.log(2.))
@@ -69,7 +73,8 @@ for line in sys.stdin:
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
       for w in ffu:
         f = tbl[int(np.arctan(np.arctan(np.tan(float(w) * np.pi)) / np.pi) / np.pi * 4 * len(tbl)) % len(tbl)]
-        track.append(Message('note_on',  note=f, velocity=127, time=0))
-        track.append(Message('note_off', note=f, time=120))
+        tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
+        tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
+      ucnt += 1
 mid.save('rand_correct.mid')
 
