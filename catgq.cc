@@ -104,24 +104,42 @@ int main(int argc, const char* argv[]) {
     p.emplace_back(P0123<num_t>(  percent));
     p.emplace_back(P0123<num_t>(- percent));
   }
+  std::vector<P0<num_t, linearFeeder<num_t, idFeeder<num_t> > > > q0;
+  std::vector<P0<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > q1;
+  q0.resize(percent < 0 ? abs(percent) : nn + 1, P0<num_t, linearFeeder<num_t, idFeeder<num_t> > >(25));
+  q1.resize(percent < 0 ? abs(percent) : nn + 1, P0<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(25));
   std::string s;
   num_t d(0);
   auto  D(d);
+  auto  D0(d);
   auto  S(d);
-  auto  M(d);
+  auto  S0(d);
   auto  SS(d);
+  auto  M(d);
+  auto  M0(d);
+  std::vector<num_t> MM;
+  MM.resize(q0.size(), d);
   const auto twoPi(atan(num_t(1)) * num_t(8));
+  int   ii(0);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    D  = d * M;
+    D0 = d * M;
+    D  = d * M * M0;
     M  = num_t(0);
     S += (d = atan(d));
     for(int i = 0; i < p.size(); i ++)
       M += p[i].next(S, d);
     M /= num_t(p.size());
     if(twoPi < abs(M)) M = num_t(0);
-    std::cout << D << ", " << M << ", " << d << ", " << S << ", " << (SS += D) << std::endl << std::flush;
+    for(int i = 1; i < MM.size(); i ++) MM[i - 1] = std::move(MM[i]);
+    ii  = (ii + 1) % q0.size();
+    S0 += D0;
+    MM[MM.size() - 1] = (q0[ii].next(S0) + q1[ii].next(S0)) / num_t(2);
+    M0 = num_t(0);
+    for(int i = 0; i < MM.size(); i ++)
+      M0 += MM[i];
+    std::cout << D << ", " << M * M0 << ", " << d << ", " << S << ", " << (SS += D) << std::endl << std::flush;
   }
   return 0;
 }
