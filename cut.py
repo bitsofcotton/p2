@@ -49,6 +49,9 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
           print(- np.log(- d + 1.))
         else:
           print(  np.log(  d + 1.))
+      elif(sys.argv[4][0] == 'r'):
+        if(bd != 0.):
+          print(d / bd - 1.)
       bd = d
     else:
       print(d)

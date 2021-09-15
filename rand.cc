@@ -31,7 +31,9 @@ int main(int argc, char* argv[]) {
       num_t s(0);
       for(int j = 0; j < abs(std::atoi(argv[1])) - 1; j ++)
         s += mmt(mt, std::atoi(argv[1]) < 0) *
-             mmt(mt, std::atoi(argv[1]) < 0);
+             mmt(mt, std::atoi(argv[1]) < 0) *
+             num_t(0x1000);
+      // we need only block.
       s += num_t(0x4);
       s -= floor(s / num_t(0x8)) * num_t(0x8);
       s -= num_t(0x4);

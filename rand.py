@@ -25,7 +25,7 @@ def getrand(mm):
     return bw / getrand(abs(m) % 4)
   return bw
 
-t  = 0
+t = 0
 while(True):
   print(getrand(int(sys.argv[1])))
   sys.stdout.flush()
