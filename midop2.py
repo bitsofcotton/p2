@@ -18,7 +18,7 @@ tbl = tbl2
 # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
 mid    = MidiFile()
 tracks = []
-for t in range(0, 7):
+for t in range(0, 3):
   tracks.append(MidiTrack())
   mid.tracks.append(tracks[- 1])
   tracks[- 1].append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(120)))
@@ -37,9 +37,13 @@ for line in sys.stdin:
   if(len(sys.argv) <= 1):
     print(ff)
     for w in ff:
-      f = tbl[int(float(w)) % len(tbl)]
-      tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
-      tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
+      f = tbl[ucnt % len(tracks)]
+      if(int(float(w)) < 0):
+        tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
+        tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
+      else:
+        tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=7, time=0))
+        tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
     ucnt += 1
   else:
     if(ms == 0):
@@ -72,9 +76,13 @@ for line in sys.stdin:
         for v in range(0, len(mA[u])):
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
       for w in ffu:
-        f = tbl[int(np.arctan(np.arctan(np.tan(float(w) * np.pi)) / np.pi) / np.pi * 4 * len(tbl)) % len(tbl)]
-        tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
-        tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
+        f = tbl[ucnt % len(tracks)]
+        if(int(float(w)) < 0):
+          tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
+          tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
+        else:
+          tracks[ucnt % len(tracks)].append(Message('note_on',  note=f, velocity=0, time=0))
+          tracks[ucnt % len(tracks)].append(Message('note_off', note=f, time=120))
       ucnt += 1
 mid.save('rand_correct.mid')
 
