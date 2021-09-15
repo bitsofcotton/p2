@@ -29,12 +29,12 @@ public:
     mh.resize(sh.size(), T(0));
     if((this->stat = stat) < 0) {
       p1.resize(sh.size() - 1, P012L<T, arctanFeeder<T, idFeeder<T> > >(6 * 6 * 6, 5));
-      q1.resize(sh.size() - 1, P0<T, arctanFeeder<T, idFeeder<T> > >(25));
+      q1 = P0<T, arctanFeeder<T, sumFeeder<T, idFeeder<T> > > >(5 * abs(stat));
     } else {
       p0.resize(sh.size() - 1, P012L<T, linearFeeder<T, idFeeder<T> > >(6 * 6 * 6, 5));
-      q0.resize(sh.size() - 1, P0<T, linearFeeder<T, idFeeder<T> > >(25));
+      q0 = P0<T, linearFeeder<T, sumFeeder<T, idFeeder<T> > > >(5 * abs(stat));
     }
-    bM = S = T(t ^= t);
+    bM = T(t ^= t);
   }
   inline ~P0123() { ; }
   inline T next(const T& in, const T& d) {
@@ -48,8 +48,8 @@ public:
       mh[mh.size() - 1] += Mh[i];
     mh[mh.size() - 1] /= T(Mh.size());
     if(t ++ < abs(stat) * 6 * 6 * 6) return T(0);
-    S += d * bM < T(0) ? - sqrt(abs(d * bM)) : sqrt(abs(d * bM));
-    const auto resq(stat < 0 ? q1[t % q1.size()].next(S) : q0[t % q0.size()].next(S));
+    const auto feed(d * bM < T(0) ? - sqrt(abs(d * bM)) : sqrt(abs(d * bM)));
+    const auto resq(stat < 0 ? q1.next(feed) : q0.next(feed));
     bM = T(0);
     T denom(0);
     for(int i = 0; i < mh.size(); i ++) {
@@ -63,13 +63,12 @@ public:
   vector<T> Mh;
   vector<T> mh;
   T   bM;
-  T   S;
   int stat;
   int t;
   vector<P012L<T, linearFeeder<T, idFeeder<T> > > > p0;
   vector<P012L<T, arctanFeeder<T, idFeeder<T> > > > p1;
-  vector<P0<T, linearFeeder<T, idFeeder<T> > > > q0;
-  vector<P0<T, arctanFeeder<T, idFeeder<T> > > > q1;
+  P0<T, linearFeeder<T, sumFeeder<T, idFeeder<T> > > > q0;
+  P0<T, arctanFeeder<T, sumFeeder<T, idFeeder<T> > > > q1;
 };
 
 /*
