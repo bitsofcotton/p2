@@ -29,9 +29,9 @@ for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
   p.stdin.flush()
   M  = ifloat(p.stdout.readline().decode('utf-8').split(",")[1])
   if(bM < 0):
-    print(- pow(- bM, 1. / pp) * d, ", ", bM)
+    print(- pow(- bM, 1. / pp) * d, ", ", M)
   else:
-    print(  pow(  bM, 1. / pp) * d, ", ", bM)
+    print(  pow(  bM, 1. / pp) * d, ", ", M)
   bM = M
   sys.stdout.flush()
 
