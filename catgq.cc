@@ -18,61 +18,39 @@
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
 #include "../catg/catg.hh"
-#include "../p0/p0.hh"
 
-template <typename T> class P0123 {
+template <typename T, typename feeder> class P23 {
 public:
-  inline P0123() { ; }
-  inline P0123(const int& stat) { 
-    sh.resize(abs(stat), T(0));
+  inline P23() { ; }
+  inline P23(const int& stat) { 
+    assert(0 < stat);
+    sh.resize(stat, T(0));
     Mh.resize(sh.size(), T(0));
     mh.resize(sh.size(), T(0));
-    if((this->stat = stat) < 0) {
-      p1.resize(sh.size() - 1, P012L<T, arctanFeeder<T, idFeeder<T> > >(6 * 6 * 6, 5));
-      q1 = P0<T, arctanFeeder<T, sumFeeder<T, idFeeder<T> > > >(5 * abs(stat));
-    } else {
-      p0.resize(sh.size() - 1, P012L<T, linearFeeder<T, idFeeder<T> > >(6 * 6 * 6, 5));
-      q0 = P0<T, linearFeeder<T, sumFeeder<T, idFeeder<T> > > >(5 * abs(stat));
-    }
-    bM = T(t ^= t);
+    p = P012L<T, feeder>(6 * 6 * 6, 5);
   }
-  inline ~P0123() { ; }
-  inline T next(const T& in, const T& d) {
+  inline ~P23() { ; }
+  inline T next(const T& in) {
+    T res(0);
     for(int i = 1; i < sh.size(); i ++) sh[i - 1] = move(sh[i]);
     for(int i = 1; i < Mh.size(); i ++) Mh[i - 1] = move(Mh[i]);
     for(int i = 1; i < mh.size(); i ++) mh[i - 1] = move(mh[i]);
-    sh[sh.size() - 1] = in;
-    Mh[Mh.size() - 1] = (stat < 0 ? p1[t % p1.size()].next(in - sh[0]) : p0[t % p0.size()].next(in - sh[0])) + in;
-    mh[mh.size() - 1] = T(0);
-    for(int i = 0; i < Mh.size(); i ++)
-      mh[mh.size() - 1] += Mh[i];
-    mh[mh.size() - 1] /= T(Mh.size());
-    if(t ++ < abs(stat) * 6 * 6 * 6) return T(0);
-    const auto feed(d * bM < T(0) ? - sqrt(abs(d * bM)) : sqrt(abs(d * bM)));
-    const auto resq(stat < 0 ? q1.next(feed) : q0.next(feed));
-    bM = T(0);
+    Mh[Mh.size() - 1] = p.next(in - sh[0]) + (sh[sh.size() - 1] = in);
     T denom(0);
-    for(int i = 0; i < mh.size(); i ++) {
-      auto navg(mh[i] * T(int(sh.size())));
-      for(int j = i + 1; j < mh.size(); j ++)
-        navg -= sh[j];
-      //bM += navg / T(i + 1) / T(mh.size() - i);
-      bM += navg / T(i + 1) / T(i + 1);
-      denom += T(1) / T(mh.size() - i);
+    for(int i = 0; i < Mh.size(); i ++) {
+      res += (Mh[i] - in) / T(i + 1);
+      denom += T(1) / T(i + 1);
     }
-    bM /= denom;
-    return bM < T(0) ? - resq : resq;
+    mh[mh.size() - 1] = res /= denom;
+    for(int i = 0; i < mh.size() - 1; i ++)
+      if(T(0) < mh[i] * (in - sh[i])) mh[i] = T(0);
+      else res += mh[i];
+    return res;
   }
   vector<T> sh;
   vector<T> Mh;
   vector<T> mh;
-  T   bM;
-  int stat;
-  int t;
-  vector<P012L<T, linearFeeder<T, idFeeder<T> > > > p0;
-  vector<P012L<T, arctanFeeder<T, idFeeder<T> > > > p1;
-  P0<T, linearFeeder<T, sumFeeder<T, idFeeder<T> > > > q0;
-  P0<T, arctanFeeder<T, sumFeeder<T, idFeeder<T> > > > q1;
+  P012L<T, feeder> p;
 };
 
 /*
@@ -92,7 +70,8 @@ int main(int argc, const char* argv[]) {
     std::cerr << "catgq <stat>?" << std::endl;
   if(1 < argc) stat = std::atoi(argv[1]);
   std::cerr << "continue with catgq " << stat << std::endl;
-  P0123<num_t> p(stat);
+  P23<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat));
+  P23<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat));
   std::string s;
   num_t d(0);
   auto  S(d);
@@ -102,7 +81,7 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    M = p.next(S += d, d);
+    M = stat < 0 ? q.next(S += d) : p.next(S += d);
     std::cout << D << ", " << M << ", " << d << ", " << S << ", " << (SS += D) << std::endl << std::flush;
   }
   return 0;
