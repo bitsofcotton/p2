@@ -53,7 +53,11 @@ public:
     bM = T(0);
     T denom(0);
     for(int i = 0; i < mh.size(); i ++) {
-      bM += (mh[i] - in) / T(mh.size() - i);
+      auto navg(mh[i] * T(int(sh.size())));
+      for(int j = i + 1; j < mh.size(); j ++)
+        navg -= sh[j];
+      //bM += navg / T(i + 1) / T(mh.size() - i);
+      bM += navg / T(i + 1) / T(i + 1);
       denom += T(1) / T(mh.size() - i);
     }
     bM /= denom;
