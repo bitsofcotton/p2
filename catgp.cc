@@ -32,8 +32,10 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   // N.B. R^4 using index, so without index with symmetrize, R^6.
   //      we use const twice, so at last we use only R^5.
-  const auto stat(6 * 6 * 6);
-  const auto var(5);
+  // N.B. we needs (status, variable, result) tuple because
+  //      we use invariant form, so we need R^7 on them.
+  const auto stat(8 * 8 * 8);
+  const auto var(7);
         int  step(1);
   if(argc < 2)
     std::cerr << "catgp <step>?" << std::endl;
