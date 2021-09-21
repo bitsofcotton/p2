@@ -30,25 +30,23 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  // N.B. R^4 using index, so without index with symmetrize, R^6.
-  //      we use const twice, so at last we use only R^5.
-  // N.B. we needs (status, variable, result) tuple because
-  //      we use invariant form, so we need R^7 on them.
-  const auto stat(8 * 8 * 8);
-  const auto var(7);
+  const auto stat(1331);
+  const auto var(10);
         int  step(1);
   if(argc < 2)
     std::cerr << "catgp <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with catgp " << step << std::endl;
-  P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat) + abs(step), var, abs(step));
-  P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat) + abs(step), var, abs(step));
+  shrinkMatrix<num_t, P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > > p(P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > >(abs(stat) + abs(step), var, abs(step)), abs(step));
+  shrinkMatrix<num_t, P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > q(P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(abs(stat) + abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
+  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    std::cout << (step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
+    const auto D(d * M);
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
