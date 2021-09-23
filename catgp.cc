@@ -37,8 +37,15 @@ int main(int argc, const char* argv[]) {
     std::cerr << "catgp <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with catgp " << step << std::endl;
-  shrinkMatrix<num_t, P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > > p(P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > >(stat, var, abs(step)), abs(step));
-  shrinkMatrix<num_t, P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > q(P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(stat, var, abs(step)), abs(step));
+  std::vector<shrinkMatrix<num_t, P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > > > p;
+  std::vector<shrinkMatrix<num_t, P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > > q;
+  p.reserve(abs(step));
+  q.reserve(abs(step));
+  for(int i = 0; i < abs(step); i ++)
+    if(step < 0)
+      q.emplace_back(shrinkMatrix<num_t, P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >(P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(stat, var, int(pow(2, abs(i)))), int(pow(2, abs(i)))));
+    else
+      p.emplace_back(shrinkMatrix<num_t, P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > >(P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > >(stat, var, int(pow(2, abs(i)))), int(pow(2, abs(i)))));
   std::string s;
   num_t d(0);
   auto  M(d);
@@ -46,7 +53,10 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
+    M = num_t(0);
+    for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++)
+      M += step < 0 ? q[i].next(d) : p[i].next(d);
+    std::cout << D << ", " << M << std::endl << std::flush;
   }
   return 0;
 }
