@@ -1,13 +1,21 @@
+import sys
+import numpy as np
+
+if(len(sys.argv) <= 1 or (sys.argv[1] != 'm' and sys.argv[1] != 'p' and sys.argv[1] != 'h')):
+  print(sys.argv[0], " ", "(m|p|h)", "<n>?")
+  exit(0)
+if(sys.argv[1] == 'h'):
+  for line in sys.stdin:
+    if(len(line.split("[")) <= 1): continue
+    ff = line.split("[")[1].split("]")[0].split(",")
+    for w in ff:
+      print(w)
+    sys.stdout.flush()
+  exit(0)
+
 import mido
 from mido import Message, MidiFile, MidiTrack, MetaMessage
 from PIL import Image
-import subprocess
-import sys
-import random
-import numpy as np
-
-if(sys.argv[1] != 'm' and sys.argv[1] != 'p'):
-  print(argv[0], " ", "(m|p)", "<n>?")
 
 def savePng(ff, ctr):
   sq = int(pow(float(len(ff)), .5))

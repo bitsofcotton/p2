@@ -1,7 +1,6 @@
 import sys
 import io
 import random
-import numpy as np
 
 # mersenne twister:
 rr = random.Random()
@@ -42,60 +41,53 @@ def getrand(mm):
 if(4 < len(sys.argv) and sys.argv[4][0] == 'r'):
   if(int(sys.argv[2]) < 0):
     while(True):
-      print(getrand(int(sys.argv[1])))
-      for idx in range(0, int(sys.argv[3])):
-        getrand(int(sys.argv[1]))
+      s = getrand(int(sys.argv[1]))
+      for idx in range(0, abs(int(sys.argv[3]))):
+        if(int(sys.argv[3]) < 0):
+          s += getrand(int(sys.argv[1]))
+        else:
+               getrand(int(sys.argv[1]))
+      print(s)
       sys.stdout.flush()
   else:
     for idx in range(0, int(sys.argv[2])):
-      print(getrand(int(sys.argv[1])))
-      for idx2 in range(0, int(sys.argv[3])):
-        getrand(int(sys.argv[1]))
-      sys.stdout.flush()
-  exit(0)
-
-t = s = bd = 0
-for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
-  ll = line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1])]
-  if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
-    if(len(sys.argv) < 3):
-      print(ll)
-      sys.stdout.flush()
-      continue
-    elif(0 <= float(sys.argv[2])):
-      d = ifloat(ll) * float(sys.argv[2])
-    else:
-      d = int(ifloat(ll) * abs(float(sys.argv[2])))
-    if(4 < len(sys.argv)):
-      if(sys.argv[4][0] == 'd'):
-        print(d - bd)
-      elif(sys.argv[4][0] == 's'):
-        s += d
-        print(s)
-      elif(sys.argv[4][0] == 'u'):
-        if(d != bd):
-          print(d)
-      elif(sys.argv[4][0] == 'c'):
-        if(bd < 0):
-          print(- d)
+      s = getrand(int(sys.argv[1]))
+      for idx2 in range(0, abs(int(sys.argv[3]))):
+        if(int(sys.argv[3]) < 0):
+          s += getrand(int(sys.argv[1]))
         else:
-          print(  d)
-      elif(sys.argv[4][0] == 'e'):
-        if(d != 0.):
-          print(d)
-      elif(sys.argv[4][0] == 'l'):
-        if(d == 0):
-          print(d)
-        elif(d < 0):
-          print(- np.log(- d + 1.))
-        else:
-          print(  np.log(  d + 1.))
-      elif(sys.argv[4][0] == 'r'):
-        if(bd != 0.):
-          print(d / bd - 1.)
-      bd = d
-    else:
-      print(d)
-  t += 1
-  sys.stdout.flush()
+               getrand(int(sys.argv[1]))
+      print(s)
+      sys.stdout.flush()
+else:
+  t = s = bd = 0
+  for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
+    ll = line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1])]
+    if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
+      if(len(sys.argv) < 3):
+        print(ll)
+        sys.stdout.flush()
+        continue
+      elif(0 <= float(sys.argv[2])):
+        d = ifloat(ll) * float(sys.argv[2])
+      else:
+        d = int(ifloat(ll) * abs(float(sys.argv[2])))
+      if(4 < len(sys.argv)):
+        if(sys.argv[4][0] == 'd'):
+          print(d - bd)
+        elif(sys.argv[4][0] == 's'):
+          s += d
+          print(s)
+        elif(sys.argv[4][0] == 'u'):
+          if(d != bd):
+            print(d)
+        elif(sys.argv[4][0] == 'n'):
+          if(d < 0): print(- 1)
+          elif(0 < d): print(1)
+          else: print(0)
+        bd = d
+      else:
+        print(d)
+      sys.stdout.flush()
+    t += 1
 
