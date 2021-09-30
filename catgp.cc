@@ -18,6 +18,10 @@
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
 #include "../catg/catg.hh"
+typedef P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > plin_pt;
+typedef P012L<num_t, deltaFeeder<num_t, linearFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > patan_pt;
+typedef shrinkMatrix<num_t, plin_pt>  plin_t;
+typedef shrinkMatrix<num_t, patan_pt> patan_t;
 /*
 #if defined(_FLOAT_BITS_)
 #undef int
@@ -37,15 +41,16 @@ int main(int argc, const char* argv[]) {
     std::cerr << "catgp <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with catgp " << step << std::endl;
-  std::vector<shrinkMatrix<num_t, P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > > > p;
-  std::vector<shrinkMatrix<num_t, P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > > q;
-  p.reserve(abs(step));
-  q.reserve(abs(step));
-  for(int i = 0; i < abs(step); i ++)
+  // N.B. we need original and pair-wise to denoise them.
+  std::vector<plin_t>  p;
+  std::vector<patan_t> q;
+  p.reserve(2);
+  q.reserve(2);
+  for(int i = abs(step) - 1; i < abs(step) + 1; i ++)
     if(step < 0)
-      q.emplace_back(shrinkMatrix<num_t, P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >(P012L<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(stat, var, int(pow(2, abs(i)))), int(pow(2, abs(i)))));
+      q.emplace_back(patan_t(patan_pt(stat, var, int(pow(2, abs(i)))), int(pow(2, abs(i)))));
     else
-      p.emplace_back(shrinkMatrix<num_t, P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > >(P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > >(stat, var, int(pow(2, abs(i)))), int(pow(2, abs(i)))));
+      p.emplace_back(plin_t( plin_pt( stat, var, int(pow(2, abs(i)))), int(pow(2, abs(i)))));
   std::string s;
   num_t d(0);
   auto  M(d);
