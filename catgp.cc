@@ -19,7 +19,7 @@
 typedef myfloat num_t;
 #include "../catg/catg.hh"
 typedef P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > plin_pt;
-typedef P012L<num_t, deltaFeeder<num_t, linearFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > patan_pt;
+typedef P012L<num_t, deltaFeeder<num_t, arctanFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > patan_pt;
 typedef shrinkMatrix<num_t, plin_pt>  plin_t;
 typedef shrinkMatrix<num_t, patan_pt> patan_t;
 /*
