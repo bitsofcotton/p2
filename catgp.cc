@@ -52,6 +52,7 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     const auto D(d * M);
     std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
+    if(! isfinite(M)) M = num_t(int(0));
   }
   return 0;
 }

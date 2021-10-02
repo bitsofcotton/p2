@@ -1,6 +1,7 @@
 import sys
 import io
 import random
+import hashlib
 
 # mersenne twister:
 rr = random.Random()
@@ -26,39 +27,73 @@ def getrand(mm):
   global rr, sr
   bw = 0
   # sum up prng nums.
-  if(m % 4 == 0):
+  if(m % 6 == 0):
     bw = rr.uniform(- 1., 1.)
-  elif(m % 4 == 1):
+  elif(m % 6 == 1):
     bw = rr.gauss(0., 1.)
-  elif(m % 4 == 2):
+  elif(m % 6 == 2):
     bw = sr.uniform(- 1., 1.)
-  else:
+  elif(m % 6 == 3):
     bw = sr.gauss(0., 1.)
-  if((m / 4) % 2 == 1):
-    return bw / getrand(abs(m) % 4)
+  elif(m % 6 == 4):
+    bw = rr.randint(0, 255) - 127.5
+  else:
+    bw = sr.randint(0, 255) - 127.5
+  if((m / 6) % 2 == 1):
+    return bw / getrand(abs(m) % 6)
   return bw
 
-if(4 < len(sys.argv) and sys.argv[4][0] == 'r'):
-  if(int(sys.argv[2]) < 0):
-    while(True):
-      s = getrand(int(sys.argv[1]))
-      for idx in range(0, abs(int(sys.argv[3]))):
-        if(int(sys.argv[3]) < 0):
-          s += getrand(int(sys.argv[1]))
-        else:
-               getrand(int(sys.argv[1]))
-      print(s)
-      sys.stdout.flush()
+if(4 < len(sys.argv) and (sys.argv[4][0] == 'r' or sys.argv[4][0] == 'R')):
+  if(sys.argv[4][0] == 'r'):
+    if(int(sys.argv[2]) < 0):
+      while(True):
+        s = getrand(int(sys.argv[1]))
+        for idx in range(0, abs(int(sys.argv[3]))):
+          if(int(sys.argv[3]) < 0):
+            s += getrand(int(sys.argv[1]))
+          else:
+                 getrand(int(sys.argv[1]))
+        print(s)
+        sys.stdout.flush()
+    else:
+      for idx in range(0, int(sys.argv[2])):
+        s = getrand(int(sys.argv[1]))
+        for idx2 in range(0, abs(int(sys.argv[3]))):
+          if(int(sys.argv[3]) < 0):
+            s += getrand(int(sys.argv[1]))
+          else:
+                 getrand(int(sys.argv[1]))
+        print(s)
+        sys.stdout.flush()
   else:
-    for idx in range(0, int(sys.argv[2])):
-      s = getrand(int(sys.argv[1]))
-      for idx2 in range(0, abs(int(sys.argv[3]))):
-        if(int(sys.argv[3]) < 0):
-          s += getrand(int(sys.argv[1]))
-        else:
-               getrand(int(sys.argv[1]))
-      print(s)
-      sys.stdout.flush()
+    if(int(sys.argv[2]) < 0):
+      while(True):
+        a = []
+        for idx in range(0, abs(int(sys.argv[3]))):
+          if(int(sys.argv[1]) == 0):
+            a.append(rr.randint(0, 255))
+          else:
+            a.append(sr.randint(0, 255))
+        m = hashlib.sha256()
+        m.update(bytearray(a))
+        a = m.digest()
+        for byte in a:
+          print(byte - 127.5)
+        sys.stdout.flush()
+    else:
+      for idx in range(0, int(sys.argv[2])):
+        a = []
+        for idx in range(0, abs(int(sys.argv[3]))):
+          if(int(sys.argv[1]) == 0):
+            a.append(rr.randint(0, 255))
+          else:
+            a.append(sr.randint(0, 255))
+        m = hashlib.sha256()
+        m.update(bytearray(a))
+        a = m.digest()
+        for byte in a:
+          print(byte - 127.5)
+        sys.stdout.flush()
 else:
   t = s = bd = 0
   for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
