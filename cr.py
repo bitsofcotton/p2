@@ -116,6 +116,8 @@ else:
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
             print(d)
+        elif(sys.argv[4][0] == 'f'):
+          print(d * bd)
         elif(sys.argv[4][0] == 'n'):
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
