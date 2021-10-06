@@ -50,15 +50,12 @@ int main(int argc, const char* argv[]) {
   patan_t q(patan_pt(stat * abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
-  std::vector<num_t> M;
-  M.resize(abs(step), num_t(int(0)));
+  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto D(d * M[0]);
-    for(int i = 0; i < M.size() - 1; i ++) M[i] = move(M[i + 1]);
-    std::cout << D << ", " << (M[M.size() - 1] = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
-    if(! isfinite(M[M.size() - 1])) M[M.size() - 1] = num_t(int(0));
+    const auto D(d * M);
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
