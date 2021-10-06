@@ -56,7 +56,7 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M[0]);
-    for(int i = 0; i < M.size(); i ++) M[i] = move(M[i + 1]);
+    for(int i = 0; i < M.size() - 1; i ++) M[i] = move(M[i + 1]);
     std::cout << D << ", " << (M[M.size() - 1] = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
     if(! isfinite(M[M.size() - 1])) M[M.size() - 1] = num_t(int(0));
   }
