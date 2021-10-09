@@ -45,9 +45,31 @@ int main(int argc, const char* argv[]) {
     std::cerr << "catgp <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with catgp " << step << std::endl;
-  // N.B. we need original and pair-wise to denoise them.
-  plin_t  p(plin_pt( stat * abs(step), var, abs(step)), abs(step));
-  patan_t q(patan_pt(stat * abs(step), var, abs(step)), abs(step));
+  // N.B. we need to predict with per 2^k ranges.
+  //      the only one predictor with large enough k should work ok, but
+  //      we emphasis the range near the point now.
+  //      this is because the original matrix row average to be
+  //      near the 0 vector nor noise only case.
+  //      in that case, if original matrix size isn't 2^k, we can see
+  //      some vector remains as a categorizable ones.
+  //      the categorizer only categorizes them with var dimension, so
+  //      predictor should returns obscure result, but it is a little
+  //      continuous compared to original ones.
+  vector<plin_t>  p;
+  vector<patan_t> q;
+  if(step < 0) {
+    q.reserve(abs(step));
+    for(int i = 0; i < abs(step); i ++) {
+      const int ss(pow(num_t(int(2)), num_t(int(i))));
+      q.emplace_back(patan_t(patan_pt(stat * ss, var, ss), ss));
+    }
+  } else {
+    p.reserve(abs(step));
+    for(int i = 0; i < abs(step); i ++) {
+      const int ss(pow(num_t(int(2)), num_t(int(i))));
+      p.emplace_back(plin_t(plin_pt(stat * ss, var, ss), ss));
+    }
+  }
   std::string s;
   num_t d(0);
   auto  M(d);
@@ -55,7 +77,10 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
+    M = num_t(int(0));
+    for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++)
+      M += step < 0 ? q[i].next(d) : p[i].next(d);
+    std::cout << D << ", " << M << std::endl << std::flush;
   }
   return 0;
 }
