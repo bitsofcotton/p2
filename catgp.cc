@@ -55,32 +55,46 @@ int main(int argc, const char* argv[]) {
   //      the categorizer only categorizes them with var dimension, so
   //      predictor should returns obscure result, but it is a little
   //      continuous compared to original ones.
-  vector<plin_t>  p;
-  vector<patan_t> q;
+  vector<vector<plin_t> >  p;
+  vector<vector<patan_t> > q;
   if(step < 0) {
-    q.reserve(abs(step));
+    q.emplace_back(vector<patan_t>());
+    q[0].reserve(abs(step));
     for(int i = 0; i < abs(step); i ++) {
       const int ss(pow(num_t(int(2)), num_t(int(i))));
-      q.emplace_back(patan_t(patan_pt(stat * ss, var, ss), ss));
+      q[0].emplace_back(patan_t(patan_pt(stat * ss, var, ss), ss));
     }
+    q.resize(abs(step), q[0]);
   } else {
-    p.reserve(abs(step));
+    p.emplace_back(vector<plin_t>());
+    p[0].reserve(abs(step));
     for(int i = 0; i < abs(step); i ++) {
       const int ss(pow(num_t(int(2)), num_t(int(i))));
-      p.emplace_back(plin_t(plin_pt(stat * ss, var, ss), ss));
+      p[0].emplace_back(plin_t(plin_pt(stat * ss, var, ss), ss));
     }
+    p.resize(abs(step), p[0]);
   }
   std::string s;
   num_t d(0);
-  auto  M(d);
+  vector<num_t> M;
+  M.resize(abs(step), num_t(0));
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto D(d * M);
-    M = num_t(int(0));
-    for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++)
-      M += step < 0 ? q[i].next(d) : p[i].next(d);
-    std::cout << D << ", " << M << std::endl << std::flush;
+    const auto& MM(M[M.size() - 1]);
+    const auto  M0(M);
+    const auto  D(d * MM);
+    for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++) {
+      const auto dd(i ? M0[i - 1] * d : d);
+      M[i] = num_t(int(0));
+      for(int j = 0; j < (step < 0 ? q[i].size() : p[i].size()); j ++)
+        M[i] += step < 0 ? q[i][j].next(dd) : p[i][j].next(dd);
+      M[i] = M[i] < num_t(int(0))
+        ? - pow(- M[i], num_t(int(1)) / num_t(abs(step)))
+        :   pow(  M[i], num_t(int(1)) / num_t(abs(step)));
+      if(i) M[i] *= M[i - 1];
+    }
+    std::cout << D << ", " << MM << std::endl << std::flush;
   }
   return 0;
 }

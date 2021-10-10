@@ -75,7 +75,7 @@ for line in sys.stdin:
     else:
       for w in ff:
         f = tbl[ctr % len(tracks)]
-        if(int(float(w)) < 0):
+        if(float(w) < 0):
           tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
           tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
         else:
@@ -118,7 +118,7 @@ for line in sys.stdin:
       else:
         for w in ffu:
           f = tbl[ctr % len(tracks)]
-          if(int(float(w)) < 0):
+          if(float(w) < 0):
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
           else:
