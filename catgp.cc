@@ -34,10 +34,6 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-/*
-  const auto stat(7 * 7 * 7);
-  const auto var(7);
-*/
   const auto stat(3 * 3 * 3);
   const auto var(3);
         int  step(1);
@@ -45,56 +41,17 @@ int main(int argc, const char* argv[]) {
     std::cerr << "catgp <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with catgp " << step << std::endl;
-  // N.B. we need to predict with per 2^k ranges.
-  //      the only one predictor with large enough k should work ok, but
-  //      we emphasis the range near the point now.
-  //      this is because the original matrix row average to be
-  //      near the 0 vector nor noise only case.
-  //      in that case, if original matrix size isn't 2^k, we can see
-  //      some vector remains as a categorizable ones.
-  //      the categorizer only categorizes them with var dimension, so
-  //      predictor should returns obscure result, but it is a little
-  //      continuous compared to original ones.
-  vector<vector<plin_t> >  p;
-  vector<vector<patan_t> > q;
-  if(step < 0) {
-    q.emplace_back(vector<patan_t>());
-    q[0].reserve(abs(step));
-    for(int i = 0; i < abs(step); i ++) {
-      const int ss(pow(num_t(int(2)), num_t(int(i))));
-      q[0].emplace_back(patan_t(patan_pt(stat * ss, var, ss), ss));
-    }
-    q.resize(abs(step), q[0]);
-  } else {
-    p.emplace_back(vector<plin_t>());
-    p[0].reserve(abs(step));
-    for(int i = 0; i < abs(step); i ++) {
-      const int ss(pow(num_t(int(2)), num_t(int(i))));
-      p[0].emplace_back(plin_t(plin_pt(stat * ss, var, ss), ss));
-    }
-    p.resize(abs(step), p[0]);
-  }
+  // N.B. we need to predict with the step that is larger than input stream.
+  plin_t  p(plin_pt( stat * abs(step), var, abs(step)), abs(step));
+  patan_t q(patan_pt(stat * abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
-  vector<num_t> M;
-  M.resize(abs(step), num_t(0));
+  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-          auto& MM(M[M.size() - 1]);
-    const auto  M0(M);
-    const auto  D(d * MM);
-    for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++) {
-      const auto dd(i ? M0[i - 1] * d : d);
-      M[i] = num_t(int(0));
-      for(int j = 0; j < (step < 0 ? q[i].size() : p[i].size()); j ++)
-        M[i] += step < 0 ? q[i][j].next(dd) : p[i][j].next(dd);
-      if(i) M[i] *= M[i - 1];
-    }
-    MM = MM < num_t(int(0))
-      ? - pow(- MM, num_t(int(1)) / num_t(abs(step)))
-      :   pow(  MM, num_t(int(1)) / num_t(abs(step)));
-    std::cout << D << ", " << MM << std::endl << std::flush;
+    const auto D(d * M);
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
