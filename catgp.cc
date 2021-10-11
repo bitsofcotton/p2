@@ -81,7 +81,7 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto& MM(M[M.size() - 1]);
+          auto& MM(M[M.size() - 1]);
     const auto  M0(M);
     const auto  D(d * MM);
     for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++) {
@@ -89,11 +89,11 @@ int main(int argc, const char* argv[]) {
       M[i] = num_t(int(0));
       for(int j = 0; j < (step < 0 ? q[i].size() : p[i].size()); j ++)
         M[i] += step < 0 ? q[i][j].next(dd) : p[i][j].next(dd);
-      M[i] = M[i] < num_t(int(0))
-        ? - pow(- M[i], num_t(int(1)) / num_t(abs(step)))
-        :   pow(  M[i], num_t(int(1)) / num_t(abs(step)));
       if(i) M[i] *= M[i - 1];
     }
+    MM = MM < num_t(int(0))
+      ? - pow(- MM, num_t(int(1)) / num_t(abs(step)))
+      :   pow(  MM, num_t(int(1)) / num_t(abs(step)));
     std::cout << D << ", " << MM << std::endl << std::flush;
   }
   return 0;
