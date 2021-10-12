@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <assert.h>
+#include <sys/resource.h>
 
 /*
 #if defined(_FLOAT_BITS_)
@@ -47,11 +48,17 @@ int main(int argc, const char* argv[]) {
   std::string s;
   num_t d(0);
   auto  M(d);
+  auto  S(d);
+  struct rusage start, end;
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
+    getrusage(RUSAGE_SELF, &end);
+    const auto tvsec( end.ru_utime.tv_sec  - start.ru_utime.tv_sec);
+    const auto tvusec(end.ru_utime.tv_usec - start.ru_utime.tv_usec);
+    getrusage(RUSAGE_SELF, &start);
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << ", " << (S += D) << ", " << tvsec << ":" << tvusec << std::endl << std::flush;
   }
   return 0;
 }
