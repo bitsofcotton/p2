@@ -20,6 +20,7 @@
 typedef myfloat num_t;
 #include "../catg/catg.hh"
 typedef P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > plin_t;
+typedef P012L<num_t, deltaFeeder<num_t, arctanFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > ptan_t;
 /*
 #if defined(_FLOAT_BITS_)
 #undef int
@@ -39,22 +40,16 @@ int main(int argc, const char* argv[]) {
     std::cerr << argv[0] << " <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with " << argv[0] << " " << step << std::endl;
-  // N.B. we need to predict with the step that is larger than input stream.
-  shrinkMatrix<num_t, plin_t> p(plin_t(stat * abs(step), var, abs(step)), step);
+  shrinkMatrix<num_t, plin_t> p(plin_t(stat * abs(step), var, abs(step)), abs(step));
+  shrinkMatrix<num_t, ptan_t> q(ptan_t(stat * abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
   auto  M(d);
-  auto  S(d);
-  struct rusage start, end;
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    getrusage(RUSAGE_SELF, &end);
-    const auto tvsec( end.ru_utime.tv_sec  - start.ru_utime.tv_sec);
-    const auto tvusec(end.ru_utime.tv_usec - start.ru_utime.tv_usec);
-    getrusage(RUSAGE_SELF, &start);
-    std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << ", " << tvsec << ":" << tvusec << std::endl << std::flush;
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
