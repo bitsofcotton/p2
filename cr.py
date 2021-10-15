@@ -94,7 +94,7 @@ if(4 < len(sys.argv) and (sys.argv[4][0] == 'r' or sys.argv[4][0] == 'R')):
         for byte in a:
           print(byte - 127.5)
         sys.stdout.flush()
-if(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
   t = 0
   for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
     if(t % int(sys.argv[3]) == 0):
