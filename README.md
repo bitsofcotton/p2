@@ -64,7 +64,7 @@ If we predict with some prediction method and bet with them, satistification on 
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
 # Tips:
-./rand n m | ../catg/catgr n0 0 | python high.py | ... | python midoop2.py makes one of the phrase on midi. pngop2 is the same for graphics. (n0 \> n1 \> ...)
+python3 cr.py 1 80 80 R | catgr ... | tail -n ... | python3 op2.py h | ... | python3 op2.py m; only for phrase on rhythm.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

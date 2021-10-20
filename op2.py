@@ -50,10 +50,12 @@ if(sys.argv[1] == 'm'):
     tbl2.append(tbl[(int(len(tbl) / 2) + t) % len(tbl)])
   tbl = tbl2
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
-  for t in range(0, 3):
+  for t in range(0, 1):
     tracks.append(MidiTrack())
     mid.tracks.append(tracks[- 1])
-    tracks[- 1].append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(120)))
+    tracks[- 1].append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
+    # cf. https://ja.wikipedia.org/wiki/General_MIDI
+    tracks[- 1].append(Message('program_change', program = 117))
 
 flg = False
 mA  = []

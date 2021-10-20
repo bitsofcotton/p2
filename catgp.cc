@@ -19,7 +19,7 @@
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
 #include "../catg/catg.hh"
-typedef P012L<num_t, linearFeeder<num_t, idFeeder<num_t> > > plin_t;
+typedef P012L<num_t, idFeeder<num_t> > plin_t;
 /*
 #if defined(_FLOAT_BITS_)
 #undef int
