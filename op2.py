@@ -50,12 +50,12 @@ if(sys.argv[1] == 'm'):
     tbl2.append(tbl[(int(len(tbl) / 2) + t) % len(tbl)])
   tbl = tbl2
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
-  for t in range(0, 1):
+  for t in range(0, 4):
     tracks.append(MidiTrack())
     mid.tracks.append(tracks[- 1])
     tracks[- 1].append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
     # cf. https://ja.wikipedia.org/wiki/General_MIDI
-    tracks[- 1].append(Message('program_change', program = 117))
+    #tracks[- 1].append(Message('program_change', program = 117))
 
 flg = False
 mA  = []
@@ -76,7 +76,8 @@ for line in sys.stdin:
       ctr += 1
     else:
       for w in ff:
-        f = tbl[ctr % len(tracks)]
+        #f = tbl[ctr % len(tracks)]
+        f = tbl[int(abs(float(w))) % len(tbl)]
         if(float(w) < 0):
           tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
           tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
@@ -119,7 +120,8 @@ for line in sys.stdin:
         savePng(ffu, s)
       else:
         for w in ffu:
-          f = tbl[ctr % len(tracks)]
+          #f = tbl[ctr % len(tracks)]
+          f = tbl[int(abs(float(w))) % len(tbl)]
           if(float(w) < 0):
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
