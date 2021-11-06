@@ -45,10 +45,6 @@ if(sys.argv[1] == 'm'):
   #tbl0 = [0, 7, 11]
   for u in range(0, 5 * len(tbl0)):
     tbl.append(64 - 12 * 2 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
-  tbl2 = []
-  for t in range(0, len(tbl)):
-    tbl2.append(tbl[(int(len(tbl) / 2) + t) % len(tbl)])
-  tbl = tbl2
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
   for t in range(0, 4):
     tracks.append(MidiTrack())
@@ -75,9 +71,9 @@ for line in sys.stdin:
       savePng(ff, ctr)
       ctr += 1
     else:
-      for w in ff:
+      for w in ff[1:]:
         #f = tbl[ctr % len(tracks)]
-        f = tbl[int(abs(float(w))) % len(tbl)]
+        f = tbl[int(abs(float(w)) + abs(float(ff[0]))) % len(tbl)]
         if(float(w) < 0):
           tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
           tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
@@ -119,9 +115,9 @@ for line in sys.stdin:
       if(sys.argv[1] == 'p'):
         savePng(ffu, s)
       else:
-        for w in ffu:
+        for w in ffu[1:]:
           #f = tbl[ctr % len(tracks)]
-          f = tbl[int(abs(float(w))) % len(tbl)]
+          f = tbl[int(abs(float(w)) + abs(float(ffu[0]))) % len(tbl)]
           if(float(w) < 0):
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
