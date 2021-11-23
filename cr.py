@@ -118,22 +118,20 @@ else:
         d = int(ifloat(ll) * abs(float(sys.argv[2])))
       if(4 < len(sys.argv)):
         if(sys.argv[4][0] == 'd'):
-          print(d - bd)
+          print(d - bd, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 's'):
           s += d
-          print(s)
+          print(s, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
-            print(d)
-        elif(sys.argv[4][0] == 'f'):
-          print(d * bd)
+            print(d, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'n'):
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
           else: print(0)
         bd = d
       else:
-        print(d)
+        print(d, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
       sys.stdout.flush()
     t += 1
 
