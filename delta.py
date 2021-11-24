@@ -18,7 +18,7 @@ for line in io.open(sys.stdin.fileno(), "rb", closefd = False):
     if(M1 != 0.):
       r1 *= M1 / (M1 + MM1)
     M1 += MM1
-    print(D, ",", r0, ",", r1 * MM1)
+    print(D, ",", r0 * MM0, ",", r0)
   else:
     D   = r0 * MM0 * (d - bd)
     s1 += d - bd
@@ -28,7 +28,7 @@ for line in io.open(sys.stdin.fileno(), "rb", closefd = False):
     if(M0 != 0.):
       r0 *= M0 / (M0 + MM0)
     M0 += MM0
-    print(D, ",", r1, ",", r0 * MM0)
+    print(D, ",", r1 * MM1, ",", r1)
   sys.stdout.flush()
   bd = d
   t += 1

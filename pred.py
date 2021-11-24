@@ -11,6 +11,10 @@ for line in sys.stdin:
 pixels = []
 out = Image.new("RGB", (img[0].size[0], img[0].size[1]), (256, 256, 256))
 m = M = 0.
+def ps(x, p):
+  if(x < 0): return - pow(- x, p)
+  if(0 < x): return   pow(  x, p)
+  return 0.
 for x in range(0, img[0].size[0]):
   pixels.append([])
   for y in range(0, img[0].size[1]):
@@ -34,10 +38,10 @@ for x in range(0, img[0].size[0]):
         pp0 = p0.stdout.readline().decode("utf-8").split(",")
         pp1 = p1.stdout.readline().decode("utf-8").split(",")
         pp2 = p2.stdout.readline().decode("utf-8").split(",")
-        if(float(pp0[2]) != 0 and float(pp1[2]) != 0 and float(pp2[2]) != 0):
-          d = [float(pp0[0]) / float(pp0[2]) / float(pp0[2]),
-               float(pp1[0]) / float(pp1[2]) / float(pp1[2]),
-               float(pp2[0]) / float(pp2[2]) / float(pp2[2])]
+        if(float(pp0[4]) != 0 and float(pp1[4]) != 0 and float(pp2[4]) != 0):
+          d = [ps(float(pp0[1]) * float(pp0[3]), .5) / float(pp0[4]) / 2. + pp[0],
+               ps(float(pp1[1]) * float(pp1[3]), .5) / float(pp1[4]) / 2. + pp[1],
+               ps(float(pp2[1]) * float(pp2[3]), .5) / float(pp2[4]) / 2. + pp[2] ]
         else:
           d = [0, 0, 0]
     p0.stdin.close()
