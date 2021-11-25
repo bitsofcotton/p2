@@ -50,9 +50,12 @@ for x in range(0, w):
         pp2 = p2.stdout.readline().decode("utf-8").split(",")
         if(4 < len(pp0) and 4 < len(pp1) and 4 < len(pp2) and \
            float(pp0[4]) != 0 and float(pp1[4]) != 0 and float(pp2[4]) != 0):
-          d = (ps(float(pp0[1]) * float(pp0[3]), .5) / float(pp0[4]) / 2. + dimg[idx][x][y][0],
-               ps(float(pp1[1]) * float(pp1[3]), .5) / float(pp1[4]) / 2. + dimg[idx][x][y][1],
-               ps(float(pp2[1]) * float(pp2[3]), .5) / float(pp2[4]) / 2. + dimg[idx][x][y][2] )
+          #d = (ps(float(pp0[1]) * float(pp0[3]), .5) / float(pp0[4]) / 2. + dimg[idx][x][y][0],
+          #     ps(float(pp1[1]) * float(pp1[3]), .5) / float(pp1[4]) / 2. + dimg[idx][x][y][1],
+          #     ps(float(pp2[1]) * float(pp2[3]), .5) / float(pp2[4]) / 2. + dimg[idx][x][y][2] )
+          d = (float(pp0[1]) * float(pp0[3]) / float(pp0[4]) / float(pp0[4]) / 2. + dimg[idx][x][y][0],
+               float(pp1[1]) * float(pp1[3]) / float(pp1[4]) / float(pp1[4]) / 2. + dimg[idx][x][y][1],
+               float(pp2[1]) * float(pp2[3]) / float(pp2[4]) / float(pp2[4]) / 2. + dimg[idx][x][y][2] )
         else:
           d = (0, 0, 0)
         if(len(dimg) - idx - 1 < 3):
