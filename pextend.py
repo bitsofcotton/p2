@@ -52,25 +52,24 @@ norm20 = 0.
 for y in range(0, h):
   for x in range(0, w):
     for t in range(0, len(img[x][y])):
-      norm20 += img[x][y][t] * img[x][y][t]
-norm20 /= h
+      norm20 += abs(img[x][y][t])
+norm20 /= h * len(img) / w
 m = 0.
-M = 1.
+M = 255.
+stat = []
 for y in range(h, len(img[0])):
   norm2 = 0.
   for x in range(0, len(img)):
     for t in range(0, len(img[x][y])):
-      norm2 += img[x][y][t] * img[x][y][t]
+      norm2 += abs(img[x][y][t])
   for x in range(0, len(img)):
     for t in range(0, len(img[x][y])):
       img[x][y][t] *= pow(norm20 / norm2, .5)
-      m = min(m, img[x][y][t])
-      M = max(M, img[x][y][t])
 print("P3")
 print(w, " ", len(img[0]))
 print(65535)
 for y in range(0, len(img[0])):
   for x in range(0, w):
     for idx in range(0, 3):
-      print(int(65535 * (img[x][y][idx] - m) / (M - m)))
+      print(int(65535 * max(0., min(1., (img[x][y][idx] - m) / (M - m)))))
 
