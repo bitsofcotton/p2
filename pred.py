@@ -25,11 +25,8 @@ for line in sys.stdin:
   except:
     pass
 pixels = []
-m = M = 0.
-def ps(x, p):
-  if(not np.isfinite(x)): return 0.
-  elif(x < 0): return - pow(- x, p)
-  return pow(x, p)
+m  = 0.
+M  = 1.
 p0 = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 p1 = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 p2 = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -50,9 +47,6 @@ for x in range(0, w):
         pp2 = p2.stdout.readline().decode("utf-8").split(",")
         if(4 < len(pp0) and 4 < len(pp1) and 4 < len(pp2) and \
            float(pp0[4]) != 0 and float(pp1[4]) != 0 and float(pp2[4]) != 0):
-          #d = (ps(float(pp0[1]) * float(pp0[3]), .5) / float(pp0[4]) / 2. + dimg[idx][x][y][0],
-          #     ps(float(pp1[1]) * float(pp1[3]), .5) / float(pp1[4]) / 2. + dimg[idx][x][y][1],
-          #     ps(float(pp2[1]) * float(pp2[3]), .5) / float(pp2[4]) / 2. + dimg[idx][x][y][2] )
           d = (float(pp0[1]) * float(pp0[3]) / float(pp0[4]) / float(pp0[4]) / 2. + dimg[idx][x][y][0],
                float(pp1[1]) * float(pp1[3]) / float(pp1[4]) / float(pp1[4]) / 2. + dimg[idx][x][y][1],
                float(pp2[1]) * float(pp2[3]) / float(pp2[4]) / float(pp2[4]) / 2. + dimg[idx][x][y][2] )
@@ -60,27 +54,18 @@ for x in range(0, w):
           d = (0, 0, 0)
         if(len(dimg) - idx - 1 < 3):
           break
-    print(d)
-    if(np.isfinite(d[0])):
-      M = max(d[0], M)
-      m = min(d[0], m)
-    if(np.isfinite(d[1])):
-      M = max(d[1], M)
-      m = min(d[1], m)
-    if(np.isfinite(d[2])):
-      M = max(d[2], M)
-      m = min(d[2], m)
-    pixels[- 1].append(list(d))
-out = Image.new("RGB", (w, h), (256, 256, 256))
-for x in range(0, w):
-  for y in range(0, h):
+    d = list(d)
+    for t in range(0, len(d)):
+      if(not np.isfinite(d[t])):
+        d[t] = 0.
+      m = min(m, d[t])
+      M = max(M, d[t])
+    pixels[- 1].append(d)
+print("P3")
+print(w, " ", h)
+print(65535)
+for y in range(0, h):
+  for x in range(0, w):
     for idx in range(0, 3):
-      pixels[x][y][idx] -= m
-      if(M == m or not np.isfinite(pixels[x][y][idx])):
-        pixels[x][y][idx]  = 1.
-      else:
-        pixels[x][y][idx] /= M - m
-      pixels[x][y][idx]  = int(255 * pixels[x][y][idx])
-    out.putpixel((x, y), tuple(pixels[x][y]))
-out.save("./pred.png")
+      print(int(65535 * (pixels[x][y][idx] - m) / (M - m)))
 
