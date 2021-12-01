@@ -29,9 +29,8 @@ mid    = MidiFile()
 tracks = []
 if(sys.argv[1] == 'm'):
   tbl0 = [0, 2, 4, 5, 7, 9, 11]
-  #tbl0 = [0, 7, 11]
-  for u in range(0, 5 * len(tbl0)):
-    tbl.append(64 - 12 * 2 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
+  for u in range(0, 2 * len(tbl0)):
+    tbl.append(64 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
   for t in range(0, 4):
     tracks.append(MidiTrack())
@@ -43,7 +42,6 @@ if(sys.argv[1] == 'm'):
 flg = False
 mA  = []
 mC  = []
-ms  = 0
 ctr = 0
 cnt = 0
 ctr = 0
@@ -69,17 +67,10 @@ for line in sys.stdin:
           tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
       ctr += 1
   else:
-    if(ms == 0):
-      ms  = int(np.log(len(ff)) / np.log(2.))
-      while(ms != 0):
-        if(len(ff) < np.exp(ms * np.log(2.))):
-          break
-        ms += 1
-      ms -= 1
-    if(len(mC) < ms):
+    if(len(mC) < len(ff)):
       mC.append(ff)
       continue
-    elif(len(mA) < len(ff) - ms):
+    elif(len(mA) < len(ff)):
       mA.append(ff)
       continue
     for s in range(0, int(sys.argv[2])):
@@ -98,10 +89,16 @@ for line in sys.stdin:
         ffu.append(0.)
         for v in range(0, len(mA[u])):
           ffu[- 1] += float(tt[v]) * float(mA[u][v])
-      print(ffu)
       if(sys.argv[1] == 'p'):
+        print(ffu)
         savePng(ffu, s)
+      elif(sys.argv[1] == 'e'):
+        ffuu = []
+        for w in ffu[1:]:
+          ffuu.append(str(float(w) * float(ffu[0])))
+        print(len(ffuu), ": [", ", ".join(ffuu), "]")
       else:
+        print(ffu)
         for w in ffu[1:]:
           #f = tbl[ctr % len(tracks)]
           f = tbl[int(abs(float(w)) + abs(float(ffu[0]))) % len(tbl)]
@@ -112,6 +109,7 @@ for line in sys.stdin:
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=0, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
         ctr += 1
+      break
 if(sys.argv[1] == 'm'):
   mid.save('rand_correct.mid')
 
