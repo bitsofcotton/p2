@@ -32,7 +32,7 @@ if(sys.argv[1] == 'm'):
   for u in range(0, 2 * len(tbl0)):
     tbl.append(64 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
-  for t in range(0, 4):
+  for t in range(0, 1):
     tracks.append(MidiTrack())
     mid.tracks.append(tracks[- 1])
     tracks[- 1].append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
@@ -56,6 +56,11 @@ for line in sys.stdin:
       savePng(ff, ctr)
       ctr += 1
     else:
+      flg = True
+      for w in ff[1:]:
+        if(float(w) < 0):
+          flg = False
+      if(flg or float(ff[0]) == 0.): continue
       for w in ff[1:]:
         #f = tbl[ctr % len(tracks)]
         f = tbl[int(abs(float(w)) + abs(float(ff[0]))) % len(tbl)]
@@ -99,6 +104,11 @@ for line in sys.stdin:
         print(len(ffuu), ": [", ", ".join(ffuu), "]")
       else:
         print(ffu)
+        flg = True
+        for w in ffu[1:]:
+          if(float(w) < 0):
+            flg = False
+        if(flg or float(ffu[0]) == 0.): continue
         for w in ffu[1:]:
           #f = tbl[ctr % len(tracks)]
           f = tbl[int(abs(float(w)) + abs(float(ffu[0]))) % len(tbl)]
@@ -109,7 +119,6 @@ for line in sys.stdin:
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=0, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
         ctr += 1
-      break
 if(sys.argv[1] == 'm'):
   mid.save('rand_correct.mid')
 
