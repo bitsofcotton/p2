@@ -70,6 +70,8 @@ python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | pytho
 
 N.B. Re-categorize categorized part is same categorize as original with some input threadshold if dimension is the same one.
 
+N.B. we take original/~ as x~rx, r in R.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
