@@ -56,19 +56,14 @@ for line in sys.stdin:
       savePng(ff, ctr)
       ctr += 1
     else:
-      flg = True
-      for w in ff[1:]:
-        if(float(w) < 0):
-          flg = False
-      if(flg or float(ff[0]) == 0.): continue
       for w in ff[1:]:
         #f = tbl[ctr % len(tracks)]
-        f = tbl[int(abs(float(w)) + abs(float(ff[0]))) % len(tbl)]
-        if(float(w) < 0):
+        f = tbl[int(abs(np.arctan(np.tan(float(w)))) + np.arctan(np.tan(abs(float(ff[0])))) * len(tbl)) % len(tbl)]
+        if(0 < float(w)):
           tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
           tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
         else:
-          tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=7, time=0))
+          tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=0, time=0))
           tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
       ctr += 1
   else:
@@ -106,13 +101,13 @@ for line in sys.stdin:
         print(ffu)
         flg = True
         for w in ffu[1:]:
-          if(float(w) < 0):
+          if(w < 0):
             flg = False
         if(flg or float(ffu[0]) == 0.): continue
         for w in ffu[1:]:
           #f = tbl[ctr % len(tracks)]
           f = tbl[int(abs(float(w)) + abs(float(ffu[0]))) % len(tbl)]
-          if(float(w) < 0):
+          if(w < 0):
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=127, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
           else:

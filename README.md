@@ -66,7 +66,7 @@ If we predict with some prediction method and bet with them, satistification on 
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
 # Tips:
-python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e ... | ... | python3 op2.py m ...?; only for phrase on rhythm.
+python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e ... | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 
 N.B. Re-categorize categorized part is same categorize as original with some input threadshold if dimension is the same one.
 
