@@ -61,11 +61,29 @@ for x in range(0, w):
       m = min(m, d[t])
       M = max(M, d[t])
     pixels[- 1].append(d)
+norm20 = 0.
+for y in range(0, h):
+  for t in range(0, len(pixels[- 1][y])):
+    pixels[- 1][y][t] = (pixels[- 1][y][t] - m) / (M - m)
+    norm20 += abs(pixels[- 1][y][t])
+norm21 = norm20
+for x in range(0, w - 1):
+  norm2 = 0.
+  for y in range(0, h):
+    for t in range(0, len(pixels[x][y])):
+      pixels[x][y][t] = (pixels[x][y][t] - m) / (M - m)
+      norm2 += abs(pixels[x][y][t])
+  if(norm2 == 0.): continue
+  for y in range(0, h):
+    for t in range(0, len(pixels[x][y])):
+      pixels[x][y][t] *= norm20 / norm2
+      norm21 += abs(pixels[x][y][t])
+norm21 /= len(pixels) * len(pixels[0])
 print("P3")
 print(w, " ", h)
 print(65535)
 for y in range(0, h):
   for x in range(0, w):
     for idx in range(0, 3):
-      print(int(65535 * (pixels[x][y][idx] - m) / (M - m)))
+      print(int(65535 * pixels[x][y][idx] / norm21))
 
