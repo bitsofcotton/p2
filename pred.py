@@ -2,6 +2,12 @@ import sys
 import subprocess
 from PIL import Image
 import numpy as np
+
+def sgn(x):
+  if(x < 0): return - 1
+  elif(x > 0): return 1
+  return 0
+
 dimg = []
 w = h = 0
 for line in sys.stdin:
@@ -25,11 +31,12 @@ for line in sys.stdin:
   except:
     pass
 pixels = []
-m  = 0.
-M  = 1.
 p0 = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 p1 = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 p2 = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+q0 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+q1 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+q2 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 for x in range(0, w):
   pixels.append([])
   for y in range(0, h):
@@ -41,49 +48,46 @@ for x in range(0, w):
       p0.stdin.flush()
       p1.stdin.flush()
       p2.stdin.flush()
+      if(0 < idx):
+        q0.stdin.write((str(abs(dimg[idx][x][y][0] - dimg[idx - 1][x][y][0])) + "\n").encode("utf-8"))
+        q1.stdin.write((str(abs(dimg[idx][x][y][1] - dimg[idx - 1][x][y][1])) + "\n").encode("utf-8"))
+        q2.stdin.write((str(abs(dimg[idx][x][y][2] - dimg[idx - 1][x][y][2])) + "\n").encode("utf-8"))
+        q0.stdin.flush()
+        q1.stdin.flush()
+        q2.stdin.flush()
       if((idx - 2) % 3 == 0):
         pp0 = p0.stdout.readline().decode("utf-8").split(",")
         pp1 = p1.stdout.readline().decode("utf-8").split(",")
         pp2 = p2.stdout.readline().decode("utf-8").split(",")
+        if(0 < idx):
+          qq0 = q0.stdout.readline().decode("utf-8").split(",")
+          qq1 = q1.stdout.readline().decode("utf-8").split(",")
+          qq2 = q2.stdout.readline().decode("utf-8").split(",")
+        else:
+          qq0 = qq1 = qq2 = 0.
         if(4 < len(pp0) and 4 < len(pp1) and 4 < len(pp2) and \
            float(pp0[4]) != 0 and float(pp1[4]) != 0 and float(pp2[4]) != 0):
-          d = (float(pp0[1]) * float(pp0[3]) / float(pp0[4]) / float(pp0[4]) / 2. + dimg[idx][x][y][0],
-               float(pp1[1]) * float(pp1[3]) / float(pp1[4]) / float(pp1[4]) / 2. + dimg[idx][x][y][1],
-               float(pp2[1]) * float(pp2[3]) / float(pp2[4]) / float(pp2[4]) / 2. + dimg[idx][x][y][2] )
+          d = (sgn(float(pp0[1]) * float(pp0[3]) / float(pp0[4]) / float(pp0[4]) / 2.) * abs(float(qq0[1])) + dimg[idx][x][y][0],
+               sgn(float(pp1[1]) * float(pp1[3]) / float(pp1[4]) / float(pp1[4]) / 2.) * abs(float(qq1[1])) + dimg[idx][x][y][1],
+               sgn(float(pp2[1]) * float(pp2[3]) / float(pp2[4]) / float(pp2[4]) / 2.) * abs(float(qq2[1])) + dimg[idx][x][y][2] )
         else:
           d = (0, 0, 0)
         if(len(dimg) - idx - 1 < 3):
           break
+      elif(0 < idx):
+        q0.stdout.readline()
+        q1.stdout.readline()
+        q2.stdout.readline()
     d = list(d)
     for t in range(0, len(d)):
       if(not np.isfinite(d[t])):
         d[t] = 0.
-      m = min(m, d[t])
-      M = max(M, d[t])
     pixels[- 1].append(d)
-norm20 = 0.
-for y in range(0, h):
-  for t in range(0, len(pixels[- 1][y])):
-    pixels[- 1][y][t] = (pixels[- 1][y][t] - m) / (M - m)
-    norm20 += abs(pixels[- 1][y][t])
-norm21 = norm20
-for x in range(0, w - 1):
-  norm2 = 0.
-  for y in range(0, h):
-    for t in range(0, len(pixels[x][y])):
-      pixels[x][y][t] = (pixels[x][y][t] - m) / (M - m)
-      norm2 += abs(pixels[x][y][t])
-  if(norm2 == 0.): continue
-  for y in range(0, h):
-    for t in range(0, len(pixels[x][y])):
-      pixels[x][y][t] *= norm20 / norm2
-      norm21 += abs(pixels[x][y][t])
-norm21 /= len(pixels) * len(pixels[0])
 print("P3")
 print(w, " ", h)
 print(65535)
 for y in range(0, h):
   for x in range(0, w):
     for idx in range(0, 3):
-      print(int(65535 * pixels[x][y][idx] / norm21))
+      print(max(0, min(65535, int(pixels[x][y][idx] * 256))))
 
