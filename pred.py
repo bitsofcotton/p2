@@ -33,7 +33,6 @@ for line in sys.stdin:
       dimg[- 1][- 1].append(pp)
       qq = (1. / (pp[0] + 1.), 1. / (pp[1] + 1.), 1. / (pp[2] + 1.))
       iimg[- 1][- 1].append(qq)
-pixels = []
 p0 = subprocess.Popen(sys.argv[1:- 1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 p1 = subprocess.Popen(sys.argv[1:- 1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 p2 = subprocess.Popen(sys.argv[1:- 1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -46,9 +45,11 @@ q2 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subproc
 Q0 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 Q1 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 Q2 = subprocess.Popen(["p0", sys.argv[3]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-for x in range(0, w):
-  pixels.append([])
-  for y in range(0, h):
+print("P3")
+print(w, " ", h)
+print(65535)
+for y in range(0, h):
+  for x in range(0, w):
     d0sgn = [0, 0, 0, 0, 0, 0]
     d0abs = [0, 0, 0, 0, 0, 0]
     last  = [0, 0, 0, 0, 0, 0]
@@ -62,7 +63,7 @@ for x in range(0, w):
       nr0 = random.uniform(1. / 256, 1.)
       nr1 = random.uniform(1. / 256, 1.)
       nr2 = random.uniform(1. / 256, 1.)
-      ll  = len(dimg) - (len(dimg) % 3) + 2
+      ll  = len(dimg) - (len(dimg) % 3)
       if(len(dimg) <= ll): ll -= 3
       for idx in range(len(dimg) - ll, len(dimg)):
         p0.stdin.write((str(dimg[idx][x][y][0] * nr0) + "\n").encode("utf-8"))
@@ -137,20 +138,13 @@ for x in range(0, w):
       for idx in range(0, 6):
         d0sgn[idx] += D0sgn[idx]
         d0abs[idx] += D0abs[idx]
-    d = [0, 0, 0]
-    for t in range(0, len(d)):
-      d[t] = sgn(d0sgn[t]) * d0abs[t] / float(sys.argv[- 1]) + last[t]
-      dd   = sgn(d0sgn[t + 3]) * d0abs[t + 3] / float(sys.argv[- 1]) + last[t + 3]
+    for t in range(0, 3):
+      d  = sgn(d0sgn[t]) * d0abs[t] / float(sys.argv[- 1]) + last[t]
+      dd = sgn(d0sgn[t + 3]) * d0abs[t + 3] / float(sys.argv[- 1]) + last[t + 3]
       if(dd != 0.):
-        d[t] = (d[t] + 1. / dd - 1.) / 2.
-      if(not np.isfinite(d[t])):
-        d[t] = 0.
-    pixels[- 1].append(d)
-print("P3")
-print(w, " ", h)
-print(65535)
-for y in range(0, h):
-  for x in range(0, w):
-    for idx in range(0, 3):
-      print(max(0, min(65535, int(pixels[x][y][idx] * 256))))
+        d = (d + 1. / dd - 1.) / 2.
+      if(not np.isfinite(d)):
+        d = 0.
+      print(max(0, min(65535, int(d * 256))))
+    sys.stdout.flush()
 

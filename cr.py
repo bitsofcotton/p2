@@ -96,17 +96,17 @@ if(4 < len(sys.argv) and (sys.argv[4][0] == 'r' or sys.argv[4][0] == 'R')):
         sys.stdout.flush()
 elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
   t = 0
-  for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     if(t % int(sys.argv[3]) == 0):
       pass
     else:
-      print(line.decode("utf-8")[:- 1])
+      print(line[:- 1])
     sys.stdout.flush()
     t += 1
 else:
   t = s = bd = 0
-  for line in io.open(sys.stdin.fileno(), 'rb', closefd = False):
-    ll = line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1])]
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    ll = line[:- 1].split(",")[int(sys.argv[1])]
     if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
       if(len(sys.argv) < 3):
         print(ll)
@@ -118,20 +118,20 @@ else:
         d = int(ifloat(ll) * abs(float(sys.argv[2])))
       if(4 < len(sys.argv)):
         if(sys.argv[4][0] == 'd'):
-          print(d - bd, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+          print(d - bd, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 's'):
           s += d
-          print(s, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+          print(s, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
-            print(d, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+            print(d, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'n'):
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
           else: print(0)
         bd = d
       else:
-        print(d, ",", ", ".join(line.decode("utf-8")[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+        print(d, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
       sys.stdout.flush()
     t += 1
 

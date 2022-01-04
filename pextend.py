@@ -54,7 +54,7 @@ for file in sys.stdin:
         nr0 = random.uniform(1. / 256, 1.)
         nr1 = random.uniform(1. / 256, 1.)
         nr2 = random.uniform(1. / 256, 1.)
-        ll  = h - (h % 3) + 2
+        ll  = h - (h % 3)
         if(h <= ll): ll -= 3
         for idx in range(h - ll, h):
           p0.stdin.write((str(img[x][idx][0] * nr0) + "\n").encode("utf-8"))
