@@ -62,7 +62,9 @@ for x in range(0, w):
       nr0 = random.uniform(1. / 256, 1.)
       nr1 = random.uniform(1. / 256, 1.)
       nr2 = random.uniform(1. / 256, 1.)
-      for idx in range(0, len(dimg)):
+      ll  = len(dimg) - (len(dimg) % 3) + 2
+      if(len(dimg) <= ll): ll -= 3
+      for idx in range(len(dimg) - ll, len(dimg)):
         p0.stdin.write((str(dimg[idx][x][y][0] * nr0) + "\n").encode("utf-8"))
         p1.stdin.write((str(dimg[idx][x][y][1] * nr1) + "\n").encode("utf-8"))
         p2.stdin.write((str(dimg[idx][x][y][2] * nr2) + "\n").encode("utf-8"))
@@ -82,32 +84,36 @@ for x in range(0, w):
           Q0.stdin.write((str(abs(iimg[idx][x][y][0] * nr0 - iimg[idx - 1][x][y][0] * bnr[0])) + "\n").encode("utf-8"))
           Q1.stdin.write((str(abs(iimg[idx][x][y][1] * nr1 - iimg[idx - 1][x][y][1] * bnr[1])) + "\n").encode("utf-8"))
           Q2.stdin.write((str(abs(iimg[idx][x][y][2] * nr2 - iimg[idx - 1][x][y][2] * bnr[2])) + "\n").encode("utf-8"))
-          q0.stdin.flush()
-          q1.stdin.flush()
-          q2.stdin.flush()
-          Q0.stdin.flush()
-          Q1.stdin.flush()
-          Q2.stdin.flush()
+        else:
+          q0.stdin.write(("0\n").encode("utf-8"))
+          q1.stdin.write(("0\n").encode("utf-8"))
+          q2.stdin.write(("0\n").encode("utf-8"))
+          Q0.stdin.write(("0\n").encode("utf-8"))
+          Q1.stdin.write(("0\n").encode("utf-8"))
+          Q2.stdin.write(("0\n").encode("utf-8"))
+        q0.stdin.flush()
+        q1.stdin.flush()
+        q2.stdin.flush()
+        Q0.stdin.flush()
+        Q1.stdin.flush()
+        Q2.stdin.flush()
+        qq0 = q0.stdout.readline().decode("utf-8").split(",")
+        qq1 = q1.stdout.readline().decode("utf-8").split(",")
+        qq2 = q2.stdout.readline().decode("utf-8").split(",")
+        QQ0 = Q0.stdout.readline().decode("utf-8").split(",")
+        QQ1 = Q1.stdout.readline().decode("utf-8").split(",")
+        QQ2 = Q2.stdout.readline().decode("utf-8").split(",")
         bnr  = [nr0, nr1, nr2]
         nr0 = random.uniform(1. / 256, 1.)
         nr1 = random.uniform(1. / 256, 1.)
         nr2 = random.uniform(1. / 256, 1.)
-        if((idx - 2) % 3 == 0):
+        if((idx - 2 - (len(dimg) - ll)) % 3 == 0):
           pp0 = p0.stdout.readline().decode("utf-8").split(",")
           pp1 = p1.stdout.readline().decode("utf-8").split(",")
           pp2 = p2.stdout.readline().decode("utf-8").split(",")
           PP0 = P0.stdout.readline().decode("utf-8").split(",")
           PP1 = P1.stdout.readline().decode("utf-8").split(",")
           PP2 = P2.stdout.readline().decode("utf-8").split(",")
-          if(0 < idx):
-            qq0 = q0.stdout.readline().decode("utf-8").split(",")
-            qq1 = q1.stdout.readline().decode("utf-8").split(",")
-            qq2 = q2.stdout.readline().decode("utf-8").split(",")
-            QQ0 = Q0.stdout.readline().decode("utf-8").split(",")
-            QQ1 = Q1.stdout.readline().decode("utf-8").split(",")
-            QQ2 = Q2.stdout.readline().decode("utf-8").split(",")
-          else:
-            qq0 = qq1 = qq2 = QQ0 = QQ1 = QQ2 = 0.
           if(4 < len(pp0) and 4 < len(pp1) and 4 < len(pp2) and \
              float(pp0[4]) != 0 and float(pp1[4]) != 0 and float(pp2[4]) != 0):
             D0sgn[0] = sgn(float(pp0[1]) * float(pp0[3]))
@@ -128,15 +134,6 @@ for x in range(0, w):
             last[3]  = iimg[idx][x][y][0]
             last[4]  = iimg[idx][x][y][1]
             last[5]  = iimg[idx][x][y][2]
-          if(len(dimg) - idx - 1 < 3):
-            break
-        elif(0 < idx):
-          q0.stdout.readline()
-          q1.stdout.readline()
-          q2.stdout.readline()
-          Q0.stdout.readline()
-          Q1.stdout.readline()
-          Q2.stdout.readline()
       for idx in range(0, 6):
         d0sgn[idx] += D0sgn[idx]
         d0abs[idx] += D0abs[idx]
