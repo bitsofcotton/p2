@@ -40,6 +40,10 @@ for file in sys.stdin:
         img[- 1].append(list(pp))
         qq = (1. / (pp[0] + 1.), 1. / (pp[1] + 1.), 1. / (pp[2] + 1.))
         jmg[- 1].append(list(qq))
+    out = Image.new("RGB", (len(img), len(img[0]) + 1))
+    for x in range(0, w):
+      for y in range(0, h):
+        out.putpixel((x, y), tuple(img[x][y]))
     for x in range(0, w):
       d0sgn = [0, 0, 0, 0, 0, 0]
       d0abs = [0, 0, 0, 0, 0, 0]
@@ -118,6 +122,12 @@ for file in sys.stdin:
               D0abs[4] = abs(float(QQ1[1])) / nr1
               D0abs[2] = abs(float(qq2[1])) / nr2
               D0abs[5] = abs(float(QQ2[1])) / nr2
+              last[0]  = img[x][idx][0]
+              last[1]  = img[x][idx][1]
+              last[2]  = img[x][idx][2]
+              last[3]  = jmg[x][idx][0]
+              last[4]  = jmg[x][idx][1]
+              last[5]  = jmg[x][idx][2]
         for idx in range(0, 6):
           d0sgn[idx] += D0sgn[idx]
           d0abs[idx] += D0abs[idx]
@@ -129,12 +139,7 @@ for file in sys.stdin:
           d[t] = (d[t] + 1. / dd - 1.) / 2.
         if(not np.isfinite(d[t])):
           d[t] = 0.
-      img[x].append(d)
-    out = Image.new("RGB", (len(img), len(img[0])))
-    for x in range(0, len(img)):
-      for y in range(0, len(img[x])):
-        for t in range(0, len(img[x][y])):
-          img[x][y][t] = max(0, min(255, int(img[x][y][t])))
-        out.putpixel((x, y), tuple(img[x][y]))
+        d[t] = max(0, min(255, int(d[t])))
+      out.putpixel((x, h), tuple(d))
     out.save(file[:- 1])
 
