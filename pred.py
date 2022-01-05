@@ -63,9 +63,7 @@ for y in range(0, h):
       nr0 = random.uniform(1. / 256, 1.)
       nr1 = random.uniform(1. / 256, 1.)
       nr2 = random.uniform(1. / 256, 1.)
-      ll  = len(dimg) - (len(dimg) % 3)
-      if(len(dimg) <= ll): ll -= 3
-      for idx in range(len(dimg) - ll, len(dimg)):
+      for idx in range(len(dimg) % 3, len(dimg)):
         p0.stdin.write((str(dimg[idx][x][y][0] * nr0) + "\n").encode("utf-8"))
         p1.stdin.write((str(dimg[idx][x][y][1] * nr1) + "\n").encode("utf-8"))
         p2.stdin.write((str(dimg[idx][x][y][2] * nr2) + "\n").encode("utf-8"))
@@ -108,7 +106,7 @@ for y in range(0, h):
         nr0 = random.uniform(1. / 256, 1.)
         nr1 = random.uniform(1. / 256, 1.)
         nr2 = random.uniform(1. / 256, 1.)
-        if((idx - 2 - (len(dimg) - ll)) % 3 == 0):
+        if((idx - 2 - len(dimg)) % 3 == 0):
           pp0 = p0.stdout.readline().decode("utf-8").split(",")
           pp1 = p1.stdout.readline().decode("utf-8").split(",")
           pp2 = p2.stdout.readline().decode("utf-8").split(",")

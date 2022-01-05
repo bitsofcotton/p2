@@ -54,9 +54,7 @@ for file in sys.stdin:
         nr0 = random.uniform(1. / 256, 1.)
         nr1 = random.uniform(1. / 256, 1.)
         nr2 = random.uniform(1. / 256, 1.)
-        ll  = h - (h % 3)
-        if(h <= ll): ll -= 3
-        for idx in range(h - ll, h):
+        for idx in range(h % 3, h):
           p0.stdin.write((str(img[x][idx][0] * nr0) + "\n").encode("utf-8"))
           p1.stdin.write((str(img[x][idx][1] * nr1) + "\n").encode("utf-8"))
           p2.stdin.write((str(img[x][idx][2] * nr2) + "\n").encode("utf-8"))
@@ -99,7 +97,7 @@ for file in sys.stdin:
           nr0 = random.uniform(1. / 256, 1.)
           nr1 = random.uniform(1. / 256, 1.)
           nr2 = random.uniform(1. / 256, 1.)
-          if((idx - 2 - (h - ll)) % 3 == 0):
+          if((idx - 2 - h) % 3 == 0):
             pp0 = p0.stdout.readline().decode("utf-8").split(",")
             pp1 = p1.stdout.readline().decode("utf-8").split(",")
             pp2 = p2.stdout.readline().decode("utf-8").split(",")
