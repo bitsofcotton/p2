@@ -72,6 +72,14 @@ N.B. Re-categorize categorized part is same categorize as original with some inp
 
 N.B. we take original/~ as x~rx, r in R.
 
+# Tips:
+If the original data series is made by \[x, f(x), f(f(x)), ...\], it shouldn't be markov.
+This is because the form results: \[f(x), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, p0 with 3 step can predict them.
+To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by these.
+
+# Tips:
+If we set larger range on {p0, p1, p2} it becomes non useful in practical experiments. This might be caused by the noise itself, nor, the series made is restricted by the constraints as to be markov, not gaussian.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
