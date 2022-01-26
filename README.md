@@ -80,6 +80,9 @@ To fight with them, there's the series any range on p0 cannot be applied, but av
 # Tips:
 If we set larger range on {p0, p1, p2} it becomes non useful in practical experiments. This might be caused by the noise itself, nor, the series made is restricted by the constraints as to be markov, not gaussian.
 
+# Tips:
+The noise to the {p0, p1, p2} sometimes becomes 2 or more step beyond {p0, p1, p2} prediction.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
