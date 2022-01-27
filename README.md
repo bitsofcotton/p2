@@ -81,7 +81,10 @@ To fight with them, there's the series any range on p0 cannot be applied, but av
 If we set larger range on {p0, p1, p2} it becomes non useful in practical experiments. This might be caused by the noise itself, nor, the series made is restricted by the constraints as to be markov, not gaussian.
 
 # Tips:
-The noise to the {p0, p1, p2} sometimes becomes 2 or more step beyond {p0, p1, p2} prediction.
+Some of PRNGs can be predicted by: catgp <large> | p0 <large>.
+
+# Tips:
+The noise to the {p0, p1, p2} sometimes vanishes inversion on input stream on summation meaning or itself.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

@@ -133,10 +133,6 @@ else:
         elif(sys.argv[4][0] == 'i'):
           if(d == 0): print(0)
           else: print(1. / d)
-        elif(sys.argv[4][0] == 'f'):
-          print(bd * d)
-        elif(sys.argv[4][0] == 'p'):
-          print(bd + d)
         bd = d
       else:
         print(d, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
