@@ -74,8 +74,8 @@ N.B. we take original/~ as x~rx, r in R.
 
 # Tips:
 If the original data series is made by \[x, f(x), f(f(x)), ...\], it shouldn't be markov.
-This is because the form results: \[f(x), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, nor, smaller markov causes: {p0, p1, p2} with 3 step can predict them.
-To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them, can be checked by d.py. But this is the block-wise prediction, so it isn't point-wise prediction.
+This is because the form results: \[f(x+k), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, nor, smaller markov causes: {p0, p1, p2} with 3 step can predict them.
+To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them, can be checked by d.py. But this is the block-wise prediction, so it isn't the point-wise prediction.
 
 # Tips:
 Some of PRNGs can be predicted by: catgp \<large\> | p0 \<large\>.
