@@ -5,9 +5,7 @@ Categorize input stream and predict with them.
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
-delta.py predicts with delta, if original is unpredictable but delta is a little predictable, use this.
-(This is almost always valid but this delta.py doesn't chains for multiple delta but it should chains in ideally.
-The exception occurs when some delta has statistically illegal values, in this case, we should expand feed range.)
+d.py is for wiener.
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], f should be linear because \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\]. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.)
@@ -75,7 +73,7 @@ N.B. we take original/~ as x~rx, r in R.
 # Tips:
 If the original data series is made by \[x, f(x), f(f(x)), ...\], it shouldn't be markov.
 This is because the form results: \[f(x+k), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, nor, smaller markov causes: {p0, p1, p2} with 3 step can predict them.
-To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them, can be checked by d.py. But this is the block-wise prediction, so it isn't the point-wise prediction.
+To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them.
 
 # Tips:
 Some of PRNGs can be predicted by: catgp \<large\> | p0 \<large\>.

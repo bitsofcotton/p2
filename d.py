@@ -2,18 +2,42 @@ import io
 import sys
 import subprocess
 
-p = subprocess.Popen(sys.argv[2:], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-t = M = D = B = S = 0
+def ifloat(x):
+  try:
+    return float(x)
+  except:
+    try:
+      b = x.split("*")
+      return float(b[0]) * pow(2., float(b[1][2:]))
+    except:
+      pass
+  return 0.
+
+p = subprocess.Popen(sys.argv[3:], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+t = M = 0
+H = [0, 0, 0]
+h = [0, 0, 0]
+g = [0, 0, 0]
 for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
-  D += float(line.split(",")[0])
   t += 1
-  if(t % int(sys.argv[1]) == 0):
-    if(B != 0): S += M * (D - B)
-    p.stdin.write((str(D - B) + "\n").encode("utf-8"))
-    p.stdin.flush()
-    M = float(p.stdout.readline().decode("utf-8").split(",")[0])
-    print(S, ",", M)
-    B = D
-    D = t = 0
+  if(t == int(sys.argv[1])):
+    g[- 1] = h[- 1]
+  h[- 1]  = float(line.split(",")[0])
+  H[- 1] += h[- 1]
+  h[- 1] *= int(sys.argv[1])
+  if(t == int(sys.argv[1])):
+    D = M * (H[- 1] - h[- 2] * 2 + g[- 2])
+    if(int(sys.argv[2]) < len(H)):
+      H = H[- int(sys.argv[2]):]
+      h = h[- int(sys.argv[2]):]
+      for tt in range(1, len(H)):
+        p.stdin.write((str(H[tt] - h[tt - 1] - h[- 1] + g[- 1]) + "\n").encode("utf-8"))
+        p.stdin.flush()
+        M = ifloat(p.stdout.readline().decode("utf-8").split(",")[0])
+    print(D, ",", M)
+    H.append(0)
+    h.append(0)
+    g.append(0)
+    t = 0
   sys.stdout.flush()
 
