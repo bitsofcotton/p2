@@ -20,11 +20,12 @@ h = [0, 0, 0]
 g = [0, 0, 0]
 for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
   t += 1
-  if(t == int(sys.argv[1])):
-    g[- 1] = h[- 1]
+  bbd     = g[- 1]
+  g[- 1]  = h[- 1]
   h[- 1]  = float(line.split(",")[0])
   H[- 1] += h[- 1]
   h[- 1] *= int(sys.argv[1])
+  print(M * (h[- 1] - g[- 1] * 2. + bbd), ", ", M)
   if(t == int(sys.argv[1])):
     D = M * (H[- 1] - h[- 2] * 2 + g[- 2])
     if(int(sys.argv[2]) < len(H)):
@@ -34,7 +35,6 @@ for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
         p.stdin.write((str(H[tt] - h[tt - 1] - h[- 1] + g[- 1]) + "\n").encode("utf-8"))
         p.stdin.flush()
         M = ifloat(p.stdout.readline().decode("utf-8").split(",")[0])
-    print(D, ",", M)
     H.append(0)
     h.append(0)
     g.append(0)
