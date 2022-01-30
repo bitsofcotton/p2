@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 import sys
 import subprocess
 import random
@@ -11,7 +12,6 @@ def sgn(x):
 
 p = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 q = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-P = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 for file in sys.stdin:
   for tt in range(0, int(sys.argv[1])):
     img0 = Image.open(file[:- 1])
@@ -32,6 +32,8 @@ for file in sys.stdin:
         qq = (1. / (pp[0] + 1.), 1. / (pp[1] + 1.), 1. / (pp[2] + 1.))
         jmg[- 1].append(list(qq))
     out = Image.new("RGB", (len(img), len(img[0]) + 1))
+    P = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    #P = subprocess.Popen(["p0", str(hh - 2)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     for x in range(0, w):
       for y in range(0, hh):
         out.putpixel((x, y), tuple(img[x][y]))
@@ -72,4 +74,6 @@ for file in sys.stdin:
         dd[k] = max(0, min(255, int(d)))
       out.putpixel((x, hh), tuple(dd))
     out.save(file[:- 1])
+    P.stdin.close()
+    P.kill()
 

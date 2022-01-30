@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 import sys
 import subprocess
 import random
@@ -36,6 +37,7 @@ for line in sys.stdin:
 p = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 q = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 P = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+#P = subprocess.Popen(["p0", str(len(dimg) - 2)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 print("P3")
 print(w, " ", h)
 print(65535)

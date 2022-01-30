@@ -98,6 +98,9 @@ for line in sys.stdin:
         for w in ffu[1:]:
           ffuu.append(str(float(w) * float(ffu[0])))
         print(len(ffuu), ": [", ", ".join(ffuu), "]")
+      elif(sys.argv[1] == 'f'):
+        for w in ffu[1:]:
+          print(float(w) * float(ffu[0]))
       else:
         print(ffu)
         flg = True
