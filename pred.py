@@ -14,7 +14,6 @@ def bits(x, b):
   return float(int(x * pow(2., b)) % 2) - .5
 
 dimg = []
-iimg = []
 w = h = 0
 for line in sys.stdin:
   img = Image.open(line[:- 1])
@@ -24,10 +23,8 @@ for line in sys.stdin:
   h = img.size[1]
   if(w == 0 or h == 0): continue
   dimg.append([])
-  iimg.append([])
   for x in range(0, w):
     dimg[- 1].append([])
-    iimg[- 1].append([])
     for y in range(0, h):
       pp = img.getpixel((x, y))
       if(not isinstance(pp, tuple) or len(pp) <= 1):
@@ -35,8 +32,6 @@ for line in sys.stdin:
       elif(len(pp) < 3):
         pp = (pp[0], pp[1 % len(pp)], pp[2 % len(pp)])
       dimg[- 1][- 1].append(pp)
-      qq = (1. / (pp[0] + 1.), 1. / (pp[1] + 1.), 1. / (pp[2] + 1.))
-      iimg[- 1][- 1].append(qq)
 p = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 q = subprocess.Popen(["p0"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 print("P3")
@@ -51,6 +46,10 @@ for y in range(0, h):
         H = [0, 0, 0]
         h = [0, 0, 0]
         g = [0, 0, 0]
+        for u in range(0, int(3000 / len(dimg)) + 1):
+          for idx in range(0, len(dimg)):
+            S  += bits(dimg[idx][x][y][k] / 256., bit)
+            SS += S
         for idx in range(0, len(dimg)):
           t      += 1
           S      += bits(dimg[idx][x][y][k] / 256., bit)
@@ -62,7 +61,6 @@ for y in range(0, h):
           h[- 1] *= 2
           q.stdin.write((str(M * (h[- 1] - g[- 1] * 2 + bbd)) + "\n").encode("utf-8"))
           q.stdin.flush()
-          d = - M * float(q.stdout.readline().decode("utf-8").split(",")[1])
           if(t == 2):
             H = H[- 5:]
             h = h[- 5:]
@@ -75,6 +73,7 @@ for y in range(0, h):
             h.append(0)
             g.append(0)
             t = 0
+          d = - M * float(q.stdout.readline().decode("utf-8").split(",")[1])
         b /= 2
         if(d > 0):
           b += 1

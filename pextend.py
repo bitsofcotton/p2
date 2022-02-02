@@ -21,10 +21,8 @@ for file in sys.stdin:
     w    = img0.size[0]
     hh   = img0.size[1]
     img  = []
-    jmg  = []
     for x in range(0, w):
       img.append([])
-      jmg.append([])
       for y in range(0, hh):
         pp = img0.getpixel((x, y))
         if(not isinstance(pp, tuple) or len(pp) <= 1):
@@ -32,8 +30,6 @@ for file in sys.stdin:
         elif(len(pp) < 3):
           pp = (pp[0], pp[1 % len(pp)], pp[2 % len(pp)])
         img[- 1].append(list(pp))
-        qq = (1. / (pp[0] + 1.), 1. / (pp[1] + 1.), 1. / (pp[2] + 1.))
-        jmg[- 1].append(list(qq))
     out = Image.new("RGB", (len(img), len(img[0]) + 1))
     for x in range(0, w):
       for y in range(0, hh):
@@ -46,6 +42,10 @@ for file in sys.stdin:
           H = [0, 0, 0]
           h = [0, 0, 0]
           g = [0, 0, 0]
+          for u in range(0, int(3000 / hh) + 1):
+            for idx in range(0, hh):
+              S  += bits(img[x][idx][k] / 256., bit)
+              SS += S
           for idx in range(0, hh):
             t   += 1
             S   += bits(img[x][idx][k] / 256., bit)
@@ -57,7 +57,6 @@ for file in sys.stdin:
             h[- 1] *= 2
             q.stdin.write((str(M * (h[- 1] - g[- 1] * 2 + bbd)) + "\n").encode("utf-8"))
             q.stdin.flush()
-            d = - M * float(q.stdout.readline().decode("utf-8").split(",")[1])
             if(t == 2):
               H = H[- 5:]
               h = h[- 5:]
@@ -70,6 +69,7 @@ for file in sys.stdin:
               h.append(0)
               g.append(0)
               t = 0
+            d = - M * float(q.stdout.readline().decode("utf-8").split(",")[1])
         dd[k] /= 2
         if(d > 0):
           dd[k] += 1
