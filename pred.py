@@ -46,7 +46,7 @@ for y in range(0, h):
         H = [0, 0, 0]
         h = [0, 0, 0]
         g = [0, 0, 0]
-        for u in range(0, int(3000 / len(dimg)) + 1):
+        for u in range(0, int(3000 / len(dimg))):
           for idx in range(0, len(dimg)):
             S  += bits(dimg[idx][x][y][k] / 256., bit)
             SS += S
@@ -74,9 +74,9 @@ for y in range(0, h):
             g.append(0)
             t = 0
           d = - M * float(q.stdout.readline().decode("utf-8").split(",")[1])
-        b /= 2
+        b *= 2
         if(d > 0):
           b += 1
-      print(max(0, min(65535, int(b * 65535))))
+      print(max(0, min(65535, int(b * 255))))
     sys.stdout.flush()
 

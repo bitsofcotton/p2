@@ -42,7 +42,7 @@ for file in sys.stdin:
           H = [0, 0, 0]
           h = [0, 0, 0]
           g = [0, 0, 0]
-          for u in range(0, int(3000 / hh) + 1):
+          for u in range(0, int(3000 / hh)):
             for idx in range(0, hh):
               S  += bits(img[x][idx][k] / 256., bit)
               SS += S
@@ -70,7 +70,7 @@ for file in sys.stdin:
               g.append(0)
               t = 0
             d = - M * float(q.stdout.readline().decode("utf-8").split(",")[1])
-        dd[k] /= 2
+        dd[k] *= 2
         if(d > 0):
           dd[k] += 1
       for k in range(0, 3):
