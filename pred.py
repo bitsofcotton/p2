@@ -56,17 +56,20 @@ for y in range(0, h):
           SS     += S
           bbd     = g[- 1]
           g[- 1]  = h[- 1]
-          h[- 1]  = SS
+          if(int(idx / 2) % 2 == 0):
+            h[- 1] = SS
+          else:
+            h[- 1] = - SS
           H[- 1] += h[- 1]
           h[- 1] *= 2
-          q.stdin.write((str(M * (h[- 1] - h[- 2] * 2 + g[- 2] - (g[- 2] + h[- 3]))) + "\n").encode("utf-8"))
+          q.stdin.write((str(M * (- 2. * (h[- 1] - H[- 1]) - (h[- 2] - g[- 2]))) + "\n").encode("utf-8"))
           q.stdin.flush()
           if(t == 2):
             H = H[- 5:]
             h = h[- 5:]
             g = g[- 5:]
             for tt in range(1, len(H)):
-              p.stdin.write((str(H[tt] - h[tt - 1] - h[- 1] + g[- 1] - g[- 1] + h[- 2]) + "\n").encode("utf-8"))
+              p.stdin.write((str(H[tt] - h[tt - 1] - h[- 1] + g[- 1]) + "\n").encode("utf-8"))
               p.stdin.flush()
               M = float(p.stdout.readline().decode("utf-8").split(",")[1])
             H.append(0)
