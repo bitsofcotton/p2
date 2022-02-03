@@ -66,9 +66,9 @@ for y in range(0, h):
             h = h[- 5:]
             g = g[- 5:]
             for tt in range(1, len(H)):
-              p.stdin.write((str(H[tt] - h[tt - 1] - h[- 1] + g[- 1] + 1.) + "\n").encode("utf-8"))
+              p.stdin.write((str(H[tt] - h[tt - 1] - h[- 1] + g[- 1]) + "\n").encode("utf-8"))
               p.stdin.flush()
-              M = (float(p.stdout.readline().decode("utf-8").split(",")[1]) - 1.) / 2.
+              M = float(p.stdout.readline().decode("utf-8").split(",")[1])
             H.append(0)
             h.append(0)
             g.append(0)
