@@ -39,7 +39,7 @@ for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
       h = h[- int(sys.argv[2]):]
       g = g[- int(sys.argv[2]):]
       for tt in range(1, len(H)):
-        p.stdin.write((str((H[tt] - h[tt - 1]) - (h[- 1] - g[- 1])) + "\n").encode("utf-8"))
+        p.stdin.write((str(2. * (H[tt] - h[tt - 1]) - (h[- 1] - g[- 1])) + "\n").encode("utf-8"))
         p.stdin.flush()
         M = ifloat(p.stdout.readline().decode("utf-8").split(",")[1])
     H.append(0)
