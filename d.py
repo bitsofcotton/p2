@@ -26,9 +26,8 @@ for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
   h[- 1]  = float(line.split(",")[0])
   H[- 1] += h[- 1]
   h[- 1] *= int(sys.argv[1])
-  print(M * (h[- 1] - g[- 1] * 2. + bbd), ", ", M)
+  D       = M * (h[- 1] - g[- 1] * 2. + bbd)
   if(t == int(sys.argv[1])):
-    D = M * (H[- 1] - h[- 2] * 2 + g[- 2])
     if(int(sys.argv[2]) < len(H)):
       H = H[- int(sys.argv[2]):]
       h = h[- int(sys.argv[2]):]
@@ -40,5 +39,6 @@ for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
     h.append(0)
     g.append(0)
     t = 0
+  print(D, ", ", M)
   sys.stdout.flush()
 
