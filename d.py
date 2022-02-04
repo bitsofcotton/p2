@@ -35,7 +35,7 @@ for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
       for v in range(0, 2):
         g[- u - 1]  = h[- u - 1]
         H[- u - 1] += SS
-        h[- u - 1]  = SS
+        h[- u - 1]  = SS * 2.
         S  -= b[- u * 2 - v - 1]
         SS -= S
     D = M * (H[- 1] - h[- 1])
