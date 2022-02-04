@@ -62,14 +62,14 @@ for y in range(0, h):
             h[- 1] = - SS
           H[- 1] += h[- 1]
           h[- 1] *= 2
-          q.stdin.write((str(M * (- 2. * (h[- 1] - H[- 1]) - (h[- 2] - g[- 2]))) + "\n").encode("utf-8"))
+          q.stdin.write((str(M * (H[- 1] - h[- 1] + g[- 2] - H[- 2])) + "\n").encode("utf-8"))
           q.stdin.flush()
           if(t == 2):
             H = H[- 5:]
             h = h[- 5:]
             g = g[- 5:]
             for tt in range(1, len(H)):
-              p.stdin.write((str(- 2. * (H[tt] - h[tt - 1]) - h[- 1] + g[- 1]) + "\n").encode("utf-8"))
+              p.stdin.write((str(H[tt] - h[tt] + g[- 1] - H[- 1]) + "\n").encode("utf-8"))
               p.stdin.flush()
               M = float(p.stdout.readline().decode("utf-8").split(",")[1])
             H.append(0)
