@@ -32,6 +32,7 @@ for line in io.open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False):
     b = b[- int(sys.argv[1]) * 2:]
     S = SS = 0.
     for u in range(0, len(H)):
+      H[- u - 1] = 0.
       for v in range(0, 2):
         g[- u - 1]  = h[- u - 1]
         H[- u - 1] += SS
