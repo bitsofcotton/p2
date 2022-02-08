@@ -41,7 +41,6 @@ if(sys.argv[1] == 'm'):
     #tracks[- 1].append(Message('program_change', program = 117))
 
 flg = False
-mA  = []
 mC  = []
 ctr = 0
 cnt = 0
@@ -71,25 +70,15 @@ for line in sys.stdin:
     if(len(mC) < len(ff)):
       mC.append(ff)
       continue
-    elif(len(mA) < len(ff)):
-      mA.append(ff)
-      continue
-    for s in range(0, int(sys.argv[2])):
-      ff[0] = float(s) / float(sys.argv[2]) * 2. - 1.
-      ff[1] = 1.
-      tt = []
-      for u in range(0, len(mA)):
-        tt.append(np.tan(float(ff[u])))
+    ffu = ff
+    for vvv in range(0, len(ff)):
+      ff  = ffu
+      ffu = []
       for u in range(0, len(mC)):
         buf = 0.
         for v in range(0, len(ff)):
-          buf += float(ff[v]) * float(mC[u][v])
-        tt.append(np.tan(buf))
-      ffu = []
-      for u in range(0, len(mA)):
-        ffu.append(0.)
-        for v in range(0, len(mA[u])):
-          ffu[- 1] += float(tt[v]) * float(mA[u][v])
+          buf += float(ff[v]) * float(mC[u][v]) * 1e4
+        ffu.append(np.tan(buf))
       if(sys.argv[1] == 'p'):
         print(ffu)
         savePng(ffu, s)
@@ -118,6 +107,7 @@ for line in sys.stdin:
             tracks[ctr % len(tracks)].append(Message('note_on',  note=f, velocity=0, time=0))
             tracks[ctr % len(tracks)].append(Message('note_off', note=f, time=120))
         ctr += 1
+    mC = []
 if(sys.argv[1] == 'm'):
   mid.save('rand_correct.mid')
 
