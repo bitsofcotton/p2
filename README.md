@@ -22,10 +22,12 @@ If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it
 
 p0 predicts opposite with some frequency threshold.
 
-p0 returns the matrix size limit to infinity on p1 on C0 condition, because of this, p0 is often stable enough.
+p0 returns the matrix size limit to infinity on p1 or catgp on no statistical illegal value condition, because of this, p0 is often stable enough.
+
+mavg.py predicts with move up or down on probability 0.5 on input stream, this makes re-p0 valid.
 
 # Tips on p1:
-P1 often returns overlearned result, this causes unstable result.
+P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
 
 We can always choose linear invariant if varlen is larger than status block size and data rank is also larger than them. This is because tan(\<a,\[x, f(x)\]\>) == 0 can be rewrited into the form arccos(cos(\<b,\[x, f(x)\]\>*(x_1...f_n\*f(x))^m0)) == abs(\<c,\[x, f(x)\]\>\*(x_1...x_n\*f(x))^m) == epsilon. Which f is F_2^n to F_2 any combination.
 
@@ -72,9 +74,6 @@ N.B. we take original/~ as x~rx, r in R.
 If the original data series is made by \[x, f(x), f(f(x)), ...\], it shouldn't be 1-markov.
 This is because the form results: \[f(x+k), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, nor, smaller markov causes: {p0, p1, p2} with 3 step can predict them.
 To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them but we cannot use them as bet.
-
-# Tips:
-Some of PRNGs can be predicted by: catgp \<large\> | p0 or p0 \<large\>.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
