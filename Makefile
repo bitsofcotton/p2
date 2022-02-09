@@ -15,4 +15,8 @@ catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o catgp32 catgp.cc
+catgp64:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o catgp64 catgp.cc
+catgp128:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=128 -o catgp128 catgp.cc
 

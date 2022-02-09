@@ -74,7 +74,7 @@ This is because the form results: \[f(x+k), ...\] = H A H^t \[x, f(x), ...\], A 
 To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them but we cannot use them as bet.
 
 # Tips:
-Some of PRNGs can be predicted by: catgp \<large\> | p0 \<large\>.
+Some of PRNGs can be predicted by: catgp \<large\> | p0 or p0 \<large\>.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
