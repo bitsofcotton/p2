@@ -24,7 +24,7 @@ p0 predicts opposite with some frequency threshold.
 
 p0 returns the matrix size limit to infinity on p1 or catgp on no statistical illegal value condition, because of this, p0 is often stable enough.
 
-mavg.py predicts with move up or down on probability 0.5 on input stream, this makes re-p0 valid.
+p0 adjust input average into origin point, this makes re-p0 valid but they needs large sample points.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
