@@ -13,30 +13,23 @@ def ifloat(x):
       pass
   return 0.
 
-M = MM = 0
-t = 1
-h = [0]
+M = 0
+h = []
 p = []
-M = []
-for u in range(0, int(sys.argv[1])):
-  p.append(subprocess.Popen(sys.argv[3:], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
-  M.append(0)
+for u in range(0, int(len(sys.argv) - 3)):
+  p.append(subprocess.Popen([sys.argv[2], sys.argv[3 + u]], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
 for line in sys.stdin:
   d = ifloat(line.split(",")[0])
   D = d
-  nM = []
+  M = 1.
   for u in range(0, len(p)):
-    if(0 < u): D *= M[u - 1]
     p[u].stdin.write((str(int(D)) + "\n").encode("utf-8"))
     p[u].stdin.flush()
-    nM.append(ifloat(p[u].stdout.readline().decode("utf-8").split(",")[1]))
-  if(sorted(h)[int(len(h) / 2)] * 2. < abs(MM)): D = 0.
-  M  = nM
-  MM = M[0]
-  for u in range(1, len(M)):
-    MM *= M[u]
-  print(D)
-  h.append(abs(MM))
-  h = h[- int(sys.argv[2]):]
-  t += 1
+    buf  = p[u].stdout.readline().decode("utf-8").split(",")
+    D    = ifloat(buf[0])
+    M   *= ifloat(buf[1])
+  h.append(abs(M))
+  h = h[- int(sys.argv[1]):]
+  if(sorted(h)[int(len(h) / 2)] * 2. < abs(M)): M = 0.
+  print(D, ",", M)
 
