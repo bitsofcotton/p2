@@ -46,13 +46,11 @@ int main(int argc, const char* argv[]) {
   std::string s;
   num_t d(0);
   auto  M(d);
-  auto  MM(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    MM = max(MM, abs(d));
-    std::cout << D << ", " << (M = max(- MM, min(MM, step < 0 ? q.next(d) : p.next(d)))) << std::endl << std::flush;
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
