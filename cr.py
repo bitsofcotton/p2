@@ -15,7 +15,29 @@ def ifloat(x):
   except:
     try:
       b = x.split("*")
-      return float(b[0]) * pow(2., float(b[1][2:]))
+      n = e = 0.
+      tbl = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, \
+        '8': 8, '9': 9, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15, \
+        ' ': -1, '\t': -1, '-': 16}
+      m = False
+      for ff in b[0]:
+        if(tbl[ff] < 0): continue
+        if(tbl[ff] == 16):
+          m = True
+          continue
+        n *= 16
+        n += tbl[ff]
+      if(m): n = - n
+      m = False
+      for ff in b[1][2:]:
+        if(tbl[ff] < 0): continue
+        if(tbl[ff] == 16):
+          m = True
+          continue
+        e *= 16
+        e += tbl[ff]
+      if(m): e = - e
+      return n * pow(2., e)
     except:
       pass
   return 0.
