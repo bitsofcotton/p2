@@ -81,7 +81,8 @@ for line in sys.stdin:
         ffu.append(np.tan(buf))
       if(sys.argv[1] == 'p'):
         print(ffu)
-        savePng(ffu, s)
+        savePng(ffu, ctr)
+        ctr += 1
       elif(sys.argv[1] == 'e'):
         ffuu = []
         for w in ffu[1:]:
