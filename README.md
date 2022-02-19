@@ -5,6 +5,9 @@ Categorize input stream and predict with them.
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
+# Known Bug
+If we use cr.py or twice.py with ifloat.hh description, we should pass the parameter reasonable, otherwise, periodical clipping will occur causes broken result.
+
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], we can suppose f as a linear with \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\] if (some range)-markov with below and the finite accuracy condition. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.) The dimension of a vector depends on original f nonlinear part threshold.
 
@@ -18,13 +21,9 @@ If we predict with p0, what we treat L2(R) is this hyperbolic cosine and hyperbo
 If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
 
 # Tips on p0:
-If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it's not C_0. Even integrate on them either. In this case, please transfer some original points distribution into arctan projected ones.
-
-p0 predicts opposite with some frequency threshold.
+If there exists ||f|\_(&lt; x_0)||&lt;|&Delta;f(x_0)| gulf or similar things, it's not C_0 even in integrate on them either. In this case, the prediction fails on the point near them, but otherwise, we can predict a.e. .
 
 p0 returns the matrix size limit to infinity on p1 or catgp on no statistical illegal value condition, because of this, p0 is often stable enough.
-
-p0 adjust input average into origin point, this makes re-p0 valid but they needs large sample points.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
@@ -73,7 +72,7 @@ N.B. we take original/~ as x~rx, r in R.
 # Tips:
 If the original data series is made by \[x, f(x), f(f(x)), ...\], it shouldn't be 1-markov.
 This is because the form results: \[f(x+k), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, nor, smaller markov causes: {p0, p1, p2} with 3 step can predict them.
-To fight with them, there's the series any range on p0 cannot be applied, but average some range, there exists probability based way on them, so if the probability is const. some range exists to be predicted by them but we cannot use them as bet.
+But with some inner status addition condition, the original f will be large enough n with n-markov.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

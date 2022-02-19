@@ -42,6 +42,12 @@ def ifloat(x):
       pass
   return 0.
 
+def ifloatout(x, flag):
+  if(not flag): return str(x)
+  b = hex(int(x))
+  if(b[0] == '-'): return b[0] + b[3:] + "*2^0"
+  return b[2:] + "*2^0"
+
 def getrand(mm):
   m = abs(mm)
   # if mm < 0, shuffles random methods.
@@ -131,6 +137,7 @@ else:
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     ll = line[:- 1].split(",")[int(sys.argv[1])]
     if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
+      fint = False
       if(len(sys.argv) < 3):
         print(ll)
         sys.stdout.flush()
@@ -139,25 +146,26 @@ else:
         d = ifloat(ll) * float(sys.argv[2])
       else:
         d = int(ifloat(ll) * abs(float(sys.argv[2])))
+        fint = True
       if(4 < len(sys.argv)):
         if(sys.argv[4][0] == 'd'):
-          print(d - bd, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+          print(ifloatout(d - bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 's'):
           s += d
-          print(s, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+          print(ifloatout(s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
-            print(d, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+            print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'n'):
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
           else: print(0)
         elif(sys.argv[4][0] == 'i'):
           if(d == 0): print(0)
-          else: print(1. / d)
+          else: print(ifloatout(1. / d, fint))
         bd = d
       else:
-        print(d, ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+        print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
       sys.stdout.flush()
     t += 1
 
