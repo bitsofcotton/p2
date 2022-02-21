@@ -43,10 +43,10 @@ def ifloat(x):
   return 0.
 
 def ifloatout(x, flag):
-  if(not flag): return str(x)
-  b = hex(int(x))
-  if(b[0] == '-'): return b[0] + b[3:] + "*2^0"
-  return b[2:] + "*2^0"
+  if(flag < 0): return str(x)
+  b = hex(int(x * pow(2., flag)))
+  if(b[0] == '-'): return b[0] + b[3:] + "*2^-" + str(hex(int(flag)))
+  return b[2:] + "*2^-" + str(hex(int(flag)))
 
 def getrand(mm):
   m = abs(mm)
@@ -137,7 +137,7 @@ else:
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     ll = line[:- 1].split(",")[int(sys.argv[1])]
     if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
-      fint = False
+      fint = - 1
       if(len(sys.argv) < 3):
         print(ll)
         sys.stdout.flush()
@@ -145,8 +145,8 @@ else:
       elif(0 <= float(sys.argv[2])):
         d = ifloat(ll) * float(sys.argv[2])
       else:
-        d = int(ifloat(ll) * abs(float(sys.argv[2])))
-        fint = True
+        d = ifloat(ll)
+        fint = abs(float(sys.argv[2]))
       if(4 < len(sys.argv)):
         if(sys.argv[4][0] == 'd'):
           print(ifloatout(d - bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
