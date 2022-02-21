@@ -45,8 +45,8 @@ def ifloat(x):
 def ifloatout(x, flag):
   if(flag < 0): return str(x)
   b = hex(int(x * pow(2., flag)))
-  if(b[0] == '-'): return b[0] + b[3:] + "*2^-" + str(hex(int(flag)))
-  return b[2:] + "*2^-" + str(hex(int(flag)))
+  if(b[0] == '-'): return b[0] + b[3:] + "*2^-" + hex(int(flag))[2:]
+  return b[2:] + "*2^-" + hex(int(flag))[2:]
 
 def getrand(mm):
   m = abs(mm)
