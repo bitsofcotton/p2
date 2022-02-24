@@ -166,6 +166,8 @@ else:
         elif(sys.argv[4][0] == 'L'):
           if(bd == 0): print(ifloatout(0, fint))
           else: print(ifloatout(d / bd - 1., fint))
+        elif(sys.argv[4][0] == 'f'):
+          print(ifloatout(d * bd, fint))
         bd = d
       else:
         print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))

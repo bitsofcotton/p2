@@ -21,9 +21,9 @@ If we predict with p0, what we treat L2(R) is this hyperbolic cosine and hyperbo
 If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
 
 # Tips on p0:
-If the prediction doesn't better at all, we should input the stream with some ratio multiplied and needs large accuracy, this is because of arctan function.
-
 p0 returns the matrix size limit to infinity on p1 or catgp on no statistical illegal value condition, because of this, p0 is often stable enough.
+
+p0 only predicts 1~3 markov stream, so larger markov, please blend the stream with p1, catgp first.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
