@@ -23,7 +23,7 @@ If we predict with p1, it depends f(x)'s complexity on status bit, if we average
 # Tips on p0:
 p0 returns the matrix size limit to infinity on p1 or catgp on no statistical illegal value condition, because of this, p0 is often stable enough.
 
-p0 only predicts 1~3 markov stream, so larger markov, please blend the stream with p1, catgp first.
+p0 only predicts 1~3 markov stream, but with imitate.py with a little hack, we are able to a little predict sign bit without absolute values.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
