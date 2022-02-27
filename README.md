@@ -17,7 +17,6 @@ Converting monotone nonlinear function causes some taylor coefficients conversio
 With 2^x:=\[1,x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\] form, the operation 'and' and 'not' can be described as each taylor series that is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.  
 With this, randtools's counter diagonal method concludes the structure of f(...f(y)...) =: f^x(y) is Sum exp(a_k(y)\*x) = Sum cis(i\*a_k(y)\*x) = Sum cos(i\*a_k(y)\*x) + i \* sin(i\*a_k(y)\*x) (== cosh(a_k(y)\*x)+sinh(a_k(y)\*x)).
 
-If we predict with p0, what we treat L2(R) is this hyperbolic cosine and hyperbolic sine value with some coefficient.
 If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
 
 # Tips on p1:
