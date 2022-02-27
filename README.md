@@ -20,11 +20,6 @@ With this, randtools's counter diagonal method concludes the structure of f(...f
 If we predict with p0, what we treat L2(R) is this hyperbolic cosine and hyperbolic sine value with some coefficient.
 If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
 
-# Tips on p0:
-p0 returns the matrix size limit to infinity on p1 or catgp on no statistical illegal value condition, because of this, p0 is often stable enough.
-
-p0 only predicts 1~3 markov stream, but with imitate.py with a little hack, we are able to a little predict sign bit without absolute values.
-
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
 
@@ -69,12 +64,7 @@ N.B. Re-categorize categorized part is same categorize as original with some inp
 
 N.B. we take original/~ as x~rx, r in R.
 
-# Tips:
-If the original data series is made by \[x, f(x), f(f(x)), ...\], it shouldn't be 1-markov.
-This is because the form results: \[f(x+k), ...\] = H A H^t \[x, f(x), ...\], A is tri-diagonal. So if there's no noise H matrix nor average them, nor, smaller markov causes: {p0, p1, p2} with 3 step can predict them.
-But with some inner status addition condition, the original f will be large enough n with n-markov.
-
-# Another Download Sites
+# Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
