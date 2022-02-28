@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import sys
 import io
+import numpy
 import random
 import hashlib
 
@@ -171,6 +172,12 @@ else:
         elif(sys.argv[4][0] == 'c'):
           print(bd + d)
           print(d  + d)
+        elif(sys.argv[4][0] == 'e'):
+          print(ifloatout(numpy.exp(d) - 1., fint))
+        elif(sys.argv[4][0] == 'E'):
+          if(d < 0): print(ifloatout(- numpy.exp(- d) - 1., fint))
+          elif(0 < d): print(ifloatout(numpy.exp(  d) - 1., fint))
+          else: print(ifloatout(0, fint))
         bd = d
       else:
         print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
