@@ -162,8 +162,11 @@ else:
           elif(0 < d): print(1)
           else: print(0)
         elif(sys.argv[4][0] == 'c'):
-          print(bd + d)
-          print(d  + d)
+          print(d / 3.)
+          print(d * 2. / 3.)
+          print(d)
+          print(d * 2. / 3.)
+          print(d / 3.)
         bd = d
       else:
         print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
