@@ -161,6 +161,9 @@ else:
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
           else: print(0)
+        elif(sys.argv[4][0] == 'i'):
+          if(d != 0): print(ifloatout(1. / d, fint))
+          else: print(ifloatout(0, fint))
         elif(sys.argv[4][0] == 'L'):
           if(bd != 0.): print(ifloatout(d / bd - 1., fint))
         elif(sys.argv[4][0] == 'c'):
