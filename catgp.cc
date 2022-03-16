@@ -34,7 +34,7 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   const auto stat(7 * 7 * 7);
   const auto var(7);
-        int  step(1);
+        int  step(4);
   if(argc < 2)
     std::cerr << argv[0] << " <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
