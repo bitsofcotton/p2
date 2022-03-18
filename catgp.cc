@@ -32,8 +32,8 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  const auto stat(7 * 7 * 7);
-  const auto var(7);
+  const auto stat(3 * 3 * 3);
+  const auto var(3);
         int  step(4);
   if(argc < 2)
     std::cerr << argv[0] << " <step>?" << std::endl;
