@@ -20,7 +20,7 @@ With this, randtools's counter diagonal method concludes the structure of f(...f
 If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
 
 # Tips on p0:
-P0 still needs f(x) and status with ordered in R manner. So non-ordered input, we should multiple of logscale input into catgp, p1 then feed expscale output into p0 causes some of ordered one.
+P0 still needs f(x) and status with ordered in R manner. So non-ordered input, we should multiple of logscale input into catgp, p1 then feed multiple of expscale output into p0 causes some of ordered one. But with the prediction below, if there's unseen status appeares and structure changes (s.t. some of inner status causes looks like reseed), the status length is not enough and prediction fails.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
