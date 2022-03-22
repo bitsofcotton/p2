@@ -167,22 +167,18 @@ else:
         elif(sys.argv[4][0] == 'L'):
           if(bd != 0.): print(ifloatout(d / bd - 1., fint))
         elif(sys.argv[4][0] == 'l'):
-          if(d < 0): print(ifloatout(- numpy.log(- d + 1.), fint))
-          elif(0 < d): print(ifloatout(numpy.log(  d + 1.), fint))
+          if(abs(d) < 1.): exit(- 1)
+          if(d < 0): print(ifloatout(- numpy.log(- d), fint))
+          elif(0 < d): print(ifloatout(numpy.log(  d), fint))
           else: print(ifloatout(0, fint))
         elif(sys.argv[4][0] == 'e'):
-          if(d < 0): print(ifloatout(- numpy.exp(- d) + 1., fint))
-          elif(0 < d): print(ifloatout(numpy.exp(  d) - 1., fint))
+          if(d < 0): print(ifloatout(- numpy.exp(- d), fint))
+          elif(0 < d): print(ifloatout(numpy.exp(  d), fint))
           else: print(ifloatout(0, fint))
         elif(sys.argv[4][0] == 'c'):
-          print(ifloatout(0, fint))
-          print(ifloatout(d / pow(2, .5), fint))
+          print(ifloatout(d / 2., fint))
           print(ifloatout(d, fint))
-          print(ifloatout(d / pow(2, .5), fint))
-          print(ifloatout(0, fint))
-          print(ifloatout(- d / pow(2, .5), fint))
-          print(ifloatout(- d, fint))
-          print(ifloatout(- d / pow(2, .5), fint))
+          print(ifloatout(d / 2., fint))
         bd = d
       else:
         print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
