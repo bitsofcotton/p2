@@ -51,11 +51,15 @@ for line in sys.stdin:
   if(len(line.split("[")) <= 1): continue
   ff = line.split("[")[1].split("]")[0].split(",")
   if(len(sys.argv) <= 2):
-    print(ff)
     if(sys.argv[1] == 'p'):
+      print(ff)
       savePng(ff, ctr)
       ctr += 1
+    elif(sys.argv[1] == 'f'):
+      for w in ff[1:]:
+        print(float(w) * float(ff[0]))
     else:
+      print(ff)
       for w in ff[1:]:
         #f = tbl[ctr % len(tracks)]
         f = tbl[int(abs(np.arctan(np.tan(float(w)))) + np.arctan(np.tan(abs(float(ff[0])))) * len(tbl)) % len(tbl)]
