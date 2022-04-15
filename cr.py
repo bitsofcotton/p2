@@ -151,6 +151,8 @@ else:
       if(4 < len(sys.argv)):
         if(sys.argv[4][0] == 'd'):
           print(ifloatout(d - bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+        elif(sys.argv[4][0] == 'p'):
+          print(ifloatout(d + bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 's'):
           s += d
           print(ifloatout(s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
@@ -161,6 +163,21 @@ else:
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
           else: print(0)
+        elif(sys.argv[4][0] == 'i'):
+          if(d != 0): print(ifloatout(1. / d, fint))
+          else: print(ifloatout(0, fint))
+        elif(sys.argv[4][0] == 'l'):
+          if(abs(d) < 1.): exit(- 1)
+          if(d < 0): print(ifloatout(- numpy.log(- d), fint))
+          elif(0 < d): print(ifloatout(numpy.log(  d), fint))
+          else: print(ifloatout(0, fint))
+        elif(sys.argv[4][0] == 'e'):
+          if(d < 0): print(ifloatout(- numpy.exp(- d), fint))
+          elif(0 < d): print(ifloatout(numpy.exp(  d), fint))
+          else: print(ifloatout(0, fint))
+        elif(sys.argv[4][0] == 'c'):
+          print(ifloatout(d + bd, fint))
+          print(ifloatout(d +  d, fint))
         bd = d
       else:
         print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
