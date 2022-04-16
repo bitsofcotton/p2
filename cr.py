@@ -73,57 +73,65 @@ def getrand(mm):
     return bw / getrand(abs(m) % 6)
   return bw
 
-if(4 < len(sys.argv) and (sys.argv[4][0] == 'r' or sys.argv[4][0] == 'R')):
-  if(sys.argv[4][0] == 'r'):
-    if(int(sys.argv[2]) < 0):
-      while(True):
-        s = getrand(int(sys.argv[1]))
-        for idx in range(0, abs(int(sys.argv[3]))):
-          if(int(sys.argv[3]) < 0):
-            s += getrand(int(sys.argv[1]))
-          else:
-                 getrand(int(sys.argv[1]))
-        print(s)
-        sys.stdout.flush()
-    else:
-      for idx in range(0, int(sys.argv[2])):
-        s = getrand(int(sys.argv[1]))
-        for idx2 in range(0, abs(int(sys.argv[3]))):
-          if(int(sys.argv[3]) < 0):
-            s += getrand(int(sys.argv[1]))
-          else:
-                 getrand(int(sys.argv[1]))
-        print(s)
-        sys.stdout.flush()
+if(4 < len(sys.argv) and sys.argv[4][0] == 'r'):
+  if(int(sys.argv[2]) < 0):
+    while(True):
+      s = getrand(int(sys.argv[1]))
+      for idx in range(0, abs(int(sys.argv[3]))):
+        if(int(sys.argv[3]) < 0):
+          s += getrand(int(sys.argv[1]))
+        else:
+               getrand(int(sys.argv[1]))
+      print(s)
+      sys.stdout.flush()
   else:
-    if(int(sys.argv[2]) < 0):
-      while(True):
-        a = []
-        for idx in range(0, abs(int(sys.argv[3]))):
-          if(int(sys.argv[1]) == 0):
-            a.append(rr.randint(0, 255))
-          else:
-            a.append(sr.randint(0, 255))
-        m = hashlib.sha256()
-        m.update(bytearray(a))
-        a = m.digest()
-        for byte in a:
-          print(byte - 127.5)
-        sys.stdout.flush()
+    for idx in range(0, int(sys.argv[2])):
+      s = getrand(int(sys.argv[1]))
+      for idx2 in range(0, abs(int(sys.argv[3]))):
+        if(int(sys.argv[3]) < 0):
+          s += getrand(int(sys.argv[1]))
+        else:
+               getrand(int(sys.argv[1]))
+      print(s)
+      sys.stdout.flush()
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'R'):
+  if(int(sys.argv[2]) < 0):
+    while(True):
+      a = []
+      for idx in range(0, abs(int(sys.argv[3]))):
+        if(int(sys.argv[1]) == 0):
+          a.append(rr.randint(0, 255))
+        else:
+          a.append(sr.randint(0, 255))
+      m = hashlib.sha256()
+      m.update(bytearray(a))
+      a = m.digest()
+      for byte in a:
+        print(byte - 127.5)
+      sys.stdout.flush()
+  else:
+    for idx in range(0, int(sys.argv[2])):
+      a = []
+      for idx in range(0, abs(int(sys.argv[3]))):
+        if(int(sys.argv[1]) == 0):
+          a.append(rr.randint(0, 255))
+        else:
+          a.append(sr.randint(0, 255))
+      m = hashlib.sha256()
+      m.update(bytearray(a))
+      a = m.digest()
+      for byte in a:
+        print(byte - 127.5)
+      sys.stdout.flush()
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'S'):
+  t = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    if(t < int(sys.argv[3])):
+      pass
     else:
-      for idx in range(0, int(sys.argv[2])):
-        a = []
-        for idx in range(0, abs(int(sys.argv[3]))):
-          if(int(sys.argv[1]) == 0):
-            a.append(rr.randint(0, 255))
-          else:
-            a.append(sr.randint(0, 255))
-        m = hashlib.sha256()
-        m.update(bytearray(a))
-        a = m.digest()
-        for byte in a:
-          print(byte - 127.5)
-        sys.stdout.flush()
+      print(line[:- 1])
+    sys.stdout.flush()
+    t += 1
 elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
   t = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -151,8 +159,6 @@ else:
       if(4 < len(sys.argv)):
         if(sys.argv[4][0] == 'd'):
           print(ifloatout(d - bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 'p'):
-          print(ifloatout(d + bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 's'):
           s += d
           print(ifloatout(s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
@@ -163,21 +169,9 @@ else:
           if(d < 0): print(- 1)
           elif(0 < d): print(1)
           else: print(0)
-        elif(sys.argv[4][0] == 'i'):
-          if(d != 0): print(ifloatout(1. / d, fint))
-          else: print(ifloatout(0, fint))
-        elif(sys.argv[4][0] == 'l'):
-          if(abs(d) < 1.): exit(- 1)
-          if(d < 0): print(ifloatout(- numpy.log(- d), fint))
-          elif(0 < d): print(ifloatout(numpy.log(  d), fint))
-          else: print(ifloatout(0, fint))
-        elif(sys.argv[4][0] == 'e'):
-          if(d < 0): print(ifloatout(- numpy.exp(- d), fint))
-          elif(0 < d): print(ifloatout(numpy.exp(  d), fint))
-          else: print(ifloatout(0, fint))
-        elif(sys.argv[4][0] == 'c'):
-          print(ifloatout(d + bd, fint))
-          print(ifloatout(d +  d, fint))
+        elif(sys.argv[4][0] == 'L'):
+          if(s != 0): print(ifloatout(d / s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+          s += d
         bd = d
       else:
         print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
