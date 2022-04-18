@@ -63,6 +63,9 @@ Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but th
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
+# Tips on beat.py
+If original stream nor some prng is jammed state, with applying beat.py for original predictor twice might sometimes gain better result.
+
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e ... | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 
