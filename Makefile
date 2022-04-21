@@ -10,8 +10,8 @@ CXXFLAGS+=	-Oz -mtune=native -gfull
 LDFLAGS+=	-lc++
 
 clean:
-	@rm -rf catgp catgp32
-all:	catgp catgp32
+	@rm -rf catgp catgp32 rand
+all:	catgp catgp32 rand
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -20,4 +20,8 @@ catgp64:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o catgp64 catgp.cc
 catgp128:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=128 -o catgp128 catgp.cc
+rand:
+	${CXX} ${CXXFLAGS} -static -o rand rand.cc
+rand32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o rand32 rand.cc
 

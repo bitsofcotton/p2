@@ -48,17 +48,18 @@ int main(int argc, const char* argv[]) {
   auto  dd(d);
   auto  Mx(d);
   auto  M(d);
+  auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
     dd += d;
     if(++ t < abs(var)) {
-      std::cout << D << ", " << M << std::endl << std::flush;
+      std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
       continue;
     }
     Mx = max(Mx, abs(dd) * num_t(int(2)));
-    std::cout << D << ", " << (M = max(- Mx, min(Mx, var < 0 ? q.next(dd) : p.next(dd) )) ) << std::endl << std::flush;
+    std::cout << D << ", " << (M = max(- Mx, min(Mx, var < 0 ? q.next(dd) : p.next(dd) )) ) << ", " << (S += D) << std::endl << std::flush;
     dd = num_t(t ^= t);
   }
   return 0;
