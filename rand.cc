@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <assert.h>
+#include <random>
 #include <sys/resource.h>
 
 /*
@@ -34,11 +35,24 @@ int main(int argc, const char* argv[]) {
   if(argc <= 1) std::cerr << argv[0] << " <method>? : continue with ";
   if(1 < argc) method = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << method << std::endl;
+  std::random_device rd;
+  std::mt19937_64 mt(rd());
+  std::knuth_b kb(rd());
+  std::ranlux48 rl48(rd());
   num_t d(int(0));
   while(true) {
     switch(method) {
     case 0:
-      d = num_t(int(arc4random_uniform(0x80001))) / num_t(int(0x40000)) - num_t(int(1));
+      d = num_t(arc4random() & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    case 1:
+      d = num_t(int(mt()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    case 2:
+      d = num_t(int(kb()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    case 3:
+      d = num_t(int(rl48()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
       break;
     default:
       assert(0 && "Should not be reached.");
