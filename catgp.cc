@@ -54,7 +54,7 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     const auto D(d * M);
     dd += d;
-    if(++ t < 2 * var * var) {
+    if(++ t < abs(var)) {
       std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
       continue;
     }
