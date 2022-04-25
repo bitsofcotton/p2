@@ -24,4 +24,8 @@ rand:
 	${CXX} ${CXXFLAGS} -static -o rand rand.cc
 rand32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o rand32 rand.cc
+rand8:
+	${CXX} ${CXXFLAGS} -static -o rand8 rand8.cc
+rand8-32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o rand8-32 rand8.cc
 
