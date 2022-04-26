@@ -55,7 +55,7 @@ N.B. A catgp corrects noise, this is because catgp includes p1 with some random 
 N.B. The step that PRNG have is often larger than 1000, this is because of the period and complexity itself.
 
 # Tips on p1, p2 (2)
-p1, p2 has a little glitch to randtools description.
+p1, p2 has a little glitch to randtools description (make period on y-axis be ignored).
 So to hack this, we can do cr.py L command described in p0.
 
 # Tips on continuous:
