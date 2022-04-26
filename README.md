@@ -56,7 +56,7 @@ N.B. The step that PRNG have is often larger than 1000, this is because of the p
 
 # Tips on p1, p2 (2)
 p1, p2 has a little glitch to randtools description (make period on y-axis be ignored).
-So to hack this, we can do cr.py L command described in p0.
+So to hack this, we can do cr.py L command described in p0 twice.
 
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
