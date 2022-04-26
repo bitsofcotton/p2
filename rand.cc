@@ -40,7 +40,8 @@ int main(int argc, const char* argv[]) {
   assert(0 < sum);
   std::random_device rd;
   std::mt19937_64 mt(rd());
-  std::knuth_b kb(rd());
+  // cf. knuth_b for shuffle 128.
+  std::shuffle_order_engine<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>, 8> kb(rd());
   std::ranlux48 rl48(rd());
   int   t;
   num_t d(t ^= t);
