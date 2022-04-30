@@ -43,9 +43,7 @@ int main(int argc, const char* argv[]) {
   else
     p = shrinkMatrix<num_t, plin_t>(plin_t(var * var * var * var, var, var), var);
   std::string s;
-  int   t;
-  num_t d(t ^= t);
-  auto  dd(d);
+  num_t d(int(0));
   auto  Mx(d);
   auto  M(d);
   auto  S(d);
@@ -53,14 +51,8 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    dd += d;
-    if(++ t < abs(var)) {
-      std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
-      continue;
-    }
-    Mx = max(Mx, abs(dd) * num_t(int(2)));
-    std::cout << D << ", " << (M = max(- Mx, min(Mx, var < 0 ? q.next(dd) : p.next(dd) )) ) << ", " << (S += D) << std::endl << std::flush;
-    dd = num_t(t ^= t);
+    Mx = max(Mx, abs(d) * num_t(int(2)));
+    std::cout << D << ", " << (M = max(- Mx, min(Mx, var < 0 ? q.next(d) : p.next(d) )) ) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
