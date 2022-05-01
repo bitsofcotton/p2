@@ -52,7 +52,7 @@ N.B. If original stream doesn't show full status (not enough rank on the data li
 
 N.B. A catgp corrects noise, this is because catgp includes p1 with some random noise index.
 
-N.B. The step that PRNG have is often larger than 1000, this is because of the period and complexity itself.
+N.B. The status that PRNG have is often larger than 1000, this is because of the period and complexity itself.
 
 # Tips on p1, p2 (2)
 p1, p2 has a little glitch to randtools description (make period on y-axis be ignored).
@@ -66,7 +66,7 @@ If we predict with some prediction method and bet with them, satistification on 
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
 # Tips:
-python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e ... | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
+python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 
 N.B. Re-categorize categorized part is same categorize as original with some input threadshold if dimension is the same one.
 
