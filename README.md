@@ -22,7 +22,7 @@ If we predict with p1, it depends f(x)'s complexity on status bit, if we average
 # Tips on p0:
 If input stream has a jamming to p0, p0 fails.
 In such case, we can enlarge input argument or recursive apply p0.
-If jammer have better status bit operation, we could use cr.py h command for easy jammer.
+If jammer have better status bit operation, we could use cr.py h command for easy jammer. This better works because if there's no invariant chain on some dimension we have, cr.py makes another invariant chain that slips no invariant condition, this causes clustered many of invariant collection on original function on the dimension.
 p0 is vulnerable to shuffle operation on x-axis, this is because the range p0 to predict depends on input argument, and upper bound of the memory usage goes huge on long enough shuffle operation. But shuffle operation itself is vulnerable to sum-up inputs.
 
 # Tips on p1:
