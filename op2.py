@@ -47,17 +47,20 @@ for line in sys.stdin:
     im.save("./rand_png-" + str(ctr) + ".png")
   elif(sys.argv[1] == 'm'):
     print(ff)
+    idx = 0
     ctrnote = []
     for w in ff[1:]:
-      f = tbl[int(abs(numpy.arctan(numpy.tan(float(w)))) + numpy.arctan(numpy.tan(abs(float(ff[0])))) * len(tbl)) % len(tbl)]
+      f    = tbl[int(abs(numpy.arctan(numpy.tan(float(w)))) + numpy.arctan(numpy.tan(abs(float(ff[0])))) * len(tbl)) % int(len(tbl) / (len(ff) - 1)) + idx * int(len(tbl) / (len(ff) - 1))]
+      idx += 1
       if(0 < float(w)):
         track.append(Message('note_on',  note=f, velocity=127, time=0))
         ctrnote.append(f)
     if(ctr % 2 == 0):
       track.append(Message('note_on',  note=64, velocity=127, time=0))
       ctrnote.append(64)
-    for cc in ctrnote:
-      track.append(Message('note_off', note=cc, time=120))
+    track.append(Message('note_off', note=ctrnote[- 1], time=120))
+    for cc in ctrnote[:- 1]:
+      track.append(Message('note_off', note=cc, time=0))
   elif(sys.argv[1] == 'f'):
     for w in ff[1:]:
       print(float(w) * float(ff[0]))
