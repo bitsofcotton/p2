@@ -142,7 +142,7 @@ elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
     sys.stdout.flush()
     t += 1
 else:
-  t = s = bd = 0
+  t = s = bd = tt = bM = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     ll = line[:- 1].split(",")[int(sys.argv[1])]
     if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
@@ -175,6 +175,12 @@ else:
         elif(sys.argv[4][0] == 'L'):
           if(s != 0): print(ifloatout(d / s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
           s += d
+        elif(sys.argv[4][0] == 'C'):
+          tt += 1
+          print(ifloatout(tt * d, fint))
+          if(0 < bM): tt = bM = 0
+        elif(sys.argv[4][0] == 'f'):
+          print(ifloatout(- d, fint))
         else:
           exit(0)
         bd = d
