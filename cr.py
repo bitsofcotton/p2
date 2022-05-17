@@ -178,6 +178,7 @@ else:
         elif(sys.argv[4][0] == 'C'):
           tt += 1
           print(ifloatout(tt * d, fint))
+          bM += d
           if(0 < bM): tt = bM = 0
         elif(sys.argv[4][0] == 'f'):
           print(ifloatout(- d, fint))
