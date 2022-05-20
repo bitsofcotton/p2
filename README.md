@@ -64,6 +64,12 @@ Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but th
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
+# Tips on xwait.py
+xwait.py appends original stream sign bit some trivial measureable condition
+by integrating walk, if the sign bit is measureable, the original measureable
+condition a little relaxes.
+But xwait.py uses the condition walk returns 0 in some short span.
+
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 

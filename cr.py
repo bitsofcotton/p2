@@ -142,7 +142,7 @@ elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
     sys.stdout.flush()
     t += 1
 else:
-  t = s = bd = M = bM = 0
+  t = s = bd = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     ll = line[:- 1].split(",")[int(sys.argv[1])]
     if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
