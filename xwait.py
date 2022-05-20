@@ -4,13 +4,13 @@ import sys
 import numpy
 import subprocess
 
-p = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-h = [0]
-g = [0]
-d = M = S = tt = 0
+p  = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+h  = [0]
+g  = [0]
+tt = M = S = 0
 bd = 1
 for line in io.open(sys.stdin.fileno(), encoding = "utf-8", closefd = False):
-  d += float(line.split(",")[0])
+  d  = float(line.split(",")[0])
   D  = abs(M * h[- 1]) * d * pow(- 1., tt)
   S += D
   if(d * bd < 0.):
