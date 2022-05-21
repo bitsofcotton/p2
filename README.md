@@ -21,7 +21,6 @@ If we predict with p1, it depends f(x)'s complexity on status bit, if we average
 
 # Tips on p0:
 If input stream has a jamming to p0, p0 fails. In such case, we can change input argument.
-p0 is vulnerable to shuffle operation on x-axis, this is because the range p0 to predict depends on input argument, and upper bound of the memory usage goes huge on long enough shuffle operation. But shuffle operation itself is vulnerable to sum-up inputs.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
@@ -63,12 +62,6 @@ If we should make rand() points before and feed it some function, but this is al
 Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
-
-# Tips on xwait.py
-xwait.py appends original stream sign bit some trivial measureable condition
-by integrating walk, if the sign bit is measureable, the original measureable
-condition a little relaxes.
-But xwait.py uses the condition walk returns 0 in some short span.
 
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
