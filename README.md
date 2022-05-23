@@ -63,6 +63,11 @@ Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but th
 If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
 otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
 
+# Tips on jamming
+If some of the pipe/prng generator/original stream has a jamming from output by auto parameter configurer or so on, we can only say one of a triplet is ok.
+This is because the jammer jams predictors as to be 0 output in expectation value, since (x, f(x), status) has 3 or more dimension on literally, jammer cannot jam all of them other than 0 input if the predictor is correct.
+But if the predictor refers (a, b, c) status length triplet, lcm(a,b,c) periodical jammer exists, so we use (a, 2a, 3a) triplet instead of them. So we expect 3a-period jammer exists but inner structure (a, 2a) to beat with them. Either a-period meets (2a, 3a) inner structure.
+
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 

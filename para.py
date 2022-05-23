@@ -11,9 +11,9 @@ for line in sys.stdin:
   p.stdin.flush()
   q.stdin.flush()
   r.stdin.flush()
-  pp = float(p.stdout.readline().decode("utf-8")[:- 1].split(",")[2])
-  qq = float(q.stdout.readline().decode("utf-8")[:- 1].split(",")[2])
-  rr = float(r.stdout.readline().decode("utf-8")[:- 1].split(",")[2])
+  pp = float(p.stdout.readline().decode("utf-8")[:- 1].split(",")[- 1])
+  qq = float(q.stdout.readline().decode("utf-8")[:- 1].split(",")[- 1])
+  rr = float(r.stdout.readline().decode("utf-8")[:- 1].split(",")[- 1])
   print(pp, ",", qq, ",", rr, ",", pp + qq + rr)
   sys.stdout.flush()
 
