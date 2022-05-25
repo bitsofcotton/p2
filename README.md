@@ -68,6 +68,9 @@ If some of the pipe/prng generator/original stream has a jamming from output by 
 This is because the jammer jams predictors as to be 0 output in expectation value, since (x, f(x), status) has 3 dimension in literally in the invariant meaning (cf. randtools, cf. constant is described as x\_k - x\_(k - 1)), jammer cannot jam all of them other than 0 expectation value input if the 3 of the predictor is correct. (if they stands on some different invariants.)
 Even with so, jammer also is able to change sgn(x) they causes backward generation on PRNG, but this is equivalent to -(-x, f(x), status) == (x, -f(x), -status) but jammer can do this (e.g. re-seed).
 
+# Tips on jamming in short range
+But with (x, status) pair can be treated with (status(status, x)) variable in literally in short range. So short range related to use of status length in predictor, only pair of predictors can work.
+
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 
