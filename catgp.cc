@@ -53,7 +53,12 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     const auto D(d * M);
     Mx = max(Mx, abs(d) * num_t(int(2)));
-    std::cout << D << ", " << (M = d == num_t(int(0)) ? M : max(- Mx, min(Mx, status < 0 ? q.next(d) : p.next(d) )) ) << ", " << (S += D) << std::endl << std::flush;
+    if(d == num_t(int(0)))
+      std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
+    else {
+      M = max(- Mx, min(Mx, status < 0 ? q.next(d) : p.next(d) ));
+      std::cout << D << ", " << (M = abs(M) == Mx ? num_t(int(0)) : M) << std::endl << std::flush;
+    }
   }
   return 0;
 }
