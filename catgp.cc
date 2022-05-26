@@ -57,7 +57,7 @@ int main(int argc, const char* argv[]) {
       std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
     else {
       M = max(- Mx, min(Mx, status < 0 ? q.next(d) : p.next(d) ));
-      std::cout << D << ", " << (M = abs(M) == Mx ? num_t(int(0)) : M) << std::endl << std::flush;
+      std::cout << D << ", " << (M = abs(M) == Mx ? num_t(int(0)) : M) << ", " << (S += D) << std::endl << std::flush;
     }
   }
   return 0;
