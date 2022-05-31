@@ -24,3 +24,10 @@ rand:
 	${CXX} ${CXXFLAGS} -static -o rand rand.cc
 rand32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o rand32 rand.cc
+p2100:
+	${CXX} ${CXXFLAGS} -static -o p2100 p2100.cc
+p2100-32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2100-32 p2100.cc
+p2100-64:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o p2100-64 p2100.cc
+
