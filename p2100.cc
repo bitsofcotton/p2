@@ -42,7 +42,7 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   if(2 < argc) mode = std::atoi(argv[2]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(status && -1 <= mode && mode <= 3);
+  assert(status);
   const auto var0(max(int(1), int(exp(sqrt(log(num_t(abs(status) * 2)))))));
   const int  var1(max(num_t(int(2)), pow(num_t(abs(status)), num_t(int(1)) / num_t(int(3))) ));
   const int  var2(max(num_t(int(2)), pow(num_t(abs(status)), num_t(int(1)) / num_t(int(4))) ));
@@ -71,22 +71,24 @@ int main(int argc, const char* argv[]) {
       if(! std::getline(std::cin, str, '\n')) break;
       std::stringstream ins(str);
       ins >> d;
-    } else switch(mode) {
-    case 0:
-      d = num_t(arc4random() & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    case 1:
-      d = num_t(int(mt()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    case 2:
-      d = num_t(int(kb()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    case 3:
-      d = num_t(int(rl48()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-      break;
-    default:
-      assert(0 && "Should not be reached.");
+    } else {
+      for(int m = 0; m <= mode / 0x04; m ++) switch(mode & 0x03) {
+      case 0:
+        d = num_t(arc4random() & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+        break;
+      case 1:
+        d = num_t(int(mt()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+        break;
+      case 2:
+        d = num_t(int(kb()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+        break;
+      case 3:
+        d = num_t(int(rl48()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+        break;
+      default:
+        assert(0 && "Should not be reached.");
+      }
+      mode &= 0x03;
     }
     const auto Dp(d * Mp);
     const auto Dq(d * Mp * Mq);

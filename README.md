@@ -71,12 +71,18 @@ Even with so, jammer also is able to change sgn(x) they causes backward generati
 # Tips on jamming in short range
 But with (x, status) pair can be treated with (status(status, x)) variable in literally in short range. So short range related to use of status length in predictor, only pair of predictors can work.
 
+# Tips on jamming in finite accuracy input/status/counter.
+However, with appending the status/counter into out of accuracy bits, literally only one dimension they can jam out. So pair of predictors can work.
+
+# Tips on prng with initial steps / medium walked steps.
+Initializing PRNGs by short and non heavy method causes only shuffles the short input entropy into initialized states. This causes to predict initial steps needs small number of status bits because of deterministic and shadowed, short span in the long period status change. So they might need some larger bits to predict when some of PRNGs are enough walked. But with simpler PRNGs, they're equivalent to initial small number of status bits because of non large number of status in them does not timing related change.
+
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
 
 N.B. Re-categorize categorized part is same categorize as original with some input threadshold if dimension is the same one.
 
-N.B. we take original/~ as x~rx, r in R.
+N.B. we take original/~ as x~rx, r in R when they doesn't normalized by the method like conv_check/nand.cc.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
