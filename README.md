@@ -21,6 +21,7 @@ If we predict with p1, it depends f(x)'s complexity on status bit, if we average
 
 # Tips on p0:
 If input stream has a jamming to p0, p0 fails. In such case, we can change input argument or we can retry them with recursive p0.
+Some prngs work with p0 +..., p0 -..., p0 +... \| p0 -... triplet.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
