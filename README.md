@@ -21,7 +21,6 @@ If we predict with p1, it depends f(x)'s complexity on status bit, if we average
 
 # Tips on p0:
 If input stream has a jamming to p0, p0 fails. In such case, we can change input argument or we can retry them with recursive p0.
-Some prngs work with p0 +..., p0 -..., p0 +... \| p0 -... triplet.
 
 # Tips on p1:
 P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
@@ -79,6 +78,9 @@ However, with appending the status/counter into out of accuracy bits, literally 
 Initializing PRNGs by short and non heavy method causes only shuffles the short input entropy into initialized states. This causes to predict initial steps needs small number of status bits because of deterministic and shadowed, short span in the long period status change. So they might need some larger bits to predict when some of PRNGs are enough walked. But with simpler PRNGs, they're equivalent to initial small number of status bits because of non large number of status in them does not timing related change.
 
 -&gt; It's rather from p0's measurable condition.
+
+# Tips on jammer on my machine
+once we get p0 +... \| p1 ... \| p0 -... \| cr.py 0 1 1 A \| p0 -1 works well, but after then, the jammer jam outs input as gulf only nor the attacker gets p1 compiler error as lldb backtrace infinite loop.
 
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.

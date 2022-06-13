@@ -163,8 +163,8 @@ else:
           s += d
           print(ifloatout(s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         elif(sys.argv[4][0] == 'A'):
-          s += d
           print(ifloatout(- s * d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+          s += d
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
             print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
