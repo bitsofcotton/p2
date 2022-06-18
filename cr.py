@@ -162,15 +162,9 @@ else:
         elif(sys.argv[4][0] == 's'):
           s += d
           print(ifloatout(s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 'A'):
-          print(ifloatout(- s * d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-          s += d
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
             print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 'L'):
-          if(s != 0): print(ifloatout(d / s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-          s += d
         else:
           exit(0)
         bd = d
