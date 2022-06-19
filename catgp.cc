@@ -36,13 +36,9 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  const int var(max(num_t(int(2)), pow(num_t(abs(status)), num_t(int(1)) / num_t(int(status < 0 ? 3 : 4)))));
-  shrinkMatrix<num_t, plin_t> p;
-  plin_t q;
-  if(status < 0)
-    q = plin_t(- status, var);
-  else
-    p = shrinkMatrix<num_t, plin_t>(plin_t(status, var, var), var);
+  assert(0 < status);
+  const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(4)))));
+  shrinkMatrix<num_t, plin_t> p(plin_t(status, var, var), var);
   std::string s;
   num_t d(int(0));
   auto  Mx(d);
@@ -53,12 +49,7 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     const auto D(d * M);
     Mx = max(Mx, abs(d) * num_t(int(2)));
-    if(d == num_t(int(0)))
-      std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
-    else {
-      M = max(- Mx, min(Mx, status < 0 ? q.next(d) : p.next(d) ));
-      std::cout << D << ", " << (M = abs(M) == Mx ? num_t(int(0)) : M) << ", " << (S += D) << std::endl << std::flush;
-    }
+    std::cout << D << ", " << (M = max(- Mx, min(Mx, p.next(d) )) ) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }

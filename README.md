@@ -1,5 +1,5 @@
 # p2
-Categorize input stream and predict with them.
+Generic predictor on expectation value mediumly depends data itself.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
@@ -81,6 +81,9 @@ Initializing PRNGs by short and non heavy method causes only shuffles the short 
 
 # Tips on jammer on my machine
 once we get p0 +... \| p1 ... \| p0 -... \| cr.py 0 1 1 A \| p0 -1 works well, but after then, the jammer jam outs input as gulf only nor the attacker gets p1 compiler error as lldb backtrace infinite loop.
+
+# Tips on chasing invariant size
+If the jammer correctly jam out input stream, it begins the chase of invariant size. So in this case, we only can enlarge input argument in each, so the case concludes the larger computing power, the larger span.
 
 # Tips:
 python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
