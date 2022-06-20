@@ -132,15 +132,6 @@ elif(4 < len(sys.argv) and sys.argv[4][0] == 'S'):
       print(line[:- 1])
     sys.stdout.flush()
     t += 1
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
-  t = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    if(t % int(sys.argv[3]) == 0):
-      pass
-    else:
-      print(line[:- 1])
-    sys.stdout.flush()
-    t += 1
 else:
   t = s = bd = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
