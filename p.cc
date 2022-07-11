@@ -1,0 +1,104 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <iomanip>
+#include <algorithm>
+#include <assert.h>
+#include <sys/resource.h>
+
+#include <p0/lieonn.hh>
+typedef myfloat num_t;
+#include <p0/p0.hh>
+#include <p1/p1.hh>
+#include <catg/catg.hh>
+
+template <typename T> class P {
+public:
+  inline P() { ; }
+  inline P(const int& status) {
+    assert(0 < status);
+    const auto var1(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
+    const auto var2(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(4)))));
+    M.resize(7, Mx0 = MM = num_t(int(0)));;
+    Mx.resize(7, MM);
+    p0 = P0maxRank<num_t>(status);
+    p1 = shrinkMatrix<num_t, P1I<num_t, idFeeder<num_t> > >(P1I<num_t, idFeeder<num_t> >(status, var1, var1), var1);
+    p2 = shrinkMatrix<num_t, P012L<num_t, idFeeder<num_t> > >(P012L<num_t, idFeeder<num_t> >(status, var2, var2), var2);
+    q  = idFeeder<num_t>(status);
+    q0 = SimpleVector<num_t>(status + 1).O();
+  }
+  inline ~P() { ; }
+  inline const T& next(T d) {
+    Mx0   = max(Mx0, abs(d));
+    if(Mx0 == num_t(int(0)) || (d /= Mx0) == num_t(int(0)) || ! isfinite(d))
+      return MM;
+    Mx[0] = max(Mx[0], abs(d));
+    M[0]  =  - d / Mx[0];
+    M[1]  = max(- Mx[0], min(Mx[0], p1.next(d)));
+    M[1] /= (Mx[1] = max(Mx[1], abs(M[1])));
+    M[2]  = max(- Mx[0], min(Mx[0], p2.next(d)));
+    M[2] /= (Mx[2] = max(Mx[2], abs(M[2])));
+    M[3]  = p0.next(d);
+    M[3] /= (Mx[3] = max(Mx[3], abs(M[3])));
+    {
+      auto qm(makeProgramInvariant<num_t>(q.next(d)));
+      q0 += std::move(qm.first) * pow(qm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
+      auto qq(q);
+      auto qqm(makeProgramInvariant<num_t>(qq.next(d)));
+      M[4] = revertProgramInvariant<num_t>(make_pair(
+        - (q0.dot(qqm.first) - q0[q0.size() - 2] *
+             qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2],
+           qqm.second)) /
+          pow(qqm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
+    }
+    M[4] /= (Mx[4] = max(Mx[4], abs(M[4])));
+    M5   -= d;
+    M[5]  = M5 / (Mx[5] = max(Mx[5], abs(M5)));
+    M[6]  = num_t(int(1)) / num_t(int(2));
+    MM    = num_t(int(0));
+    for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
+    return MM /= num_t(int(7));
+  }
+  P0maxRank<num_t> p0;
+  shrinkMatrix<num_t, P1I<num_t, idFeeder<num_t> > > p1;
+  shrinkMatrix<num_t, P012L<num_t, idFeeder<num_t> > > p2;
+  idFeeder<num_t> q;
+  SimpleVector<num_t> q0;
+  T M5;
+  T MM;
+  T Mx0;
+  vector<num_t> M;
+  vector<num_t> Mx;
+};
+
+int main(int argc, const char* argv[]) {
+  std::cout << std::setprecision(30);
+  std::string s;
+  int status(77);
+  if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
+  if(1 < argc) status = std::atoi(argv[1]);
+  std::cerr << argv[0] << " " << status << std::endl;
+  assert(0 < status);
+  std::vector<P<num_t> > p;
+  p.resize(3, P<num_t>(status));
+  num_t d(int(0));
+  auto  M0(d);
+  auto  M1(d);
+  auto  M(d);
+  auto  S(d);
+  while(std::getline(std::cin, s, '\n')) {
+    std::stringstream ins(s);
+    ins >> d;
+    const auto D(d * M);
+    M   = isfinite(d * M0 * M1) ? p[2].next(d * M0 * M1) : num_t(int(0));
+    M1  = isfinite(d * M0)      ? p[1].next(d * M0)      : num_t(int(0));
+    M0  = isfinite(d)           ? p[0].next(d)           : num_t(int(0));
+    std::cout << D << ", " << (M *= M0 * M1)<< ", " << (S += D) << std::endl << std::flush;
+  }
+  return 0;
+}
+
