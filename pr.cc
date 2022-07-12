@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <iomanip>
+#include <random>
 #include <algorithm>
 #include <assert.h>
 #include <sys/resource.h>
@@ -81,25 +82,58 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
   int status(77);
-  if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
+  int method(0);
+  int sum(1);
+  int step(1);
+  if(argc < 2) std::cerr << argv[0] << " <status>? <method>? <sum>? <step>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << status << std::endl;
+  if(2 < argc) method = std::atoi(argv[2]);
+  if(3 < argc) sum    = std::atoi(argv[3]);
+  if(4 < argc) step   = std::atoi(argv[4]);
+  std::cerr << argv[0] << " " << status << " " << method << " " << sum << " " << step << std::endl;
   assert(0 < status);
   std::vector<P<num_t> > p;
   p.resize(3, P<num_t>(status));
-  num_t d(int(0));
+  int   t;
+  num_t d(t ^= t);
+  auto  tt(t);
   auto  M0(d);
   auto  M1(d);
   auto  M(d);
   auto  S(d);
-  while(std::getline(std::cin, s, '\n')) {
-    std::stringstream ins(s);
-    ins >> d;
-    const auto D(d * M);
-    M   = isfinite(d * M0 * M1) ? p[2].next(d * M0 * M1) : num_t(int(0));
-    M1  = isfinite(d * M0)      ? p[1].next(d * M0)      : num_t(int(0));
-    M0  = isfinite(d)           ? p[0].next(d)           : num_t(int(0));
-    std::cout << D << ", " << (M *= M0 * M1)<< ", " << (S += D) << std::endl << std::flush;
+  std::random_device rd;
+  std::mt19937_64 mt(rd());
+  // cf. knuth_b for shuffle 128.
+  std::shuffle_order_engine<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>, 8> kb(rd());
+  std::ranlux48 rl48(rd());
+  while(true) {
+    switch(method) {
+    case 0:
+      d += num_t(arc4random() & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    case 1:
+      d += num_t(int(mt()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    case 2:
+      d += num_t(int(kb()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    case 3:
+      d += num_t(int(rl48()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
+      break;
+    default:
+      assert(0 && "Should not be reached.");
+    }
+    if(sum <= ++ t) {
+      const auto D(d * M);
+      M   = isfinite(d * M0 * M1) ? p[2].next(d * M0 * M1) : num_t(int(0));
+      M1  = isfinite(d * M0)      ? p[1].next(d * M0)      : num_t(int(0));
+      M0  = isfinite(d)           ? p[0].next(d)           : num_t(int(0));
+      if(step <= ++ tt) {
+        std::cout << D << ", " << (M *= M0 * M1)<< ", " << (S += D) << ", " << d << std::endl << std::flush;
+        tt ^= tt;
+      }
+      d = num_t(t ^= t);
+    }
   }
   return 0;
 }

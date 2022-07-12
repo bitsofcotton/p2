@@ -1,9 +1,19 @@
 # p2
 Generic predictor on expectation value mediumly depends data itself.
+Also, integrated generic predictor they slices some dimension of input stream.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
+
+# Description on integrated predictor:
+p.cc is the integrated predictors of whole p0, p1, p2.
+If the input argument is large enough, this slices some dimension of the input stream. This can be hardened with P0DFT class, but we don't do so because this beats almost all entropy stream I have well, and if there's a jammer condition, both apply P0DFT or not either not better works.
+
+# Tips on system integrity:
+p.cc and rand.cc combination produces broken result from somehow.
+pr.cc is to beat them if i/o condition is nightmare.
+However, if the library we have nor compiler we have, nor system nor userspace we have is suspicious, this doesn't beats enough in theoretically.
 
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
