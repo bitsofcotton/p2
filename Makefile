@@ -22,6 +22,10 @@ rand:
 	${CXX} ${CXXFLAGS} -static -o rand rand.cc
 rand32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o rand32 rand.cc
+p:
+	${CXX} ${CXXFLAGS} -static -o p p.cc
+p32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p32 p.cc
 pr:
 	${CXX} ${CXXFLAGS} -static -o pr pr.cc
 pr32:

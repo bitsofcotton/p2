@@ -106,6 +106,7 @@ int main(int argc, const char* argv[]) {
   // cf. knuth_b for shuffle 128.
   std::shuffle_order_engine<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>, 8> kb(rd());
   std::ranlux48 rl48(rd());
+  std::ostringstream ss;
   while(true) {
     switch(method) {
     case 0:
@@ -128,8 +129,10 @@ int main(int argc, const char* argv[]) {
       M   = isfinite(d * M0 * M1) ? p[2].next(d * M0 * M1) : num_t(int(0));
       M1  = isfinite(d * M0)      ? p[1].next(d * M0)      : num_t(int(0));
       M0  = isfinite(d)           ? p[0].next(d)           : num_t(int(0));
+      ss << D << ", " << (M *= M0 * M1)<< ", " << (S += D) << ", " << d << std::endl << std::flush;
       if(step <= ++ tt) {
-        std::cout << D << ", " << (M *= M0 * M1)<< ", " << (S += D) << ", " << d << std::endl << std::flush;
+        std::cout << ss.str();
+        ss  = std::ostringstream();
         tt ^= tt;
       }
       d = num_t(t ^= t);
