@@ -5,9 +5,9 @@ CXXFLAGS+=	-std=c++11
 CXXFLAGS+=	-I..
 #CXXFLAGS+=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 #CXXFLAGS+=	-pg
-#CXXFLAGS+=	-Ofast -mtune=native -gfull
+CXXFLAGS+=	-Ofast -mtune=native -gfull
 #CXXFLAGS+=	-Oz -mtune=native -gfull
-CXXFLAGS+=	-O0 -mtune=native -gfull
+#CXXFLAGS+=	-O0 -mtune=native -gfull
 #CXXFLAGS+=	-Ofast -mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -gfull -g0
 LDFLAGS+=	-lc++
 
@@ -23,11 +23,11 @@ rand:
 rand32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o rand32 rand.cc
 p:
-	${CXX} ${CXXFLAGS} -static -o p p.cc
+	${CXX} ${CXXFLAGS} -static -O0 -o p p.cc
 p32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p32 p.cc
 pr:
-	${CXX} ${CXXFLAGS} -static -o pr pr.cc
+	${CXX} ${CXXFLAGS} -static -O0 -o pr pr.cc
 pr32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o pr32 pr.cc
 

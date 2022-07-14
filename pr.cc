@@ -26,7 +26,7 @@ public:
     const auto var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
     const auto var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
     M.resize(7, Mx0 = MM = T(int(0)));;
-    Mx.resize(7, MM);
+    Mx.resize(7, T(int(1)));
     p0 = P0maxRank<T>(status);
     p1 = shrinkMatrix<T, P1I<T, idFeeder<T> > >(P1I<T, idFeeder<T> >(status, var1, var1), var1);
     p2 = shrinkMatrix<T, P012L<T, idFeeder<T> > >(P012L<T, idFeeder<T> >(status, var2, var2), var2);
@@ -41,11 +41,8 @@ public:
     Mx[0] = max(Mx[0], abs(d));
     M[0]  =  - d / Mx[0];
     M[1]  = max(- Mx[0], min(Mx[0], p1.next(d)));
-    M[1] /= (Mx[1] = max(Mx[1], abs(M[1])));
     M[2]  = max(- Mx[0], min(Mx[0], p2.next(d)));
-    M[2] /= (Mx[2] = max(Mx[2], abs(M[2])));
     M[3]  = p0.next(d) / var0;
-    M[3] /= (Mx[3] = max(Mx[3], abs(M[3])));
     {
       auto qm(makeProgramInvariant<T>(q.next(d)));
       q0 += std::move(qm.first) * pow(qm.second, ceil(- log(SimpleMatrix<T>().epsilon())));
@@ -57,12 +54,13 @@ public:
            qqm.second)) /
           pow(qqm.second, ceil(- log(SimpleMatrix<T>().epsilon())));
     }
-    M[4] /= (Mx[4] = max(Mx[4], abs(M[4])));
-    M5   -= d;
-    M[5]  = M5 / (Mx[5] = max(Mx[5], abs(M5)));
+    M[5]  = (M5 -= d);
     M[6]  = T(int(1)) / T(int(2));
     MM    = T(int(0));
-    for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
+    for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) {
+      Mx[i] = max(Mx[i], abs(M[i]));
+      MM += (M[i] /= Mx[i]);
+    }
     return MM *= Mx0 / T(int(7));
   }
   P0maxRank<T> p0;
@@ -81,7 +79,7 @@ public:
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(77);
+  int status(32);
   int method(0);
   int sum(1);
   int step(1);
@@ -92,8 +90,8 @@ int main(int argc, const char* argv[]) {
   if(4 < argc) step   = std::atoi(argv[4]);
   std::cerr << argv[0] << " " << status << " " << method << " " << sum << " " << step << std::endl;
   assert(0 < status);
-  std::vector<P<num_t> > p;
-  p.resize(3, P<num_t>(status));
+  std::vector<P0DFT<num_t, P<num_t>, idFeeder<num_t> > > p;
+  p.resize(3, P0DFT<num_t, P<num_t>, idFeeder<num_t> >(P<num_t>(status), status));
   int   t;
   num_t d(t ^= t);
   auto  tt(t);

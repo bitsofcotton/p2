@@ -80,13 +80,13 @@ public:
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(77);
+  int status(32);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 < status);
-  std::vector<P<num_t> > p;
-  p.resize(3, P<num_t>(status));
+  std::vector<P0DFT<num_t, P<num_t>, idFeeder<num_t> > > p;
+  p.resize(3, P0DFT<num_t, P<num_t>, idFeeder<num_t> >(P<num_t>(status), status));
   num_t d(int(0));
   auto  M0(d);
   auto  M1(d);

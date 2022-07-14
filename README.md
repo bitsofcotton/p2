@@ -8,7 +8,7 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 
 # Description on integrated predictor:
 p.cc is the integrated predictors of whole p0, p1, p2.
-If the input argument is large enough, this slices some dimension of the input stream. This can be hardened with P0DFT class, but we don't do so because this beats almost all entropy stream I have well, and if there's a jammer condition, both apply P0DFT or not either not better works.
+If the input argument is large enough, this slices some dimension of the input stream. We use P0DFT class to harden this with Th. Condorcet's jury.
 
 # Tips on system integrity:
 p.cc and rand.cc combination produces broken result from somehow.
