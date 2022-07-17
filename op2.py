@@ -55,6 +55,9 @@ for line in sys.stdin:
       if(0 < float(w)):
         track.append(Message('note_on',  note=f, velocity=127, time=0))
         ctrnote.append(f)
+      else:
+        track.append(Message('note_on',  note=f, velocity=0, time=0))
+        ctrnote.append(f)
     if(len(ctrnote) < 1): continue
     track.append(Message('note_off', note=ctrnote[- 1], time=120))
     for cc in ctrnote[:- 1]:
