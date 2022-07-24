@@ -24,13 +24,14 @@ public:
     var0 = max(T(int(1)), T(int(exp(sqrt(log(T(status)))))) );
     const auto var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
     const auto var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
-    M.resize(7, Mx0 = MM = T(int(0)));;
-    Mx.resize(7, MM);
+    M.resize(8, Mx0 = MM = T(int(0)));;
+    Mx.resize(M.size(), MM);
     p0 = P0maxRank<T>(status);
     p1 = shrinkMatrix<T, P1I<T, idFeeder<T> > >(P1I<T, idFeeder<T> >(status, var1, var1), var1);
     p2 = shrinkMatrix<T, P012L<T, idFeeder<T> > >(P012L<T, idFeeder<T> >(status, var2, var2), var2);
     q  = idFeeder<T>(status);
     q0 = SimpleVector<T>(status + 1).O();
+    f  = idFeeder<T>(status);
   }
   inline ~P() { ; }
   inline const T& next(T d) {
@@ -60,15 +61,25 @@ public:
     M5   -= d;
     M[5]  = M5 / (Mx[5] = max(Mx[5], abs(M5)));
     M[6]  = T(int(1)) / T(int(2));
+    {
+      const auto& ff(f.next(d));
+      Mx[7] = max(abs(d), Mx[7]);
+      if(f.full) {
+        M[7] = T(int(0));
+        for(int i = 0; i < ff.size(); i ++) M[7] += ff[i];
+        M[7] = (- M[7]) / (Mx[7] = max(Mx[7], abs(M[7])));
+      }
+    }
     MM    = T(int(0));
     for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
-    return MM *= Mx0 / T(int(7));
+    return MM *= Mx0 / T(int(8));
   }
   P0maxRank<T> p0;
   shrinkMatrix<T, P1I<T, idFeeder<T> > > p1;
   shrinkMatrix<T, P012L<T, idFeeder<T> > > p2;
   idFeeder<T> q;
   SimpleVector<T> q0;
+  idFeeder<T> f;
   T M5;
   T MM;
   T Mx0;
