@@ -43,7 +43,7 @@ public:
       const auto& qq0(q.next(d));
       Mx[4] = max(abs(d), Mx[4]);
       if(q.full) {
-        const int qs(qq0.size() >> 1);
+        const int qs(sqrt(T(int(qq0.size()))));
         SimpleVector<T> q0(qs + 1);
         q0.O();
         for(int i = 0; i < qq0.size() - qs - 1; i ++) {
