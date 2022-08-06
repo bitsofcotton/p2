@@ -24,7 +24,7 @@ public:
     var0 = max(T(int(1)), T(int(exp(sqrt(log(T(status)))))) );
     const auto var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
     const auto var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
-    M.resize(8, Mx0 = MM = T(int(0)));;
+    M.resize(8, M5 = Mx0 = MM = T(int(0)));;
     Mx.resize(M.size(), MM);
     p0 = P0maxRank<T>(status);
     p1 = shrinkMatrix<T, P1I<T, idFeeder<T> > >(P1I<T, idFeeder<T> >(status, var1, var1), var1);
