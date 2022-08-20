@@ -15,7 +15,9 @@ typedef myfloat num_t;
 #include <p0/p0.hh>
 #include <p1/p1.hh>
 #include <catg/catg.hh>
+#include <decompose/decompose.hh>
 
+// prediction on some range.
 template <typename T> class P {
 public:
   inline P() { ; }
@@ -72,7 +74,13 @@ public:
     }
     MM    = T(int(0));
     for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
-    return MM *= Mx0 / T(int(8));
+    // XXX: don't know why, but sgn<T>(d) multiplication causes to
+    //      improve prediction. This is caused from f(x):=x^k test.
+    //      the whole sign of prediction returned means error between
+    //      the prediction and the copycat.
+    // N.B. f(x):=exp(i theta) is predicted best by p0 for any.
+    //      f(x):=x^k is predicted best by p1 for any.
+    return MM *= Mx0 / T(int(8)) * sgn<T>(d);
   }
   P0maxRank<T> p0;
   shrinkMatrix<T, P1I<T, idFeeder<T> > > p1;
@@ -88,6 +96,28 @@ public:
   vector<T> Mx;
 };
 
+// N.B. self similarity.
+template <typename T, typename P> class PF {
+public:
+  inline PF() { ; }
+  inline PF(P&& p, const int& size = 1) {
+    (this->p).resize(size, p);
+    b = idFeeder<T>((this->p).size());
+  }
+  inline ~PF() { ; }
+  inline T next(const T& in) {
+    const auto bb(b.next(in));
+    assert(p.size() == bb.size());
+          auto m(Decompose<T>(p.size()).mother(bb));
+    const auto f(Decompose<T>(p.size()).freq(m, bb));
+    assert(m.size() == p.size());
+    for(int i = 0; i < m.size(); i ++) m[i] = p[i].next(m[i]);
+    return Decompose<T>(p.size()).synth(m, f)[p.size() - 1];
+  }
+  idFeeder<T> b;
+  vector<P> p;
+};
+
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
@@ -96,8 +126,9 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 < status);
-  std::vector<P0DFT<num_t, P<num_t>, idFeeder<num_t> > > p;
-  p.resize(3, P0DFT<num_t, P<num_t>, idFeeder<num_t> >(P<num_t>(status), int(sqrt(num_t(status)))));
+  // N.B. P0DFT eliminates causes number of the hyper torus whole.
+  std::vector<PF<num_t, P0DFT<num_t, P<num_t>, idFeeder<num_t> > > > p;
+  p.resize(3, PF<num_t, P0DFT<num_t, P<num_t>, idFeeder<num_t> > >(P0DFT<num_t, P<num_t>, idFeeder<num_t> >(P<num_t>(status), int(sqrt(num_t(status)))), int(sqrt(num_t(status)))));
   num_t d(int(0));
   auto  M0(d);
   auto  M1(d);
@@ -110,7 +141,7 @@ int main(int argc, const char* argv[]) {
     M   = isfinite(d * M0 * M1) ? p[2].next(d * M0 * M1) : num_t(int(0));
     M1  = isfinite(d * M0)      ? p[1].next(d * M0)      : num_t(int(0));
     M0  = isfinite(d)           ? p[0].next(d)           : num_t(int(0));
-    std::cout << D << ", " << (M *= M0 * M1)<< ", " << (S += D) << std::endl << std::flush;
+    std::cout << D << ", " << (M *= M0 * M1) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
