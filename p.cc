@@ -74,13 +74,7 @@ public:
     }
     MM    = T(int(0));
     for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
-    // XXX: don't know why, but sgn<T>(d) multiplication causes to
-    //      improve prediction. This is caused from f(x):=x^k test.
-    //      the whole sign of prediction returned means error between
-    //      the prediction and the copycat.
-    // N.B. f(x):=exp(i theta) is predicted best by p0 for any.
-    //      f(x):=x^k is predicted best by p1 for any.
-    return MM *= Mx0 / T(int(8)) * sgn<T>(d);
+    return MM *= Mx0 / T(int(8));
   }
   P0maxRank<T> p0;
   shrinkMatrix<T, P1I<T, idFeeder<T> > > p1;
