@@ -56,8 +56,7 @@ public:
       M[4] = revertProgramInvariant<T>(make_pair(
         - (q0.dot(qqm.first) - q0[q0.size() - 2] *
              qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2],
-           qqm.second)) /
-          pow(qqm.second, ceil(- log(SimpleMatrix<T>().epsilon())));
+           qqm.second));
     }
     M[4] /= (Mx[4] = max(Mx[4], abs(M[4])));
     M5   -= d;
