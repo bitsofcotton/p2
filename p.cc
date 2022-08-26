@@ -17,7 +17,7 @@ typedef myfloat num_t;
 #include <catg/catg.hh>
 #include <decompose/decompose.hh>
 
-// prediction on some range.
+// N.B. prediction on some range do persistent.
 template <typename T> class P {
 public:
   inline P() { ; }
@@ -120,22 +120,27 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 < status);
-  // N.B. P0DFT eliminates causes number of the hyper torus whole.
-  std::vector<PF<num_t, P0DFT<num_t, P<num_t>, idFeeder<num_t> > > > p;
-  p.resize(3, PF<num_t, P0DFT<num_t, P<num_t>, idFeeder<num_t> > >(P0DFT<num_t, P<num_t>, idFeeder<num_t> >(P<num_t>(status), int(sqrt(num_t(status)))), int(sqrt(num_t(status)))));
+  // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
+  //      this is to make hypothesis () - structure itself is continuous.
+  //      however, we can make also (f(x)) elimination also causes continuous
+  //      () structures. There's differences between them the dimension
+  //      original structure should have, however, if the original prediction is
+  //      fair enough on counting prediction structure, we can bet only 1 dim.
+  // N.B. also, P0DFT eliminates causes number of the hyper torus whole,
+  //      this is not needed in P0maxRank sub class because they treats
+  //      better way them, also P1I, P012L because they treats any of the
+  //      F_p register (non-)linear calculation.
+  // N.B. however, we need PF for insurance they have a fractal structure cut.
+  // XXX: we need () between initializer and pass args, in clang.
+  PF<num_t, P<num_t> > p((P<num_t>(status)), int(sqrt(num_t(status))));
   num_t d(int(0));
-  auto  M0(d);
-  auto  M1(d);
   auto  M(d);
   auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    M   = isfinite(d * M0 * M1) ? p[2].next(d * M0 * M1) : num_t(int(0));
-    M1  = isfinite(d * M0)      ? p[1].next(d * M0)      : num_t(int(0));
-    M0  = isfinite(d)           ? p[0].next(d)           : num_t(int(0));
-    std::cout << D << ", " << (M *= M0 * M1) << ", " << (S += D) << std::endl << std::flush;
+    std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
