@@ -23,7 +23,6 @@ public:
   inline P() { ; }
   inline P(const int& status) {
     assert(0 < status);
-    var0 = max(T(int(1)), T(int(exp(sqrt(log(T(status)))))) );
     const auto var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
     const auto var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
     M.resize(7, M5 = Mx0 = MM = T(int(0)));;
@@ -40,10 +39,10 @@ public:
     Mx0   = max(Mx0, abs(d));
     if(Mx0 == T(int(0)) || (d /= Mx0) == T(int(0)) || ! isfinite(d))
       return MM;
-    M[0]  =  - d;
-    M[1]  = p1.next(d);
-    M[2]  = p2.next(d);
-    M[3]  = p0.next(d) / var0;
+    M[0]  = - d;
+    M[1]  = p0.next(d);
+    M[2]  = p1.next(d);
+    M[3]  = p2.next(d);
     M[1] /= (Mx[1] = max(Mx[1], abs(M[1])));
     M[2] /= (Mx[2] = max(Mx[2], abs(M[2])));
     M[3] /= (Mx[3] = max(Mx[3], abs(M[3])));
@@ -69,7 +68,7 @@ public:
         M[6] = (- M[6]) / (Mx[6] = max(Mx[6], abs(M[6])));
       }
     }
-    MM    = T(int(0));
+    MM = T(int(0));
     for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
     return MM *= Mx0 / T(int(M.size()));
   }
@@ -82,7 +81,6 @@ public:
   T M5;
   T MM;
   T Mx0;
-  T var0;
   vector<T> M;
   vector<T> Mx;
 };
