@@ -111,6 +111,7 @@ int main(int argc, const char* argv[]) {
   auto  q(p);
   num_t d(int(0));
   auto  M(d);
+  auto  Mq(abs(d));
   auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
@@ -122,7 +123,8 @@ int main(int argc, const char* argv[]) {
     }
     const auto pn(p.next(d));
     const auto qn(q.next(num_t(int(1)) / d));
-    std::cout << D << ", " << (M = qn ? (pn + num_t(int(1)) / qn) / num_t(int(2)) : num_t(int(0)) ) << ", " << (S += D) << std::endl << std::flush;
+    Mq = max(Mq, abs(qn) / abs(d));
+    std::cout << D << ", " << (M = qn ? (pn + num_t(int(1)) / qn * Mq) / num_t(int(2)) : num_t(int(0)) ) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
