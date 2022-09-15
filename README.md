@@ -9,6 +9,7 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 # Description on integrated predictor:
 p.cc is the integrated predictors of whole p0, p1, p2.
 If the input argument is large enough, this slices some dimension of the input stream. We use P0DFT class to harden this with Th. Condorcet's jury.
+p.cc status \< 0 for implicit copycat prediction, otherwise, explicit prediction.
 
 # Tips on system integrity:
 p.cc and rand.cc combination produces broken result from somehow.

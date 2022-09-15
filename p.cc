@@ -92,7 +92,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(0 < status);
+  assert(status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
   //      however, we can make also (f(x)) elimination also causes continuous
@@ -107,24 +107,23 @@ int main(int argc, const char* argv[]) {
   //      But this is equivalent to original prediction if original is fair
   //      enough. The only the reason PF implements is higher frequency part
   //      and not the highest frequency part (middle of them) complement.
-  P<num_t> p(status);
+  P<num_t> p(abs(status));
   auto  q(p);
   num_t d(int(0));
   auto  M(d);
-  auto  Mq(abs(d));
+  auto  Mc(d);
   auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    if(d == num_t(int(0))) {
-      std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
-      continue;
-    }
-    const auto pn(p.next(d));
-    const auto qn(q.next(num_t(int(1)) / d));
-    Mq = max(Mq, abs(qn) / abs(d));
-    std::cout << D << ", " << (M = qn ? (pn + num_t(int(1)) / qn * Mq) / num_t(int(2)) : num_t(int(0)) ) << ", " << (S += D) << std::endl << std::flush;
+    if(status < 0) {
+      // XXX: copy cat on 1 != const.
+      const auto one(p.next(d) * q.next(num_t(int(1)) / d));
+      Mc = max(Mc, abs(one));
+      std::cout << D << ", " << (M = Mc == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
+    } else
+      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
