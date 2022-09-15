@@ -85,6 +85,10 @@ public:
   vector<T> Mx;
 };
 
+template <typename T> T sqrtscale(const T& x) {
+  return sgn<T>(x) * sqrt(abs(x));
+}
+
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
@@ -108,6 +112,7 @@ int main(int argc, const char* argv[]) {
   //      enough. The only the reason PF implements is higher frequency part
   //      and not the highest frequency part (middle of them) complement.
   P<num_t> p(status);
+  auto  q(p);
   num_t d(int(0));
   auto  M(d);
   auto  S(d);
@@ -115,7 +120,13 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
+    if(d == num_t(int(0))) {
+      std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
+      continue;
+    }
+    const auto pn(p.next(d));
+    const auto qn(q.next(num_t(int(1)) / d));
+    std::cout << D << ", " << (M = qn ? sqrtscale<num_t>(pn / qn) : num_t(int(0)) ) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
