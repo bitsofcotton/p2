@@ -85,10 +85,6 @@ public:
   vector<T> Mx;
 };
 
-template <typename T> T sqrtscale(const T& x) {
-  return sgn<T>(x) * sqrt(abs(x));
-}
-
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
@@ -126,7 +122,7 @@ int main(int argc, const char* argv[]) {
     }
     const auto pn(p.next(d));
     const auto qn(q.next(num_t(int(1)) / d));
-    std::cout << D << ", " << (M = qn ? sqrtscale<num_t>(pn / qn) : num_t(int(0)) ) << ", " << (S += D) << std::endl << std::flush;
+    std::cout << D << ", " << (M = qn ? (pn + num_t(int(1)) / qn) / num_t(int(2)) : num_t(int(0)) ) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
