@@ -23,8 +23,8 @@ public:
   inline P() { ; }
   inline P(const int& status) {
     assert(0 < status);
-    const auto var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
-    const auto var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
+    const int var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
+    const int var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
     M.resize(7, M5 = Mx0 = MM = T(int(0)));;
     Mx.resize(M.size(), MM);
     p0 = P0maxRank<T>(status);
