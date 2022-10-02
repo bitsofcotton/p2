@@ -8,7 +8,9 @@ prng = []
 for line in sys.stdin:
   prng.append(abs(int(float(line) )))
 n = int(float(len(prng)))
-m = min(5, n)
+p = subprocess.Popen(['sh', '-c', sys.argv[1]])
+m = MidiFile('rand_correct.mid')
+m = len(m.tracks)
 n = int(n / m)
 for t in range(0, n):
   p = subprocess.Popen(['sh', '-c', sys.argv[1]])
@@ -24,6 +26,7 @@ for t in range(0, n):
   for tt in range(0, m):
     mm = MidiFile('r' + str(prng[(t * m + tt) % len(prng)] % n) + '.mid')
     for i, track in enumerate(mm.tracks):
+      if(i != tt): continue
       for msg in track:
         mid.tracks[tt].append(msg)
 mid.save('rand_correct_concat.mid')
