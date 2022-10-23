@@ -11,11 +11,12 @@ track = []
 if(sys.argv[1] == 'm'):
   tbl0 = [0, 2, 4, 5, 7, 9, 11]
   for u in range(0, 2 * len(tbl0)):
-    tbl.append(64 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
+    # Thanks to google with search word midi C value, 60 is one of a C.
+    tbl.append(60 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
   track = MidiTrack()
   mid.tracks.append(track)
-  track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
+  track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(60)))
   # cf. https://ja.wikipedia.org/wiki/General_MIDI
   #track.append(Message('program_change', program = 117))
 
