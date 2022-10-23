@@ -16,7 +16,7 @@ if(sys.argv[1] == 'm'):
   # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
   track = MidiTrack()
   mid.tracks.append(track)
-  track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(60)))
+  track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
   # cf. https://ja.wikipedia.org/wiki/General_MIDI
   #track.append(Message('program_change', program = 117))
 
@@ -51,7 +51,7 @@ for line in sys.stdin:
     idx = 0
     ctrnote = []
     for w in ff[1:]:
-      f    = tbl[int(abs(numpy.arctan(numpy.tan(float(w)))) + numpy.arctan(numpy.tan(abs(float(ff[0])))) * len(tbl)) % int(len(tbl) / (len(ff) - 1)) + idx * int(len(tbl) / (len(ff) - 1))]
+      f    = tbl[int(numpy.arctan(abs(numpy.tan(float(w) * float(ff[0])))) * len(tbl)) % int(len(tbl) / (len(ff) - 1)) + idx * int(len(tbl) / (len(ff) - 1))]
       idx += 1
       if(0 < float(w)):
         track.append(Message('note_on',  note=f, velocity=127, time=0))

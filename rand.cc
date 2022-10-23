@@ -12,61 +12,24 @@
 #include <random>
 #include <sys/resource.h>
 
-/*
-#if defined(_FLOAT_BITS_)
-#define int int64_t
-#endif
-*/
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
-/*
-#if defined(_FLOAT_BITS_)
-#undef int
-#endif
-*/
 int main(int argc, const char* argv[]) {
-/*
-#if defined(_FLOAT_BITS_)
-#define int int64_t
-#endif
-*/
   std::cout << std::setprecision(30);
-  int method(0);
-  int sum(1);
-  if(argc <= 1) std::cerr << argv[0] << " <method>? : continue with ";
-  if(1 < argc) method = std::atoi(argv[1]);
-  if(2 < argc) sum    = std::atoi(argv[2]);
-  std::cerr << argv[0] << " " << method << " " << sum << std::endl;
-  assert(0 < sum);
   std::random_device rd;
   std::mt19937_64 mt(rd());
-  // cf. knuth_b for shuffle 128.
-  std::shuffle_order_engine<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>, 8> kb(rd());
-  std::ranlux48 rl48(rd());
-  int   t;
-  num_t d(t ^= t);
-  while(true) {
-    switch(method) {
-    case 0:
-      d += num_t(arc4random() & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    case 1:
-      d += num_t(int(mt()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    case 2:
-      d += num_t(int(kb()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    case 3:
-      d += num_t(int(rl48()) & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2))) - num_t(int(1));
-      break;
-    default:
-      assert(0 && "Should not be reached.");
-    }
-    if(sum <= ++ t) {
-      std::cout << d << std::endl;
-      d = num_t(t ^= t);
-    }
-  }
+  std::knuth_b    kb(rd());
+  std::ranlux48   rl48(rd());
+  // N.B. bitwise xor causes original matrix addition.
+  //      this causes maximum of matrix size will be selected.
+  //      smaller matrixes effects some of the result, but if the distribution
+  //      isn't harmful and has non small orthogonal parts norm,
+  //      they shouldn't harms.
+  while(true)
+    std::cout <<
+      (num_t((int(arc4random()) ^ int(mt()) ^ int(kb()) ^ int(rl48()))
+              & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2)))
+       - num_t(int(1))) << std::endl << std::flush;
   return 0;
 }
 

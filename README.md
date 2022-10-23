@@ -8,13 +8,8 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 
 # Description on integrated predictor:
 p.cc is the integrated predictors of whole p0, p1, p2.
-If the input argument is large enough, this slices some dimension of the input stream. We use P0DFT class to harden this with Th. Condorcet's jury.
+If the input argument is large enough, this slices some dimension of the input stream. If we use P0DFT class to harden this with Th. Condorcet's jury also effects.
 p.cc status \< 0 for implicit copycat prediction, otherwise, explicit prediction.
-
-# Tips on system integrity:
-p.cc and rand.cc combination produces broken result from somehow.
-pr.cc is to beat them if i/o condition is nightmare.
-However, if the library we have nor compiler we have, nor system nor userspace we have is suspicious, this doesn't beats enough in theoretically.
 
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
