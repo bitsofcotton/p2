@@ -156,6 +156,9 @@ else:
         elif(sys.argv[4][0] == 'u'):
           if(d != bd):
             print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+        elif(sys.argv[4][0] == 'i'):
+          if(d != 0.):
+            print(ifloatout(1. / d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
         else:
           exit(0)
         bd = d
