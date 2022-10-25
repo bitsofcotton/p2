@@ -122,8 +122,12 @@ int main(int argc, const char* argv[]) {
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
       Mc = max(Mc, abs(one));
       std::cout << D << ", " << (M = Mc == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
-    } else
-      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
+    } else {
+      const auto qd0(q.next(d));
+      const auto qd(qd0 == num_t(int(0)) ? num_t(int(0)) : num_t(int(1)) / qd0);
+      Mc = max(Mc, abs(qd / d));
+      std::cout << D << ", " << (M = (p.next(d) + (Mc == num_t(int(0)) ? Mc : qd / Mc)) / num_t(int(2))) << ", " << (S += D) << std::endl << std::flush;
+    }
   }
   return 0;
 }
