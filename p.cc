@@ -110,6 +110,7 @@ int main(int argc, const char* argv[]) {
   P<num_t> p(abs(status));
   auto  q(p);
   num_t d(int(0));
+  auto  dd(d);
   auto  M(d);
   auto  Mc(d);
   auto  S(d);
@@ -122,8 +123,13 @@ int main(int argc, const char* argv[]) {
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
       Mc = max(Mc, abs(one));
       std::cout << D << ", " << (M = Mc == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
-    } else
-      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
+    } else {
+      const auto bdd(dd);
+      num_t qd(int(0));
+      if((dd += d) != num_t(int(0)) && bdd != num_t(int(0)))
+        qd = num_t(int(1)) / dd + q.next(num_t(int(1)) / dd - num_t(int(1)) / bdd);
+      std::cout << D << ", " << (M = (p.next(d) + (qd == num_t(int(0)) ? qd : num_t(int(1)) / qd - dd)) / num_t(int(2)) ) << ", " << (S += D) << std::endl << std::flush;
+    }
   }
   return 0;
 }
