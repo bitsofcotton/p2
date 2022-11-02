@@ -85,6 +85,30 @@ public:
   vector<T> Mx;
 };
 
+// In laurent series, we treat a_-1 as both side a_1 and a_-1 arithmetric avg.
+template <typename T, typename P> class PWalkBoth {
+public:
+  inline PWalkBoth() { ; }
+  inline PWalkBoth(P&& p) { S = T(int(0)); this->p = q = p; }
+  inline ~PWalkBoth() { ; }
+  inline T next(const T& d) {
+    static const T zero(int(0));
+    static const T one(int(1));
+    static const T two(int(2));
+    const auto bS(S);
+    if((S += d) != zero && bS != zero) {
+      const auto dd(one / S - one / bS);
+            auto qd(q.next(dd));
+      qd = qd == zero ? qd : one / (one / S + one / qd) - S;
+      return (p.next(d) + (isfinite(qd) ? qd : zero)) / two;
+    }
+    return p.next(d);
+  }
+  T S;
+  P p;
+  P q;
+};
+
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
@@ -103,11 +127,13 @@ int main(int argc, const char* argv[]) {
   //      this is not needed in P0maxRank sub class because they treats
   //      better way them, also P1I, P012L because they treats any of the
   //      F_p register (non-)linear calculation.
-  // XXX: However, we need PF for insurance they have a fractal structure cut.
-  //      But this is equivalent to original prediction if original is fair
-  //      enough. The only the reason PF implements is higher frequency part
-  //      and not the highest frequency part (middle of them) complement.
-  P<num_t> p(abs(status));
+  // N.B. We need PWalkBoth because there exists a_-1 is being attacked
+  //      condition in laurent series. One of them are ok in that condition,
+  //      If the attacker attacks both a_-1 and reverse(a_-1), half of the
+  //      prediction fails in best effort, but whole of the case, one of the
+  //      function estimation remains, so in whole in long range, it's ok
+  //      in feeding one by one sliding window meaning.
+  PWalkBoth<num_t, P<num_t> > p(P<num_t>(abs(status)));
   auto  q(p);
   num_t d(int(0));
   auto  dd(d);
@@ -121,15 +147,9 @@ int main(int argc, const char* argv[]) {
     if(status < 0) {
       // XXX: copy cat on 1 != const.
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
-      Mc = max(Mc, abs(one));
-      std::cout << D << ", " << (M = Mc == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
-    } else {
-      const auto bdd(dd);
-      num_t qd(int(0));
-      if((dd += d) != num_t(int(0)) && bdd != num_t(int(0)))
-        qd = num_t(int(1)) / dd + q.next(num_t(int(1)) / dd - num_t(int(1)) / bdd);
-      std::cout << D << ", " << (M = (p.next(d) + (qd == num_t(int(0)) ? qd : num_t(int(1)) / qd - dd)) / num_t(int(2)) ) << ", " << (S += D) << std::endl << std::flush;
-    }
+      std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
+    } else
+      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }
