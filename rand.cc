@@ -27,7 +27,7 @@ int main(int argc, const char* argv[]) {
   //      they shouldn't harms.
   while(true)
     std::cout <<
-      (num_t((int(arc4random()) ^ int(mt()) ^ int(kb()) ^ int(rl48()))
+      (num_t((int(rd()) ^ int(mt()) ^ int(kb()) ^ int(rl48()))
               & 0x7fffffff) / (num_t(int(0x7fffffff)) / num_t(int(2)))
        - num_t(int(1))) << std::endl << std::flush;
   return 0;
