@@ -43,9 +43,9 @@ public:
     M[1]  = p0.next(d);
     M[2]  = p1.next(d);
     M[3]  = p2.next(d);
-    M[1] /= (Mx[1] = max(Mx[1], abs(M[1])));
-    M[2] /= (Mx[2] = max(Mx[2], abs(M[2])));
-    M[3] /= (Mx[3] = max(Mx[3], abs(M[3])));
+    if((Mx[1] = max(Mx[1], abs(M[1]))) != T(int(0))) M[1] /= Mx[1];
+    if((Mx[2] = max(Mx[2], abs(M[2]))) != T(int(0))) M[2] /= Mx[2];
+    if((Mx[3] = max(Mx[3], abs(M[3]))) != T(int(0))) M[3] /= Mx[3];
     {
       auto qm(makeProgramInvariant<T>(q.next(d)));
       q0 += std::move(qm.first) * pow(qm.second, ceil(- log(SimpleMatrix<T>().epsilon())));
