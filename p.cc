@@ -85,6 +85,26 @@ public:
   vector<T> Mx;
 };
 
+template <typename T, typename P> class Pmss {
+public:
+  inline Pmss() { ; }
+  inline Pmss(P&& p, const int& len = 2) {
+    this->p = p;
+    r = q = idFeeder<T>(len);
+  }
+  inline ~Pmss() { ; }
+  inline T next(const T& d) {
+    const auto& msv(q.next(d));
+    const auto  ms(msv.dot(mscache<T>(msv.size())));
+    if(! q.full) return T(int(0));
+    const auto& mssv(r.next(ms));
+    return r.full ? p.next(d - ms) + pnextcacher<T>(mssv.size(), 1, 2).dot(mssv) / T(int(2)) : T(int(0));
+  }
+  P p;
+  idFeeder<T> q;
+  idFeeder<T> r;
+};
+
 // In laurent series, we treat a_-1 as both side a_1 and a_-1 arithmetric avg.
 template <typename T, typename P> class PWalkBoth {
 public:
@@ -133,7 +153,7 @@ int main(int argc, const char* argv[]) {
   //      prediction fails in best effort, but whole of the case, one of the
   //      function estimation remains, so in whole in long range, it's ok
   //      in feeding one by one sliding window meaning.
-  PWalkBoth<num_t, P<num_t> > p(P<num_t>(abs(status)));
+  PWalkBoth<num_t, Pmss<num_t, P<num_t> > > p(Pmss<num_t, P<num_t> >(P<num_t>(abs(status)), abs(status)));
   auto  q(p);
   num_t d(int(0));
   auto  dd(d);

@@ -6,6 +6,10 @@ Also, integrated generic predictor they slices some dimension of input stream.
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
+# XXX
+We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
+Also p.cc depends on walk accuracy theirselves. So to continue prediction, we need better accuracy if walk has enough distance from origin point.
+
 # Description on integrated predictor:
 p.cc is the integrated predictors of whole p0, p1, p2.
 If the input argument is large enough, this slices some dimension of the input stream. If we use P0DFT class to harden this with Th. Condorcet's jury also effects.
