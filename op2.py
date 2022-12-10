@@ -66,7 +66,7 @@ for line in sys.stdin:
   elif(sys.argv[1] == 'f'):
     for w in ff[1:]:
       print(float(w) * float(ff[0]))
-  elif(sys.argv[1] == 'e'):
+  elif(sys.argv[1] == 'e' or sys.argv[1] == 'E'):
     if(len(mC) < len(ff)):
       mC.append(ff)
       continue
@@ -77,7 +77,10 @@ for line in sys.stdin:
       for u in range(0, len(mC)):
         buf = 0.
         for v in range(0, len(ff)):
-          buf += float(ff[v]) * float(mC[u][v]) * 1e4
+          if(sys.argv[1] == 'E'):
+            buf += float(ff[v]) * float(mC[u][v]) * 1e4
+          else:
+            buf += float(ff[v]) * float(mC[u][v])
         ffu.append(numpy.tan(buf))
       ffuu = []
       for w in ffu[1:]:
