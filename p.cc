@@ -25,7 +25,7 @@ public:
     assert(0 < status);
     const int var1(max(T(int(2)), pow(T(status), T(int(1)) / T(int(3)))));
     const int var2(max(T(int(2)), pow(T(status), T(int(1)) / T(int(4)))));
-    M.resize(7, M5 = Mx0 = MM = T(int(0)));;
+    M.resize(7, Mx0 = MM = T(int(0)));;
     Mx.resize(M.size(), MM);
     p0 = P0maxRank<T>(status);
     p1 = shrinkMatrix<T, P1I<T, idFeeder<T> > >(P1I<T, idFeeder<T> >(status, var1, var1), var1);
@@ -39,7 +39,6 @@ public:
     Mx0   = max(Mx0, abs(d));
     if(Mx0 == T(int(0)) || (d /= Mx0) == T(int(0)) || ! isfinite(d))
       return MM;
-    M[0]  = - d;
     M[1]  = p0.next(d);
     M[2]  = p1.next(d);
     M[3]  = p2.next(d);
@@ -56,9 +55,7 @@ public:
              qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2] /
            T(int(q0.size())), qqm.second));
     }
-    M5   -= d;
     M[4] /= (Mx[4] = max(Mx[4], abs(M[4])));
-    M[5]  = M5 / (Mx[5] = max(Mx[5], abs(M5)));
     {
       const auto& ff(f.next(d));
       Mx[6] = max(abs(d), Mx[6]);
@@ -70,7 +67,7 @@ public:
     }
     MM = T(int(0));
     for(int i = 0; i < M.size(); i ++) if(isfinite(M[i])) MM += M[i];
-    return MM *= Mx0 / T(int(M.size()));
+    return MM *= Mx0 / T(int(M.size() - 2));
   }
   P0maxRank<T> p0;
   shrinkMatrix<T, P1I<T, idFeeder<T> > > p1;
@@ -78,7 +75,6 @@ public:
   idFeeder<T> q;
   SimpleVector<T> q0;
   idFeeder<T> f;
-  T M5;
   T MM;
   T Mx0;
   vector<T> M;
@@ -129,6 +125,35 @@ public:
   P q;
 };
 
+// Blur prediction by status length, this causes a little improve.
+template <typename T> class PBlur {
+public:
+  inline PBlur() { ; }
+  inline PBlur(const int& status) {
+    assert(5 < status);
+    p.reserve(status - 5);
+    for(int i = 5; i <= status; i ++)
+      p.emplace_back(PWalkBoth<T, Pmss<T, P<T> > >(Pmss<T, P<T> >(P<T>(i), i)));
+    S = M0 = M1 = res = T(int(0));
+  }
+  inline ~PBlur() { ; }
+  inline const T& next(const T& d) {
+    if(d == num_t(int(0))) return res;
+    M0   = max(M0, abs(d));
+    M1   = max(M0, abs(S += d));
+    res  = p[0].next(d);
+    for(int i = 1; i < p.size(); i ++) res += p[i].next(d);
+    res -= d;
+    if(M1 != T(int(0))) res += S / M1 * M0;
+    return res /= T(p.size() + 2);
+  }
+  vector<PWalkBoth<T, Pmss<T, P<T> > > > p;
+  T S;
+  T M0;
+  T M1;
+  T res;
+};
+
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
@@ -153,7 +178,16 @@ int main(int argc, const char* argv[]) {
   //      prediction fails in best effort, but whole of the case, one of the
   //      function estimation remains, so in whole in long range, it's ok
   //      in feeding one by one sliding window meaning.
-  PWalkBoth<num_t, Pmss<num_t, P<num_t> > > p(Pmss<num_t, P<num_t> >(P<num_t>(abs(status)), abs(status)));
+  // N.B. We take PBlur for blurring prediction by status length.
+  //      Making prediction twice with this might causes only the
+  //      status the original stream have and only the input stream
+  //      the argv[1] insist is the matter.
+  //      However, even so, there even also exists the jammer to this predictor.
+  //      When them, they might be observed as status out of reach or
+  //      non lebesgue measurable condition or simple jamming downto half of the
+  //      argv[1] status.
+  //      In the theoretical reason, this is the only possible stability fix.
+  PBlur<num_t> p(abs(status));
   auto  q(p);
   num_t d(int(0));
   auto  dd(d);
@@ -168,8 +202,9 @@ int main(int argc, const char* argv[]) {
       // XXX: copy cat on 1 != const.
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
       std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
-    } else
+    } else {
       std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
+    }
   }
   return 0;
 }
