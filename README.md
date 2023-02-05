@@ -102,6 +102,9 @@ N.B. Re-categorize categorized part is same categorize as original with some inp
 
 N.B. we take original/~ as x~rx, r in R when they doesn't normalized by the method like conv_check/nand.cc.
 
+# Tips on original stream status dimension and prediction dimension:
+We are estimating it is enough p.cc argv[1] \* input average width larger than input stream status dimension in average. We might need to do twice if p.cc is being jammed condition.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
