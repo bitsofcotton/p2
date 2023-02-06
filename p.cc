@@ -51,7 +51,10 @@ int main(int argc, const char* argv[]) {
   //      non lebesgue measurable condition or simple jamming downto half of the
   //      argv[1] status.
   //      In the theoretical reason, this is the only possible stability fix.
-  PBlur<num_t> p(abs(status));
+  // N.B. original PBlur is too heavy to run with large status length,
+  //      we can remedy them by Ppad with argv[2] by decomposing status length.
+  const int substat(min(max(int(sqrt(num_t(abs(status)))), 64), abs(status)));
+  Ppad<num_t, PBlur<num_t> > p(PBlur<num_t>(substat), abs(status) / substat);
   auto  q(p);
   num_t d(int(0));
   auto  dd(d);
