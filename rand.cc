@@ -25,11 +25,20 @@ int main(int argc, const char* argv[]) {
   //      smaller matrixes effects some of the result, but if the distribution
   //      isn't harmful and has non small orthogonal parts norm,
   //      they shouldn't harms.
-  while(true)
+  while(true) {
     std::cout <<
       (num_t((int(rd()) ^ int(mt()) ^ int(kb()) ^ int(rl48()))
               & 0x7fffffff) / (num_t(int(0x7fffffff)) / num_t(int(2)))
        - num_t(int(1))) << std::endl << std::flush;
+    if(rd() & 1) rd();
+    if(rd() & 1) rd();
+    if(mt() & 1) mt();
+    if(mt() & 1) mt();
+    if(kb() & 1) kb();
+    if(kb() & 1) kb();
+    if(rl48() & 1) rl48();
+    if(rl48() & 1) rl48();
+  }
   return 0;
 }
 

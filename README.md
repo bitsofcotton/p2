@@ -6,6 +6,8 @@ Also, integrated generic predictor they slices some dimension of input stream.
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
+The integrated predictor and the parts targets only a finite inner status condition and we must suppose input stream internal state dimension size. If the supposed size is smaller than input stream, this fails.
+
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 Also p.cc depends on walk accuracy theirselves. So to continue prediction, we need better accuracy if walk has enough distance from origin point.
@@ -103,10 +105,17 @@ N.B. Re-categorize categorized part is same categorize as original with some inp
 N.B. we take original/~ as x~rx, r in R when they doesn't normalized by the method like conv_check/nand.cc.
 
 # Tips on original stream status dimension and prediction dimension:
-We are estimating it might enough p.cc argv[1] larger than input stream status dimension to calculate in average. We might need to do twice if p.cc is being jammed condition. We need first unstable run with argv[1] \* 2 input steps.
+We are estimating it might enough p.cc argv[1] larger than input stream status dimension to calculate in average. We might need to do twice if p.cc is being jammed condition. We normally need first unstable run with argv[1] \* 2 input steps (see above).
 
 # Tips on speed - accuracy trade off.
 A p.cc is using sqrt(argv[1]) for calculating status and use pad sqrt(argv[1]) length. So from this, the accuracy of originals can slips.
+
+# Tips on predicting rand.cc
+If we predict some PRNG, the separatable computing block number and its block size is the matter.
+If calculating accuracy is not enough, we need to enlarge block number supposed to pass into argv[1] in p.cc.
+
+If we're predicting from initialized point the plain PRNGs without timing hack initialized with fixed-size entropy without loss of the points, we only need the status size the original entropy bit size, however, we should use all of the point the PRNGs produce to predict with.
+If there's the some loss point from first point out of the status we concern in such case, the prediction might fails after the point.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
