@@ -56,7 +56,8 @@ int main(int argc, const char* argv[]) {
   const int substat(min(max(int(sqrt(num_t(abs(status)))), 64), abs(status)));
   Ppad<num_t, PBlur<num_t> > p(PBlur<num_t>(substat), abs(status) / substat);
   auto  q(p);
-  num_t d(int(0));
+  int   t;
+  num_t d(t ^= t);
   auto  dd(d);
   auto  M(d);
   auto  Mc(d);
@@ -64,14 +65,14 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto D(d * M);
+    const auto D0(d * M);
+    const auto D(t ++ < abs(status) * 3 ? num_t(int(0)) : D0);
     if(status < 0) {
       // XXX: copy cat on 1 != const.
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
-      std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
-    } else {
-      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
-    }
+      std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << ", " << D0 << std::endl << std::flush;
+    } else
+      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << ", " << D0 << std::endl << std::flush;
   }
   return 0;
 }
