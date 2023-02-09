@@ -8,14 +8,13 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 
 The integrated predictor and the parts targets only a finite inner status condition and we must suppose input stream internal state dimension size. If the supposed size is smaller than input stream, this fails.
 
+Also, they suppose input stream some average slide is one of the 3 case mainly: (i) Lebesgue measurable (ii) calculatible by accuracy limited register computer (iii) stream is the result of some multiple valued output that can rationaly to categorize.
+Also, sub of the method is: (iv) return to average on some of the range or whole input (v) the structure average describes enough input structure (vi) flip last.
+p.cc status \< 0 for implicit copycat prediction, otherwise, explicit prediction.
+
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 Also p.cc depends on walk accuracy theirselves. So to continue prediction, we need better accuracy if walk has enough distance from origin point.
-
-# Description on integrated predictor:
-p.cc is the integrated predictors of whole p0, p1, p2.
-If the input argument is large enough, this slices some dimension of the input stream. If we use P0DFT class to harden this with Th. Condorcet's jury also effects.
-p.cc status \< 0 for implicit copycat prediction, otherwise, explicit prediction.
 
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
@@ -120,7 +119,7 @@ If there's the some loss point from first point out of the status we concern in 
 # Tips on multiple of collateral
 There also exists non Lebesgue measurable based method starting on the fixed data (multiples of invariant insertion to the dimension we cannot divide) whether which matches or not, however, literally in bad luck, this can always fail because of multiple of the prediction makes nonsense prediction even they makes a sense after all data is received condition with the predictor in short range.
 
-If such non Lebesgue measurable function is consistent in locally and works well as expected to, argv\[1\] of any of the input has a finite upper bound, however, we think we can create a jammer to such predictor(s) in rational, so this concludes below. But if the calculation itself can be tangled to such structures, the hypothesis jammer exists can fail in such case.
+If such non Lebesgue measurable function is consistent in locally and works well as expected to, argv\[1\] of any of the input has a finite upper bound, however, we think we can create a jammer to such predictor(s) in rational, so this concludes below. But if the calculation itself can be tangled to such structures, the hypothesis jammer exists can fail in such case. (when being tangled embryonic with such tangling or only the argv\[1\] is not enough for rational structure, original stream is seen as the jammer, when inverse tangled, reverse direction walk output.)
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
