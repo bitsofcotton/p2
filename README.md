@@ -117,6 +117,11 @@ If calculating accuracy is not enough, we need to enlarge block number supposed 
 If we're predicting from initialized point the plain PRNGs without timing hack initialized with fixed-size entropy without loss of the points, we only need the status size the original entropy bit size, however, we should use all of the point the PRNGs produce to predict with.
 If there's the some loss point from first point out of the status we concern in such case, the prediction might fails after the point.
 
+# Tips on multiple of collateral
+There also exists non Lebesgue measurable based method starting on the fixed data (multiples of invariant insertion to the dimension we cannot divide) whether which matches or not, however, literally in bad luck, this can always fail because of multiple of the prediction makes nonsense prediction even they makes a sense after all data is received condition with the predictor in short range.
+
+If such non Lebesgue measurable function is consistent in locally and works well as expected to, argv\[1\] of any of the input has a finite upper bound, however, we think we can create a jammer to such predictor(s) in rational, so this concludes below. But if the calculation itself can be tangled to such structures, the hypothesis jammer exists can fail in such case.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
