@@ -220,26 +220,25 @@ template <typename T, typename P> class Ppad {
 public:
   inline Ppad() { ; }
   inline Ppad(P&& p, const int& pad = 1) {
-    this->p.resize(pad, p);
-    b.resize(pad, T(t ^= t));
-    f = idFeeder<T>(pad);
+    this->p = p;
+    this->pad = pad0 =  nxt = pad;
+    assert(0 < pad);
+    d = res = T(t ^= t);
   }
   inline ~Ppad() { ; }
-  inline T next(const T& in) {
-    const auto& ff(f.next(in));
-    if(! f.full) return T(int(0));
-    auto fin(ff[0]);
-    for(int i = 1; i < ff.size(); i ++) fin += ff[i];
-    b[t] = p[t].next(fin);
-    if(p.size() <= (++ t)) t ^= t;
-    auto res(b[0]);
-    for(int i = 1; i < b.size(); i ++) res += b[i];
-    return res;
+  inline const T& next(const T& in) {
+    d += in;
+    if(t ++ < nxt) return res;
+    nxt = pow(T(pad += pad0), T(int(2)) / T(int(3)));
+    return res = p.next(d);
   }
   int t;
-  vector<P> p;
-  vector<T> b;
-  idFeeder<T> f;
+  int pad0;
+  int pad;
+  int nxt;
+  P p;
+  T d;
+  T res;
 };
 
 template <typename T> pair<vector<SimpleVector<T> >, vector<SimpleVector<T> > > predv(const vector<SimpleVector<T> >& in) {

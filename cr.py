@@ -123,6 +123,42 @@ elif(4 < len(sys.argv) and sys.argv[4][0] == 'R'):
       for byte in a:
         print(byte - 127.5)
       sys.stdout.flush()
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'c'):
+  for u in range(0, abs(int(sys.argv[2]))):
+    a = []
+    for t in range(0, abs(int(sys.argv[1]))):
+      a.append(numpy.cos(t) * pow(2., 16))
+      a[- 1] -= numpy.floor(a[- 1] * 1e2) / 1e2
+    a = numpy.fft.ifft(a)
+    for aa in a[1:]:
+      print(aa.real)
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'C'):
+  for t in range(0, abs(int(sys.argv[1]))):
+    if(int(sys.argv[1]) < 0):
+      print(numpy.cos(t / float(int(sys.argv[1])) * 2. * numpy.pi * int(sys.argv[2])))
+    else:
+      if(int(sys.argv[2]) < 0):
+        print(- pow((t - abs(int(sys.argv[1])) / 2.), - int(sys.argv[2])))
+      else:
+        print(  pow((t - abs(int(sys.argv[1])) / 2.),   int(sys.argv[2])))
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'n'):
+  for t in range(0, abs(int(sys.argv[1]))):
+    if(1 < int(sys.argv[3]) and t % abs(int(sys.argv[3])) != 0): continue
+    if(int(sys.argv[1]) < 0):
+      print(- ((t % abs(int(sys.argv[2]))) - abs(int(sys.argv[2])) / 2.))
+    else:
+      print(   (t % abs(int(sys.argv[2]))) - abs(int(sys.argv[2])) / 2.)
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'w'):
+  cnt = bd = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = float(line[:- 1].split(",")[0])
+    if(float(sys.argv[1]) < abs(d - bd)):
+      if(int(sys.argv[2]) < cnt):
+        print(d)
+        sys.stdout.flush()
+        cnt = 0
+      cnt += 1
+      bd   = d
 elif(4 < len(sys.argv) and sys.argv[4][0] == 'S'):
   t = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):

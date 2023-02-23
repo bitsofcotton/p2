@@ -21,7 +21,7 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(4096);
+  int status(77);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
@@ -53,8 +53,8 @@ int main(int argc, const char* argv[]) {
   //      In the theoretical reason, this is the only possible stability fix.
   // N.B. original PBlur is too heavy to run with large status length,
   //      we can remedy them by Ppad with argv[2] by decomposing status length.
-  const int substat(min(max(int(sqrt(num_t(abs(status)))), 64), abs(status)));
-  Ppad<num_t, PBlur<num_t> > p(PBlur<num_t>(substat), abs(status) / substat);
+  // N.B. rewrote Ppad for x -&gt; x^2 virtual replacement.
+  Ppad<num_t, PBlur<num_t> > p(PBlur<num_t>(abs(status)), abs(status));
   auto  q(p);
   int   t;
   num_t d(t ^= t);
