@@ -21,11 +21,11 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(32);
+  int status(17);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(status);
+  assert(16 < status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
   //      however, we can make also (f(x)) elimination also causes continuous
@@ -55,22 +55,14 @@ int main(int argc, const char* argv[]) {
   //      we can remedy them by Ppad with argv[2] by decomposing status length.
   // N.B. rewrote Ppad for x -&gt; x^2 virtual replacement.
   Ppretry<num_t, Ppad<num_t, PBlur<num_t> > > p(Ppad<num_t, PBlur<num_t> >(PBlur<num_t>(abs(status)), abs(status), abs(status) * 3));
-  auto  q(p);
   num_t d(int(0));
-  auto  dd(d);
   auto  M(d);
-  auto  Mc(d);
   auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    if(status < 0) {
-      // XXX: copy cat on 1 != const.
-      const auto one(p.next(d) * q.next(num_t(int(1)) / d));
-      std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
-    } else
-      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
+    std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }

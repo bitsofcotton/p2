@@ -1,6 +1,6 @@
 # p2
 Generic predictor on expectation value mediumly depends data itself.
-Also, integrated generic predictor they slices some dimension of input stream.
+Also, integrated generic predictor they slices some dimension of input stream if all the inner status is on the input stream condition.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
@@ -10,7 +10,6 @@ The integrated predictor and the parts targets only a finite inner status condit
 
 Also, they suppose input stream some average slide is one of the 3 case mainly: (i) Lebesgue measurable (ii) calculatible by accuracy limited register computer (iii) stream is the result of some multiple valued output that can rationaly to categorize.
 Also, sub of the method is: (iv) return to average on some of the range or whole input (v) the structure average describes enough input structure (vi) flip last.
-p.cc status \< 0 for implicit copycat prediction, otherwise, explicit prediction.
 
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
@@ -104,10 +103,7 @@ N.B. Re-categorize categorized part is same categorize as original with some inp
 N.B. we take original/~ as x~rx, r in R when they doesn't normalized by the method like conv_check/nand.cc.
 
 # Tips on original stream status dimension and prediction dimension:
-We are estimating it might enough p.cc argv[1] larger than input stream status dimension to calculate in average. We might need to do twice if p.cc is being jammed condition. We normally need first unstable run with argv[1] \* 3 input steps (see above).
-
-# Tips on speed - accuracy trade off.
-A p.cc is using sqrt(argv[1]) for calculating status and use pad sqrt(argv[1]) length. So from this, the accuracy of originals can slips.
+We are estimating it might enough p.cc argv[1] larger than input stream status dimension to calculate in average. We might need to do twice if p.cc is being jammed condition. We normally need first unstable run with argv[1] \* argv[1] \* 3 input steps (see above).
 
 # Tips on predicting rand.cc
 If we predict some PRNG, the separatable computing block number and its block size is the matter.
@@ -124,13 +120,7 @@ There also exists non Lebesgue measurable based method starting on the fixed dat
 In such case, if non Lebesgue measurable function is consistent in locally and works well, even so, we need the hierarchy structure on prediction on \{compress\} and the status we observe needs to be in the observation observed and passed points into the execution binary. So we cannot omit in such case because the states can be selected in arbitrary way including jammer itself.
 
 # Reducing sparsity who effects long status length
-We take x\^2/3 scale in virtually in p.cc. This causes numerical test valid.
-
-# Retry met jammer jamming
-In the worst case on p2.cc:Ppretry, the jammer causes p.cc output 0 prediction.
-In this case, we can only argv\[1\] += 1.
-
-However, we might meet worse than this jammer some another day.
+We take x\^2/3 scale in virtually in p.cc. This causes some of the numerical test valid.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
