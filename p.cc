@@ -54,7 +54,7 @@ int main(int argc, const char* argv[]) {
   // N.B. original PBlur is too heavy to run with large status length,
   //      we can remedy them by Ppad with argv[2] by decomposing status length.
   // N.B. rewrote Ppad for x -&gt; x^2 virtual replacement.
-  Ppad<num_t, PBlur<num_t> > p(PBlur<num_t>(abs(status)), abs(status));
+  Ppretry<num_t, Ppad<num_t, PBlur<num_t> > > p(Ppad<num_t, PBlur<num_t> >(PBlur<num_t>(abs(status)), abs(status), abs(status) * 3));
   auto  q(p);
   num_t d(int(0));
   auto  dd(d);
@@ -64,14 +64,13 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto D0(d * M);
-    const auto D(p.t < status * status * 3 ? num_t(int(0)) : D0);
+    const auto D(d * M);
     if(status < 0) {
       // XXX: copy cat on 1 != const.
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
-      std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << ", " << D0 << std::endl << std::flush;
+      std::cout << D << ", " << (M = (Mc = max(Mc, abs(one))) == num_t(int(0)) ? d : one / Mc * d) << ", " << (S += D) << std::endl << std::flush;
     } else
-      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << ", " << D0 << std::endl << std::flush;
+      std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }

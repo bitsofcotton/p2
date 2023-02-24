@@ -124,7 +124,13 @@ There also exists non Lebesgue measurable based method starting on the fixed dat
 In such case, if non Lebesgue measurable function is consistent in locally and works well, even so, we need the hierarchy structure on prediction on \{compress\} and the status we observe needs to be in the observation observed and passed points into the execution binary. So we cannot omit in such case because the states can be selected in arbitrary way including jammer itself.
 
 # Reducing sparsity who effects long status length
-We take x\*x scale in virtually in p.cc. This causes numerical test valid.
+We take x\^2/3 scale in virtually in p.cc. This causes numerical test valid.
+
+# Retry met jammer jamming
+In the worst case on p2.cc:Ppretry, the jammer causes p.cc output 0 prediction.
+In this case, we can only argv\[1\] += 1.
+
+However, we might meet worse than this jammer some another day.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
