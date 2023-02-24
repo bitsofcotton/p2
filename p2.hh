@@ -220,7 +220,7 @@ template <typename T, typename P> class Ppad {
 public:
   inline Ppad() { ; }
   inline Ppad(P&& p, const int& pad = 1) {
-    this->p = p;
+    this->p = p0 = p;
     this->pad = pad0 =  nxt = pad;
     assert(0 < pad);
     d = res = T(t ^= t);
@@ -229,13 +229,20 @@ public:
   inline const T& next(const T& in) {
     d += in;
     if(t ++ < nxt) return res;
-    nxt = pow(T(pad += pad0), T(int(2)) / T(int(3)));
+    const auto nxt2(pow(T(pad += pad0), T(int(2)) / T(int(3))));
+    if(nxt2 < T(nxt + 2)) {
+      nxt = pow(T(pad = pad0), T(int(2)) / T(int(3)));
+      p   = p0;
+      return res = d = T(t ^= t);
+    }
+    nxt = nxt2;
     return res = p.next(d);
   }
   int t;
   int pad0;
   int pad;
   int nxt;
+  P p0;
   P p;
   T d;
   T res;

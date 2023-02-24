@@ -56,8 +56,7 @@ int main(int argc, const char* argv[]) {
   // N.B. rewrote Ppad for x -&gt; x^2 virtual replacement.
   Ppad<num_t, PBlur<num_t> > p(PBlur<num_t>(abs(status)), abs(status));
   auto  q(p);
-  int   t;
-  num_t d(t ^= t);
+  num_t d(int(0));
   auto  dd(d);
   auto  M(d);
   auto  Mc(d);
@@ -66,7 +65,7 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D0(d * M);
-    const auto D(t ++ < abs(status) * 3 ? num_t(int(0)) : D0);
+    const auto D(p.t < status * status * 3 ? num_t(int(0)) : D0);
     if(status < 0) {
       // XXX: copy cat on 1 != const.
       const auto one(p.next(d) * q.next(num_t(int(1)) / d));
