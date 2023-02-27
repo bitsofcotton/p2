@@ -53,8 +53,10 @@ int main(int argc, const char* argv[]) {
   //      In the theoretical reason, this is the only possible stability fix.
   // N.B. original PBlur is too heavy to run with large status length,
   //      we can remedy them by Ppad with argv[2] by decomposing status length.
-  // N.B. rewrote Ppad for x -&gt; x^2 virtual replacement.
-  Ppretry<num_t, Ppad<num_t, PBlur<num_t> > > p(Ppad<num_t, PBlur<num_t> >(PBlur<num_t>(abs(status)), abs(status), abs(status) * 3));
+  // N.B. rewrote Ppad for x -&gt; x^(2/3) virtual replacement.
+  // N.B. even we work with 2 of the range, they causes also vulnerable to
+  //      least common multiply period timing attack.
+  Ppretry<num_t, Ppad<num_t, PBlur<num_t> > > p(Ppad<num_t, PBlur<num_t> >(PBlur<num_t>(status), status, status * 3));
   num_t d(int(0));
   auto  M(d);
   auto  S(d);
