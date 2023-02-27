@@ -125,6 +125,12 @@ We take x\^2/3 scale in virtually in p.cc. This causes some of the numerical tes
 This is because taylor series of f(x,k):=f(...f(x)...) (k times f) concludes Sum_m ... (cbrt(k))^2m series.
 Also, scale breaks the original stream period by irrational period causes rich of inner states on the stream we stuck. So in this case, a little stable result until we met around gulf point the inner states strongly affect.
 
+# Any of the predictor, they have the jammer.
+If the jammer only targets first order predicton, we can avoid them by multiple of range verage causes jammer needs least common multiply period.
+However, any of the predictor, they have the jammer to them, so jammer retargets them, the condition of the period are ignored.
+So this is which is latter effect one chase, so deterministic prediction (includes PRNG ones) cannot avoid jammer from lower layer level.
+So we conclude once prediction done, then, repredict with another similar ones, one of them seems ok, we did best for them.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU

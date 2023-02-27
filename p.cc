@@ -21,11 +21,11 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(17);
+  int status(20);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(16 < status);
+  assert(2 < status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
   //      however, we can make also (f(x)) elimination also causes continuous
@@ -56,7 +56,13 @@ int main(int argc, const char* argv[]) {
   // N.B. rewrote Ppad for x -&gt; x^(2/3) virtual replacement.
   // N.B. even we work with 2 of the range, they causes also vulnerable to
   //      least common multiply period timing attack.
-  Ppretry<num_t, Ppad<num_t, PBlur<num_t> > > p(Ppad<num_t, PBlur<num_t> >(PBlur<num_t>(status), status, status * 3));
+  // N.B. however, lcm rapidly increase if we specify multiple of the argv.
+  //      so we should pass argv as to be (pred len) < (argv[1]) ... (argv[n]),
+  //      argv[k]!=argv[m] (k != m)
+  // N.B. any of the predictors has its jammer, so we can say we did best if
+  //      once produced prediction and its input, then, repredict with
+  //      same input, antoher argument is seems better one.
+  PWalkBoth<num_t, Pmss<num_t, Ppretry<num_t, Ppad<num_t, P<num_t> > > > > p(Pmss<num_t, Ppretry<num_t, Ppad<num_t, P<num_t> > > >(Ppretry<num_t, Ppad<num_t, P<num_t> > >(Ppad<num_t, P<num_t> >(P<num_t>(status), status, status)), status));
   num_t d(int(0));
   auto  M(d);
   auto  S(d);
