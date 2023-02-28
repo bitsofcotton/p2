@@ -65,12 +65,11 @@ int main(int argc, const char* argv[]) {
   PWalkBoth<num_t, Pmss<num_t, Ppretry<num_t, Ppad<num_t, P<num_t> > > > > p(Pmss<num_t, Ppretry<num_t, Ppad<num_t, P<num_t> > > >(Ppretry<num_t, Ppad<num_t, P<num_t> > >(Ppad<num_t, P<num_t> >(P<num_t>(status), status, status)), status));
   num_t d(int(0));
   auto  M(d);
-  auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    std::cout << D << ", " << (M = p.next(d)) << ", " << (S += D) << std::endl << std::flush;
+    std::cout << D << ", " << (M = p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }

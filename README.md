@@ -131,8 +131,15 @@ However, any of the predictor, they have the jammer to them, so jammer retargets
 So this is which is latter effect one chase, so deterministic prediction (includes PRNG ones) cannot avoid jammer from lower layer level.
 So we conclude once prediction done, then, repredict with another similar ones, one of them seems ok, we did best for them.
 
+# Only 2 of the output
+We eliminate the output which doesn't be needed in chain and prediction.
+This causes jammer needs +1 state on jamming, however, to jam out some prediction, they needs some of the inner status, so this isn't mean to be effective fix.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
+
+# Real close
+2023/02/28
 

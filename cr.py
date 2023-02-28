@@ -53,10 +53,9 @@ def getrand(mm):
   m = abs(mm)
   # if mm < 0, shuffles random methods.
   if(mm < 0):
-    return getrand(abs(getrand(m) * 16))
+    return getrand(abs(getrand(m) * 6 * 2))
   global rr, sr
-  bw = 0
-  # sum up prng nums.
+  bw = 0.
   if(m % 6 == 0):
     bw = rr.uniform(- 1., 1.)
   elif(m % 6 == 1):
@@ -74,55 +73,37 @@ def getrand(mm):
   return bw
 
 if(4 < len(sys.argv) and sys.argv[4][0] == 'r'):
-  if(int(sys.argv[2]) < 0):
-    while(True):
-      s = getrand(int(sys.argv[1]))
-      for idx in range(0, abs(int(sys.argv[3]))):
-        if(int(sys.argv[3]) < 0):
-          s += getrand(int(sys.argv[1]))
-        else:
-               getrand(int(sys.argv[1]))
-      print(s)
-      sys.stdout.flush()
-  else:
-    for idx in range(0, int(sys.argv[2])):
-      s = getrand(int(sys.argv[1]))
-      for idx2 in range(0, abs(int(sys.argv[3]))):
-        if(int(sys.argv[3]) < 0):
-          s += getrand(int(sys.argv[1]))
-        else:
-               getrand(int(sys.argv[1]))
-      print(s)
-      sys.stdout.flush()
+  t = 0
+  while(True):
+    if(0 < int(sys.argv[2]) and int(sys.argv[2]) < t):
+      break
+    s = getrand(int(sys.argv[1]))
+    for idx in range(0, abs(int(sys.argv[3]))):
+      if(int(sys.argv[3]) < 0):
+        s += getrand(int(sys.argv[1]))
+      else:
+             getrand(int(sys.argv[1]))
+    print(s)
+    sys.stdout.flush()
+    t += 1
 elif(4 < len(sys.argv) and sys.argv[4][0] == 'R'):
-  if(int(sys.argv[2]) < 0):
-    while(True):
-      a = []
-      for idx in range(0, abs(int(sys.argv[3]))):
-        if(int(sys.argv[1]) == 0):
-          a.append(rr.randint(0, 255))
-        else:
-          a.append(sr.randint(0, 255))
-      m = hashlib.sha256()
-      m.update(bytearray(a))
-      a = m.digest()
-      for byte in a:
-        print(byte - 127.5)
-      sys.stdout.flush()
-  else:
-    for idx in range(0, int(sys.argv[2])):
-      a = []
-      for idx in range(0, abs(int(sys.argv[3]))):
-        if(int(sys.argv[1]) == 0):
-          a.append(rr.randint(0, 255))
-        else:
-          a.append(sr.randint(0, 255))
-      m = hashlib.sha256()
-      m.update(bytearray(a))
-      a = m.digest()
-      for byte in a:
-        print(byte - 127.5)
-      sys.stdout.flush()
+  t = 0
+  while(True):
+    if(0 < int(sys.argv[2]) and int(sys.argv[2]) < t):
+      break
+    a = []
+    for idx in range(0, abs(int(sys.argv[3]))):
+      if(int(sys.argv[1]) == 0):
+        a.append(rr.randint(0, 255))
+      else:
+        a.append(sr.randint(0, 255))
+    m = hashlib.sha256()
+    m.update(bytearray(a))
+    a = m.digest()
+    for byte in a:
+      print(byte - 127.5)
+    sys.stdout.flush()
+    t += 1
 elif(4 < len(sys.argv) and sys.argv[4][0] == 'c'):
   for u in range(0, abs(int(sys.argv[2]))):
     a = []
