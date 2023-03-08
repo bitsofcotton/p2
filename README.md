@@ -142,4 +142,5 @@ This causes jammer needs +1 state on jamming, however, to jam out some predictio
 
 # Real close
 2023/02/28
+2023/03/09 bug fix after close #1.
 

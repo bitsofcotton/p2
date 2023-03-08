@@ -46,9 +46,9 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto D(d * M);
+    std::cout << d * M << ", ";
     Mx = max(Mx, abs(d) * num_t(int(2)));
-    std::cout << D << ", " << (M = max(- Mx, min(Mx, p.next(d) )) ) << std::endl << std::flush;
+    std::cout << (M = max(- Mx, min(Mx, p.next(d) )) ) << std::endl << std::flush;
   }
   return 0;
 }

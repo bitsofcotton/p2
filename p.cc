@@ -21,11 +21,11 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(9);
+  int status(8);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(8 < status);
+  assert(8 <= status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
   //      however, we can make also (f(x)) elimination also causes continuous
@@ -68,8 +68,8 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    const auto D(d * M);
-    std::cout << D << ", " << (M = p.next(d)) << std::endl << std::flush;
+    std::cout << d * M << ", ";
+    std::cout << (M = p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
