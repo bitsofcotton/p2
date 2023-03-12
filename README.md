@@ -8,8 +8,7 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 
 The integrated predictor and the parts targets only a finite inner status condition and we must suppose input stream internal state dimension size. If the supposed size is smaller than input stream, this fails.
 
-Also, they suppose input stream some average slide is one of the 3 case mainly: (i) Lebesgue measurable (ii) calculatible by accuracy limited register computer (iii) stream is the result of some multiple valued output that can rationaly to categorize.
-Also, sub of the method is: (iv) return to average on some of the range or whole input (v) the structure average describes enough input structure (vi) flip last.
+Also, they suppose input stream some average slide is one of the 3 case: (i) Lebesgue measurable (ii) calculatible by accuracy limited register computer (iii) stream is the result of some multiple valued output that can rationaly to categorize.
 
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
@@ -143,4 +142,6 @@ This causes jammer needs +1 state on jamming, however, to jam out some predictio
 # Real close
 2023/02/28
 2023/03/09 bug fix after close #1.
+2023/03/13 valid only short range bug fix after close #2.
+
 
