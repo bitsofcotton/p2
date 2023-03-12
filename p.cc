@@ -62,7 +62,7 @@ int main(int argc, const char* argv[]) {
   // N.B. any of the predictors has its jammer, so we can say we did best if
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
-  Pmss<num_t, Ppretry<num_t, PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > > > > p(Ppretry<num_t, PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > > >(PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > >(Ppad<num_t, Prange<num_t> >(Prange<num_t>(status), status, status))), status);
+  Ppretry<num_t, PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > > > p(PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > >(Ppad<num_t, Prange<num_t> >(Prange<num_t>(status), status)));
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
