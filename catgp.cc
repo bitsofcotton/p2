@@ -18,7 +18,6 @@
 */
 #include "../catg/lieonn.hh"
 typedef myfloat num_t;
-#include "../catg/catg.hh"
 typedef P012L<num_t, idFeeder<num_t> > plin_t;
 /*
 #if defined(_FLOAT_BITS_)
@@ -37,8 +36,8 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 < status);
-  const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(4)))));
-  shrinkMatrix<num_t, plin_t> p(plin_t(status, var, var), var);
+  const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
+  plin_t p(status, var);
   std::string s;
   num_t d(int(0));
   auto  Mx(d);

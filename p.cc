@@ -12,11 +12,6 @@
 
 #include <p0/lieonn.hh>
 typedef myfloat num_t;
-#include <p0/p0.hh>
-#include <p1/p1.hh>
-#include <catg/catg.hh>
-#include <decompose/decompose.hh>
-#include "p2.hh"
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);

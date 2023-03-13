@@ -12,7 +12,7 @@
 #include <random>
 #include <sys/resource.h>
 
-#include "../catg/lieonn.hh"
+#include "../p0/lieonn.hh"
 typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
