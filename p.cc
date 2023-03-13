@@ -58,7 +58,7 @@ int main(int argc, const char* argv[]) {
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
   // N.B. arctan Feeder also causes x^odd series.
-  PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > p(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >(status), status);
+  PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > p(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >(status), 1 + int(ceil(num_t(int(1)) / tan(num_t(int(1)) * atan(num_t(int(1))) / num_t(status - 1)))) );
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
