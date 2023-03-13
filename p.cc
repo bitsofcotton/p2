@@ -16,7 +16,7 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(8);
+  int status(77);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
@@ -57,7 +57,8 @@ int main(int argc, const char* argv[]) {
   // N.B. any of the predictors has its jammer, so we can say we did best if
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
-  Ppretry<num_t, PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > > > p(PWalkBoth<num_t, Ppad<num_t, Prange<num_t> > >(Ppad<num_t, Prange<num_t> >(Prange<num_t>(status), status)));
+  // N.B. arctan Feeder also causes x^odd series.
+  PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > p(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >(status), status);
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
