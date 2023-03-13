@@ -20,7 +20,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(8 <= status);
+  assert(0 < status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
   //      however, we can make also (f(x)) elimination also causes continuous
@@ -57,8 +57,7 @@ int main(int argc, const char* argv[]) {
   // N.B. any of the predictors has its jammer, so we can say we did best if
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
-  // N.B. arctan Feeder also causes x^odd series.
-  PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > p(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, arctanFeeder<num_t, idFeeder<num_t> > > >(status), 1 + int(ceil(num_t(int(1)) / tan(num_t(int(1)) * atan(num_t(int(1))) / num_t(status - 1)))) );
+  PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > p(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >(status), 1 + 3 + int(num_t(status - 1) * ceil(num_t(int(1)) / (pow(num_t(status), num_t(int(2)) / num_t(int(3)) ) - pow(num_t(status - 1), num_t(int(2)) / num_t(int(3)) ) )) ) );
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
