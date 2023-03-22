@@ -134,6 +134,14 @@ So we conclude once prediction done, then, repredict with another similar ones, 
 We eliminate the output which doesn't be needed in chain and prediction.
 This causes jammer needs +1 state on jamming, however, to jam out some prediction, they needs some of the inner status, so this isn't mean to be effective fix.
 
+# Serious jamming
+If our integer calculation isn't in jammed condition (with or without a multiple meaning into one meaning), even in the case the predictor is being jammed condition, with the condition we choose input accuracy rough enough in fixed point, or, in random walk, with the condition rough to choose accuracy to be affected (cr.py w command), we think they concludes argv\[1\] larger is better chase, however, the player who cheats combination after seeing opposite combination gets their cheat result. (If one of the algorithm going to be change in continue, they comes along with increase a lot more internal status on them.)
+
+Also, if we input the rough accuracy, we need to specify argv\[1\] at least internal status bit number, however, normal PRNGs has a hack to such length invariant, so in such case, we need some const. ratio-ed number of input. Either modern PRNGs have larger than 3000 bit internal status.
+
+# Integer calculation jamming from singoe to multiple to single funciton.
+If our calculator is being jammed from some existence, we cannot avoid them at all if the jammer seriously jame out us. This is in theoretical if we cannot fix such s2m2s calculation glitch.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -145,3 +153,5 @@ This causes jammer needs +1 state on jamming, however, to jam out some predictio
 2023/03/13 valid only short range bug fix after close #2.
 2023/03/13 integrate all files into lieonn.hh after close #3.
 2023/03/18 merge latest p0, after close #4.
+2023/03/22 update README from osdn.net.
+
