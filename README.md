@@ -139,7 +139,7 @@ If our integer calculation isn't in jammed condition (with or without a multiple
 
 Also, if we input the rough accuracy, we need to specify argv\[1\] at least internal status bit number, however, normal PRNGs has a hack to such length invariant, so in such case, we need some const. ratio-ed number of input. Either modern PRNGs have larger than 3000 bit internal status.
 
-# Integer calculation jamming from singoe to multiple to single funciton.
+# Integer calculation jamming from single to multiple to single funciton.
 If our calculator is being jammed from some existence, we cannot avoid them at all if the jammer seriously jame out us. This is in theoretical if we cannot fix such s2m2s calculation glitch.
 
 # Another Download Sites (Closed)
@@ -153,5 +153,6 @@ If our calculator is being jammed from some existence, we cannot avoid them at a
 2023/03/13 valid only short range bug fix after close #2.
 2023/03/13 integrate all files into lieonn.hh after close #3.
 2023/03/18 merge latest p0, after close #4.
-2023/03/22 update README from osdn.net.
+2023/03/22 update README from osdn.net, after close #5.
+2023/03/24 code clean, after close #6.
 
