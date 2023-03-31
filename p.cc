@@ -10,10 +10,19 @@
 #include <assert.h>
 #include <sys/resource.h>
 
+#if defined(_FLOAT_BITS_)
+#define int int64_t
+#endif
 #include <p0/lieonn.hh>
 typedef myfloat num_t;
 
+#if defined(_FLOAT_BITS_)
+#undef int
+#endif
 int main(int argc, const char* argv[]) {
+#if defined(_FLOAT_BITS_)
+#define int int64_t
+#endif
   std::cout << std::setprecision(30);
   std::string s;
   int status(32);
