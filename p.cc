@@ -16,10 +16,12 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   std::string s;
-  int status(77);
-  if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
+  int status(32);
+  int rnd(0);
+  if(argc < 2) std::cerr << argv[0] << " <status>? <rand>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << status << std::endl;
+  if(2 < argc) rnd    = std::atoi(argv[2]);
+  std::cerr << argv[0] << " " << status << " " << rnd << std::endl;
   assert(0 < status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
@@ -57,7 +59,7 @@ int main(int argc, const char* argv[]) {
   // N.B. any of the predictors has its jammer, so we can say we did best if
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
-  PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > p(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >(status), 1 + 3 + int(ceil(num_t(status - 1) / (pow(num_t(status + 1), num_t(int(2)) / num_t(int(3)) ) - pow(num_t(status), num_t(int(2)) / num_t(int(3)) ) )) ) );
+  Prand<num_t, PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > p(PBond<num_t, Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >, sumFeeder<num_t, idFeeder<num_t> >, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > >(Prange<num_t, deltaFeeder<num_t, idFeeder<num_t> >, deltaFeeder<num_t, cbrtFeeder<num_t, idFeeder<num_t> > > >(status), 1 + 3 + int(ceil(num_t(status - 1) / (pow(num_t(status + 1), num_t(int(2)) / num_t(int(3)) ) - pow(num_t(status), num_t(int(2)) / num_t(int(3)) ) )) ) ), rnd);
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
