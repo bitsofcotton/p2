@@ -156,4 +156,5 @@ If our calculator is being jammed from some existence, we cannot avoid them at a
 2023/03/22 update README from osdn.net, after close #5.
 2023/03/24 code clean, after close #6.
 2023/03/31 persistent resistance to integer calculation jamming, after close #7.
+2023/04/01 source code comment remedy from osdn.jp generic-p2 summary.
 
