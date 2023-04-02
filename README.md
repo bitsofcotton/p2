@@ -6,9 +6,7 @@ Also, integrated generic predictor they slices some dimension of input stream if
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
-The integrated predictor and the parts targets only a finite inner status condition and we must suppose input stream internal state dimension size. If the supposed size is smaller than input stream, this sometimes fails.
-
-Also, they suppose input stream is one of the 3 case: (i) Lebesgue measurable (ii) calculatible by accuracy limited register computer (iii) stream is the result of some multiple valued output that can rationaly to categorize.
+Also, the integrated predictor suppose input stream is one of or both of the case: (i) Lebesgue measurable (aleph_0 to aleph_1 reasonable in status length with artificial transform) (ii) calculatible by accuracy limited register computer (up to aleph_0 reasonable in status length).
 
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
@@ -144,6 +142,14 @@ If our calculator is being jammed from some existence, we cannot avoid them at a
 # Plenty of the room
 There's a plenty of the room to transpile p.cc into many of the compiler/interpreter code and run on them parallel.
 This causes some of the infection to be difficult to trick but if only the pipe/prng is infected condition, this doesn't work well.
+
+# Any of the predictor, any of the jammer (n times).
+We choose the predictor as simple enough.
+This is because when we're in being jammed condition, to make counter measure to them causes worse predictable (saved) input as well.
+This is also with the condition catgp as well.
+So whether or not we choose satate out of the length we treat, it's the same condition. So we only target strict on the states on fixed length in p.cc.
+
+So all we can do the best is to re-predict after saving the input and close the connection to PRNG which generates suspicious stream.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

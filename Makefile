@@ -14,8 +14,8 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 clean:
-	@rm -rf catgp catgp32 rand rand32 p p32 p64
-all:	catgp catgp32 rand rand32 p p32 p64
+	@rm -rf catgp catgp32 rand rand32 p p32
+all:	catgp catgp32 rand rand32 p p32
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
