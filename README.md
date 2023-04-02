@@ -149,7 +149,7 @@ This is because when we're in being jammed condition, to make counter measure to
 This is also with the condition catgp as well.
 So whether or not we choose satate out of the length we treat, it's the same condition. So we only target strict on the states on fixed length in p.cc.
 
-So all we can do the best is to re-predict after saving the input and close the connection to PRNG which generates suspicious stream.
+So all we can do the best is to re-predict with another argv after saving the input and close the connection to PRNG which generates suspicious stream.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -166,4 +166,5 @@ So all we can do the best is to re-predict after saving the input and close the 
 2023/03/24 code clean, after close #6.
 2023/03/31 persistent resistance to integer calculation jamming, after close #7.
 2023/04/01 source code comment remedy from osdn.jp generic-p2 summary, after close #8.
+2023/04/02 balance between jammer and predictor.
 
