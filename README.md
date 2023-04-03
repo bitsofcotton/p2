@@ -167,4 +167,5 @@ So all we can do the best is to re-predict with another argv after saving the in
 2023/03/31 persistent resistance to integer calculation jamming, after close #7.
 2023/04/01 source code comment remedy from osdn.jp generic-p2 summary, after close #8.
 2023/04/02 balance between jammer and predictor.
+2023/04/03 merge.
 
