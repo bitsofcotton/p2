@@ -177,4 +177,5 @@ So if we have non infected computers or when we exclude all of the infection, we
 2023/04/01 source code comment remedy from osdn.jp generic-p2 summary, after close #8.
 2023/04/02 balance between jammer and predictor.
 2023/04/03 merge.
+2023/04/05 update readme.
 
