@@ -151,6 +151,15 @@ So whether or not we choose satate out of the length we treat, it's the same con
 
 So all we can do the best is to re-predict with another argv after saving the input and close the connection to PRNG which generates suspicious stream.
 
+# Any of the predictor, any of the jammer (n+1 times).
+However, if the jammer retargets us including argv or some another binaries, the jammer needs to run with supremum of argv antecedent to predictor.
+In the case, jammer only needs internal status such size predictor needs + some alpha.
+So we can compete them with applying predictor argv with upper bound of the states the cache exists, then, also we need to check in/output speed.
+
+In theoretical, the jammer can always jam out us if jammer is latter one to predictor. So we absent this repository.
+
+So if we have non infected computers or when we exclude all of the infection, we can re construct these programs (p0, p1, p2) with some advances. Otherwise, the jammer gains all of the result to make us exclude.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
