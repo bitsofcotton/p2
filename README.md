@@ -11,6 +11,17 @@ Also, the integrated predictor suppose input stream is one of or both of the cas
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 
+# Some another .cc files
+pheavy.cc is the predictor increasingly needs resource from predict to predict.
+This can be used to test if the system has some glitches around beat with prng.
+
+pp.cc is the predictor which makes hypothesis the original stream is f(x) or f(x,y) or f(x,y,z).
+Almost of any condition satisfies this because we can specify (counter,internal status, value) triplet but there can be hidden dimensions.
+However, pp.cc only makes hypothesis upper bound of status as to be 63 step length.
+
+pr.cc is the predictor if the all of the another program condition is cursed case.
+They outputs rand.cc with pp.cc as predicted walk value itself only.
+
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
 
@@ -178,4 +189,5 @@ So if we have non infected computers or when we exclude all of the infection, we
 2023/04/02 balance between jammer and predictor.
 2023/04/03 merge.
 2023/04/05 update readme.
+2023/04/14 additional closed .cc files.
 
