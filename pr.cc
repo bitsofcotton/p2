@@ -36,7 +36,7 @@ int main(int argc, const char* argv[]) {
     const auto d(
        ((num_t(((int(rd()) ^ int(mt()) ^ int(kb()) ^ int(rl48())) >> 1)
                & 0x7fffffff) / (num_t(int(0x7fffffff)) / num_t(int(2)))
-        - num_t(int(1))) ) * pow(num_t(int(10)), - num_t(int(6))) );
+        - num_t(int(1))) ) * pow(num_t(int(10)), num_t(int(6))) );
     std::cout << (S += d * M) << std::endl << std::flush;
     const auto& res(v.next(d));
     M = num_t(int(0));
