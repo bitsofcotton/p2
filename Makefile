@@ -36,6 +36,8 @@ pp:
 	${CXX} ${CXXFLAGS} -static -O0 -o pp pp.cc
 pp32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o pp32 pp.cc
+pp64:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o pp64 pp.cc
 prand:
 	${CXX} ${CXXFLAGS} -static -O0 -o prand pr.cc
 prand32:

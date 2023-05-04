@@ -149,6 +149,24 @@ elif(4 < len(sys.argv) and sys.argv[4][0] == 'S'):
       print(line[:- 1])
     sys.stdout.flush()
     t += 1
+elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
+  d = [0.]
+  M = [0.]
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    MM = M[0]
+    for MMM in M[1:]:
+      MM += MMM
+    d.append(float(line[:- 1].split(",")[int(sys.argv[3])]))
+    print(MM * d[- 1])
+    # N.B. average shift they kills some normal jammers.
+    #      this takes return to origin, then, return to average.
+    d  = d[- int(sys.argv[1]):]
+    dd = d[0]
+    for ddd in d[1:]:
+      dd += ddd
+    M.append(dd)
+    M  = M[- int(sys.argv[2]):]
+    sys.stdout.flush()
 else:
   t = s = bd = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
