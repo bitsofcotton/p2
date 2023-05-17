@@ -23,13 +23,6 @@ int main(int argc, const char* argv[]) {
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
-  std::cout << std::setprecision(30);
-  std::string s;
-  int status(32);
-  if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
-  if(1 < argc) status = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << status << std::endl;
-  assert(0 < status);
   // N.B. doing thirds on the stream causes (f(x), x, status) elimination.
   //      this is to make hypothesis () - structure itself is continuous.
   //      however, we can make also (f(x)) elimination also causes continuous
@@ -66,14 +59,18 @@ int main(int argc, const char* argv[]) {
   // N.B. any of the predictors has its jammer, so we can say we did best if
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
-  PBond<num_t, Prange<num_t> > p(Prange<num_t>(status), status);
+  // XXX: 2^2^6 : 2^7^2 causes R^11 reduce R^6 causes 7*7-1 == 48.
+  PBond<num_t, P0maxRank<num_t> > p(P0maxRank<num_t>(), 11);
+  PBond<num_t, P1I<num_t> > q(P1I<num_t>(6), 48);
+  std::cout << std::setprecision(30);
+  std::string s;
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     std::cout << d * M << ", ";
-    std::cout << (M = p.next(d)) << std::endl << std::flush;
+    std::cout << (M = (p.next(d) + q.next(d)) / num_t(int(2))) << std::endl << std::flush;
   }
   return 0;
 }
