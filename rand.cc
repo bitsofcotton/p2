@@ -28,7 +28,7 @@ int main(int argc, const char* argv[]) {
   while(true) {
     std::cout <<
       (num_t(((int(rd()) ^ int(mt()) ^ int(kb()) ^ int(rl48())) >> 1)
-              & 0x7fffffff) / (num_t(int(0x7fffffff)) / num_t(int(2)))
+              & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2)))
        - num_t(int(1))) << std::endl << std::flush;
     if(rd() & 1) rd();
     if(rd() & 1) rd();

@@ -171,6 +171,9 @@ In theoretical, the jammer can always jam out us if jammer is latter one to pred
 
 So if we have non infected computers or when we exclude all of the infection, we can re construct these programs (p0, p1, p2) with some advances. Otherwise, the jammer gains all of the result to make us exclude.
 
+# Nonlinear
+We make {p0, p1, p2} as non linear one. So input ratio is the matter if simple glitch.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -191,4 +194,5 @@ So if we have non infected computers or when we exclude all of the infection, we
 2023/04/05 update readme.
 2023/04/14 additional closed .cc files.
 2023/04/21 make/revert ProgramInvariant algorithm change.
+2023/05/18 single multiple single fix, so input y-axis ratio is the matter. also fix rand.cc for MAX_RAND range for knuth_b.
 
