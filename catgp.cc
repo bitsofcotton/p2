@@ -36,7 +36,8 @@ int main(int argc, const char* argv[]) {
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 < status);
   // XXX: 2^2^5 : 2^6^2 causes R^11 : upper bound the invariant reasonable.
-  PBond<num_t, P012L<num_t> > p(P012L<num_t>(min(11, int(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3))) )))), status);
+  //              treat them with concat.
+  PBond<num_t, P012L<num_t> > p(P012L<num_t>(min(6, int(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3))) )))), status);
   std::string s;
   num_t d(int(0));
   auto  M(d);
