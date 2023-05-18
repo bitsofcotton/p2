@@ -43,164 +43,163 @@ def ifloat(x):
       pass
   return 0.
 
-def ifloatout(x, flag):
-  if(flag < 0): return str(x)
-  b = hex(int(x * pow(2., flag)))
-  if(b[0] == '-'): return b[0] + b[3:] + "*2^-" + hex(int(flag))[2:]
-  return b[2:] + "*2^-" + hex(int(flag))[2:]
-
 def getrand(mm):
   m = abs(mm)
   # if mm < 0, shuffles random methods.
   if(mm < 0):
     return getrand(abs(getrand(m) * 6 * 2))
-  global rr, sr
-  bw = 0.
-  if(m % 6 == 0):
-    bw = rr.uniform(- 1., 1.)
-  elif(m % 6 == 1):
-    bw = rr.gauss(0., 1.)
-  elif(m % 6 == 2):
-    bw = sr.uniform(- 1., 1.)
-  elif(m % 6 == 3):
-    bw = sr.gauss(0., 1.)
-  elif(m % 6 == 4):
-    bw = rr.randint(0, 255) - 127.5
-  else:
-    bw = sr.randint(0, 255) - 127.5
+  # if 6 <= m, divide them.
   if((m / 6) % 2 == 1):
-    return bw / getrand(abs(m) % 6)
-  return bw
+   return getrand(abs(m) % 6) / getrand(abs(m) % 6)
+  global rr, sr
+  if(m % 6 == 0):
+    return rr.uniform(- 1., 1.)
+  elif(m % 6 == 1):
+    return rr.gauss(0., 1.)
+  elif(m % 6 == 2):
+    return rr.randint(0, 255) - 127.5
+  elif(m % 6 == 3):
+    return sr.uniform(- 1., 1.)
+  elif(m % 6 == 4):
+    return sr.gauss(0., 1.)
+  return sr.randint(0, 255) - 127.5
 
-if(4 < len(sys.argv) and sys.argv[4][0] == 'r'):
-  t = 0
+if(len(sys.argv) < 2):
+  print("not much arguments")
+elif(sys.argv[1][0] == 'r'):
   while(True):
-    if(0 < int(sys.argv[2]) and int(sys.argv[2]) < t):
-      break
-    s = getrand(int(sys.argv[1]))
-    for idx in range(0, abs(int(sys.argv[3]))):
-      if(int(sys.argv[3]) < 0):
-        s += getrand(int(sys.argv[1]))
-      else:
-             getrand(int(sys.argv[1]))
-    print(s)
+    print(getrand(int(sys.argv[2])))
     sys.stdout.flush()
-    t += 1
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'R'):
-  t = 0
-  while(True):
-    if(0 < int(sys.argv[2]) and int(sys.argv[2]) < t):
-      break
-    a = []
-    for idx in range(0, abs(int(sys.argv[3]))):
-      if(int(sys.argv[1]) == 0):
-        a.append(rr.randint(0, 255))
+elif(sys.argv[1][0] == 'C'):
+  for t in range(0, abs(int(sys.argv[2]))):
+    if(int(sys.argv[2]) < 0):
+      print(numpy.cos(t / float(int(sys.argv[2])) * 2. * numpy.pi * int(sys.argv[3])))
+    else:
+      if(int(sys.argv[3]) < 0):
+        print(- pow((t - abs(int(sys.argv[2])) / 2.), - int(sys.argv[3])))
       else:
-        a.append(sr.randint(0, 255))
+        print(  pow((t - abs(int(sys.argv[2])) / 2.),   int(sys.argv[3])))
+elif(sys.argv[1][0] == 'n'):
+  for t in range(0, abs(int(sys.argv[2]))):
+    if(int(sys.argv[2]) < 0):
+      print(- ((t % abs(int(sys.argv[3]))) - abs(int(sys.argv[3])) / 2.))
+    else:
+      print(   (t % abs(int(sys.argv[3]))) - abs(int(sys.argv[3])) / 2.)
+elif(sys.argv[1][0] == 'R'):
+  while(True):
+    a = []
+    idx = 0
+    for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+      a.append(ifloat(line.split(",")[0]))
+      if(abs(int(sys.argv[2])) <= idx): break
+      idx += 1
     m = hashlib.sha256()
     m.update(bytearray(a))
     a = m.digest()
     for byte in a:
       print(byte - 127.5)
     sys.stdout.flush()
-    t += 1
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'c'):
-  for u in range(0, abs(int(sys.argv[2]))):
+elif(sys.argv[1][0] == 'c'):
+  while(True):
     a = []
-    for t in range(0, abs(int(sys.argv[1]))):
-      a.append(numpy.cos(t) * pow(2., 16))
-      a[- 1] -= numpy.floor(a[- 1] * 1e2) / 1e2
+    idx = 0
+    for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+      a.append(ifloat(line.split(",")[0]))
+      if(abs(int(sys.argv[2])) <= idx): break
+      idx += 1
     a = numpy.fft.ifft(a)
-    for aa in a[1:]:
+    for aa in a:
       print(aa.real)
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'C'):
-  for t in range(0, abs(int(sys.argv[1]))):
-    if(int(sys.argv[1]) < 0):
-      print(numpy.cos(t / float(int(sys.argv[1])) * 2. * numpy.pi * int(sys.argv[2])))
-    else:
-      if(int(sys.argv[2]) < 0):
-        print(- pow((t - abs(int(sys.argv[1])) / 2.), - int(sys.argv[2])))
-      else:
-        print(  pow((t - abs(int(sys.argv[1])) / 2.),   int(sys.argv[2])))
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'n'):
-  for t in range(0, abs(int(sys.argv[1]))):
-    if(1 < int(sys.argv[3]) and t % abs(int(sys.argv[3])) != 0): continue
-    if(int(sys.argv[1]) < 0):
-      print(- ((t % abs(int(sys.argv[2]))) - abs(int(sys.argv[2])) / 2.))
-    else:
-      print(   (t % abs(int(sys.argv[2]))) - abs(int(sys.argv[2])) / 2.)
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'w'):
+elif(sys.argv[1][0] == 'w'):
   cnt = bd = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = float(line[:- 1].split(",")[0])
-    if(float(sys.argv[1]) < abs(d - bd)):
-      if(int(sys.argv[2]) < cnt):
+    d = ifloat(line.split(",")[0])
+    if(float(sys.argv[2]) < abs(d - bd)):
+      if(int(sys.argv[3]) < cnt):
         print(d)
         sys.stdout.flush()
         cnt = 0
       cnt += 1
       bd   = d
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'S'):
+elif(sys.argv[1][0] == 'S'):
   t = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    if(t < int(sys.argv[3])):
+    if(t < int(sys.argv[2])):
       pass
     else:
       print(line[:- 1])
-    sys.stdout.flush()
+      sys.stdout.flush()
+      t = 0
     t += 1
-elif(4 < len(sys.argv) and sys.argv[4][0] == 'a'):
+elif(sys.argv[1][0] == 'a'):
   d = [0.]
   M = [0.]
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     MM = M[0]
     for MMM in M[1:]:
       MM += MMM
-    d.append(float(line[:- 1].split(",")[int(sys.argv[3])]))
+    d.append(ifloat(line.split(",")[0]))
     print(MM * d[- 1])
     # N.B. average shift they kills some normal jammers.
     #      this takes return to origin, then, return to average.
-    d  = d[- int(sys.argv[1]):]
+    d  = d[- int(sys.argv[2]):]
     dd = d[0]
     for ddd in d[1:]:
       dd += ddd
     M.append(dd)
-    M  = M[- int(sys.argv[2]):]
+    M  = M[- int(sys.argv[3]):]
     sys.stdout.flush()
-else:
-  t = s = bd = 0
+elif(sys.argv[1][0] == 'd'):
+  bd = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    ll = line[:- 1].split(",")[int(sys.argv[1])]
-    if(len(sys.argv) < 4 or t % int(sys.argv[3]) == 0):
-      fint = - 1
-      if(len(sys.argv) < 3):
-        print(ll)
-        sys.stdout.flush()
-        continue
-      elif(0 <= float(sys.argv[2])):
-        d = ifloat(ll) * float(sys.argv[2])
-      else:
-        d = ifloat(ll)
-        fint = abs(float(sys.argv[2]))
-      if(4 < len(sys.argv)):
-        if(sys.argv[4][0] == 'd'):
-          print(ifloatout(d - bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 's'):
-          s += d
-          print(ifloatout(s, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 'u'):
-          if(d != bd):
-            print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 'i'):
-          if(d != 0.):
-            print(ifloatout(1. / d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        elif(sys.argv[4][0] == 'f'):
-          print(ifloatout(d * bd, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
-        else:
-          exit(0)
-        bd = d
-      else:
-        print(ifloatout(d, fint), ",", ", ".join(line[:- 1].split(",")[int(sys.argv[1]) + 1:]))
+    d = ifloat(line.split(",")[0])
+    print(d - bd)
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'u'):
+  bd = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    if(d != bd):
+      print(d)
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 's'):
+  s = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    s += ifloat(line.split(",")[0])
+    print(s)
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'i'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    if(d != 0.):
+      print(1. / d)
       sys.stdout.flush()
+elif(sys.argv[1][0] == 'f'):
+  bd = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    print(d * bd)
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'l'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print(line.split(",")[int(sys.argv[2])])
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'r'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print(ifloat(line.split(",")[0]) * float(sys.argv[2]))
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'F'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    b = hex(int(ifloat(line.split(",")[0]) * pow(2., int(sys.argv[2])) ))
+    if(b[0] == '-'): print(b[0] + b[3:] + "*2^-" + hex(int(sys.argv[2]))[2:])
+    else: print(b[2:] + "*2^-" + hex(int(sys.argv[2]))[2:])
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'k'):
+  t = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    if(t % int(sys.argv[2]) == 0):
+      print(line[:- 1])
+      sys.stdout.flush()
+      t = 0
     t += 1
 

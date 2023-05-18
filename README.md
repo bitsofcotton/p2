@@ -202,4 +202,5 @@ So with such case, we need to deal with some of the average on input.
 2023/04/14 additional closed .cc files.
 2023/04/21 make/revert ProgramInvariant algorithm change.
 2023/05/18 single multiple single fix, so input y-axis ratio is the matter. also fix rand.cc for MAX_RAND range for knuth_b.
+2023/05/18 cr.py rewrote to per single command.
 
