@@ -26,10 +26,15 @@ int main(int argc, const char* argv[]) {
   //      isn't harmful and has non small orthogonal parts norm,
   //      they shouldn't harms.
   while(true) {
+    // N.B. knuth_b returns shorter size of RAND_MAX.
     std::cout <<
       (num_t(((int(rd()) ^ int(mt()) ^ int(kb()) ^ int(rl48())) >> 1)
               & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2)))
        - num_t(int(1))) << std::endl << std::flush;
+    // N.B. these operations only extend original matrix size.
+    //      we don't compete with huge matrix theirselves.
+    //      (because to enlarge them, any of the hack works.)
+/*
     if(rd() & 1) rd();
     if(rd() & 1) rd();
     if(mt() & 1) mt();
@@ -38,6 +43,7 @@ int main(int argc, const char* argv[]) {
     if(kb() & 1) kb();
     if(rl48() & 1) rl48();
     if(rl48() & 1) rl48();
+*/
   }
   return 0;
 }

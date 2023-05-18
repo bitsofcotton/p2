@@ -13,7 +13,7 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
-#include <p0/lieonn.hh>
+#include "lieonn.hh"
 typedef myfloat num_t;
 
 #if defined(_FLOAT_BITS_)

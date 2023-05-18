@@ -16,7 +16,7 @@
 #define int int64_t
 #endif
 */
-#include "../catg/lieonn.hh"
+#include "lieonn.hh"
 typedef myfloat num_t;
 /*
 #if defined(_FLOAT_BITS_)

@@ -174,6 +174,13 @@ So if we have non infected computers or when we exclude all of the infection, we
 # Nonlinear
 We make {p0, p1, p2} as non linear one. So input ratio is the matter if simple glitch.
 
+# Non analytical input
+We suppose the one we input is analytical function delta sampled series.
+Even invariants do so, because of randtools General Tips K, L.
+We avoid small part of them by limiting invariant dimension, but utterly, we cannot in general.
+So this often fails with some of the artificial created streams.
+So with such case, we need to deal with some of the average on input.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
