@@ -2,6 +2,7 @@
 import sys
 import io
 import numpy
+import struct
 import random
 import hashlib
 
@@ -19,7 +20,7 @@ def ifloat(x):
       n = e = 0.
       tbl = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, \
         '8': 8, '9': 9, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15, \
-        ' ': -1, '\t': -1, '-': 16}
+        ' ': -1, '\t': -1, '\n': -1, '-': 16}
       m = False
       for ff in b[0]:
         if(tbl[ff] < 0): continue
@@ -90,7 +91,7 @@ elif(sys.argv[1][0] == 'R'):
     a = []
     idx = 0
     for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-      a.append(ifloat(line.split(",")[0]))
+      a.extend(struct.pack('f', ifloat(line.split(",")[0])))
       if(abs(int(sys.argv[2])) <= idx): break
       idx += 1
     m = hashlib.sha256()
@@ -161,6 +162,7 @@ elif(sys.argv[1][0] == 'u'):
     d = ifloat(line.split(",")[0])
     if(d != bd):
       print(d)
+      bd = d
     sys.stdout.flush()
 elif(sys.argv[1][0] == 's'):
   s = 0
