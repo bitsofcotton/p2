@@ -25,24 +25,25 @@ int main(int argc, const char* argv[]) {
   //      smaller matrixes effects some of the result, but if the distribution
   //      isn't harmful and has non small orthogonal parts norm,
   //      they shouldn't harms.
+  int b(0);
   while(true) {
     // N.B. knuth_b returns shorter size of RAND_MAX.
     std::cout <<
       (num_t(((int(rd()) ^ int(mt()) ^ int(kb()) ^ int(rl48())) >> 1)
               & 0x7fffff) / (num_t(int(0x7fffff)) / num_t(int(2)))
        - num_t(int(1))) << std::endl << std::flush;
-    // N.B. these operations only extend original matrix size.
-    //      we don't compete with huge matrix theirselves.
-    //      (because to enlarge them, any of the hack works.)
 /*
-    if(rd() & 1) rd();
-    if(rd() & 1) rd();
-    if(mt() & 1) mt();
-    if(mt() & 1) mt();
-    if(kb() & 1) kb();
-    if(kb() & 1) kb();
-    if(rl48() & 1) rl48();
-    if(rl48() & 1) rl48();
+    // XXX: echo "" > h; sleep ...; rm -f h; to reseed.
+    //      we should do with main getline, but we need mt or socket for them.
+    ifstream h("./h");
+    if(h.is_open() && ! b) {
+      mt = std::mt19937_64(rd());
+      kb = std::knuth_b(rd());
+      rl48 = std::ranlux48(rd());
+      std::cerr << "* reseed *" << std::endl;
+      b = 1;
+    } else if(! h.is_open() && b) b = 0;
+    h.close();
 */
   }
   return 0;

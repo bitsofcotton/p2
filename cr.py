@@ -130,7 +130,7 @@ elif(sys.argv[1][0] == 'S'):
     else:
       print(line[:- 1])
       sys.stdout.flush()
-      t = 0
+      t = int(sys.argv[2])
     t += 1
 elif(sys.argv[1][0] == 'a'):
   d = [0.]
@@ -153,8 +153,9 @@ elif(sys.argv[1][0] == 'a'):
 elif(sys.argv[1][0] == 'd'):
   bd = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
+    d  = ifloat(line.split(",")[0])
     print(d - bd)
+    bd = d
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'u'):
   bd = 0
@@ -181,12 +182,13 @@ elif(sys.argv[1][0] == 'f'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     d = ifloat(line.split(",")[0])
     print(d * bd)
+    bd = d
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'l'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(line.split(",")[int(sys.argv[2])])
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'r'):
+elif(sys.argv[1][0] == 't'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(ifloat(line.split(",")[0]) * float(sys.argv[2]))
     sys.stdout.flush()
