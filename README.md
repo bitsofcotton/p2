@@ -181,6 +181,11 @@ We avoid small part of them by limiting invariant dimension, but utterly, we can
 So this often fails with some of the artificial created streams.
 So with such case, we need to deal with some of the average on input.
 
+# Tips around catgp.
+A catgp treats input data as clustered parts combination on status length.
+This permits some larger dimension invariants differed from the dimension cdot we apply in blur.
+However, this also has trivial upper bounds as status length.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU

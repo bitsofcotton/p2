@@ -60,8 +60,10 @@ int main(int argc, const char* argv[]) {
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
   // XXX: 2^2^6 : 2^7^2 causes R^11 reduce R^6 causes 7*7-1 == 48.
-  PBond<num_t, P0maxRank<num_t> > p(P0maxRank<num_t>(), 11);
-  PBond<num_t, P1I<num_t> > q(P1I<num_t>(6), 48);
+  assert(1 < argc && (argv[1][0] == '+' || argv[1][0] == '-'));
+  std::cerr << argv[0] << " " << (argv[1][0] == '-' ? "-" : "+") << std::endl;
+  PBond<num_t, P0maxRank<num_t> > p(P0maxRank<num_t>(), argv[1][0] == '-' ? 3 : 11);
+  PBond<num_t, P1I<num_t> > q(P1I<num_t>(argv[1][0] == '-' ? 1 : 6), argv[1][0] == '-' ? 3 : 48);
   std::cout << std::setprecision(30);
   std::string s;
   num_t d(int(0));
