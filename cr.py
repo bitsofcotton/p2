@@ -5,6 +5,7 @@ import numpy
 import struct
 import random
 import hashlib
+import subprocess
 
 # mersenne twister:
 rr = random.Random()
@@ -206,4 +207,6 @@ elif(sys.argv[1][0] == 'k'):
       sys.stdout.flush()
       t = 0
     t += 1
+elif(sys.argv[1][0] == 'p'):
+  subprocess.check_call(['sh', '-c', 'p1 ' + str(int(sys.argv[2])) + ' | cr.py d | cr.py k 2 | p + | cr.py d | cr.py d | cr.py k 3 | p + | cr.py d | cr.py k 2 | p -'])
 
