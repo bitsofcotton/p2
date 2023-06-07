@@ -186,6 +186,22 @@ A catgp treats input data as clustered parts combination on status length.
 This permits some larger dimension invariants differed from the dimension cdot we apply in blur.
 However, this also has trivial upper bounds as status length.
 
+# The series {p0, p1, p2, p3} cannot predict:
+We firstly suppose internal state size to predict some of the series.
+In them, we make some of the linear inner product to predict.
+So if input stream has the structure \<a,x\> with jamming a by internal states, they causes which is larger state length race.
+So if we make the input stream as: \<\[PRNG(0), ..., PRNG(m)\], x\> with all of the history, to some point, we cannot predict them by our predictor.
+We could use PRNG as sin(A*x)*B however, we should have the restriction to make return to average invariant by PRNGs.
+So in the worst case, O(2^(internal state bit length)/((internal state bit length)^2)) steps the jammer can produce.
+
+However, in the upper bound of the invariant complexity, even in such case, O(internal state bit length) can be the upper bound when we believe large dimension invariant works well. This is status and structure is veiled or unveiled on the stream race. We need time to inspect deep inside.
+
+# PRNG with seeded.
+If we suppose initial entropy is on the input stream as extra small accuracy bits condition, we can suppose any of the PRNG who have finite states as 1-markov in first 2 steps.
+Around them, we can make the continue of them as 2-markov, ..., n-markov with the same condition.
+So first 2 step condition, 2^1^2 pattern as the upper bound of one program could make, so it floods with 2^2^2 order the original program could have without entropy theirselves.
+We could say some of the labeling to such flooded program causes some of the language expression, however, we need to input each bit apply and applied by clear structure function theirselves.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -208,4 +224,5 @@ However, this also has trivial upper bounds as status length.
 2023/04/21 make/revert ProgramInvariant algorithm change.
 2023/05/18 single multiple single fix, so input y-axis ratio is the matter. also fix rand.cc for MAX_RAND range for knuth_b.
 2023/05/18 cr.py rewrote to per single command.
+2023/06/07 delete pfork.py, add pchain.sh, update readme.
 
