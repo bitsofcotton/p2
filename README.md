@@ -194,13 +194,18 @@ So if we make the input stream as: \<\[PRNG(0), ..., PRNG(m)\], x\> with all of 
 We could use PRNG as sin(A*x)*B however, we should have the restriction to make return to average invariant by PRNGs.
 So in the worst case, O(2^(internal state bit length)/((internal state bit length)^2)) steps the jammer can produce.
 
-However, in the upper bound of the invariant complexity, even in such case, O(internal state bit length) can be the upper bound when we believe large dimension invariant works well. This is status and structure is veiled or unveiled on the stream race. We need time to inspect deep inside.
+However, in the upper bound of the invariant complexity, even in such case, O(internal state bit length) can be the upper bound when we believe large dimension invariant works well. This is status and structure is veiled or unveiled on the stream race.
+They causes: \<Ax,x\> each next stream causes randtools meaning \<a,x\>\*(x_1...x_n)^m or tan\<a,x\>, this causes which is larger race again.
 
 # PRNG with seeded.
 If we suppose initial entropy is on the input stream as extra small accuracy bits condition, we can suppose any of the PRNG who have finite states as 1-markov in first 2 steps.
 Around them, we can make the continue of them as 2-markov, ..., n-markov with the same condition.
 So first 2 step condition, 2^1^2 pattern as the upper bound of one program could make, so it floods with 2^2^2 order the original program could have without entropy theirselves.
 We could say some of the labeling to such flooded program causes some of the language expression, however, we need to input each bit apply and applied by clear structure function theirselves.
+
+# PRNG with first some small walk.
+If we predict some first small walk when initialize PRNGs by some small bit number, they causes first some steps seems ok for statistics because all the state the predictor have includes the veiled seed data.
+However, after some long steps passed, predict again with some small steps, we cannot unveil small bit number of seed they causes some start point description with small enough bit number, so they often fails.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
