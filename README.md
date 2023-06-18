@@ -11,6 +11,9 @@ Also, the integrated predictor suppose input stream is one of or both of the cas
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 
+# XXX
+We can do some of the prediction with first loading some of the status as prediction by (p1\|catgp) ... \| ..., second cr.py p.
+
 # Some another .cc files
 pheavy.cc is the predictor increasingly needs resource from predict to predict.
 This can be used to test if the system has some glitches around beat with prng.
@@ -230,4 +233,5 @@ However, after some long steps passed, predict again with some small steps, we c
 2023/05/18 single multiple single fix, so input y-axis ratio is the matter. also fix rand.cc for MAX_RAND range for knuth_b.
 2023/05/18 cr.py rewrote to per single command.
 2023/06/07 delete pfork.py, add pchain.sh, update readme.
+2023/06/18 update readme, p.cc comment (no logic change), cr.py p command.
 

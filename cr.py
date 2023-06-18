@@ -208,5 +208,5 @@ elif(sys.argv[1][0] == 'k'):
       t = 0
     t += 1
 elif(sys.argv[1][0] == 'p'):
-  subprocess.check_call(['sh', '-c', 'p1 ' + str(int(sys.argv[2])) + ' | cr.py d | cr.py k 2 | p + | cr.py d | cr.py d | cr.py k 3 | p + | cr.py d | cr.py k 2 | p -'])
+  subprocess.check_call(['sh', '-c', 'p + | cr.py d | cr.py k 2 | p + | cr.py d | cr.py k 2 | p -'])
 
