@@ -60,14 +60,22 @@ int main(int argc, const char* argv[]) {
   //      once produced prediction and its input, then, repredict with
   //      same input, antoher argument is seems better one.
   // XXX: 2^2^6 : 2^7^2 causes R^11 reduce R^6 causes 7*7-1 == 48.
+  // N.B. if each input has 1 bit information, the dimension which have only
+  //      deterministic is smaller than 4 points, add const., we get 5 dimension
+  //      for only slightly have non deterministic composites.
+  //      otherwise, if each variable point has a separatable information,
+  //      we get 5 dimension for slightly, add const., we get 6 dimension for
+  //      non-commutatives, also, 11 dimension for commutatives.
+  // XXX: however, if the input points cannot get separated, or dimension
+  //      larger than them causes same in the meaning of combinations on
+  //      certain {f}, mare condition continues.
   assert(1 < argc && (argv[1][0] == '+' || argv[1][0] == '-'));
   std::cerr << argv[0] << " " << (argv[1][0] == '-' ? "-" : "+") << std::endl;
   PBond<num_t, P0maxRank<num_t> > p(P0maxRank<num_t>(), argv[1][0] == '-' ? 3 : 11);
   PBond<num_t, P1I<num_t> > q(P1I<num_t>(argv[1][0] == '-' ? 1 : 5), argv[1][0] == '-' ? 3 : 35);
   std::cout << std::setprecision(30);
   std::string s;
-  num_t d(int(0));
-  auto  M(d);
+  num_t d(int(0)); auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
