@@ -71,8 +71,8 @@ int main(int argc, const char* argv[]) {
   //      certain {f}, mare condition continues.
   assert(1 < argc && (argv[1][0] == '+' || argv[1][0] == '-'));
   std::cerr << argv[0] << " " << (argv[1][0] == '-' ? "-" : "+") << std::endl;
-  PBond<num_t, P0maxRank<num_t> > p(P0maxRank<num_t>(), argv[1][0] == '-' ? 3 : 11);
-  PBond<num_t, P1I<num_t> > q(P1I<num_t>(argv[1][0] == '-' ? 1 : 5), argv[1][0] == '-' ? 3 : 35);
+  PBond<num_t, P0maxRank<num_t> > p(P0maxRank<num_t>(), argv[1][0] == '-' ? 3 : 7);
+  PBond<num_t, P1I<num_t> > q(P1I<num_t>(argv[1][0] == '-' ? 1 : 3), argv[1][0] == '-' ? 3 : 15);
   std::cout << std::setprecision(30);
   std::string s;
   num_t d(int(0)); auto  M(d);
