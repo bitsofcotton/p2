@@ -75,7 +75,8 @@ int main(int argc, const char* argv[]) {
   PBond<num_t, P1I<num_t> > q(P1I<num_t>(argv[1][0] == '-' ? 1 : 3), argv[1][0] == '-' ? 3 : 15);
   std::cout << std::setprecision(30);
   std::string s;
-  num_t d(int(0)); auto  M(d);
+  num_t d(int(0));
+  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;

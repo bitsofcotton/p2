@@ -235,4 +235,5 @@ However, after some long steps passed, predict again with some small steps, we c
 2023/06/07 delete pfork.py, add pchain.sh, update readme.
 2023/06/18 update readme, p.cc comment (no logic change), cr.py p command.
 2023/06/24 fix to avoid observation matters.
+2023/07/01 op2.py m command relative change, fix indent on p.cc.
 
