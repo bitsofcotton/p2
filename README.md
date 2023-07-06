@@ -210,6 +210,11 @@ We could say some of the labeling to such flooded program causes some of the lan
 If we predict some first small walk when initialize PRNGs by some small bit number, they causes first some steps seems ok for statistics because all the state the predictor have includes the veiled seed data.
 However, after some long steps passed, predict again with some small steps, we cannot unveil small bit number of seed they causes some start point description with small enough bit number, so they often fails.
 
+# Touching input.
+If original series is hard enough, the inverse walk condition nor delta inverse inverse walk condition might works.
+This might because of same as p0 condition readme.md.
+In p1, they might because of high frequency or low frequency continuous part causes some of the original calculation structure continuous condition hard.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -236,4 +241,5 @@ However, after some long steps passed, predict again with some small steps, we c
 2023/06/18 update readme, p.cc comment (no logic change), cr.py p command.
 2023/06/24 fix to avoid observation matters.
 2023/07/01 op2.py m command relative change, fix indent on p.cc.
+2023/07/07 update readme.md, update comment in .cc files.
 

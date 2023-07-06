@@ -193,6 +193,12 @@ elif(sys.argv[1][0] == 't'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(ifloat(line.split(",")[0]) * float(sys.argv[2]))
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'T'):
+  tt = 1
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print(ifloat(line.split(",")[0]) * pow(2., tt / float(sys.argv[2])))
+    tt += 1
+    sys.stdout.flush()
 elif(sys.argv[1][0] == 'F'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     b = hex(int(ifloat(line.split(",")[0]) * pow(2., int(sys.argv[2])) ))
