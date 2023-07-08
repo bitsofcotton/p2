@@ -242,4 +242,5 @@ In p1, they might because of high frequency or low frequency continuous part cau
 2023/06/24 fix to avoid observation matters.
 2023/07/01 op2.py m command relative change, fix indent on p.cc.
 2023/07/07 update readme.md, update comment in .cc files.
+2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1.
 
