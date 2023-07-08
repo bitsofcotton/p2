@@ -269,5 +269,5 @@ If each input has 1 bit information, the dimension which have only deterministic
 2023/06/24 fix to avoid observation matters.
 2023/07/01 op2.py m command relative change, fix indent on p.cc.
 2023/07/07 update readme.md, update comment in .cc files.
-2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1. update readme, eliminate rand.cc, p.cc, comments are moved into readme.
+2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1. update readme, eliminate rand.cc, p.cc, comments are moved into readme. op2.py integrated into cr.py.
 
