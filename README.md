@@ -215,6 +215,33 @@ If original series is hard enough, the inverse walk condition nor delta inverse 
 This might because of same as p0 condition readme.md.
 In p1, they might because of high frequency or low frequency continuous part causes some of the original calculation structure continuous condition hard.
 
+# Concat PRNG
+Bitwise xor causes original matrix addition.
+This causes maximum of matrix size will be selected.
+Smaller matrixes effects some of the result, but if the distribution
+isn't harmful and has non small orthogonal parts norm,
+they shouldn't harms.
+
+# Recursive prediction
+Doing thirds on the stream causes (f(x), x, status) elimination.
+This is to make hypothesis () - structure itself is continuous.
+However, we can make also (f(x)) elimination also causes continuous () structures.
+There's differences between them the dimension original structure should have,
+however, if the original prediction is fair enough on counting prediction structure, we can bet only 1 dim.
+
+# P0DFT
+P0DFT eliminates number of the hyper torus hole, this is not needed in P0maxRank sub class because they treats beter way them with semi-ordered field, also P1I, P012L because they treats any of the F_p register (non-)linear calculation.
+
+# Bothside walk
+We need bothside walk condition when a_-1 is being attacked condition.
+Even so, if the attacker attacks both a_-1 and reverse(a_-1), half ot the prediction fails in best effort, but whole of the case, one of the function estimation remains, so in whole in long range, it's ok in feeding one by one sliding window meaning.
+
+# Blurring input/output
+If we blur in/output, smoother result might gains, however, even so, there even also exists the jammer to their predictors.
+
+# 1 bit info
+If each input has 1 bit information, the dimension which have only deterministic is smaller than 4 points with adding const. . This also effects each variable is completely separatable hypothesis condition, variable to variable barrier condition. They concludes some of the non-separatable composition come along with some of the vectors, because of certain {f} combination, this is nightmare condition for predictions, so we avoid them.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -242,5 +269,5 @@ In p1, they might because of high frequency or low frequency continuous part cau
 2023/06/24 fix to avoid observation matters.
 2023/07/01 op2.py m command relative change, fix indent on p.cc.
 2023/07/07 update readme.md, update comment in .cc files.
-2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1.
+2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1. update readme, eliminate rand.cc, p.cc, comments are moved into readme.
 
