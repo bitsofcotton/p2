@@ -6,13 +6,15 @@ Also, integrated generic predictor they slices some dimension of input stream if
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
-Also, the integrated predictor suppose input stream is one of or both of the case: (i) Lebesgue measurable (aleph_0 to aleph_1 reasonable in status length with artificial transform) (ii) calculatible by accuracy limited register computer (up to aleph_0 reasonable in status length).
+N.B. p0 targets Lebesgue measurable (aleph_0 to aleph_1 reasonable in status length with artificial transform), p1 targets calculatible by accuracy limited register computer (up to aleph_0 reasonable in status length).
 
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 
 # XXX
 We can do some of the prediction with first loading some of the status as prediction by (p1\|catgp) ... \| ..., second cr.py p.
+
+Either, some of the prngs are better with catgp | p1 | p0 | cr.py t 1e-... | catgp | p1 | p0.
 
 # Some another .cc files
 pheavy.cc is the predictor increasingly needs resource from predict to predict.
@@ -270,4 +272,5 @@ If each input has 1 bit information, the dimension which have only deterministic
 2023/07/01 op2.py m command relative change, fix indent on p.cc.
 2023/07/07 update readme.md, update comment in .cc files.
 2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1. update readme, eliminate rand.cc, p.cc, comments are moved into readme. op2.py integrated into cr.py.
+2023/08/02 update cr.py, readme, lieonn.hh P012L::next.
 

@@ -268,10 +268,10 @@ elif(sys.argv[1][0] == 'm'):
     idx = 0
     ctrnote = []
     bb  = []
-    for w in ff[1:]:
-      if(len(bb) <= idx): bb.append(0)
+    for w in ff:
+      if(len(bb) <= idx): bb.append(int(len(tbl) / 2))
       bb[idx] = max(0, min(len(tbl) - 1, bb[idx] + numpy.arctan(abs(numpy.tan(float(w) * 4))) * 4 - 2))
-      f = tbl[int(bb[idx]) % int(len(tbl) / (len(ff) - 1)) + idx * int(len(tbl) / (len(ff) - 1))]
+      f = tbl[int(bb[idx]) % int(len(tbl) / len(ff)) + idx * int(len(tbl) / len(ff))]
       idx += 1
       if(0 < float(w)):
         track.append(Message('note_on', note=f, velocity=127, time=0))
