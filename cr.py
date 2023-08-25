@@ -248,40 +248,40 @@ elif(sys.argv[1][0] == 'm'):
   from mido import Message, MidiFile, MidiTrack, MetaMessage
   tbl = []
   mid = MidiFile()
-  track = []
   tbl0 = [0, 2, 4, 5, 7, 9, 11]
   for u in range(0, 2 * len(tbl0)):
     # Thanks to google with search word midi C value, 60 is one of a C.
     tbl.append(60 + tbl0[u % len(tbl0)] + int(u / len(tbl0)) * 12)
-  # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
-  track = MidiTrack()
-  mid.tracks.append(track)
-  track.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
-  # cf.https://ja.wikipedia.org/wiki/General_MIDI
-  #track.append(Message('program_change', program = 117))
   mC = []
   ctr = 0
+  bw  = []
+  track = []
   for line in sys.stdin:
     if(len(line.split("[")) <= 1): continue
     ff = line.split("[")[1].split("]")[0].split(",")
-    print(ff)
+    if(len(track) <= 0):
+      for s in range(0, len(ff)):
+        # Thanks to : https://qiita.com/tjsurume/items/75a96381fd57d5350971 via search engine
+        trk = MidiTrack()
+        trk.append(MetaMessage('set_tempo', tempo=mido.bpm2tempo(70)))
+        # cf.https://ja.wikipedia.org/wiki/General_MIDI
+        #trk.append(Message('program_change', program = 117))
+        track.append(trk)
+        mid.tracks.append(trk)
+    print(ff, bw)
+    if(len(bw) <= 0):
+      bw = ff
+      continue
     idx = 0
-    ctrnote = []
     bb  = []
-    for w in ff:
+    for w in range(0, len(ff)):
       if(len(bb) <= idx): bb.append(int(len(tbl) / 2))
-      bb[idx] = max(0, min(len(tbl) - 1, bb[idx] + numpy.arctan(abs(numpy.tan(float(w) * 4))) * 4 - 2))
+      bb[idx] += abs(numpy.arctan(abs(numpy.tan(float(ff[w]) * 6))) * 6) - 3
       f = tbl[int(bb[idx]) % int(len(tbl) / len(ff)) + idx * int(len(tbl) / len(ff))]
       idx += 1
-      if(0 < float(w)):
-        track.append(Message('note_on', note=f, velocity=127, time=0))
-      else:
-        track.append(Message('note_on', note=f, velocity=0, time=0))
-      ctrnote.append(f)
-    if(len(ctrnote) < 1): continue
-    track.append(Message('note_off', note=ctrnote[- 1], time=120))
-    for cc in ctrnote[:- 1]:
-      track.append(Message('note_off', note=cc, time=0))
+      track[w].append(Message('note_on', note=f, velocity=127, time=0))
+      track[w].append(Message('note_off', note=f, time=(120 * int(abs(numpy.arctan(abs(numpy.tan(float(bw[w])))) * 3) + 1)) ))
+    bw = []
   mid.save('rand_correct.mid')
 elif(sys.argv[1][0] == 'h'):
   for line in sys.stdin:
@@ -292,6 +292,9 @@ elif(sys.argv[1][0] == 'h'):
 elif(sys.argv[1][0] == 'e'):
   import numpy
   mC = []
+  loop = - 1
+  if(2 < len(sys.argv)):
+    loop = int(sys.argv[2])
   for line in sys.stdin:
     if(len(line.split("[")) <= 1): continue
     ff = line.split("[")[1].split("]")[0].split(",")
@@ -299,7 +302,8 @@ elif(sys.argv[1][0] == 'e'):
       mC.append(ff)
       continue
     ffu = ff
-    for vvv in range(0, len(ff)):
+    if(loop < 0): loop = len(ff)
+    for vvv in range(0, loop):
       ff = ffu
       ffu = []
       for u in range(0, len(mC)):
