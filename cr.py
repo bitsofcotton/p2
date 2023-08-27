@@ -272,6 +272,16 @@ elif(sys.argv[1][0] == 'm'):
     if(len(bw) <= 0):
       bw = ff
       continue
+    flg = True
+    for w in ff:
+      if(abs(float(w)) > 1. / 20):
+        flg = False
+        break
+    for w in bw:
+      if(abs(float(w)) > 1. / 20):
+        flg = False
+        break
+    if(flg): continue
     idx = 0
     bb  = []
     for w in range(0, len(ff)):
