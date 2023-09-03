@@ -296,9 +296,8 @@ elif(sys.argv[1][0] == 'm'):
 elif(sys.argv[1][0] == 'h'):
   for line in sys.stdin:
     if(len(line.split("[")) <= 1): continue
-    ff = line.split("[")[1].split("]")[0].split(",")
-    for w in ff[1:]:
-      print(float(w) * float(ff[0]))
+    for w in line.split("[")[1].split("]")[0].split(","):
+      print(float(w))
 elif(sys.argv[1][0] == 'e'):
   import numpy
   mC = []
