@@ -307,11 +307,17 @@ elif(sys.argv[1][0] == 'e'):
   for line in sys.stdin:
     if(len(line.split("[")) <= 1): continue
     ff = line.split("[")[1].split("]")[0].split(",")
+    if(loop <= 0):
+      r = loop
+      loop = 0
+      for v in ff:
+        loop += abs(r * float(v))
+      loop = int(loop)
+      continue
     if(len(mC) < len(ff)):
       mC.append(ff)
       continue
     ffu = ff
-    if(loop < 0): loop = len(ff)
     for vvv in range(0, loop):
       ff = ffu
       ffu = []
