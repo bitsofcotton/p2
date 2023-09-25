@@ -244,6 +244,14 @@ If we blur in/output, smoother result might gains, however, even so, there even 
 # 1 bit info
 If each input has 1 bit information, the dimension which have only deterministic is smaller than 4 points with adding const. . This also effects each variable is completely separatable hypothesis condition, variable to variable barrier condition. They concludes some of the non-separatable composition come along with some of the vectors, because of certain {f} combination, this is nightmare condition for predictions, so we avoid them.
 
+# PRNG first stage scattering
+If we scatter first entropy with first prng call loop prng number count, they should small or no effect to the prediction theirselves because it has also same small entropy we append into the initializer.
+
+Also, we can use prediction with some 2x step or so, so if the attacker can use all of the point the PRNG produce without slip, they could better to have some of the attack surfaces.
+
+However, on the numerical calculation test, sliding some prediction (this can also have same meanings to scattering) often fails.
+In their case, we should use larger and larger argv\[1\] for the prediction and larger and larger skip step if argv\[1\] is going to be huge ones.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -274,4 +282,5 @@ If each input has 1 bit information, the dimension which have only deterministic
 2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1. update readme, eliminate rand.cc, p.cc, comments are moved into readme. op2.py integrated into cr.py.
 2023/08/02 update cr.py, readme, lieonn.hh P012L::next.
 2023/09/20 update cr.py e command.
+2023/09/25 some prng improvement test and update readme.
 

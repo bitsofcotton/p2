@@ -68,6 +68,10 @@ def getrand(mm):
 if(len(sys.argv) < 2):
   print("not much arguments")
 elif(sys.argv[1][0] == 'r'):
+  # N.B.: only to ease our mind, scatter initialized states.
+  scatter = 1000 + int(getrand(int(sys.argv[2])) * 8)
+  for s in range(0, scatter):
+    getrand(int(sys.argv[2]))
   while(True):
     print(getrand(int(sys.argv[2])))
     sys.stdout.flush()
