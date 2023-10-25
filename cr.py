@@ -342,4 +342,10 @@ elif(sys.argv[1][0] == 'E'):
     for f in ff:
       f = str(float(f) * 1e4)
     print(len(ff), ": [", ", ".join(ff), "]")
+elif(sys.argv[1][0] == 'v'):
+  a = []
+  for line in sys.stdin:
+    a.append(line[:- 1])
+  for t in range(0, len(a)):
+    print(a[- 1 - t])
 
