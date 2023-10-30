@@ -284,4 +284,5 @@ In their case, we should use larger and larger argv\[1\] for the prediction and 
 2023/09/20 update cr.py e command.
 2023/09/25 some prng improvement test and update readme.
 2023/10/26 update cr.py v command use with m command.
+2023/10/30 copy structure reliably with randtools meaning.
 
