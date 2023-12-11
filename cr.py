@@ -348,4 +348,31 @@ elif(sys.argv[1][0] == 'v'):
     a.append(line[:- 1])
   for t in range(0, len(a)):
     print(a[- 1 - t])
+elif(sys.argv[1][0] == 'b'):
+  a = []
+  for line in sys.stdin:
+    a.append(float(line[:- 1]))
+  l = int(pow(len(a), .5))
+  for t in range(0, l):
+    s = 0.
+    for aa in a[t * l : (t + 1) * l]:
+      s += aa
+    b  = sorted(a[t * l : (t + 1) * l])
+    s /= len(b)
+    c  = 0.
+    for aa in b:
+      c += (aa - s) * (aa - s)
+    c /= len(b)
+    print(s, c, b[int(len(b) / 2)], b[int(len(b) / 4)], b[int(len(b) * 3 / 4)])
+  print("---")
+  s = 0.
+  for aa in a:
+    s += aa
+  a  = sorted(a)
+  s /= len(a)
+  c  = 0.
+  for aa in a:
+    c += (aa - s) * (aa - s)
+  c /= len(a)
+  print(s, c, a[int(len(a) / 2)], a[int(len(a) / 4)], a[int(len(a) * 3 / 4)])
 
