@@ -252,6 +252,12 @@ Also, we can use prediction with some 2x step or so, so if the attacker can use 
 However, on the numerical calculation test, sliding some prediction (this can also have same meanings to scattering) often fails.
 In their case, we should use larger and larger argv\[1\] for the prediction and larger and larger skip step if argv\[1\] is going to be huge ones.
 
+# Simple controller
+With predicting not one step after, especially two step after can controls the stream on the which is better condition if predictor is reliable enough.
+However, the opposite controller can pretend as random step effect and both of them and us observes possible same point as same value, the behavior can be undefined, however, this also could concludes which has the larger internal states race even in this condition.
+
+However, these are only from theoretical reason, so we don't test because they're harmful enough with our environment.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -285,4 +291,5 @@ In their case, we should use larger and larger argv\[1\] for the prediction and 
 2023/09/25 some prng improvement test and update readme.
 2023/10/26 update cr.py v command use with m command.
 2023/10/30 copy structure reliably with randtools meaning.
+2024/04/25 add tips on simple controller.
 
