@@ -9,6 +9,9 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 N.B. p0 targets Lebesgue measurable (aleph_0 to aleph_1 reasonable in status length with artificial transform), p1 targets calculatible by accuracy limited register computer (up to aleph_0 reasonable in status length).
 
 # XXX
+pr4.cc is for being controlled condition. However, this cannot get better result if this is counter measured. eg. somerange raw step, somerange random step on the stream.
+
+# XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 
 # XXX

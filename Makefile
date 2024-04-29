@@ -14,10 +14,14 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 clean:
-	@rm -rf catgp catgp32
-all:	catgp catgp32
+	@rm -rf catgp catgp32 pr4 pr4-32
+all:	catgp catgp32 pr4 pr4-32
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o catgp32 catgp.cc
+pr4:
+	${CXX} ${CXXFLAGS} -static -o pr4 pr4.cc
+pr4-32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o pr4-32 pr4.cc
 

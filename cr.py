@@ -375,4 +375,18 @@ elif(sys.argv[1][0] == 'b'):
     c += (aa - s) * (aa - s)
   c /= len(a)
   print(s, c, a[int(len(a) / 2)], a[int(len(a) / 4)], a[int(len(a) * 3 / 4)])
+elif(sys.argv[1][0] == 'B'):
+  # N.B.: only to ease our mind, scatter initialized states.
+  scatter = 1000 + int(getrand(int(sys.argv[2])) * 8)
+  for s in range(0, scatter):
+    getrand(int(sys.argv[2]))
+  tt = 0
+  ss = 0
+  for line in sys.stdin:
+    tt += 1
+    if(ss < tt):
+      print(line[:- 1])
+      ss = int(abs(getrand(int(sys.argv[2])) * float(sys.argv[3])))
+      tt = 0
+      sys.stdout.flush()
 
