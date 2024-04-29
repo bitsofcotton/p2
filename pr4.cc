@@ -75,6 +75,7 @@ int main(int argc, const char* argv[]) {
     D3 += d * M0 * M1 * M2;
     DM += logscale<num_t>(logscale<num_t>(d * M0 * M1 * M2 * M3));
     if(! isfinite(DM)) DM = num_t(int(0));
+    std::cout << d * M0 * M1 * M2 * M3 * MM << ", ";
     if(s0 < ++ t0) {
       M0 = p0.next(D0);
       s0 = t0 + arc4random_uniform(rr);
@@ -88,16 +89,15 @@ int main(int argc, const char* argv[]) {
           s2 = t2 + arc4random_uniform(rr);
           D2 = num_t(int(0));
           if(s3 < ++ t3) {
-            std::cout << expscale<num_t>(expscale<num_t>(DM * MM)) << ", ";
             M3 = p3.next(D3);
             MM = expscale<num_t>(expscale<num_t>(q.next(DM)));
             s3 = t3 + arc4random_uniform(rr);
             D3 = DM = num_t(int(0));
-            std::cout << M0 * M1 * M2 * M3 * MM << std::endl << std::flush;
           }
         }
       }
     }
+    std::cout << M0 * M1 * M2 * M3 * MM << std::endl << std::flush;
   }
   return 0;
 }
