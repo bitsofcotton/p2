@@ -253,6 +253,11 @@ If ./predictor is deterministic, the jammer can jam out us, so argv\[1\] distrib
 
 So internal PRNG state length is important for them.
 
+Otherwise, if we code some of the best chosen algorithm for prediction and commit to open places, the otherside controller can controls us easily if there's no PRNG depend internal states on them.
+Either, if we code normalize such PRNG depend codes, they only causes the jammer knowledge increases on the heuristics algorithm.
+
+The pr4.cc is balanced as to depend expectation of probability based structure as to be unique on the stream and stable enough only. If we normalize them, the jammer can worse jam out us.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
