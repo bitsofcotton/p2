@@ -261,6 +261,11 @@ However, the opposite controller can pretend as random step effect and both of t
 
 However, these are only from theoretical reason, so we don't test because they're harmful enough with our environment.
 
+# The bothside controller condition
+If there's controllers on the stream bothside and the both predictors' algorithm is open (or not), we need the condition PRNG depend correct-fail better ratio on predictions. If the predictors doesn't worse sensitive on the PRNG ones, the jammer can jam out us easily.
+
+So the best of our effort could be: to select better condition after the stream and the predictor often returns correct result better than failed result on some better ratio.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -295,4 +300,6 @@ However, these are only from theoretical reason, so we don't test because they'r
 2023/10/26 update cr.py v command use with m command.
 2023/10/30 copy structure reliably with randtools meaning.
 2024/04/25 add tips on simple controller.
+2024/04/29 add pr4.cc .
+2024/04/30 add tips on bothside controller condition.
 
