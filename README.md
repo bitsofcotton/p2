@@ -1,34 +1,16 @@
 # p2
 Generic predictor on expectation value mediumly depends data itself.
-Also, integrated generic predictor they slices some dimension of input stream if all the inner status is on the input stream condition.
+Also, one of a predictor for being controlled stream.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
-N.B. p0 targets Lebesgue measurable (aleph_0 to aleph_1 reasonable in status length with artificial transform), p1 targets calculatible by accuracy limited register computer (up to aleph_0 reasonable in status length).
-
-# XXX
+# Description2:
 pr4.cc is for being controlled condition. However, this cannot get better result if this is counter measured. eg. somerange raw step, somerange random step on the stream.
 
 # XXX
 We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
-
-# XXX
-We can do some of the prediction with first loading some of the status as prediction by (p1\|catgp) ... \| ..., second cr.py p.
-
-Either, some of the prngs are better with catgp | p1 | p0 | cr.py t 1e-... | catgp | p1 | p0.
-
-# Some another .cc files
-pheavy.cc is the predictor increasingly needs resource from predict to predict.
-This can be used to test if the system has some glitches around beat with prng.
-
-pp.cc is the predictor which makes hypothesis the original stream is f(x) or f(x,y) or f(x,y,z).
-Almost of any condition satisfies this because we can specify (counter,internal status, value) triplet but there can be hidden dimensions.
-However, pp.cc only makes hypothesis upper bound of status as to be 63 step length.
-
-pr.cc is the predictor if the all of the another program condition is cursed case.
-They outputs rand.cc with pp.cc as predicted walk value itself only.
 
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
@@ -262,9 +244,14 @@ However, the opposite controller can pretend as random step effect and both of t
 However, these are only from theoretical reason, so we don't test because they're harmful enough with our environment.
 
 # The bothside controller condition
-If there's controllers on the stream bothside and the both predictors' algorithm is open (or not), we need the condition PRNG depend correct-fail better ratio on predictions. If the predictors doesn't worse sensitive on the PRNG ones, the jammer can jam out us easily.
+If there's controllers on the stream bothside and the both predictors' algorithm is open (or not), we need the condition for internal PRNG depend correct-fail better ratio on predictions. If the predictors doesn't worse sensitive on the internal PRNG ones, the jammer can jam out us easily.
 
-So the best of our effort could be: to select better condition after the stream and the predictor often returns correct result better than failed result on some better ratio.
+So the best of our effort could be: to select better condition after the stream and the predictor often returns correct result better than failed result on some better ratio depends on internal PRNG.
+
+So in ideal case, ./predictor argv\[1\] case, argv\[1\] : \[0,alpha\] : returns almost correct prediction, argv\[1\] : \[alpha,beta\] : returns non better prediction, which alpha:(beta-alpha+1) == 2:1 .
+If ./predictor is deterministic, the jammer can jam out us, so argv\[1\] distribution is unknown in the best case depends on the state entropy internal PRNG have.
+
+So internal PRNG state length is important for them.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -301,5 +288,5 @@ So the best of our effort could be: to select better condition after the stream 
 2023/10/30 copy structure reliably with randtools meaning.
 2024/04/25 add tips on simple controller.
 2024/04/29 add pr4.cc .
-2024/04/30 add tips on bothside controller condition.
+2024/04/30 add tips on bothside controller condition. brush up readme.md.
 
