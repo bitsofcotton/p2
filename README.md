@@ -2,6 +2,11 @@
 Generic predictor on expectation value mediumly depends data itself.
 Also, one of a predictor for being controlled stream.
 
+# XXX
+The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
+So otherwise, especially there's parallel f, g and there's parallel internal status parts condition, the hypothesis fails.
+This is especially the stream has some stories, in another words, hidden states directly pretends as dynamics, nor, some of the varieties connects some another algebras and they're continuous conditions.
+
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
