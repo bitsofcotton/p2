@@ -4,8 +4,12 @@ Also, one of a predictor for being controlled stream.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
-So otherwise, especially there's parallel f, g and there's parallel internal status parts condition, the hypothesis fails.
+So otherwise, especially there's parallel internal status parts condition, the hypothesis fails.
 This is especially the stream has some stories, in another words, hidden states directly pretends as dynamics, nor, some of the varieties connects some another algebras and they're continuous conditions.
+
+Also, we cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved internal states in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have internal states bit larger than lg(x_trigger_place).
+
+N.B. The condition parallel f, g isn't important. The separated internal state condition effects large for prediction succeed/failure.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
@@ -13,9 +17,6 @@ In this case, if there's pattenizable jamming into data series, we can correct t
 
 # Description2:
 pr4.cc is for being controlled condition. However, this cannot get better result if this is counter measured. eg. somerange raw step, somerange random step on the stream.
-
-# XXX
-We cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved inner status in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have inner status bit larger than lg(x_trigger_place).
 
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
