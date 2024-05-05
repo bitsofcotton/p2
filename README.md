@@ -300,4 +300,5 @@ The pr4.cc is balanced as to depend expectation of probability based structure a
 2024/04/25 add tips on simple controller.
 2024/04/29 add pr4.cc .
 2024/04/30 add tips on bothside controller condition. brush up readme.md.
+2024/05/05 add pr4c.cc update readme, pr4.cc .
 
