@@ -254,7 +254,7 @@ If there's controllers on the stream bothside and the both predictors' algorithm
 
 So the best of our effort could be: to select better condition after the stream and the predictor often returns correct result better than failed result on some better ratio depends on internal PRNG.
 
-So in ideal case, ./predictor argv\[1\] case, argv\[1\] : \[0,alpha\] : returns almost correct prediction, argv\[1\] : \[alpha,beta\] : returns non better prediction, which alpha:(beta-alpha+1) == 2:1 .
+So in ideal case, ./predictor argv\[1\] case, argv\[1\] : \[0,alpha\[ : returns almost correct prediction, argv\[1\] : \[alpha,beta\[ : returns non better prediction, which alpha:(beta-alpha) == 2:1 .
 If ./predictor is deterministic, the jammer can jam out us, so argv\[1\] distribution is unknown in the best case depends on the state entropy internal PRNG have.
 
 So internal PRNG state length is important for them.
@@ -263,6 +263,17 @@ Otherwise, if we code some of the best chosen algorithm for prediction and commi
 Either, if we code normalize such PRNG depend codes, they only causes the jammer knowledge increases on the heuristics algorithm.
 
 The pr4.cc is balanced as to depend expectation of probability based structure as to be unique on the stream and stable enough only. If we normalize them, the jammer can worse jam out us.
+
+# Tips on jammer
+Basically, our opposite jammer makes the PRNG on some of our predictors.
+
+So if our predictor correctly reduces some of the heat on the stream, the jammer also outputs hot result they can cause return to the origin point can often works well.
+
+However, the jammer also switches our predictor combinations, so all we can do them is for non hot result, predict some low number of ours and bet return to the origin point.
+
+So stacking some of the predictor causes the jammer easily jam out us with some of the gulf on handle points.
+
+Also, if we stack nor implement some another predictors, they only causes the jammer gains the result of ours. So we freeze p\*-series with this repository. Or, we need to do this on VMs but this isn't able to do for us because we're in watched (stucked) condition.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -301,4 +312,5 @@ The pr4.cc is balanced as to depend expectation of probability based structure a
 2024/04/29 add pr4.cc .
 2024/04/30 add tips on bothside controller condition. brush up readme.md.
 2024/05/05 add pr4c.cc update readme, pr4.cc .
+2024/05/06 add tips on jammer, fix some of the readme.
 

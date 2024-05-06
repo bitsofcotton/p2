@@ -3501,7 +3501,7 @@ public:
     SimpleVector<T> invariant(invariants.cols());
     invariant.O();
     for(int i = 0; i < invariants.cols(); i ++)
-      invariant[i] = P0maxRank0<T>(step).next(invariants.col(i));
+      invariant[i] = P0maxRank0<T>().next(invariants.col(i));
     if(invariant[varlen - 1] == zero) return zero;
     SimpleVector<T> work(varlen);
     for(int i = 1; i < work.size(); i ++)
