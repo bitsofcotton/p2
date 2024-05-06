@@ -27,9 +27,9 @@ pr4-32:
 pr4-64:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o pr4-64 pr4.cc
 pr4c:
-	${CXX} ${CXXFLAGS} -static -o pr4c pr4c.cc
+	${CXX} ${CXXFLAGS} -static -D_P012L_ -o pr4c pr4.cc
 pr4c-32:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o pr4c-32 pr4c.cc
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -D_P012L_ -o pr4c-32 pr4.cc
 pr4c-64:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o pr4c-64 pr4c.cc
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -D_P012L_ -o pr4c-64 pr4.cc
 

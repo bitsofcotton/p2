@@ -275,6 +275,8 @@ So stacking some of the predictor causes the jammer easily jam out us with some 
 
 Also, if we stack nor implement some another predictors, they only causes the jammer gains the result of ours. So we freeze p\*-series with this repository. Or, we need to do this on VMs but this isn't able to do for us because we're in watched (stucked) condition.
 
+Also, the generic jammer often jam out us with changing target predictors range to range.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -312,5 +314,5 @@ Also, if we stack nor implement some another predictors, they only causes the ja
 2024/04/29 add pr4.cc .
 2024/04/30 add tips on bothside controller condition. brush up readme.md.
 2024/05/05 add pr4c.cc update readme, pr4.cc .
-2024/05/06 add tips on jammer, fix some of the readme.
+2024/05/06 add tips on jammer, fix some of the readme. eliminate unused commands in cr.py. fix pr4.cc, integrate pr4c.cc into pr4.cc with definition.
 

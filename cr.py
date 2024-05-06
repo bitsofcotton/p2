@@ -163,14 +163,6 @@ elif(sys.argv[1][0] == 'd'):
     print(d - bd)
     bd = d
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'u'):
-  bd = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    if(d != bd):
-      print(d)
-      bd = d
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 's'):
   s = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -183,13 +175,6 @@ elif(sys.argv[1][0] == 'i'):
     if(d != 0.):
       print(1. / d)
       sys.stdout.flush()
-elif(sys.argv[1][0] == 'f'):
-  bd = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    print(d * bd)
-    bd = d
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'l'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(line.split(",")[int(sys.argv[2])])
@@ -218,8 +203,6 @@ elif(sys.argv[1][0] == 'k'):
       sys.stdout.flush()
       t = 0
     t += 1
-elif(sys.argv[1][0] == 'p'):
-  subprocess.check_call(['sh', '-c', 'p0 | cr.py d | cr.py k 2 | p0 | cr.py d | cr.py k 2 | p0'])
 elif(sys.argv[1][0] == 'P'):
   from PIL import Image
   mC  = []
@@ -375,18 +358,4 @@ elif(sys.argv[1][0] == 'b'):
     c += (aa - s) * (aa - s)
   c /= len(a)
   print(s, c, a[int(len(a) / 2)], a[int(len(a) / 4)], a[int(len(a) * 3 / 4)])
-elif(sys.argv[1][0] == 'B'):
-  # N.B.: only to ease our mind, scatter initialized states.
-  scatter = 1000 + int(getrand(int(sys.argv[2])) * 8)
-  for s in range(0, scatter):
-    getrand(int(sys.argv[2]))
-  tt = 0
-  ss = 0
-  for line in sys.stdin:
-    tt += 1
-    if(ss < tt):
-      print(line[:- 1])
-      ss = int(abs(getrand(int(sys.argv[2])) * float(sys.argv[3])))
-      tt = 0
-      sys.stdout.flush()
 

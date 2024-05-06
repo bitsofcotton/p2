@@ -60,7 +60,11 @@ int main(int argc, const char* argv[]) {
   std::cerr << argv[0] << " " << skip << std::endl;
   // N.B. if there's prediction apply order algebra, it's up to 4 layers.
   //      also, we take arguments from p1 default.
+#if defined(_P012L_)
+  PBond<num_t, P012L<num_t> > p0(P012L<num_t>(4), 124);
+#else
   PBond<num_t, P01<num_t> > p0(P01<num_t>(4), 26);
+#endif
   auto p1(p0);
   auto p2(p0);
   auto p3(p0);
@@ -108,20 +112,20 @@ int main(int argc, const char* argv[]) {
       ts ^= ts;
       if(s0 < ++ t0) {
         M0 = p0.next(D0);
-        s0 = t0 + arc4random_uniform(rr);
+        s0 = (t0 % 4 ? 4 - (t0 % 4) + t0 : t0) + arc4random_uniform(rr);
         D0 = num_t(int(0));
         if(s1 < ++ t1) {
           M1 = p1.next(D1);
-          s1 = t1 + arc4random_uniform(rr);
+          s1 = (t1 % 4 ? 4 - (t1 % 4) + t1 : t1) + arc4random_uniform(rr);
           D1 = num_t(int(0));
           if(s2 < ++ t2) {
             M2 = p2.next(D2);
-            s2 = t2 + arc4random_uniform(rr);
+            s2 = (t2 % 4 ? 4 - (t2 % 4) + t2 : t2) + arc4random_uniform(rr);
             D2 = num_t(int(0));
             if(s3 < ++ t3) {
               M3 = p3.next(D3);
               MM = expscale<num_t>(expscale<num_t>(q.next(DM)));
-              s3 = t3 + arc4random_uniform(rr);
+              s3 = (t3 % 4 ? 4 - (t3 % 4) + t3 : t3) + arc4random_uniform(rr);
               D3 = DM = num_t(int(0));
             }
           }
