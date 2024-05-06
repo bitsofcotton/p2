@@ -32,14 +32,6 @@ With this, randtools's counter diagonal method concludes the structure of f(...f
 
 If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
 
-# Tips on p0:
-If input stream has a jamming to p0, p0 fails. In such case, we can change input argument.
-
-# Tips on p1:
-P1 often returns overlearned result, this causes unstable result. But they're valid with finite register finite accuracy condition and toeplitz of them are max rank on status linear independence block meaning.
-
-We can always choose linear invariant if varlen is larger than status block size and data rank is also larger than them. This is because tan(\<a,\[x, f(x)\]\>) == 0 can be rewrited into the form arccos(cos(\<b,\[x, f(x)\]\>*(x_1...f_n\*f(x))^m0)) == abs(\<c,\[x, f(x)\]\>\*(x_1...x_n\*f(x))^m) == epsilon. Which f is F_2^n to F_2 any combination.
-
 # Tips on p1, p2:
 p1, p2 is using makeProgramInvariant and revert... with the form randtools invariant. So it has a little difference on the description itself. Because of them, they has a little glitch on the prediction.
 
@@ -65,10 +57,6 @@ N.B. A catgp corrects noise, this is because catgp includes p1 with some random 
 
 N.B. The status that PRNG have is often larger than 1000, this is because of the period and complexity itself.
 
-# Tips on p1, p2 (2)
-p1, p2 has a little glitch to randtools description (make period on y-axis be ignored).
-So to hack this, we can do cr.py L command described in p0 twice.
-
 # Tips on continuous:
 We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
 If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
@@ -92,9 +80,6 @@ Initializing PRNGs by short and non heavy method causes only shuffles the short 
 
 -&gt; It's rather from p0's measurable condition.
 
-# Tips on jammer on my machine
-once we get p0 +... \| p1 ... \| p0 -... \| cr.py 0 1 1 A \| p0 -1 works well, but after then, the jammer jam outs input as gulf only nor the attacker gets p1 compiler error as lldb backtrace infinite loop.
-
 # Tips on chasing invariant size
 If the jammer correctly jam out input stream, it begins the chase of invariant size. So in this case, we only can enlarge input argument in each, so the case concludes the larger computing power, the larger span.
 
@@ -104,16 +89,6 @@ python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | pytho
 N.B. Re-categorize categorized part is same categorize as original with some input threadshold if dimension is the same one.
 
 N.B. we take original/~ as x~rx, r in R when they doesn't normalized by the method like conv_check/nand.cc.
-
-# Tips on original stream status dimension and prediction dimension:
-We are estimating it might enough p.cc argv[1] larger than input stream status dimension to calculate in average. We might need to do twice if p.cc is being jammed condition. We normally need first unstable run with argv[1] \* argv[1] \* 3 input steps (see above).
-
-# Tips on predicting rand.cc
-If we predict some PRNG, the separatable computing block number and its block size is the matter.
-If calculating accuracy is not enough, we need to enlarge block number supposed to pass into argv[1] in p.cc.
-
-If we're predicting from initialized point the plain PRNGs without timing hack initialized with fixed-size entropy without loss of the points, we only need the status size the original entropy bit size, however, we should use all of the point the PRNGs produce to predict with.
-If there's the some loss point from first point out of the status we concern in such case, the prediction might fails after the point.
 
 # Tips on multiple of collateral
 There also exists non Lebesgue measurable based method starting on the fixed data (multiples of invariant insertion to the dimension we cannot divide) whether which matches or not, however, literally in bad luck, this can always fail because of multiple of the prediction makes nonsense prediction even they makes a sense after all data is received condition with the predictor in short range.
@@ -134,21 +109,8 @@ However, any of the predictor, they have the jammer to them, so jammer retargets
 So this is which is latter effect one chase, so deterministic prediction (includes PRNG ones) cannot avoid jammer from lower layer level.
 So we conclude once prediction done, then, repredict with another similar ones, one of them seems ok, we did best for them.
 
-# Only 2 of the output
-We eliminate the output which doesn't be needed in chain and prediction.
-This causes jammer needs +1 state on jamming, however, to jam out some prediction, they needs some of the inner status, so this isn't mean to be effective fix.
-
-# Serious jamming
-If our integer calculation isn't in jammed condition (with or without a multiple meaning into one meaning), even in the case the predictor is being jammed condition, with the condition we choose input accuracy rough enough in fixed point, or, in random walk, with the condition rough to choose accuracy to be affected (cr.py w command), we think they concludes argv\[1\] larger is better chase, however, the player who cheats combination after seeing opposite combination gets their cheat result. (If one of the algorithm going to be change in continue, they comes along with increase a lot more internal status on them.)
-
-Also, if we input the rough accuracy, we need to specify argv\[1\] at least internal status bit number, however, normal PRNGs has a hack to such length invariant, so in such case, we need some const. ratio-ed number of input. Either modern PRNGs have larger than 3000 bit internal status.
-
 # Integer calculation jamming from single to multiple to single funciton.
 If our calculator is being jammed from some existence, we cannot avoid them at all if the jammer seriously jame out us. This is in theoretical if we cannot fix such s2m2s calculation glitch.
-
-# Plenty of the room
-There's a plenty of the room to transpile p.cc into many of the compiler/interpreter code and run on them parallel.
-This causes some of the infection to be difficult to trick but if only the pipe/prng is infected condition, this doesn't work well.
 
 # Any of the predictor, any of the jammer (n times).
 We choose the predictor as simple enough.
@@ -166,9 +128,6 @@ So we can compete them with applying predictor argv with upper bound of the stat
 In theoretical, the jammer can always jam out us if jammer is latter one to predictor. So we absent this repository.
 
 So if we have non infected computers or when we exclude all of the infection, we can re construct these programs (p0, p1, p2) with some advances. Otherwise, the jammer gains all of the result to make us exclude.
-
-# Nonlinear
-We make {p0, p1, p2} as non linear one. So input ratio is the matter if simple glitch.
 
 # Non analytical input
 We suppose the one we input is analytical function delta sampled series.
@@ -229,12 +188,6 @@ P0DFT eliminates number of the hyper torus hole, this is not needed in P0maxRank
 We need bothside walk condition when a_-1 is being attacked condition.
 Even so, if the attacker attacks both a_-1 and reverse(a_-1), half ot the prediction fails in best effort, but whole of the case, one of the function estimation remains, so in whole in long range, it's ok in feeding one by one sliding window meaning.
 
-# Blurring input/output
-If we blur in/output, smoother result might gains, however, even so, there even also exists the jammer to their predictors.
-
-# 1 bit info
-If each input has 1 bit information, the dimension which have only deterministic is smaller than 4 points with adding const. . This also effects each variable is completely separatable hypothesis condition, variable to variable barrier condition. They concludes some of the non-separatable composition come along with some of the vectors, because of certain {f} combination, this is nightmare condition for predictions, so we avoid them.
-
 # PRNG first stage scattering
 If we scatter first entropy with first prng call loop prng number count, they should small or no effect to the prediction theirselves because it has also same small entropy we append into the initializer.
 
@@ -277,6 +230,13 @@ Also, if we stack nor implement some another predictors, they only causes the ja
 
 Also, the generic jammer often jam out us with changing target predictors range to range.
 
+# Tips when being targetted
+If some of the predictor(s) are being targetted and the computer resource they use can have better than the one we have, we cannot avoid them because some long and long range (hidden) internal states behaves as they're suddenly appears into the stream first look.
+
+If our predictor is not only one predictor but some of the predictor series, the result often seems to have being oscillated concern with the predictors we have. This is from theoretical.
+
+However, the result can be controlled to any if the jammer have any of our codes and states as to be mistaken the result switch case types.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -314,5 +274,5 @@ Also, the generic jammer often jam out us with changing target predictors range 
 2024/04/29 add pr4.cc .
 2024/04/30 add tips on bothside controller condition. brush up readme.md.
 2024/05/05 add pr4c.cc update readme, pr4.cc .
-2024/05/06 add tips on jammer, fix some of the readme. eliminate unused commands in cr.py. fix pr4.cc, integrate pr4c.cc into pr4.cc with definition.
+2024/05/06 add tips on jammer, fix some of the readme. eliminate unused commands in cr.py. fix pr4.cc, integrate pr4c.cc into pr4.cc with definition. add tips when being targetted. BRUSH UP README.MD, so some of the description had be DELETED.
 
