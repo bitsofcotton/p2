@@ -4,12 +4,8 @@ Also, one of a predictor for being controlled stream.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
-So otherwise, especially there's parallel internal status parts condition, the hypothesis fails.
-This is especially the stream has some stories, in another words, hidden states directly pretends as dynamics, nor, some of the varieties connects some another algebras and they're continuous conditions.
 
-Also, we cannot predict via these predictors on saw tooth or triangular or similar wave which depends on unobserved internal states in sliding window. This occasion includes some of the large gulfs on walk. However, such PRNGs must have internal states bit larger than lg(x_trigger_place).
-
-N.B. The condition parallel f, g isn't important. The separated internal state condition effects large for prediction succeed/failure.
+So if there's a slow variable they're hidden by counter or so on, our first hypothesis fails on such time counter place, however, after combine the state some of the steps, our first hypothesis fullfilled on some range, however, the jammer can attack to the sign of the result even in such cases.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
@@ -237,6 +233,16 @@ If our predictor is not only one predictor but some of the predictor series, the
 
 However, the result can be controlled to any if the jammer have any of our codes and states as to be mistaken the result switch case types.
 
+# Tips on PRNGs
+Tips on XXX means we can produce some of the PRNGs by separated time counter and separated algorithms.
+
+This is to make them as: \[0,t\_0\[ : tan(A\_0\*\[s\_0,...,s\_t\_0\]), \[t\_0,t\_1\[ : tan(A\_1\*\[s\_0,...,s\_t\_0,...s\_t\_1\]), ... .
+
+Also, to predict them, we suppose only no time counter and all of the internal state shuffle appears on the stream condition, we need the #{internal state bit} steps, however, if they hides some of the states from the stream condition, we need the 2\^#{internal state bit} steps to predict them.
+So to produce some resilience, we need to hide some of the states from the output stream the PRNGs produces.
+
+So the #{output accuracy \* step number} directly affects to the predictors.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -275,4 +281,5 @@ However, the result can be controlled to any if the jammer have any of our codes
 2024/04/30 add tips on bothside controller condition. brush up readme.md.
 2024/05/05 add pr4c.cc update readme, pr4.cc .
 2024/05/06 add tips on jammer, fix some of the readme. eliminate unused commands in cr.py. fix pr4.cc, integrate pr4c.cc into pr4.cc with definition. add tips when being targetted. BRUSH UP README.MD, so some of the description had be DELETED.
+2024/05/07 fix XXX, add tips on PRNGs. really close.
 
