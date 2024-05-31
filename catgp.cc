@@ -44,8 +44,14 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
+#if defined(_JAM_)
+    if(M != num_t(int(0))) d = abs(d) * sgn<num_t>(arc4random_uniform(2) & 1 ? - M : M);
+    M = p.next(d);
+    std::cout << d << std::endl << std::flush;
+#else
     std::cout << d * M << ", ";
     std::cout << (M = p.next(d)) << std::endl << std::flush;
+#endif
   }
   return 0;
 }

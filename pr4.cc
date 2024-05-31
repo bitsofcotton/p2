@@ -57,20 +57,21 @@ int main(int argc, const char* argv[]) {
   int skip(0);
   if(argc < 2) std::cerr << argv[0] << " <skip? : continue with ";
   if(1 < argc) skip = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << skip << std::endl;
+  const auto minus(skip < 0 || (1 < argc && argv[1][0] == '-'));
+  std::cerr << argv[0] << " " << (minus ? "-" : "") << abs(skip) << std::endl;
   // N.B. if there's prediction apply order algebra, it's up to 4 layers.
-  //      also, we take arguments from p1 default.
-#if defined(_P012L_)
-  PBond<num_t, P012L<num_t> > p0(P012L<num_t>(4), 124);
-#else
-  PBond<num_t, P01<num_t> > p0(P01<num_t>(4), 26);
-#endif
+  //      also, we take arguments from p1, catgp default.
+  PBond<num_t, P01<num_t> >   p0(P01<num_t>(4), 26);
+  PBond<num_t, P012L<num_t> > q0(P012L<num_t>(4), 124);
   auto p1(p0);
   auto p2(p0);
   auto p3(p0);
+  auto q1(q0);
+  auto q2(q0);
+  auto q3(q0);
   // N.B. we also assume p1-4th predicted stream has some of the continuous
   //      part.
-  PBond<num_t, P0maxRank<num_t> > q(P0maxRank<num_t>(2), int(exp(num_t(2 * 2))) );
+  PBond<num_t, P0maxRank<num_t> > r(P0maxRank<num_t>(2), int(exp(num_t(2 * 2))) );
   std::string s;
   int   t0(0);
   auto  t1(t0);
@@ -101,30 +102,34 @@ int main(int argc, const char* argv[]) {
     D3 += d * M0 * M1 * M2;
     DM += logscale<num_t>(logscale<num_t>(d * M0 * M1 * M2 * M3));
     if(! isfinite(DM)) DM = num_t(int(0));
+#if defined(_JAM_)
+    if(M0 * M1 * M2 * M3 * MM != num_t(int(0))) d = abs(d) * sgn<num_t>(arc4random_uniform(2) & 1 ? - M0 * M1 * M2 * M3 * MM : M0 * M1 * M2 * M3 * MM);
+#else
     std::cout << d * M0 * M1 * M2 * M3 * MM << ", ";
+#endif
     // N.B. Recursively apply predictions to stack of the timing point
     //      causes hard to jam out us, however, jam us out is not impossible.
     //      This is because the jammer also needs the longer length to get point
     //      differed to apply each prediction to root with each timing.
     // N.B. in fact, we need better internal state size for each arc4random
     //      calll, however, in short range, we don't need them.
-    if(skip < ++ ts) {
+    if(abs(skip) < ++ ts) {
       ts ^= ts;
       if(s0 < ++ t0) {
-        M0 = p0.next(D0);
+        M0 = minus ? q0.next(D0) : p0.next(D0);
         s0 = (t0 % 4 ? 4 - (t0 % 4) + t0 : t0) + arc4random_uniform(rr);
         D0 = num_t(int(0));
         if(s1 < ++ t1) {
-          M1 = p1.next(D1);
+          M1 = minus ? q1.next(D1) : p1.next(D1);
           s1 = (t1 % 4 ? 4 - (t1 % 4) + t1 : t1) + arc4random_uniform(rr);
           D1 = num_t(int(0));
           if(s2 < ++ t2) {
-            M2 = p2.next(D2);
+            M2 = minus ? q2.next(D2) : p2.next(D2);
             s2 = (t2 % 4 ? 4 - (t2 % 4) + t2 : t2) + arc4random_uniform(rr);
             D2 = num_t(int(0));
             if(s3 < ++ t3) {
-              M3 = p3.next(D3);
-              MM = expscale<num_t>(expscale<num_t>(q.next(DM)));
+              M3 = minus ? q3.next(D3) : p3.next(D3);
+              MM = expscale<num_t>(expscale<num_t>(r.next(DM)));
               s3 = (t3 % 4 ? 4 - (t3 % 4) + t3 : t3) + arc4random_uniform(rr);
               D3 = DM = num_t(int(0));
             }
@@ -132,7 +137,11 @@ int main(int argc, const char* argv[]) {
         }
       }
     }
+#if defined(_JAM_)
+    std::cout << d << std::endl << std::flush;
+#else
     std::cout << M0 * M1 * M2 * M3 * MM << std::endl << std::flush;
+#endif
   }
   return 0;
 }

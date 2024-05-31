@@ -282,4 +282,5 @@ So the #{output accuracy \* step number} directly affects to the predictors.
 2024/05/05 add pr4c.cc update readme, pr4.cc .
 2024/05/06 add tips on jammer, fix some of the readme. eliminate unused commands in cr.py. fix pr4.cc, integrate pr4c.cc into pr4.cc with definition. add tips when being targetted. BRUSH UP README.MD, so some of the description had be DELETED.
 2024/05/07 fix XXX, add tips on PRNGs. really close.
+2024/05/31 compile jammer.
 
