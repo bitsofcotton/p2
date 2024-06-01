@@ -103,7 +103,7 @@ int main(int argc, const char* argv[]) {
     DM += logscale<num_t>(logscale<num_t>(d * M0 * M1 * M2 * M3));
     if(! isfinite(DM)) DM = num_t(int(0));
 #if defined(_JAM_)
-    if(M0 * M1 * M2 * M3 * MM != num_t(int(0))) d = abs(d) * sgn<num_t>(arc4random_uniform(2) & 1 ? - M0 * M1 * M2 * M3 * MM : M0 * M1 * M2 * M3 * MM);
+    if(M0 * M1 * M2 * M3 * MM != num_t(int(0))) d *= sgn<num_t>(arc4random_uniform(2) & 1 ? - M0 * M1 * M2 * M3 * MM : M0 * M1 * M2 * M3 * MM);
 #else
     std::cout << d * M0 * M1 * M2 * M3 * MM << ", ";
 #endif
