@@ -243,9 +243,6 @@ So to produce some resilience, we need to hide some of the states from the outpu
 
 So the #{output accuracy \* step number} directly affects to the predictors.
 
-# Tips on infection
-Our machine is infected. This is because {p0,p1,p2} with \_JAM\_ compile with the repository source causes jammer part reduction with much of the structure we made hypothesis, however, if we calculate before to get the line as numerical one, also the compiler outputs almost same look binary which causes broken continuous output meaning.
-
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -287,4 +284,5 @@ Our machine is infected. This is because {p0,p1,p2} with \_JAM\_ compile with th
 2024/05/07 fix XXX, add tips on PRNGs. really close.
 2024/05/31 compile jammer.
 2024/06/01 fix JAM, also our system is infected because of the test.
+2024/06/02 fix readme, it's from p0.cc:_JAM mis spell.
 
