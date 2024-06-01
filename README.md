@@ -243,6 +243,13 @@ So to produce some resilience, we need to hide some of the states from the outpu
 
 So the #{output accuracy \* step number} directly affects to the predictors.
 
+# Tips on prediction sub jammer
+We can jam out input of ourself as to be sign of the series randomized in predictors' meaning.
+This can add some stability on prediction and getting better long range on prediction.
+However, the jamming from original stream can hit the chain of the prediction fails even in this condition. So if we're targetted, either this cannot work well.
+
+(However, we are doubting the integrity on inputs on our machines even this repository's history in special cases.)
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU

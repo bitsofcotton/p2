@@ -45,13 +45,16 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
 #if defined(_JAM_)
-    if(M != num_t(int(0))) d *= sgn<num_t>(arc4random_uniform(2) & 1 ? - M : M);
-    M = p.next(d);
-    std::cout << d << std::endl << std::flush;
+    std::cout << (d *= M) << ", ";
 #else
     std::cout << d * M << ", ";
-    std::cout << (M = p.next(d)) << std::endl << std::flush;
 #endif
+    M = p.next(d);
+#if defined(_JAM_)
+    if((M = sgn<num_t>(arc4random_uniform(2) & 1 ? - M : M)) == num_t(int(0)))
+      M = num_t(int(1));
+#endif
+    std::cout << M << std::endl << std::flush;
   }
   return 0;
 }

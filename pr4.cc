@@ -88,6 +88,7 @@ int main(int argc, const char* argv[]) {
   auto  M2(d);
   auto  M3(d);
   auto  MM(d);
+  auto  M(d);
   auto  D0(d);
   auto  D1(d);
   auto  D2(d);
@@ -103,7 +104,7 @@ int main(int argc, const char* argv[]) {
     DM += logscale<num_t>(logscale<num_t>(d * M0 * M1 * M2 * M3));
     if(! isfinite(DM)) DM = num_t(int(0));
 #if defined(_JAM_)
-    if(M0 * M1 * M2 * M3 * MM != num_t(int(0))) d *= sgn<num_t>(arc4random_uniform(2) & 1 ? - M0 * M1 * M2 * M3 * MM : M0 * M1 * M2 * M3 * MM);
+    std::cout << (d *= M) << ", ";
 #else
     std::cout << d * M0 * M1 * M2 * M3 * MM << ", ";
 #endif
@@ -138,7 +139,9 @@ int main(int argc, const char* argv[]) {
       }
     }
 #if defined(_JAM_)
-    std::cout << d << std::endl << std::flush;
+    if((M = sgn<num_t>(arc4random_uniform(2) & 1 ? - M0 * M1 * M2 * M3 * MM : M0 * M1 * M2 * M3 * MM)) == num_t(int(0)))
+      M = num_t(int(1));
+    std::cout << M << std::endl << std::flush;
 #else
     std::cout << M0 * M1 * M2 * M3 * MM << std::endl << std::flush;
 #endif
