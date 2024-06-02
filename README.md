@@ -292,4 +292,5 @@ However, the jamming from original stream can hit the chain of the prediction fa
 2024/05/31 compile jammer.
 2024/06/01 fix JAM, also our system is infected because of the test.
 2024/06/02 fix readme, it's from p0.cc:_JAM mis spell.
+2024/06/02 add cr.py j command, elim _JAM.
 

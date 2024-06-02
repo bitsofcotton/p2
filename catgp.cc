@@ -45,37 +45,17 @@ int main(int argc, const char* argv[]) {
   auto  M(d);
   auto  M2(d);
   auto  M1(d);
-  auto  M0(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-#if defined(_JAM_)
-    std::cout << (status ? d *= M : d * M) << ", ";
-#else
     std::cout << d * M << ", ";
-#endif
     if(status) M = p.next(d);
     else {
       const auto d1(M2 * d);
       const auto d2(M2 * M1 * d);
-#if defined(_JAM_)
-      const auto d3(M2 * M1 * M0 * d);
-      M2 = p.next(d1);
-      M1 = p1.next(d2);
-      M0 = p0.next(d3);
-      const auto scatter(arc4random_uniform(2) & 1);
-      M2 = sgn<num_t>(scatter ? - M2 : M2);
-      M1 = sgn<num_t>(scatter ? - M1 : M1);
-      M0 = sgn<num_t>(scatter ? - M0 : M0);
-      if(M2 == num_t(int(0))) M2 = num_t(int(1));
-      if(M1 == num_t(int(0))) M1 = num_t(int(1));
-      if(M0 == num_t(int(0))) M0 = num_t(int(1));
-#else
       M2 = p.next(d);
       M1 = p1.next(d1);
-      M0 = p0.next(d2);
-#endif
-      M  = M2 * M1 * M0;
+      M  = M2 * M1 * p0.next(d2);
     }
     std::cout << M << std::endl << std::flush;
   }

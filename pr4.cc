@@ -103,11 +103,7 @@ int main(int argc, const char* argv[]) {
     D3 += d * M0 * M1 * M2;
     DM += logscale<num_t>(logscale<num_t>(d * M0 * M1 * M2 * M3));
     if(! isfinite(DM)) DM = num_t(int(0));
-#if defined(_JAM_)
-    std::cout << (d *= M) << ", ";
-#else
     std::cout << d * M0 * M1 * M2 * M3 * MM << ", ";
-#endif
     // N.B. Recursively apply predictions to stack of the timing point
     //      causes hard to jam out us, however, jam us out is not impossible.
     //      This is because the jammer also needs the longer length to get point
@@ -138,13 +134,7 @@ int main(int argc, const char* argv[]) {
         }
       }
     }
-#if defined(_JAM_)
-    if((M = sgn<num_t>(arc4random_uniform(2) & 1 ? - M0 * M1 * M2 * M3 * MM : M0 * M1 * M2 * M3 * MM)) == num_t(int(0)))
-      M = num_t(int(1));
-    std::cout << M << std::endl << std::flush;
-#else
     std::cout << M0 * M1 * M2 * M3 * MM << std::endl << std::flush;
-#endif
   }
   return 0;
 }
