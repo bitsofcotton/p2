@@ -114,20 +114,20 @@ int main(int argc, const char* argv[]) {
       ts ^= ts;
       if(s0 < ++ t0) {
         M0 = minus ? q0.next(D0) : p0.next(D0);
-        s0 = (t0 % 4 ? 4 - (t0 % 4) + t0 : t0) + arc4random_uniform(rr);
+        s0 = (t0 % rr ? rr - (t0 % rr) + t0 : t0) + arc4random_uniform(rr);
         D0 = num_t(int(0));
         if(s1 < ++ t1) {
           M1 = minus ? q1.next(D1) : p1.next(D1);
-          s1 = (t1 % 4 ? 4 - (t1 % 4) + t1 : t1) + arc4random_uniform(rr);
+          s1 = (t1 % rr ? rr - (t1 % rr) + t1 : t1) + arc4random_uniform(rr);
           D1 = num_t(int(0));
           if(s2 < ++ t2) {
             M2 = minus ? q2.next(D2) : p2.next(D2);
-            s2 = (t2 % 4 ? 4 - (t2 % 4) + t2 : t2) + arc4random_uniform(rr);
+            s2 = (t2 % rr ? rr - (t2 % rr) + t2 : t2) + arc4random_uniform(rr);
             D2 = num_t(int(0));
             if(s3 < ++ t3) {
               M3 = minus ? q3.next(D3) : p3.next(D3);
               MM = expscale<num_t>(expscale<num_t>(r.next(DM)));
-              s3 = (t3 % 4 ? 4 - (t3 % 4) + t3 : t3) + arc4random_uniform(rr);
+              s3 = (t3 % rr ? rr - (t3 % rr) + t3 : t3) + arc4random_uniform(rr);
               D3 = DM = num_t(int(0));
             }
           }
