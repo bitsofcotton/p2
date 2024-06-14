@@ -177,7 +177,7 @@ elif(sys.argv[1][0] == 'i'):
       sys.stdout.flush()
 elif(sys.argv[1][0] == 'l'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(line.split(",")[int(sys.argv[2])])
+    print(line[:- 1].split(",")[int(sys.argv[2])])
     sys.stdout.flush()
 elif(sys.argv[1][0] == 't'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -362,5 +362,10 @@ elif(sys.argv[1][0] == 'j'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     d = ifloat(line.split(",")[0])
     print(d * getrand(int(sys.argv[2])))
+    sys.stdout.flush()
+elif(sys.argv[1][0] == '0'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print(line[:- 1])
+    print(0)
     sys.stdout.flush()
 
