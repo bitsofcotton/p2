@@ -368,4 +368,10 @@ elif(sys.argv[1][0] == '0'):
     print(line[:- 1])
     print(0)
     sys.stdout.flush()
+elif(sys.argv[1][0] == '-'):
+  t = 1
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print(t * ifloat(line[:- 1]))
+    t = - t
+    sys.stdout.flush()
 
