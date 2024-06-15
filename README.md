@@ -250,6 +250,14 @@ However, the jamming from original stream can hit the chain of the prediction fa
 
 (However, we are doubting the integrity on inputs on our machines even this repository's history in special cases.)
 
+# Tips on progression
+We predict with \{delta(d_k)\}, \{delta(delta(d_k))\}, ... . This results better stable result for us on plain hypothesises.
+
+# Tips on our machine
+The unstable result is from the /dev/urandom PRNGs, so arc4random itself and mersenne twister itself isn't so unstable by our predictor.
+The unstable part is come from viewing in ttys and putting mouse events on our machine.
+However, it's obscure predicting graphics sets.
+
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -294,4 +302,5 @@ However, the jamming from original stream can hit the chain of the prediction fa
 2024/06/02 fix readme, it's from p0.cc:_JAM mis spell.
 2024/06/02 add cr.py j command, elim _JAM.
 2024/06/14 fix cr.py l command, add cr.py 0, - command.
+2024/06/15 add progression and readme.
 

@@ -374,4 +374,12 @@ elif(sys.argv[1][0] == '-'):
     print(t * ifloat(line[:- 1]))
     t = - t
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'I'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print("num_t(", int(ifloat(line[:- 1])), ") ,")
+    sys.stdout.flush()
+elif(sys.argv[1][0] == ','):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print("num_t(", line[:- 1], ") ,")
+    sys.stdout.flush()
 
