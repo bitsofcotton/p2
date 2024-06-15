@@ -38,9 +38,7 @@ int main(int argc, const char* argv[]) {
   const auto progression(abs(progression0));
   // N.B. randtools meaning, v2v tanglement causes up to 3 dimension.
   //      This is also from P1I condition this uses internally.
-  PAthenB<num_t, Pprogression<num_t, PBond<num_t, P012L<num_t> > >,
-    PAthenB<num_t, Pprogression<num_t, PBond<num_t, P01<num_t> > >,
-      Pprogression<num_t, PBond<num_t, P0maxRank<num_t> > >  > > p(
+  P210<num_t> p(
     Pprogression<num_t, PBond<num_t, P012L<num_t> > >(
       PBond<num_t, P012L<num_t> >(P012L<num_t>(4), 124), progression),
     PAthenB<num_t, Pprogression<num_t, PBond<num_t, P01<num_t> > >,
