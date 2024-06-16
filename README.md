@@ -254,9 +254,13 @@ However, the jamming from original stream can hit the chain of the prediction fa
 We predict with \{delta(d_k)\}, \{delta(delta(d_k))\}, ... . This results better stable result for us on plain hypothesises.
 
 # Tips on our machine
-The unstable result is from the /dev/urandom PRNGs, so arc4random itself and mersenne twister itself isn't so unstable by our predictor however this seems to getting entropy from hardware but not in the source codes.
+The unstable result is from the /dev/urandom PRNGs, so arc4random itself and mersenne twister itself isn't so unstable by our predictor however this seems getting entropy from hardware but not in the source codes.
 The unstable part is come from viewing in ttys and putting mouse events and disk i/o events on our machine.
 However, it's obscure p210 method is whether valid or not on predicting graphics sets.
+
+# Tips on predictor vs. jammer
+If the jammer needs to depend and use the targetted predictor and there's no another way, predicting n-step after concludes which is the large distant chase.
+Summing up some of hte progressives causes increasing stability on the prediction from our experiences, however, ther's many way to predict n-step after on plain predictors.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -304,4 +308,5 @@ However, it's obscure p210 method is whether valid or not on predicting graphics
 2024/06/14 fix cr.py l command, add cr.py 0, - command.
 2024/06/15 add progression and readme.
 2024/06/16 add progression \<0 argv.
+2024/06/17 add readme, something goes well with some of the PRNGs with static, absent repository with this.
 
