@@ -30,12 +30,11 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int progression0(1);
+  int progression(1);
   if(argc < 2) std::cerr << argv[0] << " <progression num>? : continue with ";
-  if(1 < argc) progression0 = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << progression0 << std::endl;
-  assert(progression0);
-  const auto progression(abs(progression0));
+  if(1 < argc) progression = std::atoi(argv[1]);
+  std::cerr << argv[0] << " " << progression << std::endl;
+  assert(progression);
   // N.B. randtools meaning, v2v tanglement causes up to 3 dimension.
   //      This is also from P1I condition this uses internally.
   P210<num_t> p(
@@ -51,18 +50,11 @@ int main(int argc, const char* argv[]) {
   std::string s;
   num_t d(int(0));
   auto  M(d);
-  auto  S(d);
-  while(progression0 < 0 ? true : bool(std::getline(std::cin, s, '\n'))) {
-    if(progression0 < 0) {
-      d = num_t(arc4random_uniform(0x2001)) - num_t(0x1000);
-      std::cout << (S += d * M) << std::endl << std::flush;
-      M = p.next(d);
-    } else {
-      std::stringstream ins(s);
-      ins >> d;
-      std::cout << d * M << ", ";
-      std::cout << (M = p.next(d)) << std::endl << std::flush;
-    }
+  while(std::getline(std::cin, s, '\n')) {
+    std::stringstream ins(s);
+    ins >> d;
+    std::cout << d * M << ", ";
+    std::cout << (M = p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }

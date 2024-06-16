@@ -303,4 +303,5 @@ However, it's obscure p210 method is whether valid or not on predicting graphics
 2024/06/02 add cr.py j command, elim _JAM.
 2024/06/14 fix cr.py l command, add cr.py 0, - command.
 2024/06/15 add progression and readme.
+2024/06/16 add progression \<0 argv.
 
