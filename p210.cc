@@ -43,7 +43,7 @@ int main(int argc, const char* argv[]) {
     PAthenB<num_t, Pprogression<num_t, PBond<num_t, P01<num_t> > >,
       Pprogression<num_t, PBond<num_t, P0maxRank<num_t> > >  >(
         Pprogression<num_t, PBond<num_t, P01<num_t> > >(
-          PBond<num_t, P01<num_t> >(P01<num_t>(4), 28), progression),
+          PBond<num_t, P01<num_t> >(P01<num_t>(4), 5 * 5 - 4 + 2), progression),
         Pprogression<num_t, PBond<num_t, P0maxRank<num_t> > >(
           PBond<num_t, P0maxRank<num_t> >(P0maxRank<num_t>(), 3), progression)
       ) );
