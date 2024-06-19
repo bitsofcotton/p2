@@ -309,4 +309,5 @@ Summing up some of hte progressives causes increasing stability on the predictio
 2024/06/15 add progression and readme.
 2024/06/16 add progression \<0 argv.
 2024/06/17 add readme, something goes well with some of the PRNGs with static, absent repository with this. also fix progression.
+2024/06/19 merge latest lieonn.
 
