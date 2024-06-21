@@ -253,14 +253,7 @@ However, the jamming from original stream can hit the chain of the prediction fa
 # Tips on progression
 We predict with \{delta(d_k)\}, \{delta(delta(d_k))\}, ... . This results better stable result for us on plain hypothesises.
 
-# Tips on our machine
-The unstable result is from the /dev/urandom PRNGs, so arc4random itself and mersenne twister itself isn't so unstable by our predictor however this seems getting entropy from hardware but not in the source codes.
-The unstable part is come from viewing in ttys and putting mouse events and disk i/o events on our machine.
-However, it's obscure p210 method is whether valid or not on predicting graphics sets.
-
-# Tips on predictor vs. jammer
-If the jammer needs to depend and use the targetted predictor and there's no another way, predicting n-step after concludes which is the large distant chase.
-Summing up some of hte progressives causes increasing stability on the prediction from our experiences, however, ther's many way to predict n-step after on plain predictors.
+Also, Pprogression class feeds new states into the plain predictor as a new dimension of linear sum.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -311,4 +304,5 @@ Summing up some of hte progressives causes increasing stability on the predictio
 2024/06/17 add readme, something goes well with some of the PRNGs with static, absent repository with this. also fix progression.
 2024/06/19 merge latest lieonn.
 2024/06/21 merge latest lieonn.
+2024/06/21 add p2prng.cc, update readme, merge latest lieonn. INCLUDES command line argument change.
 

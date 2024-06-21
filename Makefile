@@ -14,8 +14,8 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 clean:
-	@rm -rf catgp catgp32 p210 p210-32
-all:	catgp catgp32 p210 p210-32
+	@rm -rf catgp catgp32 p210 p210-32 p2prng
+all:	catgp catgp32 p210 p210-32 p2prng
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -28,4 +28,6 @@ p210-32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p210-32 p210.cc
 p210-64:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o p210-64 p210.cc
+p2prng:
+	${CXX} ${CXXFLAGS} -static -o p2prng p2prng.cc
 

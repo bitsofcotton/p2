@@ -39,13 +39,13 @@ int main(int argc, const char* argv[]) {
   //      This is also from P1I condition this uses internally.
   P210<num_t> p(
     Pprogression<num_t, PBond<num_t, P012L<num_t> > >(
-      PBond<num_t, P012L<num_t> >(P012L<num_t>(4), 124), progression),
+      PBond<num_t, P012L<num_t> >(P012L<num_t>(4), 124), progression, 124),
     PAthenB<num_t, Pprogression<num_t, PBond<num_t, P01<num_t> > >,
       Pprogression<num_t, PBond<num_t, P0maxRank<num_t> > >  >(
         Pprogression<num_t, PBond<num_t, P01<num_t> > >(
-          PBond<num_t, P01<num_t> >(P01<num_t>(4), 5 * 5 - 4 + 2), progression),
+          PBond<num_t, P01<num_t> >(P01<num_t>(4), 5 * 5 - 4 + 2), progression, 5 * 5 - 4 + 2),
         Pprogression<num_t, PBond<num_t, P0maxRank<num_t> > >(
-          PBond<num_t, P0maxRank<num_t> >(P0maxRank<num_t>(), 3), progression)
+          PBond<num_t, P0maxRank<num_t> >(P0maxRank<num_t>(), 3), progression, 3)
       ) );
   std::string s;
   num_t d(int(0));

@@ -382,4 +382,10 @@ elif(sys.argv[1][0] == ','):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print("num_t(", line[:- 1], ") ,")
     sys.stdout.flush()
+elif(sys.argv[1][0] == '<'):
+  for fn in sys.argv[2:]:
+    for line in open(fn, mode = "r"):
+      print("\"" + line[:- 1] + "\\n\"")
+    print(",")
+    sys.stdout.flush()
 
