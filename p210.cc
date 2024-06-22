@@ -35,6 +35,10 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) progression = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << progression << std::endl;
   assert(progression);
+  const auto& pn(pnTinySingle(abs(progression)));
+  progression = sgn<int>(progression);
+  for(int i = 0; i < pn.size(); i ++) progression *= pn[i];
+  std::cerr << "using raw progression: " << progression << std::endl;
   // N.B. randtools meaning, v2v tanglement causes up to 3 dimension.
   //      This is also from P1I condition this uses internally.
   P210<num_t> p(

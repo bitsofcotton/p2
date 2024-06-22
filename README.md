@@ -248,12 +248,15 @@ We can jam out input of ourself as to be sign of the series randomized in predic
 This can add some stability on prediction and getting better long range on prediction.
 However, the jamming from original stream can hit the chain of the prediction fails even in this condition. So if we're targetted, either this cannot work well.
 
-(However, we are doubting the integrity on inputs on our machines even this repository's history in special cases.)
+<strike>(However, we are doubting the integrity on inputs on our machines even this repository's history in special cases.)</strike> -&gt; The input/output integrity shouldn't be broken however PRNGs outputs some suspiciouses we can observe s.t. the distribution of outputs.
 
 # Tips on progression
 We predict with \{delta(d_k)\}, \{delta(delta(d_k))\}, ... . This results better stable result for us on plain hypothesises.
 
 Also, Pprogression class feeds new states into the plain predictor as a new dimension of linear sum.
+
+p\[012\]'s progression arguments takes the prime number multiplication to avoid some of the period depend jammers in first order.
+So if there's multiple path of same period jammers on input stream, they fails.
 
 # Another Download Sites (Closed)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -305,4 +308,5 @@ Also, Pprogression class feeds new states into the plain predictor as a new dime
 2024/06/19 merge latest lieonn.
 2024/06/21 merge latest lieonn.
 2024/06/21 add p2prng.cc, update readme, merge latest lieonn. INCLUDES command line argument change.
+2024/06/22 update readme, p01 fatal fix.
 
