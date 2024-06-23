@@ -310,4 +310,5 @@ So if there's multiple path of same period jammers on input stream, they fails.
 2024/06/21 add p2prng.cc, update readme, merge latest lieonn. INCLUDES command line argument change.
 2024/06/22 update readme, p01 fatal fix. make/revert program invariants change friendly to predictors.
 2024/06/23 large change around class instance initializer, also have progression short range fix.
+2024/06/23 fatal fix around last update.
 
