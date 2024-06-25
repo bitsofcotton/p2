@@ -11,7 +11,7 @@ rr = random.Random()
 # /dev/urandom:
 sr = random.SystemRandom()
 
-def ifloat(x):
+def ifloat(x, offset = 0):
   try:
     return float(x)
   except:
@@ -39,7 +39,7 @@ def ifloat(x):
         e *= 16
         e += tbl[ff]
       if(m): e = - e
-      return n * pow(2., e)
+      return n * pow(2., e - offset)
     except:
       pass
   return 0.
@@ -388,4 +388,28 @@ elif(sys.argv[1][0] == '<'):
       print("\"" + line[:- 1] + "\\n\"")
     print(",")
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'o'):
+  a = []
+  M = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    a.append(line[:- 1].split(",")[0])
+    try:
+      e = 0
+      tbl = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, \
+        '8': 8, '9': 9, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15, \
+        ' ': -1, '\t': -1, '\n': -1, '-': 16}
+      m = False
+      for ff in line[:- 1].split(",")[0].split("*")[1][2:]:
+        if(tbl[ff] < 0): continue
+        if(tbl[ff] == 16):
+          m = True
+          continue
+        e *= 16
+        e += tbl[ff]
+      if(m): e = - e
+      M = max(M, e)
+    except:
+      pass
+  for line in a:
+    print(ifloat(line, M))
 
