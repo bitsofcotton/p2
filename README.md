@@ -313,4 +313,5 @@ So if there's multiple path of same period jammers on input stream, they fails.
 2024/06/23 fatal fix around last update.
 2024/06/24 fix addp == true progression case.
 2024/06/26 cr.py o command and so on.
+2024/06/26 fix Ppersistent.
 
