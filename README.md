@@ -314,4 +314,5 @@ So if there's multiple path of same period jammers on input stream, they fails.
 2024/06/24 fix addp == true progression case.
 2024/06/26 cr.py o command and so on.
 2024/06/26 fix Ppersistent.
+2024/07/07 Pprogression uses shorter range but enough internal states.
 
