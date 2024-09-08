@@ -164,10 +164,17 @@ elif(sys.argv[1][0] == 'd'):
     bd = d
     sys.stdout.flush()
 elif(sys.argv[1][0] == 's'):
-  s = 0
+  s = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    s += ifloat(line.split(",")[0])
-    print(s)
+    d = line.split(",")
+    if(len(s) < len(d)):
+      for t in range(0, len(d) - len(s)):
+        s.append(0.)
+    ss = []
+    for t in range(0, len(d)):
+      s[t] += ifloat(d[t])
+      ss.append(str(s[t]))
+    print(",".join(ss))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'i'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -412,4 +419,15 @@ elif(sys.argv[1][0] == 'o'):
       pass
   for line in a:
     print(ifloat(line, M))
+elif(sys.argv[1][0] == 'z'):
+  bd = []
+  for t in range(0, int(sys.argv[2])):
+    bd.append("0")
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = line[:- 1].split(",")[0]
+    print(line[:- 1].split(",")[0], ",", ",".join(bd)[:- 1])
+    for t in range(1, len(bd)):
+      bd[- t] = bd[- t - 1]
+    bd[0] = d
+    sys.stdout.flush()
 
