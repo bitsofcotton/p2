@@ -426,7 +426,7 @@ elif(sys.argv[1][0] == 'z'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     d = line[:- 1].split(",")[0]
     print(line[:- 1].split(",")[0], ",", ",".join(bd)[:- 1])
-    for t in range(1, len(bd)):
+    for t in range(1, len(bd) - 1):
       bd[- t] = bd[- t - 1]
     bd[0] = d
     sys.stdout.flush()
