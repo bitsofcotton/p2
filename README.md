@@ -258,7 +258,15 @@ Also, Pprogression class feeds new states into the plain predictor as a new dime
 p\[012\]'s progression arguments takes the prime number multiplication to avoid some of the period depend jammers in first order.
 So if there's multiple path of same period jammers on input stream, they fails.
 
-# Another Download Sites (Closed)
+# Tips on P0DFT
+P0DFT also kills some of the discontinuity around output such as gulf, this is because they exclude self-similarity based gulfs from outputs.
+
+However, pp3dft.cc also needs p0.cc after doing prediction in many of the cases.
+
+# Leave
+We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
+
+# Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
@@ -316,4 +324,5 @@ So if there's multiple path of same period jammers on input stream, they fails.
 2024/06/26 fix Ppersistent.
 2024/07/07 Pprogression uses shorter range but enough internal states.
 2024/09/09 add z cmd, change s cmd.
+2024/09/22 add pp3dft.cc, elim p210.cc . update readme.
 
