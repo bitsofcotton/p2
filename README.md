@@ -325,4 +325,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/07/07 Pprogression uses shorter range but enough internal states.
 2024/09/09 add z cmd, change s cmd.
 2024/09/22 add pp3dft.cc, elim p210.cc . update readme.
+2024/09/22 integrate pp3dft.cc into p1/pp3.cc so elim them, releave.
 

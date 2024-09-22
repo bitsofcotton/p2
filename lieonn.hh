@@ -4427,20 +4427,38 @@ template <typename T, bool progress = true> SimpleVector<T> predv(const vector<S
   for(int i = 0; i < in.size(); i ++)  {
     seconds[i] = makeProgramInvariant<T>(in[i], - T(int(1)), true).second;
   }
+#if !defined(_PREDV_DFT_)
 #if !defined(_PREDV_)
-  const int unit(in.size() / 3);
+  const int unit(in.size() / 2);
   #define PPP PP0<T>
 #elif _PREDV_ == 3
-  const int unit(in.size() / 7);
+  const int unit(in.size() / 6);
   #define PPP PP3<T>
 #elif _PREDV_ == 6
-  const int unit(in.size() / 13);
+  const int unit(in.size() / 12);
   #define PPP PP6<T>
 #elif _PREDV_ == 9
-  const int unit(in.size() / 19);
+  const int unit(in.size() / 18);
   #define PPP PP9<T>
 #else
 # error _PREDV_ has a invalid value
+#endif
+#else
+#if !defined(_PREDV_)
+  const int unit(in.size() / 3);
+  #define PPP P0DFT<T, PP0<T> >
+#elif _PREDV_ == 3
+  const int unit(in.size() / 5);
+  #define PPP P0DFT<T, PP3<T> >
+#elif _PREDV_ == 6
+  const int unit(in.size() / 13);
+  #define PPP P0DFT<T, PP6<T> >
+#elif _PREDV_ == 9
+  const int unit(in.size() / 19);
+  #define PPP P0DFT<T, PP9<T> >
+#else
+# error _PREDV_ has a invalid value
+#endif
 #endif
   dftcache<T>(  unit);
   dftcache<T>(- unit);
