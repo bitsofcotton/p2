@@ -263,6 +263,13 @@ P0DFT also kills some of the discontinuity around output such as gulf, this is b
 
 However, pp3dft.cc also needs p0.cc after doing prediction in many of the cases.
 
+# Tips on usual predictions
+Usually with good enough predictors, the input-stream - prediction-stream inner production stream can be linear nor gulf continues around given input estimation range based ranges, this is because usually the feeding unobserved internal states into input stream is something stable, but sometimes unstable causes prediction fail on after the unstable feeding causes estimation unstable on given range.
+
+We cannot avoid them except for the case feeding is stable enough on estimation range condition nor no feed condition nor bitsofcotton/p\[45\] condition.
+
+A bitsofcotton/p\[45\] condition needs concrete base system completely separated with or without the initial value depend outside of low of excluded middle operations. Since we have arithmetic operations on given bit range, so we should read all of the source code and hardware parts on our machines but it's huge enough.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -326,4 +333,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/09/09 add z cmd, change s cmd.
 2024/09/22 add pp3dft.cc, elim p210.cc . update readme.
 2024/09/22 integrate pp3dft.cc into p1/pp3.cc so elim them, releave.
+2024/09/27 add usual prediction section readme.
 
