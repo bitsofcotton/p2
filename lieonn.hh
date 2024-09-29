@@ -4396,17 +4396,16 @@ template <typename T, int nprogress = 100> static inline SimpleVector<T> predv1(
     p.entity.emplace_back(predv0<T, nprogress>(in.subVector(i, in.size() - unit + 1).entity, to_string(i) + string(" / ") + to_string(unit), step));
   SimpleVector<T> res(in[0].size());
   res.O();
-  SimpleMatrix<T> ip((p.size() - 1) / step, res.size());
+  SimpleMatrix<T> ip(p.size() - step, res.size());
 #if defined(_OPENMP)
 #pragma omp parallel 
 #pragma for schedule(static, 1)
 #endif
   for(int i = 0; i < ip.rows(); i ++) {
     for(int j = 0; j < ip.cols(); j ++)
-      ip(i, j) = (p[(i - ip.rows()) * step + step - 1 + p.size() - 1][j] *
+      ip(i, j) = (p[i - ip.rows() + p.size() - step][j] *
         T(int(2)) - T(int(1)) ) *
-          (in[(i - ip.rows()) * step + in.size() + step - 1][j] *
-            T(int(2)) - T(int(1)) );
+          (in[i - ip.rows() + in.size()][j] * T(int(2)) - T(int(1)) );
   }
   // N.B. we need gamma complement after this.
   //      dftcache need to be single thread on first call.
