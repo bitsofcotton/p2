@@ -1,6 +1,9 @@
 # p2
-Generic predictor on expectation value mediumly depends data itself.
+A predictor formatter for p0, p1.
+
 Also, one of a predictor for being controlled stream.
+
+There's a plenty of the room for this repository s.t. fibonatti heuristics to detect and correct or use another (range, unit, step) for the predictor switching (\*cherry picker\*) monitoring the walk on prediciton-(next input) inner product stream however this needs huge computation resources in general. (The p1/pp3n \| p0/p0 pipe needs at most O(n^2) arithmetic calculation and elementary function call order for n-range inputs. We need call for this with O(n^3) order to do such heuristics, overall they're O(n^5), it's huge enough.)
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -335,4 +338,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/09/22 integrate pp3dft.cc into p1/pp3.cc so elim them, releave.
 2024/09/27 add usual prediction section readme.
 2024/09/28 eliminate Pprogression, it's a waste of the accuracy.
+2024/09/29 update readme.
 
