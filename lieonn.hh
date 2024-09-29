@@ -3287,6 +3287,7 @@ template <typename T> inline T P012L<T>::next(const SimpleVector<T>& d) {
     if(! cat[i].first.size()) continue;
     if(! (cat[i].first.size() <= cat[i].first[0].size() + 1)) cerr << "!" << flush;
     SimpleVector<T> avg(cat[i].first[0].size() + 1);
+    avg.O();
     for(int j = 0; j < cat[i].first.size(); j ++)
       avg += makeProgramInvariant<T>(cat[i].first[j]).first;
     work[work.size() - 1] = T(int(0));

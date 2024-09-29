@@ -3,7 +3,7 @@ A predictor formatter for p0, p1.
 
 Also, one of a predictor for being controlled stream.
 
-There's a plenty of the room for this repository s.t. fibonatti heuristics to detect and correct or use another (range, unit, step) for the predictor switching (\*cherry picker\*) monitoring the walk on prediciton-(next input) inner product stream however this needs huge computation resources in general. (The p1/pp3n \| p0/p0 pipe needs at most O(n^2) arithmetic calculation and elementary function call order for n-range inputs. We need call for this with O(n^3) order to do such heuristics, overall they're O(n^5), it's huge enough.)
+There's a plenty of the room for this repository s.t. fibonacci heuristics to detect and correct or use another (range, unit, step) for the predictor switching (\*cherry picker\*) monitoring the walk on prediciton-(next input) inner product stream however this needs huge computation resources in general. (The p1/pp3n \| p0/p0 pipe needs at most O(n^2) arithmetic calculation and elementary function call order for n-range inputs. We need call for this with O(n^3) order to do such heuristics, overall they're O(n^5), it's huge enough.)
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -269,7 +269,9 @@ However, pp3dft.cc also needs p0.cc after doing prediction in many of the cases.
 # Tips on usual predictions
 Usually with good enough predictors, the input-stream - prediction-stream inner production stream can be linear nor gulf continues around given input estimation range based ranges, this is because usually the feeding unobserved internal states into input stream is something stable, but sometimes unstable causes prediction fail on after the unstable feeding causes estimation unstable on given range.
 
-We cannot avoid them except for the case feeding is stable enough on estimation range condition nor no feed condition nor bitsofcotton/p\[45\] condition.
+Also, the gulf condition isn't avoidable by catgp.cc except the range of them can be increased, it's better with the large range feed into original good enough predictors.
+
+So we cannot avoid them except for the case feeding is stable enough on estimation range condition nor no feed condition nor bitsofcotton/p\[45\] condition.
 
 A bitsofcotton/p\[45\] condition needs concrete base system completely separated with or without the initial value depend outside of low of excluded middle operations. Since we have arithmetic operations on given bit range, so we should read all of the source code and hardware parts on our machines but it's huge enough.
 
@@ -338,5 +340,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/09/22 integrate pp3dft.cc into p1/pp3.cc so elim them, releave.
 2024/09/27 add usual prediction section readme.
 2024/09/28 eliminate Pprogression, it's a waste of the accuracy.
-2024/09/29 update readme.
+2024/09/29 update readme. fix P012L::next avg.O().
 
