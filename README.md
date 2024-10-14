@@ -275,6 +275,22 @@ So we cannot avoid them except for the case feeding is stable enough on estimati
 
 A bitsofcotton/p\[45\] condition needs concrete base system completely separated with or without the initial value depend outside of low of excluded middle operations. Since we have arithmetic operations on given bit range, so we should read all of the source code and hardware parts on our machines but it's huge enough.
 
+# Tips on usual PRNGs
+Usually, from somehow, with good PRNGs piping predictors, prediction fail heppens very often. After then, re-predicting produced result with enlarging feeding range causes very better result given. This happens in any medium wide range feeding with starting PRNG streams.
+
+I don't have a clue why they behaves like that on them without the probability of the infection nor observation as a initial values outside the box.
+
+Also, we bet they're initial values outside the box because increasing feeding range one by one without any upper bound hypothesis gets better result than them. (However this either have gulfs from uninserted internal states.)
+
+# Tips on open end or closed end
+The p\[0-3789\] predictor inspects input stream as closed end so they're implementation by the pure function with small internal states manner depends on accuracy or stacking layer numbers.
+
+So they're without the implementation growing manner with much of the internal states s.t. ongoing deep learning uses.
+
+We can use weighted average of p1's coefficients, however, the result might be something blurred ones in this case, this can be used to add some of the continuity however, no information amount on them, so in the case, ongoing them are something better with information amount we estimate.
+
+However, if the series structure converges, we don't care which one is the better.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
