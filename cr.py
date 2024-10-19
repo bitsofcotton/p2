@@ -430,4 +430,16 @@ elif(sys.argv[1][0] == 'z'):
       bd[- t] = bd[- t - 1]
     bd[0] = d
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'A'):
+  bd = []
+  for t in range(0, int(sys.argv[2])):
+    bd.append(0)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    for t in range(1, len(bd) - 1):
+      bd[- t] = bd[- t - 1]
+    bd[0] = ifloat(line[:- 1].split(",")[0])
+    dd = 0
+    for t in range(0, len(bd)):
+      dd += bd[t] / float(t + 1.)
+    print(dd / len(bd))
 
