@@ -291,6 +291,14 @@ We can use weighted average of p1's coefficients, however, the result might be s
 
 However, if the series structure converges, we don't care which one is the better.
 
+# Tips on predicting reseed
+If we face PRNGs reseeded, the structure of them unchange but the vector doesn't continues before and after the reseed.
+
+In the case, we need to do catgp.cc with better parameter however if period of reseed is unknown one, the problems are harder than them.
+
+So the better PRNGs need to have some entropy for reseeding and their periods.
+So initial number of the entropy and reseeding entropy is the matter so this matches well known ones.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -357,4 +365,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/09/27 add usual prediction section readme.
 2024/09/28 eliminate Pprogression, it's a waste of the accuracy.
 2024/09/29 update readme. fix P012L::next avg.O().
+2024/10/26 update readme.
 
