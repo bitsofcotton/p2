@@ -424,7 +424,7 @@ elif(sys.argv[1][0] == 'z'):
   for t in range(0, int(sys.argv[2])):
     bd.append("0")
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(line[:- 1].split(",")[0], ",", ",".join(bd)[:- 1])
+    print(line[:- 1].split(",")[0], ",", ",".join(bd))
     d = [line[:- 1].split(",")[0]]
     d.extend(bd[:- 1])
     bd = d
