@@ -441,4 +441,12 @@ elif(sys.argv[1][0] == 'A'):
     for t in range(0, len(bd)):
       dd += bd[t] / float(t + 1.)
     print(dd / len(bd))
+elif(sys.argv[1][0] == 'N'):
+  bd = 0.
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d  = ifloat(line.split(",")[0])
+    print((bd + d) / 2.)
+    print(d)
+    bd = d
+    sys.stdout.flush()
 

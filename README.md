@@ -299,6 +299,11 @@ In the case, we need to do catgp.cc with better parameter however if period of r
 So the better PRNGs need to have some entropy for reseeding and their periods.
 So initial number of the entropy and reseeding entropy is the matter so this matches well known ones.
 
+# Tips on broken PRNG on our machine
+Once ancient (more than decades ago) we had better with p0 below, they had be break, now we can predict by them, they should break after this upload.
+
+cat ... \| cr.py N \| p0 3 1 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py  l 0
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -366,4 +371,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/09/28 eliminate Pprogression, it's a waste of the accuracy.
 2024/09/29 update readme. fix P012L::next avg.O().
 2024/10/26 update readme.
+2024/11/01 update readme, add N command to cr.py.
 
