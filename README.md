@@ -300,9 +300,12 @@ So the better PRNGs need to have some entropy for reseeding and their periods.
 So initial number of the entropy and reseeding entropy is the matter so this matches well known ones.
 
 # Tips on broken PRNG on our machine
-Once ancient (more than decades ago) we had better with p0 below, they had be break, now we can predict by them, they should break after this upload.
+Once ancient (more than a decade ago) we had better with p0 below, they had be break, now we can predict by them, they should break after this upload.
 
 cat ... \| cr.py N \| p0 3 1 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py  l 0
+
+The infection might come from some deep inside the kernel/compiler/firmware/hardware with some political matters because of the infection period. So we cannot trust our computing systems even wherever we bought them as a consumer assembly/supply chain line.
+Either, some of the github.com top page nor drive.google.com top page inserts some suspicious javascript codes they behaves like a freeze page, so our computer nor Internet connection is targetted, either yours so.
 
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
