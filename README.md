@@ -307,6 +307,9 @@ cat ... \| cr.py N \| p0 3 1 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py 
 The infection might come from some deep inside the kernel/compiler/firmware/hardware with some political matters because of the infection period. So we cannot trust our computing systems even wherever we bought them as a consumer assembly/supply chain line.
 Either, some of the github.com top page nor drive.google.com top page inserts some suspicious javascript codes they behaves like a freeze page, so our computer nor Internet connection is targetted, either yours so.
 
+# Tips on continuous prediction
+If we want to use whole input as predict, the command: cat ... \| cr.py z ... \| cr.py S ... \| p1 0 ... \| cr.py p ... \| cr.py s \| cr.py l 0
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -375,4 +378,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/09/29 update readme. fix P012L::next avg.O().
 2024/10/26 update readme.
 2024/11/01 update readme, add N command to cr.py.
+2024/11/14 add cr.py p command to continue whole input p0 with fft without accuracy.
 
