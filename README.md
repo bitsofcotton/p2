@@ -308,9 +308,8 @@ The infection might come from some deep inside the kernel/compiler/firmware/hard
 Either, some of the github.com top page nor drive.google.com top page inserts some suspicious javascript codes they behaves like a freeze page, so our computer nor Internet connection is targetted, either yours so.
 
 # Tips on continuous prediction
-If we want to use whole input as predict, the command: cat ... \| cr.py z ... \| cr.py S ... \| p1 0 ... \| cr.py p ... \| cr.py s \| cr.py l 0
-
--&gt; cr.py p ... uses pseudo-fft, so they pads some of the periods causes differential of them doesn't work as expected. So we implement very slow p0 0 ... commands instead of them: cat ... \| cr.py z ... \| cr.py S ... \| p1 0 ... \| p0 0 ... \| cr.py s \| cr.py l 0
+We can do cat ... \| cr.py z ... \| cr.py S ... \| p1 0 \| p0 0 \| p0 ... \| cr.py s \| cr.py l 0 .
+However, this might get to be broken after this upload.
 
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
@@ -382,4 +381,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/11/01 update readme, add N command to cr.py.
 2024/11/14 add cr.py p command to continue whole input p0 with fft without accuracy.
 2024/11/16 fix readme.
+2024/12/05 fix readme.
 
