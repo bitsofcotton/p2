@@ -381,5 +381,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/11/01 update readme, add N command to cr.py.
 2024/11/14 add cr.py p command to continue whole input p0 with fft without accuracy.
 2024/11/16 fix readme.
-2024/12/05 fix readme.
+2024/12/05 fix readme. exchanged argv[1] and argv[2] meaning.
 
