@@ -314,6 +314,8 @@ However, this might get to be broken after this upload.
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
+Should really leave here.
+
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -383,4 +385,5 @@ We leave this repository. However, some of the improvements or fix on each file,
 2024/11/16 fix readme.
 2024/12/05 fix readme. exchanged argv[1] and argv[2] meaning.
 2024/12/08 update readme compat with latest p0, p1.
+2024/12/13 should really leave, close readme.md.
 

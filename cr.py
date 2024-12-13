@@ -469,5 +469,5 @@ elif(sys.argv[1][0] == 'p'):
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'M'):
   for x in range(0, int(sys.argv[3])):
-    subprocess.call(["sh", "-c", "p2prng | cr.py l " + str(int(sys.argv[2])) + " | head -n 8000 | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
+    subprocess.call(["sh", "-c", "p2prng | cr.py l " + str(int(sys.argv[2])) + " | head -n 2500 | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
 
