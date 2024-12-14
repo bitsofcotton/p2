@@ -302,7 +302,7 @@ So initial number of the entropy and reseeding entropy is the matter so this mat
 # Tips on broken PRNG on our machine
 Once ancient (more than a decade ago) we had better with p0 below, they had be break, now we can predict by them, they should break after this upload.
 
-cat ... \| cr.py N \| p0 3 1 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py  l 0
+cat ... \| cr.py N \| p0 1 3 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py  l 0
 
 The infection might come from some deep inside the kernel/compiler/firmware/hardware with some political matters because of the infection period. So we cannot trust our computing systems even wherever we bought them as a consumer assembly/supply chain line.
 Either, some of the github.com top page nor drive.google.com top page inserts some suspicious javascript codes they behaves like a freeze page, so our computer nor Internet connection is targetted, either yours so.
@@ -386,4 +386,5 @@ Should really leave here.
 2024/12/05 fix readme. exchanged argv[1] and argv[2] meaning.
 2024/12/08 update readme compat with latest p0, p1.
 2024/12/13 should really leave, close readme.md.
+2024/12/14 update readme.md, might still have some glitches on readme.md after update.
 
