@@ -449,25 +449,7 @@ elif(sys.argv[1][0] == 'N'):
     print(d)
     bd = d
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'p'):
-  import numpy
-  h = []
-  M = []
-  for t in range(0, int(sys.argv[2])):
-    M.append(0.)
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    print(M[0] * d)
-    h.append(d)
-    if(len(h) > 0):
-      hh = numpy.fft.fft(h)
-      for s in range(0, len(hh)):
-        hh[s] *= numpy.exp(- 2.j * numpy.pi * s / len(hh) * int(sys.argv[2]))
-      hh = numpy.fft.ifft(hh)
-      M  = M[1:]
-      M.append(hh[- 1].real)
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'M'):
-  for x in range(0, int(sys.argv[3])):
-    subprocess.call(["sh", "-c", "p2prng | cr.py l " + str(int(sys.argv[2])) + " | head -n 2500 | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
+  for x in range(0, 729):
+    subprocess.call(["sh", "-c", "p2prng | python3 " + sys.argv[0] + " l 1 | head -n " + str(int(sys.argv[2])) + " | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
 
