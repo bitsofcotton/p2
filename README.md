@@ -311,6 +311,9 @@ Either, some of the github.com top page nor drive.google.com top page inserts so
 We can do cat ... \| cr.py z ... \| cr.py S ... \| p1 \| p0 \| cr.py s \| cr.py l 0 .
 However, this might get to be broken after this upload.
 
+We especially do cat ... \| cr.py z (1\|2\|4\|8) \| cr.py S (1\|2\|4\|8) \| p1 \[01\] \| p0 \[01\] \| cr.py s \| cr.py l 0 .
+However, this also might get to be broken after this upload.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -387,4 +390,5 @@ Should really leave here.
 2024/12/08 update readme compat with latest p0, p1.
 2024/12/13 should really leave, close readme.md.
 2024/12/14 update readme.md, might still have some glitches on readme.md after update.
+2024/01/27 update readme.md.
 
