@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <assert.h>
+#include <stdint.h>
 #include <sys/resource.h>
 
 #include <random>
