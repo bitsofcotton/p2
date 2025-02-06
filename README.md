@@ -391,4 +391,5 @@ Should really leave here.
 2024/12/13 should really leave, close readme.md.
 2024/12/14 update readme.md, might still have some glitches on readme.md after update.
 2024/01/27 update readme.md.
+2025/02/05 add f command to cr.py.
 

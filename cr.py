@@ -452,4 +452,11 @@ elif(sys.argv[1][0] == 'N'):
 elif(sys.argv[1][0] == 'M'):
   for x in range(0, 729):
     subprocess.call(["sh", "-c", "p2prng | python3 " + sys.argv[0] + " l 1 | head -n " + str(int(sys.argv[2])) + " | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
+elif(sys.argv[1][0] == 'f'):
+  M = 0.
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    print(d - M)
+    M = d
+    sys.stdout.flush()
 
