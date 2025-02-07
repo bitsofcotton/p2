@@ -24,7 +24,7 @@ template <typename T> static inline T pseudoerfscale(const T& x) {
 }
 
 template <typename T> static inline T pseudoierfscale(const T& y) {
-  return sgn<T>(y) == T(int(0)) ? y : sgn<T>(y) * sqrt(abs(log(abs(y))));
+  return sgn<T>(y) == T(int(0)) ? y : sgn<T>(y) * sqrt(abs(- log(abs(y))));
 }
 
 #if defined(_FLOAT_BITS_)
@@ -73,18 +73,17 @@ int main(int argc, const char* argv[]) {
       fpn[0] = (d + num_t(int(1))) / num_t(int(2));
       fp[i].next(fpn);
       auto work(predv0<num_t, 0>(fp[i].res.entity, string(""), fp[i].res.entity.size()));
-      fq[i].next(pseudoierfscale<num_t>(d - Mp[i]));
+      fq[i].next(pseudoierfscale<num_t>((d - Mp[i]) / num_t(int(2)) ));
       d = pseudoerfscale<num_t>(fq[i].res[fq[i].res.size() - 1] - Mq[i]);
       Mp[i] = work[0] * num_t(int(2)) - num_t(int(1));
       Mq[i] = P0maxRank<num_t>().next(fq[i].res);
     }
-    M = - d;
+    M = d;
     for(int i = 0; i < Mp.size(); i ++) {
       M = Mp[Mp.size() - i - 1] +
-        pseudoerfscale<num_t>(Mq[Mq.size() - i - 1] + M);
-      if(i + 1 < Mp.size()) M = pseudoerfscale<num_t>(M);
+        pseudoerfscale<num_t>(Mq[Mq.size() - i - 1] + M) * num_t(int(2));
+      if(i + 1 < Mp.size()) M = pseudoierfscale<num_t>(M);
     }
-    M = - M;
     std::cout << M << ", " << d - bd << std::endl << std::flush;
     bd = d;
   }
