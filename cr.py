@@ -65,6 +65,14 @@ def getrand(mm):
     return sr.gauss(0., 1.)
   return sr.randint(0, 255) - 127.5
 
+def pseudoerfscale(x):
+  import numpy
+  if(x == 0):
+    return x
+  elif(x < 0):
+    return - numpy.exp(- x * x)
+  return numpy.exp(- x * x)
+
 if(len(sys.argv) < 2):
   print("not much arguments")
 elif(sys.argv[1][0] == 'r'):

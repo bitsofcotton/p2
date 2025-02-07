@@ -4,7 +4,8 @@ CXX=	clang++
 # compiler flags.
 CXXFLAGS+=	-std=c++11
 CXXFLAGS+=	-I..
-#CXXFLAGS+=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
+MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
+#MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
 #CXXFLAGS+=	-pg
 CXXFLAGS+=	-Ofast -mtune=native -gfull
 #CXXFLAGS+=	-Oz -mtune=native -gfull
@@ -14,8 +15,8 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32
-all:	catgp catgp32 p2prng p2prng32
+	@rm -rf catgp catgp32 p2prng p2prng32 persistent persistent32 persistentmp persistent32mp
+all:	catgp catgp32 p2prng p2prng32 persistent persistent32 persistentmp persistent32mp
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -26,4 +27,12 @@ p2prng:
 	${CXX} ${CXXFLAGS} -static -o p2prng p2prng.cc
 p2prng32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2prng32 p2prng.cc
+persistent:
+	${CXX} ${CXXFLAGS} -static -o persistent persistent.cc
+persistent32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o persistent32 persistent.cc
+persistentmp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -o persistentmp persistent.cc
+persistent32mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -o persistent32mp persistent.cc
 
