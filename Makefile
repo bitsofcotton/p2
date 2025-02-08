@@ -7,9 +7,9 @@ CXXFLAGS+=	-I..
 MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 #MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
 #CXXFLAGS+=	-pg
-CXXFLAGS+=	-Ofast -mtune=native -gfull
+#CXXFLAGS+=	-Ofast -mtune=native -gfull
 #CXXFLAGS+=	-Oz -mtune=native -gfull
-#CXXFLAGS+=	-O0 -mtune=native -gfull
+CXXFLAGS+=	-O0 -mtune=native -gfull
 #CXXFLAGS+=	-Ofast -mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -gfull -g0
 LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
