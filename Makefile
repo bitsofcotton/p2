@@ -7,9 +7,9 @@ CXXFLAGS+=	-I..
 MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 #MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
 #CXXFLAGS+=	-pg
-#CXXFLAGS+=	-Ofast -mtune=native -gfull
+CXXFLAGS+=	-Ofast -mtune=native -gfull
 #CXXFLAGS+=	-Oz -mtune=native -gfull
-CXXFLAGS+=	-O0 -mtune=native -gfull
+#CXXFLAGS+=	-O0 -mtune=native -gfull
 #CXXFLAGS+=	-Ofast -mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -gfull -g0
 LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
@@ -31,8 +31,12 @@ persistent:
 	${CXX} ${CXXFLAGS} -static -o persistent persistent.cc
 persistent32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o persistent32 persistent.cc
+persistent64:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o persistent64 persistent.cc
 persistentmp:
 	${CXX} ${CXXFLAGS} ${MPFLAGS} -o persistentmp persistent.cc
 persistent32mp:
 	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -o persistent32mp persistent.cc
+persistent64mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=64 -o persistent64mp persistent.cc
 
