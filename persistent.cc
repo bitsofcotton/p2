@@ -40,50 +40,63 @@ template <typename T> static inline T plainrecur(T x, const int& r) {
   return x;
 }
 
-template <typename T> static inline T samplerecur(const int& r, const T& d, const int& interval = 1024) {
-  vector<pair<T, T> > samples;
-  samples.resize(interval);
+template <typename T> static inline std::vector<T> samplerecur(const vector<T>& d, const int& interval = 1024) {
+  std::vector<T> res;
+  res.reserve(d.size());
+  for(int i = 0; i < d.size(); i ++) {
+    vector<pair<T, T> > samples;
+    samples.resize(interval);
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(static, 1)
 #endif
-  for(int i = 0; i < interval; i ++) {
-    const auto x(T(i * 2) / T(interval - 1) - T(int(1)));
-    samples[i] = make_pair(abs(plainrecur(x, r) - d), x);
+    for(int j = 0; j < interval; j ++) {
+      const auto x(T(j * 2) / T(interval - 1) - T(int(1)));
+      samples[j] = make_pair(abs(plainrecur(x, i + 1) - d[i]), x);
+    }
+    sort(samples.begin(), samples.end());
+    res.emplace_back(samples[0].second);
   }
-  sort(samples.begin(), samples.end());
-  return samples[0].second;
+  return res;
 }
 
-template <typename T> static inline void next(T& d) {
+template <typename T> static inline void next(std::vector<T>& d) {
+  assert(d.size() == fp.size());
   for(int i = 0; i < fp.size(); i ++) {
     auto fpn(fp[i].res[fp[i].res.size() - 1]);
     for(int i = 1; i < fpn.size(); i ++)
       fpn[fpn.size() - i] = fpn[fpn.size() - i - 1];
-    fpn[0] = (d + num_t(int(1))) / num_t(int(2));
+    fpn[0] = (d[i] + num_t(int(1))) / num_t(int(2));
     fp[i].next(fpn);
     auto work(predv0<num_t, 0>(fp[i].res.entity, string(""), fp[i].res.entity.size()));
-    fq[i].next(pseudoierfscale<num_t>((d - Mp[i]) / num_t(int(2)) ));
-    d = pseudoerfscale<num_t>((fq[i].res[fq[i].res.size() - 1] - Mq[i]) * num_t(int(2)) );
+    fq[i].next(pseudoierfscale<num_t>((d[i] - Mp[i]) / num_t(int(2)) ));
+    d[i]  = pseudoerfscale<num_t>((fq[i].res[fq[i].res.size() - 1] - Mq[i]) * num_t(int(2)) );
     Mp[i] = work[0] * num_t(int(2)) - num_t(int(1));
     Mq[i] = P0maxRank<num_t>().next(fq[i].res);
+    if(i + 1 < d.size()) d[i + 1] = d[i];
   }
 }
 
-template <typename T> static inline T nextd(T& d) {
+template <typename T> static inline std::vector<T> nextd(vector<T>& d) {
   next<T>(d);
   auto lMp(Mp);
   auto lMq(Mq);
   auto lfp(fp);
   auto lfq(fq);
-  T    dd(int(0));
+  auto dd(d);
+  dd[0] = T(int(0));
   next<T>(dd);
-  const auto flag(abs(samplerecur<T>(Mp.size(), dd)) == T(int(1)) );
+  const auto nsr(samplerecur<T>(dd));
   std::swap(Mp, lMp);
   std::swap(Mq, lMq);
   std::swap(fp, lfp);
   std::swap(fq, lfq);
-  auto M(flag ? T(int(0)) : samplerecur<T>(Mp.size(), d));
-  return abs(M) == num_t(int(1)) ? num_t(int(0)) : M;
+  std::vector<T> res;
+  res.reserve(d.size());
+  const auto sr(samplerecur<T>(d));
+  assert(nsr.size() == dd.size() && sr.size() == d.size() && d.size() == dd.size());
+  for(int i = 0; i < d.size(); i ++)
+    res.emplace_back(abs(nsr[i]) == num_t(int(1)) ? T(int(0)) : (abs(sr[i]) == num_t(int(1)) ? num_t(int(0)) : sr[i]) );
+  return res;
 }
 
 
@@ -96,54 +109,65 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int stat(80);
-  int recur(6);
   int feed(4);
-  if(argc < 2) std::cerr << argv[0] << " <stat>? <recur>? <feed>? : continue with ";
+  if(argc < 2) std::cerr << argv[0] << " <stat>? <feed>? : continue with ";
   if(1 < argc) stat  = std::atoi(argv[1]);
-  if(2 < argc) recur = std::atoi(argv[2]);
-  if(3 < argc) feed  = std::atoi(argv[3]);
-  std::cerr << argv[0] << " " << stat << " " << recur << " " << feed << std::endl;
-  assert(8 <= stat && 1 <= recur && 1 <= feed);
+  if(2 < argc) feed  = std::atoi(argv[2]);
+  std::cerr << argv[0] << " " << stat << " " << feed << std::endl;
+  assert(8 <= stat && (1 == feed || 2 == feed || 4 == feed || 8 == feed));
   {
     idFeeder<SimpleVector<num_t> > workfp(stat);
     for(int i = 0; i < stat; i ++)
       workfp.next(SimpleVector<num_t>(feed).O());
-    fp.resize(recur, workfp);
+    fp.resize(1, workfp);
   }
-  fq.resize(recur, idFeeder<num_t>(stat));
-  Mp.resize(recur, num_t(int(0)));
-  Mq.resize(recur, num_t(int(0)));
-  assert(fp.size() == fq.size() && fq.size() == Mp.size() && Mp.size() == Mq.size());
-  num_t d(int(0));
-  auto  bd(d);
-  auto  bmd(d);
-  auto  M(d);
-  auto  Mp(d);
-  auto  Mm(d);
-  std::string s;
-  auto  mMp(Mp);
-  auto  mMq(Mq);
+  fq.resize(1, idFeeder<num_t>(stat));
+  Mp.resize(1, num_t(int(0)));
+  Mq.resize(1, num_t(int(0)));
   auto  mfp(fp);
   auto  mfq(fq);
-  while(std::getline(std::cin, s, '\n')) {
+  auto  mMp(Mp);
+  auto  mMq(Mq);
+  auto  d(Mp);
+  auto  md(d);
+  num_t M(int(0));
+  std::string s;
+  for(int t = 1; std::getline(std::cin, s, '\n'); t ++) {
     std::stringstream ins(s);
-    ins >> d;
-    std::cout << (M == num_t(int(0)) ? M : d - M) << ", " << d - M << ", " << d * M << ", ";
-    auto md(- d);
-    Mp = nextd<num_t>(d);
+    ins >> d[0];
+    md[0] = - d[0];
+    std::cout << (M == num_t(int(0)) ? M : d[0] - M) << ", " << d[0] - M << ", " << d[0] * M << ", ";
+    auto MMp(nextd<num_t>(d));
     std::swap(Mp, mMp);
     std::swap(Mq, mMq);
     std::swap(fp, mfp);
     std::swap(fq, mfq);
-    Mm = nextd<num_t>(md);
+    auto MMm(nextd<num_t>(md));
     std::swap(Mp, mMp);
     std::swap(Mq, mMq);
     std::swap(fp, mfp);
     std::swap(fq, mfq);
-    // std::cout << Mp << ", " << Mm << ", " << (M = (Mp == num_t(int(0)) || Mm == num_t(int(0)) ? num_t(int(0)) : (Mp - Mm < num_t(int(0)) ? (Mp < - Mm ? Mp : - Mm) : (- Mm < Mp ? Mp : - Mm)) )) << ", " << d - bd << ", " << md - bmd << std::endl << std::flush;
-    std::cout << Mp << ", " << Mm << ", " << (M = (Mp == num_t(int(0)) || Mm == num_t(int(0)) ? num_t(int(0)) : (Mp - Mm < num_t(int(0)) ? (Mp < - Mm ? - Mm : Mp) : (- Mm < Mp ? - Mm : Mp)) )) << ", " << d - bd << ", " << md - bmd << std::endl << std::flush;
-    bd  = d;
-    bmd = md;
+    for(int i = d.size() - 1; 0 <= i; i --) {
+      M = (MMp[i] == num_t(int(0)) || MMm[i] == num_t(int(0)) ? num_t(int(0)) : (MMp[i] - MMm[i] < num_t(int(0)) ? (MMp[i] < - MMm[i] ? MMp[i] : - MMm[i]) : (- MMm[i] < MMp[i] ? - MMm[i] : MMp[i]) ));
+      if(abs(M) == num_t(int(1)) ) M = num_t(int(0));
+      if(M != num_t(int(0))) break;
+    }
+    std::cout << M << std::endl << std::flush;
+    if(! (t % (stat * 2))) {
+      idFeeder<SimpleVector<num_t> > workfp(stat);
+      for(int i = 0; i < stat; i ++)
+        workfp.next(SimpleVector<num_t>(feed).O());
+      fp.emplace_back(workfp);
+      mfp.emplace_back(workfp);
+      fq.emplace_back(idFeeder<num_t>(stat));
+      mfq.emplace_back(idFeeder<num_t>(stat));
+      Mp.emplace_back(num_t(int(0)));
+      Mq.emplace_back(num_t(int(0)));
+      mMp.emplace_back(num_t(int(0)));
+      mMq.emplace_back(num_t(int(0)));
+      d.emplace_back(num_t(int(0)));
+      md.emplace_back(num_t(int(0)));
+    }
   }
   return 0;
 }
