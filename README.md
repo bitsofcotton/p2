@@ -314,6 +314,17 @@ However, this might get to be broken after this upload.
 We especially do cat ... \| cr.py z (1\|2\|4\|8) \| cr.py S (1\|2\|4\|8) \| p1 \[01\] \| p0 \[01\] \| cr.py s \| cr.py l 0 .
 However, this also might get to be broken after this upload.
 
+# Persistent.cc with timing-related conditions
+Persistent.cc doing p1 then p0 recursive with diff(erf) functions persistent with some numerical test based strategic results.
+
+If this condition cannot apply to original stream, there's possible 3 of the cases (and more?):
+
+(i) The stream isn't created by pure functions they depends on touching references.
+
+(ii) The stream is complex enough but they can calculated by toeplitz matrices' eigen vector matrix to convert into known stream.
+
+(iii) The stream is complex enough but they can calculated by breaking low of the excluded middle to get in/output of them. However, our test says this can concludes our calculation base on the bricks can be transferred to make it discontinuous ones.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -394,4 +405,5 @@ Should really leave here.
 2025/02/05 add f command to cr.py.
 2025/02/07 add persistent.cc .
 2025/02/10 fix and refactor persistent.cc to pp8q.cc (pp8 - .25).
+2025/02/11 add readme.md persistent.cc concerns.
 

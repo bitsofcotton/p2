@@ -27,7 +27,9 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  int stat(80);
+  // N.B. this is enough when we apply eigen vectors they break low of
+  //      excluded middle to in/output, however, this is raw for them.
+  int stat(729);
   if(argc < 2) std::cerr << argv[0] << " <stat>? : continue with ";
   if(1 < argc) stat  = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << stat << std::endl;

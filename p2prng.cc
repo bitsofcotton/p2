@@ -31,12 +31,22 @@ int main(int argc, const char* argv[]) {
   std::knuth_b kb(r());
   std::uniform_int_distribution<int> ud(0, 0x2000);
   while(true) {
+#if defined(_BIT_)
+    // XXX: ud(...) <= 2 case is not handled.
+    std::cout << num_t(int(arc4random_uniform(3)) - 1) << ", ";
+    std::cout << num_t(ud(er) % 3 - 1) << ",";
+    std::cout << num_t(ud(mt) % 3 - 1) << ",";
+    std::cout << num_t(ud(rl24) % 3 - 1) << ",";
+    std::cout << num_t(ud(rl48) % 3 - 1) << ",";
+    std::cout << num_t(ud(kb) % 3 - 1) << std::endl << std::flush;
+#else
     std::cout << fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(er) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(mt) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(rl24) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(rl48) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(kb) - 0x1000, 0x1000) << std::endl << std::flush;
+#endif
   }
   return 0;
 }
