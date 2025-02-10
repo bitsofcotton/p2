@@ -4497,7 +4497,6 @@ template <typename T> class Persistent {
 public:
   inline Persistent(const int& stat = 80) {
     this->stat = stat;
-    fp.reserve(sizeof(feeds) / sizeof(feeds[0]));
     for(int j = 0; j < sizeof(feeds) / sizeof(feeds[0]); j ++) {
       idFeeder<SimpleVector<T> > workfp(stat);
       for(int i = 0; i < stat; i ++)
@@ -4536,7 +4535,7 @@ public:
         M = (MMp[j][i] == T(int(0)) || MMm[j][i] == T(int(0)) ? T(int(0)) : (MMp[j][i] - MMm[j][i] < T(int(0)) ? (MMp[j][i] < - MMm[j][i] ? MMp[j][i] : - MMm[j][i]) : (- MMm[j][i] < MMp[j][i] ? - MMm[j][i] : MMp[j][i]) ));
         if(abs(M) == T(int(1)) ) M = T(int(0));
       }
-    if(! ((++ t) % (stat * 2 + (8 * t / stat / 2))))
+    if(! ((++ t) % ((stat + 8) * 2)))
       for(int j = 0; j < sizeof(feeds) / sizeof(feeds[0]); j ++) {
         {
           idFeeder<SimpleVector<T> > workfp(stat);
