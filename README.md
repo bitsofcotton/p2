@@ -393,4 +393,5 @@ Should really leave here.
 2024/01/27 update readme.md.
 2025/02/05 add f command to cr.py.
 2025/02/07 add persistent.cc .
+2025/02/10 fix and refactor persistent.cc to pp8q.cc (pp8 - .25).
 
