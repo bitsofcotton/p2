@@ -321,9 +321,9 @@ If this condition cannot apply to original stream, there's possible 3 of the cas
 
 (i) The stream isn't created by pure functions they depends on touching references.
 
-(ii) The stream is complex enough but they can calculated by toeplitz matrices' eigen vector matrix to convert into known stream.
+(ii) The stream is complex enough but they can be calculated by toeplitz matrices' eigen vector matrix to convert into known stream.
 
-(iii) The stream is complex enough but they can calculated by breaking low of the excluded middle to get in/output of them. However, our test says this can concludes our calculation base on the bricks can be transferred to make it discontinuous ones.
+(iii) The stream is complex enough but they can be calculated by breaking low of the excluded middle to get in/output of them. However, our test says this can concludes our calculation base on the bricks can be transferred to make it discontinuous ones.
 
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
