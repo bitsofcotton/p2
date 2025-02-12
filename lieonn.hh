@@ -4416,6 +4416,7 @@ template <typename T> static inline T pseudoierfscale(const T& y) {
 }
 
 template <typename T> static inline T plainrecurPersistent(T x, const int& r, const vector<T>& Mp, const vector<T>& Mq) {
+  assert(Mp.size() == Mq.size() && r <= Mp.size());
   for(int i = 0; i < r; i ++) {
     x = pseudoierfscale<T>((x - Mp[i]) / T(int(2)) );
     x = pseudoerfscale< T>((x - Mq[i]) * T(int(2)) );
@@ -4424,6 +4425,7 @@ template <typename T> static inline T plainrecurPersistent(T x, const int& r, co
 }
 
 template <typename T> static inline vector<T> samplerecurPersistent(const vector<T>& d, const vector<T>& Mp, const vector<T>& Mq, const int& interval = 1024) {
+  assert(d.size() == Mp.size() && Mp.size() == Mq.size() && 0 < interval);
   vector<T> res;
   res.reserve(d.size());
   for(int i = 0; i < d.size(); i ++) {
@@ -4443,7 +4445,8 @@ template <typename T> static inline vector<T> samplerecurPersistent(const vector
 }
 
 template <typename T> static inline void nextPersistent(vector<T>& d, vector<T>& Mp, vector<T>& Mq, vector<idFeeder<SimpleVector<T> > >& fp, vector<idFeeder<T> >& fq) {
-  assert(d.size() == fp.size());
+  assert(d.size() == Mp.size() && Mp.size() == Mq.size() &&
+         Mq.size() == fp.size() && fp.size() == fq.size());
   for(int i = 0; i < fp.size(); i ++) {
     auto fpn(fp[i].res[fp[i].res.size() - 1]);
     for(int i = 1; i < fpn.size(); i ++)
@@ -4465,6 +4468,8 @@ template <typename T> static inline void nextPersistent(vector<T>& d, vector<T>&
 }
 
 template <typename T> static inline vector<T> nextdPersistent(vector<T>& d, vector<T>& Mp, vector<T>& Mq, vector<idFeeder<SimpleVector<T> > >& fp, vector<idFeeder<T> >& fq) {
+  assert(d.size() == Mp.size() && Mp.size() == Mq.size() &&
+         Mq.size() == fp.size() && fp.size() == fq.size());
   nextPersistent<T>(d, Mp, Mq, fp, fq);
   auto lMp(Mp);
   auto lMq(Mq);
@@ -4479,15 +4484,15 @@ template <typename T> static inline vector<T> nextdPersistent(vector<T>& d, vect
   const auto sr(samplerecurPersistent<T>(d, Mp, Mq));
   assert(nsr.size() == dd.size() && sr.size() == d.size() && d.size() == dd.size());
   for(int i = 0; i < d.size(); i ++)
-    res.emplace_back(abs(nsr[i]) == T(int(1)) ? T(int(0)) : (abs(sr[i]) == T(int(1)) ? T(int(0)) : sr[i]) );
+    res.emplace_back(abs(nsr[i]) == T(int(1)) || abs(sr[i]) == T(int(1)) ? T(int(0)) : sr[i]);
   return res;
 }
 
 template <typename T> static inline vector<vector<T> > nextdfPersistent(vector<vector<T> >& d, vector<vector<T> >& Mp, vector<vector<T> >& Mq, vector<vector<idFeeder<SimpleVector<T> > > >& fp, vector<vector<idFeeder<T> > >& fq) {
-  vector<vector<T> > res;
-  res.reserve(d.size());
   assert(d.size() == Mp.size() && Mp.size() == Mq.size() &&
          Mq.size() == fp.size() && fp.size() == fq.size());
+  vector<vector<T> > res;
+  res.reserve(d.size());
   for(int i = 0; i < d.size(); i ++)
     res.emplace_back(nextdPersistent<T>(d[i], Mp[i], Mq[i], fp[i], fq[i]));
   return res;
@@ -4525,14 +4530,14 @@ public:
     t ^= t;
   }
   inline T next(const T& d0) {
-    for(int i = 0; i < d.size(); i ++) md[i][0] = - (d[i][0]  = d0);
+    for(int i = 0; i < d.size(); i ++) md[i][0] = - (d[i][0] = d0);
     const auto MMp(nextdfPersistent<T>(d, Mp, Mq, fp, fq));
     const auto MMm(nextdfPersistent<T>(md, mMp, mMq, mfp, mfq));
     T M(int(0));
     for(int j = 0; j < sizeof(feeds) / sizeof(feeds[0]) && M == T(int(0)); j ++)
       for(int i = d[j].size() - 2; 0 <= i && M == T(int(0)); i --) {
         if(! isfinite(MMp[j][i]) || ! isfinite(MMm[j][i])) continue;
-        M = (MMp[j][i] == T(int(0)) || MMm[j][i] == T(int(0)) ? T(int(0)) : (MMp[j][i] - MMm[j][i] < T(int(0)) ? (MMp[j][i] < - MMm[j][i] ? MMp[j][i] : - MMm[j][i]) : (- MMm[j][i] < MMp[j][i] ? - MMm[j][i] : MMp[j][i]) ));
+        M = (MMp[j][i] == T(int(0)) || MMm[j][i] == T(int(0)) ? T(int(0)) : (MMp[j][i] - MMm[j][i] < T(int(0)) ? (MMp[j][i] < - MMm[j][i] ? - MMm[j][i] : MMp[j][i]) : (- MMm[j][i] < MMp[j][i] ? - MMm[j][i] : MMp[j][i]) ));
         if(abs(M) == T(int(1)) ) M = T(int(0));
       }
     if(! ((++ t) % ((stat + 8) * 2)))

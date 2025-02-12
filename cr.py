@@ -438,9 +438,11 @@ elif(sys.argv[1][0] == 'A'):
       bd[- t] = bd[- t - 1]
     bd[0] = ifloat(line[:- 1].split(",")[0])
     dd = 0
+    da = 0
     for t in range(0, len(bd)):
-      dd += bd[t] / float(t + 1.)
-    print(dd / len(bd))
+      dd += bd[t] * float(len(bd) - t)
+      da += float(len(bd) - t)
+    print(dd / da)
 elif(sys.argv[1][0] == 'N'):
   bd = 0.
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -453,10 +455,43 @@ elif(sys.argv[1][0] == 'M'):
   for x in range(0, 729):
     subprocess.call(["sh", "-c", "p2prng | python3 " + sys.argv[0] + " l 1 | head -n " + str(int(sys.argv[2])) + " | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
 elif(sys.argv[1][0] == 'f'):
-  M = 0.
+  d = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    print(d - M)
-    M = d
+    d.append(line.split(",")[0])
+    if(len(d) % int(sys.argv[2]) == 0):
+      print(len(d), ": [", ",".join(d), "]")
+      sys.stdout.flush()
+      d = []
+elif(sys.argv[1][0] == 'u'):
+  import numpy
+  d = []
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    df = line.split(",")
+    d.append([])
+    for dd in df:
+      d[- 1].append(ifloat(dd))
+    d = d[max(- len(d), - len(df)):]
+    if(len(df) <= len(d)):
+      fd = []
+      fe = []
+      for t in range(0, len(d)):
+        fd.append(numpy.fft.fft(d[t]))
+        for s in range(0, len(fd[t])):
+          fd[t][s] *= - 2.j * numpy.pi * s / float(len(fd[- 1]))
+        fd[t] = numpy.fft.ifft(fd[t]).real
+      for t in range(0, len(d[0])):
+        fe.append([])
+        for s in range(0, len(d)):
+          fe[t].append(d[s][t])
+        for s in range(0, len(fe[t])):
+          fe[t][s] *= - 2.j * numpy.pi * s / float(len(fe[- 1]))
+        fe[t] = numpy.fft.ifft(fe[t]).real
+      ff = []
+      for t in range(0, len(d[- 1])):
+        if(d[- 1][t] < 0):
+          ff.append(str(- (fd[- 1][t] * fd[- 1][t] + fe[- 1][t] * fe[- 1][t] + d[- 1][t] * d[- 1][t]) / (2. * numpy.pi * 2. * numpy.pi + 1) ))
+        else:
+          ff.append(str(  (fd[- 1][t] * fd[- 1][t] + fe[- 1][t] * fe[- 1][t] + d[- 1][t] * d[- 1][t]) / (2. * numpy.pi * 2. * numpy.pi + 1) ))
+      print(",".join(ff))
     sys.stdout.flush()
 
