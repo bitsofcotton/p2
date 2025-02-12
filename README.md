@@ -406,4 +406,5 @@ Should really leave here.
 2025/02/07 add persistent.cc .
 2025/02/10 fix and refactor persistent.cc to pp8q.cc (pp8 - .25).
 2025/02/11 add readme.md persistent.cc concerns.
+2025/02/13 a little fix around Persistent.
 
