@@ -314,6 +314,10 @@ However, this might get to be broken after this upload.
 We especially do cat ... \| cr.py z (1\|2\|4\|8) \| cr.py S (1\|2\|4\|8) \| p1 \[01\] \| p0 \[01\] \| cr.py s \| cr.py l 0 .
 However, this also might get to be broken after this upload.
 
+cat ... \| catgp ... \| p1 ... \| p0 ... \| cr.py s \| cr.py l 0 also worked with certain range.
+
+However, after of them, almost any of p2prng generated ones are false positive predicted with cr.py N ... commands, so we cannot test them to detect they're complement relations or not but we can estimate such of them by {x,f(x),states} dimension and algorithm vector they have but if in such a case, each of {catgp, p1, p0} argc they have upper bound is 2 (only 1 parameter) either surface test we have also returns such of them but they can be false positive.
+
 # Persistent.cc with timing-related conditions
 Persistent.cc doing p1 then p0 recursive with diff(erf) functions persistent with some numerical test based strategic results.
 
@@ -407,4 +411,5 @@ Should really leave here.
 2025/02/10 fix and refactor persistent.cc to pp8q.cc (pp8 - .25).
 2025/02/11 add readme.md persistent.cc concerns.
 2025/02/13 a little fix around Persistent.
+2025/02/27 append readme.md, eliminate variable step length.
 

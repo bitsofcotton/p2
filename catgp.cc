@@ -30,26 +30,22 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int step(1);
   int length(124);
-  if(argc < 2) std::cerr << argv[0] << " <step>? <length>? : continue with ";
-  if(1 < argc) step   = std::atoi(argv[1]);
-  if(2 < argc) length = std::atoi(argv[2]);
-  assert(length && 0 < step);
-  std::cerr << argv[0] << " " << step << " " << length << std::endl;
+  if(argc < 2) std::cerr << argv[0] << " <length>? : continue with ";
+  if(1 < argc) length = std::atoi(argv[1]);
+  assert(length);
+  std::cerr << argv[0] << " " << length << std::endl;
   // N.B. randtools meaning, v2v tanglement causes up to 3 dimension.
   //      This is also from P1I condition this uses internally.
-  PBond<num_t, P012L<num_t> > p(abs(length), P012L<num_t>(step));
-  idFeeder<num_t> f(step);
+  PBond<num_t, P012L<num_t> > p(abs(length), P012L<num_t>());
   std::string s;
   num_t d(int(0));
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
-    const auto& M(f.res[0]);
     std::stringstream ins(s);
     ins >> d;
     std::cout << d * M << ", ";
-    std::cout << f.next(p.next(d))[f.res.size() - 1] << std::endl << std::flush;
+    std::cout << (M = p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }

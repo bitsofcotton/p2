@@ -220,13 +220,9 @@ elif(sys.argv[1][0] == 'P'):
     print(ff)
     sq = int(pow(float(len(ff)), .5))
     im = Image.new("RGB", (sq, sq), (256, 256, 256))
-    norm = 0.
-    for f in ff:
-      norm += float(f) * float(f)
-    norm = pow(norm, .5)
     x = y = 0
     for f in ff:
-      v = int(float(f) * 127. / norm + 128)
+      v = int(float(f) * 127. + 128)
       im.putpixel((x, y), (v, v, v))
       x += 1
       if(sq <= x):
