@@ -3326,7 +3326,7 @@ template <typename T> inline T P012L<T>::next(const SimpleVector<T>& d) {
     for(int j = 0; j < work.size(); j ++)
       score += work[j] * revertProgramInvariant<T>(make_pair(avg[j], vdp.second));
     res += score * work[work.size() - 1];
-    sscore += abs(score);
+    sscore += abs(score * sqrt(work.dot(work)));
   }
   return sscore == zero ? sscore : res / sscore;
 }

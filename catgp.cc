@@ -48,7 +48,7 @@ int main(int argc, const char* argv[]) {
     std::cout << d * M << ", ";
     if(! length) {
       b.entity.emplace_back(d);
-      if(124 < b.size())
+      if(3 < b.size())
         M = P012L<num_t>().next(b);
     } else  M = p.next(d);
     std::cout << M << std::endl << std::flush;

@@ -318,16 +318,9 @@ cat ... \| catgp ... \| p1 ... \| p0 ... \| cr.py s \| cr.py l 0 also worked wit
 
 However, after of them, almost any of p2prng generated ones are false positive predicted with cr.py N ... commands, so we cannot test them to detect they're complement relations or not but we can estimate such of them by {x,f(x),states} dimension and algorithm vector they have but if in such a case, each of {catgp, p1, p0} argc they have upper bound is 2 (only 1 parameter) either surface test we have also returns such of them but they can be false positive.
 
-# Persistent.cc with timing-related conditions
-Persistent.cc doing p1 then p0 recursive with diff(erf) functions persistent with some numerical test based strategic results.
+After some test, p2prng \| tee ... \| catgp 0 \| p1 0 \| p0 0 \| cr.py s \| cr.py l 0 \> ..., tee's results is enough complex when we're trying cat ... \| cr.py t 1 \| catgr 3 \| cr.py m when we're in controlled condition.
 
-If this condition cannot apply to original stream, there's possible 3 of the cases (and more?):
-
-(i) The stream isn't created by pure functions they depends on touching references.
-
-(ii) The stream is complex enough but they can be calculated by toeplitz matrices' eigen vector matrix to convert into known stream.
-
-(iii) The stream is complex enough but they can be calculated by breaking low of the excluded middle to get in/output of them. However, our test says this can concludes our calculation base on the bricks can be transferred to make it discontinuous ones.
+We hope one of the 3 commands below can effect complements each other, in some extra small rough test says so, but they can be another combinations.
 
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
@@ -412,4 +405,5 @@ Should really leave here.
 2025/02/11 add readme.md persistent.cc concerns.
 2025/02/13 a little fix around Persistent.
 2025/02/27 append readme.md, eliminate variable step length.
+2025/03/01 update readme eliminate last section, append second last section.
 
