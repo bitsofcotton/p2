@@ -45,7 +45,11 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
+#if defined(_CHAIN_)
+    std::cout << d - M << ", ";
+#else
     std::cout << d * M << ", ";
+#endif
     if(! length) {
       b.entity.emplace_back(d);
       if(3 < b.size())

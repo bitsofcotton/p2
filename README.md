@@ -406,4 +406,5 @@ Should really leave here.
 2025/02/13 a little fix around Persistent.
 2025/02/27 append readme.md, eliminate variable step length.
 2025/03/01 update readme eliminate last section, append second last section.
+2025/03/04 add _CHAIN_ compile option to catgp.cc, merge latest lieonn.
 

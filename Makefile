@@ -16,14 +16,18 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 pp8q pp8q32 pp8qmp pp8q32mp
-all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 pp8q pp8q32 pp8qmp pp8q32mp
+	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32
+all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o catgp32 catgp.cc
 catgp64:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o catgp64 catgp.cc
+catgpc:
+	${CXX} ${CXXFLAGS} -static -D_CHAIN_ -o catgpc catgp.cc
+catgpc32:
+	${CXX} ${CXXFLAGS} -static -D_CHAIN_ -D_FLOAT_BITS_=32 -o catgpc32 catgp.cc
 p2prng:
 	${CXX} ${CXXFLAGS} -static -o p2prng p2prng.cc
 p2prng32:
@@ -32,16 +36,4 @@ p2prngb:
 	${CXX} ${CXXFLAGS} -static -D_BIT_ -o p2prngb p2prng.cc
 p2prngb32:
 	${CXX} ${CXXFLAGS} -static -D_BIT_ -D_FLOAT_BITS_=32 -o p2prngb32 p2prng.cc
-pp8q:
-	${CXX} ${CXXFLAGS} -static -o pp8q persistent.cc
-pp8q32:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o pp8q32 persistent.cc
-pp8q64:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o pp8q64 persistent.cc
-pp8qmp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -o pp8qmp persistent.cc
-pp8q32mp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -o pp8q32mp persistent.cc
-pp8q64mp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=64 -o pp8q64mp persistent.cc
 
