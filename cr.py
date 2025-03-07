@@ -490,4 +490,13 @@ elif(sys.argv[1][0] == 'u'):
           ff.append(str(  (fd[- 1][t] * fd[- 1][t] + fe[- 1][t] * fe[- 1][t] + d[- 1][t] * d[- 1][t]) / (2. * numpy.pi * 2. * numpy.pi + 1) ))
       print(",".join(ff))
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'B'):
+  p = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = line[:- 1].split(",")[0]
+    p.stdin.write((d + "\n").encode("utf-8"))
+    p.stdin.flush()
+    D = p.stdout.readline().decode("utf-8")[:- 1].split(",")[0]
+    print(D, ", ", d)
+    sys.stdout.flush()
 
