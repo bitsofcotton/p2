@@ -322,6 +322,13 @@ After some test, p2prng \| tee ... \| catgp 0 \| p1 0 \| p0 0 \| cr.py s \| cr.p
 
 We hope one of the 3 commands below can effect complements each other, in some extra small rough test says so, but they can be another combinations.
 
+# Relation the gulf we sometime meet and latest predv function.
+We sometimes meet prediction result gulfs with raw input stream with the condition catgp \| p1 \| p0.
+We can spread them as cr.py j ... \| catgp \| p1 \| p0 with blending PRNGs.
+So better large number of spreaded average causes some of the eigen vector PRNG have vs. input stream condition.
+So even in such a case, we rarely but can meet the gulf with such a result.
+So PRNG creation is the matter to predict any input streams.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -408,4 +415,5 @@ Should really leave here.
 2025/03/01 update readme eliminate last section, append second last section.
 2025/03/04 add _CHAIN_ compile option to catgp.cc, merge latest lieonn.
 2025/03/08 add B command for cr.py they returns predicted result and original input pair slided causes some of the controlled condition original stream dump.
+2025/03/09 merge latest lieonn.
 
