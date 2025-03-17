@@ -329,6 +329,11 @@ So better large number of spreaded average causes some of the eigen vector PRNG 
 So even in such a case, we rarely but can meet the gulf with such a result.
 So PRNG creation is the matter to predict any input streams.
 
+# After some of the tests.
+We can apply ... catgp .. p1 .. p0 \| cr.py d \| cr.py t .5 \| catgp 2 .. p1 2 .. p0 2 ... \| ... \| catgp 3 .. p1 3 .. p0 3 .. chain by adding step by step.
+This inspects all of offsets condition around 4 variables.
+However, this either can be get into the controlled condition.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -416,4 +421,5 @@ Should really leave here.
 2025/03/04 add _CHAIN_ compile option to catgp.cc, merge latest lieonn.
 2025/03/08 add B command for cr.py they returns predicted result and original input pair slided causes some of the controlled condition original stream dump.
 2025/03/09 merge latest lieonn.
+2025/03/17 revert step param.
 

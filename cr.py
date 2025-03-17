@@ -366,6 +366,11 @@ elif(sys.argv[1][0] == 'j'):
     d = ifloat(line.split(",")[0])
     print(d * getrand(int(sys.argv[2])))
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'j'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    print((d + getrand(int(sys.argv[2]))) / 2.)
+    sys.stdout.flush()
 elif(sys.argv[1][0] == '0'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(line[:- 1])
