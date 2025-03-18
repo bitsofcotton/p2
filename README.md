@@ -422,4 +422,5 @@ Should really leave here.
 2025/03/08 add B command for cr.py they returns predicted result and original input pair slided causes some of the controlled condition original stream dump.
 2025/03/09 merge latest lieonn.
 2025/03/17 revert step param.
+2025/03/19 add g, G commands to cr.py.
 

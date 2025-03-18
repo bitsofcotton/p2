@@ -504,4 +504,29 @@ elif(sys.argv[1][0] == 'B'):
     D = p.stdout.readline().decode("utf-8")[:- 1].split(",")[0]
     print(D, ", ", d)
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'g'):
+  avg = 0.
+  pd  = []
+  for t in range(0, int(sys.argv[2])):
+    pd.append(0.)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d    = ifloat(line.split(",")[0])
+    print(d * pd[0])
+    avg += d
+    pd = pd[1:]
+    pd.append(- avg)
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'G'):
+  f = []
+  for ff in sys.argv[2:]:
+    f.append(open(ff, 'r', encoding = "utf-8"))
+  while(True):
+    d = 0.
+    for g in f:
+      l  = g.readline()
+      if(l == ""): exit(0)
+      d += ifloat(l.split(",")[0])
+    d /= len(f)
+    print(d)
+    sys.stdout.flush()
 
