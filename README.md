@@ -334,6 +334,10 @@ We can apply ... catgp .. p1 .. p0 \| cr.py d \| cr.py t .5 \| catgp 2 .. p1 2 .
 This inspects all of offsets condition around 4 variables.
 However, this either can be get into the controlled condition.
 
+# Close tests
+We looked what some sets of the PRNG effect into our predictor set, either in some of the looks like or in fact controlled condition.
+Improving our predictor needs harder PRNG or no controlled but complex one, so we close with this set.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -423,4 +427,5 @@ Should really leave here.
 2025/03/09 merge latest lieonn.
 2025/03/17 revert step param.
 2025/03/19 add g, G commands to cr.py.
+2025/03/22 close with this README.md.
 
