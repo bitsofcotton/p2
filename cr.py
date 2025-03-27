@@ -511,7 +511,7 @@ elif(sys.argv[1][0] == 'g'):
     pd.append(0.)
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     d    = ifloat(line.split(",")[0])
-    print(d * pd[0])
+    print(d * pd[0], ",", d - pd[0])
     avg += d
     pd = pd[1:]
     pd.append(- avg)

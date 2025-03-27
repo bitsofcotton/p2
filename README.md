@@ -334,6 +334,15 @@ We can apply ... catgp .. p1 .. p0 \| cr.py d \| cr.py t .5 \| catgp 2 .. p1 2 .
 This inspects all of offsets condition around 4 variables.
 However, this either can be get into the controlled condition.
 
+# Getting entropy
+If we're using some of the system, -D\_GETENTROPY\_ compiled p2prng.cc better getting CPU oscillator entropy with long term entropy from tty io/network io/disk io.
+However, we get similar (almost same) result occasion with arc4random either system entropy in linux linear mod.
+
+# Return to average after getting walk is similar to value condition
+We sometimes get walk looks like value condition.
+In such a case, a typical result says around 1:10 accuracy in decimal also almost of the points.
+However, we didn't test them as in a feed back loop on generation - prediction on the machine.
+
 # Close tests
 We looked what some sets of the PRNG effect into our predictor set, either in some of the looks like or in fact controlled condition.
 Improving our predictor needs harder PRNG or no controlled but complex one, so we close with this set.
@@ -428,4 +437,5 @@ Should really leave here.
 2025/03/17 revert step param.
 2025/03/19 add g, G commands to cr.py.
 2025/03/22 close with this README.md.
+2025/03/28 after burn README.md.
 
