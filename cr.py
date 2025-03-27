@@ -514,7 +514,7 @@ elif(sys.argv[1][0] == 'g'):
     if(d == 0.):
       print(d * pd[0], ",", d - pd[0], ",", 0.)
     else:
-      print(d * pd[0], ",", d - pd[0], ",", pd[0] / d - 1.)
+      print(d * pd[0], ",", d - pd[0], ",", pd[0] / d + 1.)
     avg += d
     pd = pd[1:]
     pd.append(- avg)
