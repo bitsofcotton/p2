@@ -340,7 +340,8 @@ However, we get similar (almost same) result occasion with arc4random either sys
 
 # Return to average after getting walk is similar to value condition
 We sometimes get walk looks like value condition.
-In such a case, a typical result says around 1:10 accuracy in decimal also almost of the points.
+In such a case, a typical result says around 1:10 accuracy in decimal also almost of the points when we differ whole output.
+A cr.py g \| cr.py l 2 command output says if the line \>=0, prediction sign is correct.
 However, we didn't test them as in a feed back loop on generation - prediction on the machine.
 
 # Close tests
