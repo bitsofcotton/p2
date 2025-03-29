@@ -532,4 +532,11 @@ elif(sys.argv[1][0] == 'G'):
     d /= len(f)
     print(d)
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'x'):
+  for line in sys.stdin:
+    for c in line:
+      if(c == '1'):
+        print(1)
+      elif(c == '0'):
+        print(- 1)
 

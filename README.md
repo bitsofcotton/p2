@@ -344,6 +344,12 @@ In such a case, a typical result says around 1:10 accuracy in decimal also almos
 A cr.py g \| cr.py l 2 command output says if the line \>=0, prediction sign is correct.
 However, we didn't test them as in a feed back loop on generation - prediction on the machine.
 
+# testing around quantum mechanics based RNGs
+There exists XEB score chases and their result bit streams on the Internet.
+We tested them with cat ... \| cr.py x \| catgp 1 \| p1 1 \| p0 1 \| cr.py d \| cr.py g 1 pipe, once we got cr.py l 2 result almost all of the data minus condition (this can be used to negate of the predition better go with), however, some after test isn't says so it's only same behavior as arc4random on our predicctors (as almost all of data plus condition this means RNG delta stream's sign is predictable on some of the probability).
+We cannot understand this result because it should be TRNG in the meaning also the internal states we apply isn't so large enough ones we should use roughly.
+However, we cannot use such RNG bit streams to cast better our predictors (or our machine is infected enough).
+
 # Close tests
 We looked what some sets of the PRNG effect into our predictor set, either in some of the looks like or in fact controlled condition.
 Improving our predictor needs harder PRNG or no controlled but complex one, so we close with this set.
@@ -439,4 +445,5 @@ Should really leave here.
 2025/03/19 add g, G commands to cr.py.
 2025/03/22 close with this README.md.
 2025/03/28 after burn README.md.
+2025/03/30 adding test result glance around xeb scored ones.
 
