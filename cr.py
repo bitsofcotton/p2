@@ -366,11 +366,6 @@ elif(sys.argv[1][0] == 'j'):
     d = ifloat(line.split(",")[0])
     print(d * getrand(int(sys.argv[2])))
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'j'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    print((d + getrand(int(sys.argv[2]))) / 2.)
-    sys.stdout.flush()
 elif(sys.argv[1][0] == '0'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(line[:- 1])
@@ -539,4 +534,109 @@ elif(sys.argv[1][0] == 'x'):
         print(1)
       elif(c == '0'):
         print(- 1)
+elif(sys.argv[1][0] == 'p'):
+  p0 = subprocess.Popen([sys.argv[2], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  p1 = subprocess.Popen([sys.argv[2], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q0 = subprocess.Popen([sys.argv[3], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q1 = subprocess.Popen([sys.argv[3], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  r0 = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  r1 = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  t  = 1
+  D0 = D = bD = M = S = SS = S0 = S1 = b0 = b1 = 0
+  for line in io.open(sys.stdin.fileno(), 'r', encoding = "utf-8", closefd = False):
+    strd = line.split(",")[0].split(" ")[- 1]
+    D0 = ifloat(strd)
+    D  = D0 * M
+    if(t < 0):
+      if(strd[0] == "-"):
+        stre = strd[1:]
+      else:
+        stre = "-" + strd
+    else:
+      stre = strd
+    p0.stdin.write((strd + "\n").encode("utf-8"))
+    p1.stdin.write((stre + "\n").encode("utf-8"))
+    p0.stdin.flush()
+    p1.stdin.flush()
+    pr0 = p0.stdout.readline().decode("utf-8").split(",")
+    pr1 = p1.stdout.readline().decode("utf-8").split(",")
+    q0.stdin.write((pr0[0] + "," + pr0[1] + "\n").encode("utf-8"))
+    q1.stdin.write((pr1[0] + "," + pr1[1] + "\n").encode("utf-8"))
+    q0.stdin.flush()
+    q1.stdin.flush()
+    qr0 = q0.stdout.readline().decode("utf-8").split(",")
+    qr1 = q1.stdout.readline().decode("utf-8").split(",")
+    r0.stdin.write((qr0[0] + "\n").encode("utf-8"))
+    r1.stdin.write((qr1[0] + "\n").encode("utf-8"))
+    r0.stdin.flush()
+    r1.stdin.flush()
+    rr0 = r0.stdout.readline().decode("utf-8").split(",")
+    rr1 = r1.stdout.readline().decode("utf-8").split(",")
+    # N.B. ok:
+    # print(- S0 * (ifloat(rr0[0]) - b0), ",", - S1 * (ifloat(rr1[0]) - b1))
+    t = - t
+    M0  = ifloat(pr0[1]) * ifloat(qr0[2]) * ifloat(rr0[1])
+    M1  = ifloat(pr1[1]) * ifloat(qr1[2]) * ifloat(rr1[1])
+    # ok: (- s0 * S0 * M0 * d + s0 * S0 * b0 - s1 * S1 * M1 * t * d + s1 * S1 * b1 * t)
+    # ==  (- (s0 * S0 * M0 + s1 * t * S0 * M1) +
+    #       (s0 * S0 * b0 + s1 * S1 * b1 * t))
+    S0 += ifloat(rr0[0]) - b0
+    S1 += ifloat(rr1[0]) - b1
+    s0  = S1 * b1 * t
+    s1  = S0 * b0
+    if(0 < s0 * s1):
+      s0  = abs(s0)
+      s1  = abs(s1)
+    else:
+      if(abs(s0) < abs(s1)):
+        s0 = - abs(s0)
+        s1 =   abs(s1)
+      else:
+        s0 =   abs(s0)
+        s1 = - abs(s1)
+    N   = pow(s0 * s0 + s1 * s1, .5)
+    if(N != 0):
+      M = - (s0 * S0 * M0 + s1 * S1 * M1) / N
+    else:
+      M = 0
+    b0   = ifloat(rr0[0])
+    b1   = ifloat(rr1[0])
+    SS1  = SS + D0
+    # N.B. 1x all invariant is controlled cond,
+    #      2x only single state,  1x null state, 
+    #      2-way 3x making invariant as measurement insertion.
+    #      their measurement condition starts binary states either,
+    #      ends if we can write down them as a binary tree.
+    # N.B. we make the hypothesis the original stream is deterministic
+    #      single function with long internal state generated one.
+    # N.B. in such of the case, we can shirk them to 3 of the numerical pillar
+    #      start with, the internal states can have many much of them
+    #      however after words they can be treated as such one.
+    # N.B. so the binary tree copied structure says the relation to 3 of their
+    #      pillars and the produced stream relation.
+    # N.B. this might collect all condition, but isn't checked carefully.
+    # N.B. however, the PRNG can blend new states in any which case adding to
+    #      original stream the predictor must get them by the stream.
+    #      so any occasion, PRNG has slight profitable condition.
+    print(D, ",", bD * D0, ",", SS * D0, ",", D0, ",", ifloat(pr0[0]), ",", ifloat(pr1[0]), ",", ifloat(qr0[0]), ",", ifloat(qr1[0]), ",", ifloat(rr0[0]), ",", ifloat(rr1[0]), ",", M, ",", D0, ",", SS1, ",", 1., ",", ifloat(pr0[1]), ",", ifloat(pr1[1]), ",", ifloat(qr0[2]), ",", ifloat(qr1[2]), ",", ifloat(rr0[1]), ",", ifloat(rr1[1]))
+    bD   = D0
+    SS   = SS1
+    sys.stdout.flush()
+elif(sys.argv[1] == 'q'):
+  # Beating prediction stream:
+  p = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  M = t = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    d = ifloat(line[:- 1].split(",")[0])
+    p.stdin.write((str(d) + "\n").encode("utf-8"))
+    p.stdin.flush()
+    # XXX: combine random?
+    if(M * pow(- 1, t) < 0):
+      print(  d)
+    else:
+      print(- d)
+    M = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[0])
+    t += 1
+    t  = t % 2
+    sys.stdout.flush()
 

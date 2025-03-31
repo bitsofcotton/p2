@@ -354,6 +354,12 @@ However, we cannot use such RNG bit streams to cast better our predictors (or ou
 We looked what some sets of the PRNG effect into our predictor set, either in some of the looks like or in fact controlled condition.
 Improving our predictor needs harder PRNG or no controlled but complex one, so we close with this set.
 
+# cr.py p,q command
+The cr.py p command with catgp p1 p0 chain causes commented case.
+We conclude if the stream is deterministic created and data feed to them is enough, some probability we succeeds prediction with these one of 10 predictions.
+However, cr.py q command can attack them, also the new entropy feed is always able, so PRNG generater is slight profitable in any which cases.
+Whether or not we're infected condition, we close the repository with this form.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -446,4 +452,5 @@ Should really leave here.
 2025/03/22 close with this README.md.
 2025/03/28 after burn README.md.
 2025/03/30 adding test result glance around xeb scored ones.
+2025/04/01 append p, q command to cr.py, add readme.md, real close.
 
