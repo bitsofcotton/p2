@@ -360,6 +360,11 @@ We conclude if the stream is deterministic created and data feed to them is enou
 However, cr.py q command can attack them, also the new entropy feed is always able, so PRNG generater is slight profitable in any which cases.
 Whether or not we're infected condition, we close the repository with this form.
 
+# cr.py 2 command
+The cr.py 2 command with catgp p1 p0 chain causes p command and their jammer can cause original stream continuity some shift.
+However, there exists q command and attack can cause wavy one they can avoid cr.py 2 predictor.
+Real close.
+
 # Leave
 We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
 
@@ -453,4 +458,5 @@ Should really leave here.
 2025/03/28 after burn README.md.
 2025/03/30 adding test result glance around xeb scored ones.
 2025/04/01 append p, q command to cr.py, add readme.md, real close.
+2025/04/02 append 2 command and readme.md notation, real close.
 

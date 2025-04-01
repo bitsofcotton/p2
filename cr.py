@@ -639,4 +639,48 @@ elif(sys.argv[1] == 'q'):
     t += 1
     t  = t % 2
     sys.stdout.flush()
+elif(sys.argv[1] == '2'):
+  # N.B. Stack 2 layers with hypothesis first layer attack can cause
+  #      original stream continuity shift.
+  p = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3], sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  r = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3], sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    p.stdin.write(line.encode("utf-8"))
+    q.stdin.write(line.encode("utf-8"))
+    p.stdin.flush()
+    q.stdin.flush()
+    rq = q.stdout.readline().decode("utf-8")[:- 1].split(",")
+    r.stdin.write((rq[0] + "\n").encode("utf-8"))
+    r.stdin.flush()
+    rp = p.stdout.readline().decode("utf-8")[:- 1].split(",")
+    rr = r.stdout.readline().decode("utf-8")[:- 1].split(",")
+    ra = []
+    for t in range(0, 10):
+      ra.append(rp[t])
+      ra.append(rr[t])
+    for t in range(10, 20):
+      ra.append(rp[t])
+      ra.append(str(ifloat(rr[t]) * ifloat(rq[1])))
+    print(",".join(ra))
+elif(sys.argv[1] == 'Z'):
+  # N.B. normalize summation output on each column.
+  M = []
+  d = []
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    d.append(line[:- 1].split(","))
+    if(len(M) < len(d[- 1])):
+      dM = len(d[- 1]) - len(M)
+      for t in range(0, dM):
+        M.append(0.)
+    for t in range(0, len(M)):
+      if(M[t] < abs(ifloat(d[- 1][t]))):
+        M[t] = abs(ifloat(d[- 1][t]))
+  for t in range(0, len(M)):
+    if(M[t] == 0): M[t] = 1.
+  for line in d:
+    s = []
+    for t in range(0, len(line)):
+      s.append(str(ifloat(line[t]) / M[t]))
+    print(",".join(s))
 
