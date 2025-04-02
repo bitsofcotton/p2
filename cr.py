@@ -544,7 +544,9 @@ elif(sys.argv[1][0] == 'p'):
   t  = 1
   D0 = D = bD = M = S = SS = S0 = S1 = b0 = b1 = 0
   for line in io.open(sys.stdin.fileno(), 'r', encoding = "utf-8", closefd = False):
-    strd = line.split(",")[0].split(" ")[- 1]
+    strd = line[:- 1].split(",")[0].split(" ")[- 1]
+    if(len(strd) <= 0):
+      strd = line[:- 1].split(",")[0].split(" ")[- 2]
     D0 = ifloat(strd)
     D  = D0 * M
     if(t < 0):
@@ -618,7 +620,7 @@ elif(sys.argv[1][0] == 'p'):
     # N.B. however, the PRNG can blend new states in any which case adding to
     #      original stream the predictor must get them by the stream.
     #      so any occasion, PRNG has slight profitable condition.
-    print(D, ",", bD * D0, ",", SS * D0, ",", D0, ",", ifloat(pr0[0]), ",", ifloat(pr1[0]), ",", ifloat(qr0[0]), ",", ifloat(qr1[0]), ",", ifloat(rr0[0]), ",", ifloat(rr1[0]), ",", M, ",", D0, ",", SS1, ",", 1., ",", ifloat(pr0[1]), ",", ifloat(pr1[1]), ",", ifloat(qr0[2]), ",", ifloat(qr1[2]), ",", ifloat(rr0[1]), ",", ifloat(rr1[1]))
+    print(D, ",", bD * D0, ",", SS * D0, ",", D0, ",", ifloat(pr0[0]), ",", ifloat(pr1[0]), ",", ifloat(qr0[0]), ",", ifloat(qr1[0]), ",", ifloat(rr0[0]), ",", ifloat(rr1[0]), ",", M, ",", D0, ",", SS1, ",", 1., ",", ifloat(pr0[1]), ",", ifloat(pr1[1]), ",", ifloat(qr0[2]), ",", ifloat(qr1[2]), ",", ifloat(rr0[1]), ",", ifloat(rr1[1]), ",", strd, ",", stre)
     bD   = D0
     SS   = SS1
     sys.stdout.flush()
@@ -662,7 +664,12 @@ elif(sys.argv[1] == '2'):
     for t in range(10, 20):
       ra.append(rp[t])
       ra.append(str(ifloat(rr[t]) * ifloat(rq[1])))
+    ra.append(rp[20])
+    ra.append(rr[20])
+    ra.append(rp[21])
+    ra.append(rr[21])
     print(",".join(ra))
+    sys.stdout.flush()
 elif(sys.argv[1] == 'Z'):
   # N.B. normalize summation output on each column.
   M = []
