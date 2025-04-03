@@ -541,8 +541,8 @@ elif(sys.argv[1][0] == 'p'):
   q1 = subprocess.Popen([sys.argv[3], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   r0 = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   r1 = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  t  = 1
-  D0 = D = bD = M = S = SS = S0 = S1 = b0 = b1 = 0
+  t = 1
+  M = D0 = bD = S = SS = S0 = S1 = b0 = b1 = 0
   for line in io.open(sys.stdin.fileno(), 'r', encoding = "utf-8", closefd = False):
     strd = line[:- 1].split(",")[0].split(" ")[- 1]
     if(len(strd) <= 0):
@@ -560,20 +560,20 @@ elif(sys.argv[1][0] == 'p'):
     p1.stdin.write((stre + "\n").encode("utf-8"))
     p0.stdin.flush()
     p1.stdin.flush()
-    pr0 = p0.stdout.readline().decode("utf-8").split(",")
-    pr1 = p1.stdout.readline().decode("utf-8").split(",")
+    pr0 = p0.stdout.readline().decode("utf-8")[:- 1].split(",")
+    pr1 = p1.stdout.readline().decode("utf-8")[:- 1].split(",")
     q0.stdin.write((pr0[0] + "," + pr0[1] + "\n").encode("utf-8"))
     q1.stdin.write((pr1[0] + "," + pr1[1] + "\n").encode("utf-8"))
     q0.stdin.flush()
     q1.stdin.flush()
-    qr0 = q0.stdout.readline().decode("utf-8").split(",")
-    qr1 = q1.stdout.readline().decode("utf-8").split(",")
+    qr0 = q0.stdout.readline().decode("utf-8")[:- 1].split(",")
+    qr1 = q1.stdout.readline().decode("utf-8")[:- 1].split(",")
     r0.stdin.write((qr0[0] + "\n").encode("utf-8"))
     r1.stdin.write((qr1[0] + "\n").encode("utf-8"))
     r0.stdin.flush()
     r1.stdin.flush()
-    rr0 = r0.stdout.readline().decode("utf-8").split(",")
-    rr1 = r1.stdout.readline().decode("utf-8").split(",")
+    rr0 = r0.stdout.readline().decode("utf-8")[:- 1].split(",")
+    rr1 = r1.stdout.readline().decode("utf-8")[:- 1].split(",")
     # N.B. ok:
     # print(- S0 * (ifloat(rr0[0]) - b0), ",", - S1 * (ifloat(rr1[0]) - b1))
     t = - t

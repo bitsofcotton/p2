@@ -459,4 +459,5 @@ Should really leave here.
 2025/03/30 adding test result glance around xeb scored ones.
 2025/04/01 append p, q command to cr.py, add readme.md, real close.
 2025/04/02 append 2 command and readme.md notation, real close.
+2025/04/03 compat with simplefloat p, 2 commands also fixed fatal error on them.
 
