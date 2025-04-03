@@ -707,4 +707,21 @@ elif(sys.argv[1] == 'y'):
     else:
       print(M)
     sys.stdout.flush()
+elif(sys.argv[1] == 'Q'):
+  t = 0
+  f = []
+  for ff in sys.argv[2:4]:
+    f.append(open(ff, 'r', encoding = "utf-8"))
+  while(True):
+    d = f[0].readline()
+    p = f[1].readline()
+    if(d == "" or p == ""): break
+    d = ifloat(d[:- 1].split(",")[0])
+    p = ifloat(p[:- 1].split(",")[0])
+    if(p * pow(- 1, t) < 0):
+    #if(p * getrand(3) < 0):
+      print(  d)
+    else:
+      print(- d)
+    t += 1
 
