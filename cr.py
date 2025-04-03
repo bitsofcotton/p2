@@ -690,4 +690,21 @@ elif(sys.argv[1] == 'Z'):
     for t in range(0, len(line)):
       s.append(str(ifloat(line[t]) / M[t]))
     print(",".join(s))
+elif(sys.argv[1] == 'y'):
+  # Condorcet jury with original intensity.
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    d = line.split(",")
+    M = ifloat(d[0])
+    m = ifloat(d[0])
+    c = 0
+    for t in d:
+      M = max(ifloat(t), M)
+      m = min(ifloat(t), m)
+      if(ifloat(t) < 0): c -= 1
+      elif(0 < ifloat(t)): c += 1
+    if(c < 0):
+      print(m)
+    else:
+      print(M)
+    sys.stdout.flush()
 

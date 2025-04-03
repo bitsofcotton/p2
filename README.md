@@ -3,22 +3,36 @@ A predictor formatter for p0, p1.
 
 Also, one of a predictor for being controlled stream.
 
-There's a plenty of the room for this repository s.t. fibonacci heuristics to detect and correct or use another (range, unit, step) for the predictor switching (\*cherry picker\*) monitoring the walk on prediciton-(next input) inner product stream however this needs huge computation resources in general. (The p1/pp3n \| p0/p0 pipe needs at most O(n^2) arithmetic calculation and elementary function call order for n-range inputs. We need call for this with O(n^3) order to do such heuristics, overall they're O(n^5), it's huge enough.)
+# Usage
+    catgp(32|64)? <step>? <line>? < data.txt
+    # 0 < line : number of back lines the predictor uses.
+    # line == 0 to use whole input stream to predict next step.
+    #   this takes O(input lines) ratio calculation time.
+    
+    cr.py [012a-zA-Z] ...
+    # predictor formatter with many of the scrapped commands.
+    
+    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | ... | cr.py y
+    # one of generic predictor, with the ideal worst case 2:1 result
+    # in practical. either cdot walk continues.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
 
 So if there's a slow variable they're hidden by counter or so on, our first hypothesis fails on such time counter place, however, after combine the state some of the steps, our first hypothesis fullfilled on some range, however, the jammer can attack to the sign of the result even in such cases.
 
+# XXX
+Either, even this predictor can have the jammer to us.
+Normally, such a jammer should have some wavy streams.
+
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
-# Description2:
-pr4.cc is for being controlled condition. However, this cannot get better result if this is counter measured. eg. somerange raw step, somerange random step on the stream.
-
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
+
+
 
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], we can suppose f as a linear with \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\] if (some range)-markov with below and the finite accuracy condition, some range skipped series. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.) The dimension of a vector depends on original f nonlinear part threshold.
@@ -460,4 +474,5 @@ Should really leave here.
 2025/04/01 append p, q command to cr.py, add readme.md, real close.
 2025/04/02 append 2 command and readme.md notation, real close.
 2025/04/03 compat with simplefloat p, 2 commands also fixed fatal error on them.
+2025/04/04 add y command for condorcet jury with original stream intensity. also simplify separate readme.md on same file.
 
