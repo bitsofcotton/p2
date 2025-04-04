@@ -32,7 +32,7 @@ def ifloat(x, offset = 0):
       if(m): n = - n
       m = False
       for ff in b[1][2:]:
-        if(tbl[ff] < 0): continue
+        if(tbl[ff] < 0): break
         if(tbl[ff] == 16):
           m = True
           continue
@@ -68,7 +68,7 @@ def getrand(mm):
 if(len(sys.argv) < 2):
   print("not much arguments")
 elif(sys.argv[1][0] == 'r'):
-  # N.B.: only to ease our mind, scatter initialized states.
+  # N.B. only to ease our mind, scatter initialized states.
   scatter = 1000 + int(getrand(int(sys.argv[2])) * 8)
   for s in range(0, scatter):
     getrand(int(sys.argv[2]))
@@ -184,7 +184,11 @@ elif(sys.argv[1][0] == 'i'):
       sys.stdout.flush()
 elif(sys.argv[1][0] == 'l'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(line[:- 1].split(",")[int(sys.argv[2])])
+    d = line[:- 1].split(",")
+    b = []
+    for t in sys.argv[2:]:
+      b.append(d[int(t)])
+    print(",".join(b))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 't'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -632,8 +636,9 @@ elif(sys.argv[1] == 'q'):
     d = ifloat(line[:- 1].split(",")[0])
     p.stdin.write((str(d) + "\n").encode("utf-8"))
     p.stdin.flush()
-    # XXX: combine random?
     if(M * pow(- 1, t) < 0):
+    # N.B. following don't affect better to scatter.
+    #if(M * getrand(3) < 0):
       print(  d)
     else:
       print(- d)
@@ -694,18 +699,25 @@ elif(sys.argv[1] == 'y'):
   # Condorcet jury with original intensity.
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     d = line.split(",")
-    M = ifloat(d[0])
-    m = ifloat(d[0])
     c = 0
+    a = []
     for t in d:
-      M = max(ifloat(t), M)
-      m = min(ifloat(t), m)
-      if(ifloat(t) < 0): c -= 1
-      elif(0 < ifloat(t)): c += 1
-    if(c < 0):
-      print(m)
+      a.append(ifloat(t))
+      if(t[0] == '-' or t[1] == '-'):
+        c -= 1
+      else:
+        c += 1
+    a = sorted(a)
+    # XXX: twisted works well
+    if(c == 0):
+      if(len(a) % 2 == 0):
+        print((a[int(len(a) / 2)] + a[int(len(a) / 2) + 1]) / 2.)
+      else:
+        print(a[int(len(a) / 2)])
+    elif(0 < c):
+      print(a[0])
     else:
-      print(M)
+      print(a[- 1])
     sys.stdout.flush()
 elif(sys.argv[1] == 'Q'):
   t = 0
@@ -719,6 +731,7 @@ elif(sys.argv[1] == 'Q'):
     d = ifloat(d[:- 1].split(",")[0])
     p = ifloat(p[:- 1].split(",")[0])
     if(p * pow(- 1, t) < 0):
+    # N.B. following don't affect better to scatter.
     #if(p * getrand(3) < 0):
       print(  d)
     else:

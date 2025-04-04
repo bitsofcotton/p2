@@ -12,9 +12,11 @@ Also, one of a predictor for being controlled stream.
     cr.py [012a-zA-Z] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | ... | cr.py y
+    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | cr.py l 0 1 16 17 18 19 | tee ... | cr.py y
     # one of generic predictor, with the ideal worst case 2:1 result
     # in practical. either cdot walk continues.
+    # either after this teed output or whole output p0 ... could be needed
+    # if the stream is being jammed better.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -475,4 +477,5 @@ Should really leave here.
 2025/04/02 append 2 command and readme.md notation, real close.
 2025/04/03 compat with simplefloat p, 2 commands also fixed fatal error on them.
 2025/04/04 add y command for condorcet jury with original stream intensity. also simplify separate readme.md on same file.
+2025/04/04 fix y command, add l command option, readme update, real close.
 
