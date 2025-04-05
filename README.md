@@ -7,15 +7,20 @@ Also, one of a predictor for being controlled stream.
     catgp(32|64)? <step>? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
-    #   this takes O(input lines) ratio calculation time.
+    #   this takes O((input lines)*lg(input lines)) ratio calculation time.
     
     cr.py [012a-zA-Z] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | cr.py l 0 1 18 19 | tee ... | cr.py y
-    # one of generic predictor, with the ideal worst case 2:1 result
-    # in practical. either cdot walk continues. however, they're limited range
-    # per each in general.
+    ... | cr.py l 0 | cr.py p catgp p1 p0 | cr.py l 0 8 9
+    # single layer resistant predictor (simple)
+    
+    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | cr.py l 0 1 16 17 18 19 | tee ... | cr.py y
+    # double (without cr.py y) to triplet layer resistant predictor
+    # however, they can be limited range per each range in controlled cond.
+    
+    # each single/double/triplet layered condition needs enough internal states
+    # read from input stream to get stable prediction results.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -481,4 +486,5 @@ Should really leave here.
 2025/04/04 add y command for condorcet jury with original stream intensity. also simplify separate readme.md on same file.
 2025/04/04 fix y command, add l command option, readme update, real close.
 2025/04/05 fix y command median condition, update readme, really close.
+2025/04/06 fix readme.md usage. ok really close.
 
