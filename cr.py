@@ -531,6 +531,18 @@ elif(sys.argv[1][0] == 'G'):
     d /= len(f)
     print(d)
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'L'):
+  f = []
+  for ff in sys.argv[2:]:
+    f.append(open(ff, 'r', encoding = "utf-8"))
+  while(True):
+    d = []
+    for g in f:
+      l = g.readline()[:- 1]
+      if(l == ""): exit(0)
+      d.extend(l.split(","))
+    print(",".join(d))
+    sys.stdout.flush()
 elif(sys.argv[1][0] == 'x'):
   for line in sys.stdin:
     for c in line:
@@ -721,20 +733,23 @@ elif(sys.argv[1] == 'y'):
     sys.stdout.flush()
 elif(sys.argv[1] == 'Q'):
   t = 0
-  f = []
-  for ff in sys.argv[2:4]:
-    f.append(open(ff, 'r', encoding = "utf-8"))
-  while(True):
-    d = f[0].readline()
-    p = f[1].readline()
-    if(d == "" or p == ""): break
-    d = ifloat(d[:- 1].split(",")[0])
-    p = ifloat(p[:- 1].split(",")[0])
-    if(p * pow(- 1, t) < 0):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    d = line.split(",")
+    n2p = 0
+    n2n = 0
+    for s in range(1, len(d)):
+      n2n += pow(ifloat(d[s]), 2.)
+      if(t % (len(d) - 1) + 1 != s):
+        n2p += pow(ifloat(d[s]), 2.)
+    if(n2n == 0.):
+      print(0.)
+      continue
+    # N.B. Cyclic out with complemental weight.
+    if(ifloat(d[t % (len(d) - 1) + 1]) * pow(n2p / n2n, .5) * pow(- 1, t) < 0):
     # N.B. following don't affect better to scatter.
     #if(p * getrand(3) < 0):
-      print(  d)
+      print(  ifloat(d[0]))
     else:
-      print(- d)
+      print(- ifloat(d[0]))
     t += 1
 

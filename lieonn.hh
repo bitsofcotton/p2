@@ -7072,10 +7072,10 @@ template <typename T, typename U> ostream& predTOC(ostream& os, const U& input, 
   auto p(predSTen<T>(in, idx));
   pstats.corpust = move(p.first);
   getAbbreved<T>(pstats, detailtitle, detail, delimiter);
-  os << pstats.simpleThresh(threshin * threshin).serialize();
+  os << pstats.simpleThresh(threshin / T(int(4))).serialize();
   pstats.corpust = move(p.second);
   getAbbreved<T>(pstats, detailtitle, detail, delimiter);
-  os << " --- or --- " << pstats.simpleThresh(threshin * threshin).serialize();
+  os << " --- or --- " << pstats.simpleThresh(threshin / T(int(4))).serialize();
   return os;
 }
 
