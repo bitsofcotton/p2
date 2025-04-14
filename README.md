@@ -25,6 +25,10 @@ Also, one of a predictor for being controlled stream.
     cr.py L ... ... | cr.py Q | ...
     # second order of jammer and predict with some predictors.
     # this often makes better predictable result.
+    
+    # N.B. resistant condition layer and their attack is also saturated by them.
+    #      there remains residue which includes much of cultivated entropies.
+    #      we need much input length either we cannot attack them by first-look.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
