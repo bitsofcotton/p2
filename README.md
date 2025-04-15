@@ -495,4 +495,5 @@ Should really leave here.
 2025/04/04 fix y command, add l command option, readme update, real close.
 2025/04/05 fix y command median condition, update readme, really close.
 2025/04/06 fix readme.md usage. ok really close.
+2025/04/16 fix p2prng.cc GETENTROPY pointer and value mis interpretation, I don't know why compiler doesn't mattered this on our environment even the running result was so.
 
