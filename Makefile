@@ -2,38 +2,42 @@ CXX=	clang++
 #CXX=	eg++
 
 # compiler flags.
-CXXFLAGS+=	-std=c++11
-CXXFLAGS+=	-I..
-MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
-#MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
-#CXXFLAGS+=	-pg
-CXXFLAGS+=	-O2 -mtune=native -gfull
-#CXXFLAGS+=	-Ofast -mtune=native -gfull
+##CXXFLAGS+=	-O0 -mtune=generic -gfull
+CXXFLAGS+=	-Ofast -mtune=native -gfull
+#CXXFLAGS+=	-O3 -mtune=native -g3
+# This doesn't work, we need operator >>, operator << with ongoing stdlibc++.
+#CXXFLAGS+=	-I/usr/local/include -mlong-double-128
 #CXXFLAGS+=	-Oz -mtune=native -gfull
+#CXXFLAGS+=	-O2 -mtune=native -gfull
 #CXXFLAGS+=	-O0 -mtune=native -gfull
-#CXXFLAGS+=	-Ofast -mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -gfull -g0
-LDFLAGS+=	-lc++
-#LDFLAGS+=	-lestdc++
+#CXXFLAGS+=	-pg
+MPFLAGS=	-I/usr/local/include -L/usr/local/lib -lomp -fopenmp
+#MPFLAGS=	-I/usr/local/include -L/usr/local/lib -lgomp -fopenmp
+CXXFLAGS+=	-std=c++11
+LDFLAGS+=	-lc++ -L/usr/local/lib
+#LDFLAGS+=	-lestdc++ -L/usr/local/lib
+# Same as -mlong-double-128
+#LDFLAGS+=	-lquadmath -lm
+
+CLEANFILES= *.o ddpmopt ddpmopt32 ddpmopt64 ddpmoptmp ddpmopt32mp ddpmopt64mp
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32
-all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32
-catgp:
-	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
-catgp32:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o catgp32 catgp.cc
-catgp64:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o catgp64 catgp.cc
-catgpc:
-	${CXX} ${CXXFLAGS} -static -D_CHAIN_ -o catgpc catgp.cc
-catgpc32:
-	${CXX} ${CXXFLAGS} -static -D_CHAIN_ -D_FLOAT_BITS_=32 -o catgpc32 catgp.cc
-p2prng:
-	${CXX} ${CXXFLAGS} -static -o p2prng p2prng.cc
-p2prng32:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2prng32 p2prng.cc
-p2prngb:
-	${CXX} ${CXXFLAGS} -static -D_BIT_ -o p2prngb p2prng.cc
-p2prngb32:
-	${CXX} ${CXXFLAGS} -static -D_BIT_ -D_FLOAT_BITS_=32 -o p2prngb32 p2prng.cc
+	@rm -rf ${CLEANFILES}
+
+all:	ddpmopt ddpmopt32 ddpmopt64 ddpmoptmp ddpmopt32mp ddpmopt64mp
+
+ddpmopt:
+	${CXX} ${CXXFLAGS} -static -D_ARCFOUR_ -o ddpmopt ddpmopt.cc
+ddpmopt32:
+	${CXX} ${CXXFLAGS} -static -D_ARCFOUR_ -D_FLOAT_BITS_=32 -o ddpmopt32 ddpmopt.cc
+ddpmopt64:
+	${CXX} ${CXXFLAGS} -static -D_ARCFOUR_ -D_FLOAT_BITS_=64 -o ddpmopt64 ddpmopt.cc
+ddpmoptmp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_ARCFOUR_ -o ddpmoptmp ddpmopt.cc
+ddpmopt32mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_ARCFOUR_ -D_FLOAT_BITS_=32 -o ddpmopt32mp ddpmopt.cc
+ddpmopt64mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_ARCFOUR_ -D_FLOAT_BITS_=64 -o ddpmopt64mp ddpmopt.cc
+ddpmopt128mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_ARCFOUR_ -D_FLOAT_BITS_=128 -o ddpmopt128mp ddpmopt.cc
 

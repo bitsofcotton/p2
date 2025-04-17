@@ -1,500 +1,287 @@
-# p2
-A predictor formatter for p0, p1.
+# ddpmopt
+Apply some of the filter to input stream.
+We can use this for bitsofcotton/i2g filtered images.
 
-Also, one of a predictor for being controlled stream.
+N.B. we use only input data streams, so this repository doesn't use external models.
 
-# Usage
-    catgp(32|64)? <step>? <line>? < data.txt
-    # 0 < line : number of back lines the predictor uses.
-    # line == 0 to use whole input stream to predict next step.
-    #   this takes O((input lines)*lg(input lines)) ratio calculation time.
-    
-    cr.py [012a-zA-Z] ...
-    # predictor formatter with many of the scrapped commands.
-    
-    ... | cr.py l 0 | cr.py p catgp p1 p0 | cr.py l 0 8 9
-    # single layer resistant predictor (simple)
-    
-    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | cr.py l 0 1 16 17 18 19 | tee ... | cr.py y
-    # double (without cr.py y) to triplet layer resistant predictor
-    # however, they can be limited range per each range in controlled cond.
-    
-    # each single/double/triplet layered condition needs enough internal states
-    # read from input stream to get stable prediction results.
-    
-    cr.py L ... ... | cr.py Q | ...
-    # second order of jammer and predict with some predictors.
-    # this often makes better predictable result.
-    
-    # N.B. resistant condition layer and their attack is also saturated by them.
-    #      there remains residue which includes much of cultivated entropies.
-    #      we need much input length either we cannot attack them by first-look.
+# Context
+There exists Denoising Diffusion Probabilistic Models (DDPM; Ho et al. 2020). So this is another try on them but different flavoured one, we only focus to apply each pixel context to color image into monochrome one, which have the structure completely depends on filters' multiple meaning or complexity.
 
-# XXX
-The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
+# Tips on malloc options
+We need to do ulimit or edit /etc/login.conf for large malloc use cases required by larger than medium sized input.
 
-So if there's a slow variable they're hidden by counter or so on, our first hypothesis fails on such time counter place, however, after combine the state some of the steps, our first hypothesis fullfilled on some range, however, the jammer can attack to the sign of the result even in such cases.
+Using this with mimalloc or so can increase memory usage with multi thread on some systems.
 
-# XXX
-Either, even this predictor can have the jammer to us.
-Normally, such a jammer should have some wavy streams.
+We use at least 2\*((whole input size))\*sizeof(num_t) in heap resource.
 
-# Description:
-If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
-In this case, if there's pattenizable jamming into data series, we can correct them.
+# Tips around c++ compilers
+Some of the lieonn.hh operator \>\> class doesn't work as expected, might be compilers' bug.
 
-# Known Bug
-If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
+Either, we might be in invariant prediction catched as getting to be invariant result controlled condition.
 
+# Tips on prediction on objected images
+We suppose the input image series as some of the functions to effect to or data to be effected by paired images also the pixel contexts in F\_p.
+However, instead of using F_2, we need P01 base dimension larger than 4 in such case in fact.
+After then, we adjust omitted:in/output ratio on F_2 case. We might need this because only single layered learning needs some of the better reasons to calculate in such algorithms.
 
+# Tips on multiple layers prediction
+The plain \[pq\]redg predictor uses first order shallow copying structures but it's saturated by in/output, 3 predictor uses 2nd order enough bits for predictions, 6 predictor is enough for multiple layer algebraic copying structure, 9 predictor is enough for algorithm decomposition including inverse of them, usually they're equivalent to plain predictors from surface looking.
 
-# General Tips
-If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], we can suppose f as a linear with \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\] if (some range)-markov with below and the finite accuracy condition, some range skipped series. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.) The dimension of a vector depends on original f nonlinear part threshold.
+So n-predictor is useful when the problem needs some of the internal bit-wise structure is worse complex case they needs very large accuracy depends on input dimension number, stacking predictor reduces them.
 
-Converting monotone nonlinear function causes some taylor coefficients conversion, but with p0 and p1 and catgp, it's also in their condition.
+# Tips on prediction base dimensions
+Something sparse with jammer input stream effects base dimension we select needs larger dimensions on the base, this condition is defined there's no unique pure functions on the stream the variables dimension they have.
+This condition can be eliminated with in/output (de)?compression this condition ask shirks the result of algorithms to some of the upper cardinals with compressing sparsity into dense ones on somewhere usually we should have to increase the base dimensions with or without bitsofcotton/masp from entropy reason.
 
-# Important General Tips
-With 2^x:=\[1,x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\] form, the operation 'and' and 'not' can be described as each taylor series that is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.  
-With this, randtools's counter diagonal method concludes the structure of f(...f(y)...) =: f^x(y) is Sum exp(a_k(y)\*x) = Sum cis(i\*a_k(y)\*x) = Sum cos(i\*a_k(y)\*x) + i \* sin(i\*a_k(y)\*x) (== cosh(a_k(y)\*x)+sinh(a_k(y)\*x)).
+Usually, the condition larger than 4 dimension is come from some of the jammer like inputs nor brand new data feed input by input stream.
+However, we predict the stream with them and continuity after them in pqredg.
+So this effects if input stream is enough dense in another words stream is stable for input entropy one by one meaning, the result is reasonable in the continuity meaning.
 
-If we predict with p1, it depends f(x)'s complexity on status bit, if we average a.row(k), it's stable.
+Some of the PRNG tests causes this valid but there's something new parameters on entropy feeding ratio, they fails with gulfs depends on the range we use in the range.
+In some auto tune entropy feeding, we can do goki_check_cc:test.py:qred command or predv nrecur template specification.
 
-# Tips on p1, p2:
-p1, p2 is using makeProgramInvariant and revert... with the form randtools invariant. So it has a little difference on the description itself. Because of them, they has a little glitch on the prediction.
+# Tips on contexts
+We use whole image context to insert context then predict with such each pixel context. So each image consistency is used and applied for the output.
 
-The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catgp behaves as if calculation dimension is smaller than original function.
+We can use orthogonal context either DFT context insertion, however, this isn't matches our senses, such things are useful to get numerical stability context only and are viewed broken by our senses. This might be because of even 2/3 prediction we have condition, the noise the result have can causes whole graphics spreaded result.
 
-The two operand operator is described in R^4 vector, so collect another pairs and symmetrize them, R^8 is enough dimension to calculate. But if there's not enough data on the series, we should skip some steps each. (The case skip smaller than we need causes the gulf, another case skip larger than we need can causes accuracy not enough nor no clear prediction we get.)
+Either we're using goki_check_cc:test.py:qred... commands or monte-carlo methods in lieonn.hh:predv template parameter to complement entropy continuity, we don't need them with some of the slice we gain.
 
-This is because we can collect multiple of linear invariants in their dimension because if there exists (x, f(x)) pair, for each f(x) == const. value collection, with lagrange multiplier, (x) has linear invariant (can be 0 vector). So recursive on this, there's multiple of (x in R^8) invariants at all because two operand (x in R, f(x) in R) has the dimension.
+We can use some feature quantity based transforms we can get them by machine learning converted into tan Ax form.
+In such case, we use vectorized input image x, y:=tan Ax for feature quantities, weight them by \[x, y\] or only predict the {y} stream, then, invert x=f(y).
+This matches our senses on viewing the image.
 
-The case varlen == 3 is valid in the case all of the status rank is in the each data condition and have some symmetry.
-The case varlen == 7 is valid in the case all of the status rank is in the each data condition and doesn't have any symmetry in matrix description meaning. From somewhat, we need this condition on almost all of the PRNGs. (This might be caused by one function depends on the counter we input.)
-The case otherwise, we should choose valren \> 7 condition. This is the case clipped status datas on the data series and we can't get max rank on them in varlen == 7. Otherwise, please sum up some each range on input.
+We can use bitsofcotton/masp detecting such feature quantities.
+However, this isn't unveil deep structure they behaves to be operatable in the picture set by itself.
+So we need to do bitsofcotton/isolate and match to known algorithms with the handle parameters we want to operate.
 
-N.B. in ideal, x+ := Ax\*(x_1...x_n)^m form, so with eigen decomposition, P^-1 x+ == A' P^-1 x \* (x_1...x_n)^m. if we average \<P 1, x\> form, it's very stable and it has only one form to calculate next one. If we average \<1, x\> form input/output, the form is A' p^-1_k depend vector we have, but it is also a little stable. So predict such with catgp can result continuous ones.
+Also, we want to decompose some of the meanings by bitsofcotton/specific and backport them into here, however, implementation of them isn't now.
 
-N.B. we need 3 variable on predictor because we get invariant on the data stream. This is because Lanczos transform leads us some average can have 3-term operator. We cannot use eigen decomposition itself because former one and latter one has a different vector.
+The pred command (curdir)w...-bit.ppm output is omitter on shortcut for decomposing and apply to the predictions, this might includes specific -&gt; {y} prediction -&gt; reverse chain by finding some of the patterns but they doesn't have handles what information to omit for predictions.
 
-N.B. If we average enough range on input and if input don't have periods smaller than them, it's better than original prediction because we average original matrix's row sometimes that is larger than average on first any interval scan. Otherwise, if input has a period, we can define pseudo prediction on it's period.
+Also, these predictors doesn't handle what meaning to omit on next image, so is composition around collection of predictions.
 
-N.B. If original stream doesn't show full status (not enough rank on the data linear dependance), the prediction p1 and catgp fails as the edge clear gulf. This is avoidable with larger average length because of the matrix rank. Skip non period step also causes to avoid them.
+The goki_check_cc:test.py:\[pq\]red\+\+ command shrink image into reasonable parameters on surface condition they includes some omitting meanings.
+We looked some of the graphics set result, they might be what we wanted to get but not the actually one but ok for us, so we close this repository with this condition.
 
-N.B. A catgp corrects noise, this is because catgp includes p1 with some random noise index.
+We get pPqQ command to get 4 of the candidates from original stream or PRNG mixed stream.
+If we're lucky, one of the candidates can be used for next predicted images.
+However, PQ command returns pseudo next one they doesn't be added delta start point in another words offset, however we select this method because of output glance.
+Either, in the invariant controlled condition in any of the inputs, outputting 4 of the candidates should work well, however, we only calculate a paired candidates at once, so 3 of candidates are upper bound of pPqQ output, this is enough in because of representation of combination of binary tree condition.
 
-N.B. The status that PRNG have is often larger than 1000, this is because of the period and complexity itself.
+# T command
+We have T command for gokibin bit preprocessed graphics stream testing.
+If output is better than .5 probability and stable for some of the shrinked size, the gokibin bit reversed outputs' shrinked image can have some of the meanings for them.
 
-# Tips on continuous:
-We suppose all of {p0, p1, p2}: some middle point, left part and right part is the SAME structure (continuous). If there isn't all ranges on them, the structure is: \[rand, f(rand), rand, g(rand), ...\], f != g. But rand itself has the structure if they are PRNG, so it's with new f, g, h: \[(1,) f(1), ..., f(f(...f(1)...)), g(last), g(last), ..., h(1), ..., \]. So this is categorizable by catg AFTER all data is received.  
-If we should make rand() points before and feed it some function, but this is also in p1 if data stream has enough length with deterministic PRNG rand.  
-Beating this with small enough length, it's \[f_0(1), ..., f_n(1), ...\], but this is also described as turing computer with 0, ..., n for switch case description (if then description), so it's \[f(1, 1), ..., f(n, 1), ...\]. This status length bits depends maximum of original f_0, ..., f_n size. (AFTER all data is received.)  
-If we predict with some prediction method and bet with them, satistification on the hypothesis continuous condition causes continuous result,
-otherwise, uncontinuous result and statistical illegal value encounted. So first hypothesis on the data is the matter.)
+Either, T command uses raw predictions but it can be being attacked, so \[pPqQw\] command outputs uses second one if the condition is true but we need at least 4 of them.
 
-# Tips on jamming
-If some of the pipe/prng generator/original stream has a jamming from output by auto parameter configurer or so on, we can only say one of a triplet is ok.
-This is because the jammer jams predictors as to be 0 output in expectation value, since (x, f(x), status) has 3 dimension in literally in the invariant meaning (cf. randtools, cf. constant is described as x\_k - x\_(k - 1)), jammer cannot jam all of them other than 0 expectation value input if the 3 of the predictor is correct. (if they stands on some different invariants.)
-Even with so, jammer also is able to change sgn(x) they causes backward generation on PRNG, but this is equivalent to -(-x, f(x), status) == (x, -f(x), -status) but jammer can do this (e.g. re-seed).
+# Infection
+We're in prediction result controlled condition, so we don't get actual output images to confirm result, so we need to implement this repository only with the hypothesis we firstly have and their implementation is correct or not one.
 
-# Tips on jamming in short range
-But with (x, status) pair can be treated with (status(status, x)) variable in literally in short range. So short range related to use of status length in predictor, only pair of predictors can work.
+Since bitsofcotton/p2 result seems their internal-states-rich 3-way output is correct but we don't have their strategy because we only target the graphics stream they have non shrinked or non regression stories.
 
-# Tips on jamming in finite accuracy input/status/counter.
-However, with appending the status/counter into out of accuracy bits, literally only one dimension they can jam out. So pair of predictors can work.
+Even so, we should have the counter measure to result is controlled condition, however we have T command output, so we applied them into second one outputs, so we close with this.
 
-# Tips on prng with initial steps / medium walked steps.
-Initializing PRNGs by short and non heavy method causes only shuffles the short input entropy into initialized states. This causes to predict initial steps needs small number of status bits because of deterministic and shadowed, short span in the long period status change. So they might need some larger bits to predict when some of PRNGs are enough walked. But with simpler PRNGs, they're equivalent to initial small number of status bits because of non large number of status in them does not timing related change.
+However, if we find some of the bug on the hypothesis and implementation is differ, we return and fix here.
 
--&gt; It's rather from p0's measurable condition.
-
-# Tips on chasing invariant size
-If the jammer correctly jam out input stream, it begins the chase of invariant size. So in this case, we only can enlarge input argument in each, so the case concludes the larger computing power, the larger span.
-
-# Tips:
-python3 cr.py 1 ... ... R | (catg|catgr) ... | head -n ... | tail -n ... | python3 op2.py e | ... | tail -n ... | python3 op2.py m; only for phrase on rhythm.
-
-N.B. Re-categorize categorized part is same categorize as original with some input threadshold if dimension is the same one.
-
-N.B. we take original/~ as x~rx, r in R when they doesn't normalized by the method like conv_check/nand.cc.
-
-# Tips on multiple of collateral
-There also exists non Lebesgue measurable based method starting on the fixed data (multiples of invariant insertion to the dimension we cannot divide) whether which matches or not, however, literally in bad luck, this can always fail because of multiple of the prediction makes nonsense prediction even they makes a sense after all data is received condition with the predictor in short range.
-
-<strike>If such non Lebesgue measurable function is consistent in locally and works well as expected to, argv\[1\] of any of the input has a finite upper bound, however, we think we can create a jammer to such predictor(s) in rational, so this concludes below. But if the calculation itself can be tangled to such structures, the hypothesis jammer exists can fail in such case. (when being tangled embryonic with such tangling or only the argv\[1\] is not enough for rational structure, original stream is seen as the jammer, when inverse tangled, reverse direction walk output.)</strike>
-
-In such case, if non Lebesgue measurable function is consistent in locally and works well, even so, we need the hierarchy structure on prediction on \{compress\} and the status we observe needs to be in the observation observed and passed points into the execution binary. So we cannot omit in such case because the states can be selected in arbitrary way including jammer itself.
-
-# Reducing sparsity who effects long status length
-We take x\^2/3 scale in virtually in p.cc. This causes some of the numerical test valid.
-
-This is because taylor series of f(x,k):=f(...f(x)...) (k times f) concludes Sum_m ... (cbrt(k))^2m series.
-Also, scale breaks the original stream period by irrational period causes rich of inner states on the stream we stuck. So in this case, a little stable result until we met around gulf point the inner states strongly affect.
-
-# Any of the predictor, they have the jammer.
-If the jammer only targets first order predicton, we can avoid them by multiple of range average causes jammer needs least common multiply period.
-However, any of the predictor, they have the jammer to them, so jammer retargets them, the condition of the period are ignored.
-So this is which is latter effect one chase, so deterministic prediction (includes PRNG ones) cannot avoid jammer from lower layer level.
-So we conclude once prediction done, then, repredict with another similar ones, one of them seems ok, we did best for them.
-
-# Integer calculation jamming from single to multiple to single funciton.
-If our calculator is being jammed from some existence, we cannot avoid them at all if the jammer seriously jame out us. This is in theoretical if we cannot fix such s2m2s calculation glitch.
-
-# Any of the predictor, any of the jammer (n times).
-We choose the predictor as simple enough.
-This is because when we're in being jammed condition, to make counter measure to them causes worse predictable (saved) input as well.
-This is also with the condition catgp as well.
-So whether or not we choose satate out of the length we treat, it's the same condition. So we only target strict on the states on fixed length in p.cc.
-
-So all we can do the best is to re-predict with another argv after saving the input and close the connection to PRNG which generates suspicious stream.
-
-# Any of the predictor, any of the jammer (n+1 times).
-However, if the jammer retargets us including argv or some another binaries, the jammer needs to run with supremum of argv antecedent to predictor.
-In the case, jammer only needs internal status such size predictor needs + some alpha.
-So we can compete them with applying predictor argv with upper bound of the states the cache exists, then, also we need to check in/output speed.
-
-In theoretical, the jammer can always jam out us if jammer is latter one to predictor. So we absent this repository.
-
-So if we have non infected computers or when we exclude all of the infection, we can re construct these programs (p0, p1, p2) with some advances. Otherwise, the jammer gains all of the result to make us exclude.
-
-# Non analytical input
-We suppose the one we input is analytical function delta sampled series.
-Even invariants do so, because of randtools General Tips K, L.
-We avoid small part of them by limiting invariant dimension, but utterly, we cannot in general.
-So this often fails with some of the artificial created streams.
-So with such case, we need to deal with some of the average on input.
-
-# Tips around catgp.
-A catgp treats input data as clustered parts combination on status length.
-This permits some larger dimension invariants differed from the dimension cdot we apply in blur.
-However, this also has trivial upper bounds as status length.
-
-# The series {p0, p1, p2, p3} cannot predict:
-We firstly suppose internal state size to predict some of the series.
-In them, we make some of the linear inner product to predict.
-So if input stream has the structure \<a,x\> with jamming a by internal states, they causes which is larger state length race.
-So if we make the input stream as: \<\[PRNG(0), ..., PRNG(m)\], x\> with all of the history, to some point, we cannot predict them by our predictor.
-We could use PRNG as sin(A*x)*B however, we should have the restriction to make return to average invariant by PRNGs.
-So in the worst case, O(2^(internal state bit length)/((internal state bit length)^2)) steps the jammer can produce.
-
-However, in the upper bound of the invariant complexity, even in such case, O(internal state bit length) can be the upper bound when we believe large dimension invariant works well. This is status and structure is veiled or unveiled on the stream race.
-They causes: \<Ax,x\> each next stream causes randtools meaning \<a,x\>\*(x_1...x_n)^m or tan\<a,x\>, this causes which is larger race again.
-
-# PRNG with seeded.
-If we suppose initial entropy is on the input stream as extra small accuracy bits condition, we can suppose any of the PRNG who have finite states as 1-markov in first 2 steps.
-Around them, we can make the continue of them as 2-markov, ..., n-markov with the same condition.
-So first 2 step condition, 2^1^2 pattern as the upper bound of one program could make, so it floods with 2^2^2 order the original program could have without entropy theirselves.
-We could say some of the labeling to such flooded program causes some of the language expression, however, we need to input each bit apply and applied by clear structure function theirselves.
-
-# PRNG with first some small walk.
-If we predict some first small walk when initialize PRNGs by some small bit number, they causes first some steps seems ok for statistics because all the state the predictor have includes the veiled seed data.
-However, after some long steps passed, predict again with some small steps, we cannot unveil small bit number of seed they causes some start point description with small enough bit number, so they often fails.
-
-# Touching input.
-If original series is hard enough, the inverse walk condition nor delta inverse inverse walk condition might works.
-This might because of same as p0 condition readme.md.
-In p1, they might because of high frequency or low frequency continuous part causes some of the original calculation structure continuous condition hard.
-
-# Concat PRNG
-Bitwise xor causes original matrix addition.
-This causes maximum of matrix size will be selected.
-Smaller matrixes effects some of the result, but if the distribution
-isn't harmful and has non small orthogonal parts norm,
-they shouldn't harms.
-
-# Recursive prediction
-Doing thirds on the stream causes (f(x), x, status) elimination.
-This is to make hypothesis () - structure itself is continuous.
-However, we can make also (f(x)) elimination also causes continuous () structures.
-There's differences between them the dimension original structure should have,
-however, if the original prediction is fair enough on counting prediction structure, we can bet only 1 dim.
-
-# P0DFT
-P0DFT eliminates number of the hyper torus hole, this is not needed in P0maxRank sub class because they treats beter way them with semi-ordered field, also P1I, P012L because they treats any of the F_p register (non-)linear calculation.
-
-# Bothside walk
-We need bothside walk condition when a_-1 is being attacked condition.
-Even so, if the attacker attacks both a_-1 and reverse(a_-1), half ot the prediction fails in best effort, but whole of the case, one of the function estimation remains, so in whole in long range, it's ok in feeding one by one sliding window meaning.
-
-# PRNG first stage scattering
-If we scatter first entropy with first prng call loop prng number count, they should small or no effect to the prediction theirselves because it has also same small entropy we append into the initializer.
-
-Also, we can use prediction with some 2x step or so, so if the attacker can use all of the point the PRNG produce without slip, they could better to have some of the attack surfaces.
-
-However, on the numerical calculation test, sliding some prediction (this can also have same meanings to scattering) often fails.
-In their case, we should use larger and larger argv\[1\] for the prediction and larger and larger skip step if argv\[1\] is going to be huge ones.
-
-# Simple controller
-With predicting not one step after, especially two step after can controls the stream on the which is better condition if predictor is reliable enough.
-However, the opposite controller can pretend as random step effect and both of them and us observes possible same point as same value, the behavior can be undefined, however, this also could concludes which has the larger internal states race even in this condition.
-
-However, these are only from theoretical reason, so we don't test because they're harmful enough with our environment.
-
-# The bothside controller condition
-If there's controllers on the stream bothside and the both predictors' algorithm is open (or not), we need the condition for internal PRNG depend correct-fail better ratio on predictions. If the predictors doesn't worse sensitive on the internal PRNG ones, the jammer can jam out us easily.
-
-So the best of our effort could be: to select better condition after the stream and the predictor often returns correct result better than failed result on some better ratio depends on internal PRNG.
-
-So in ideal case, ./predictor argv\[1\] case, argv\[1\] : \[0,alpha\[ : returns almost correct prediction, argv\[1\] : \[alpha,beta\[ : returns non better prediction, which alpha:(beta-alpha) == 2:1 .
-If ./predictor is deterministic, the jammer can jam out us, so argv\[1\] distribution is unknown in the best case depends on the state entropy internal PRNG have.
-
-So internal PRNG state length is important for them.
-
-Otherwise, if we code some of the best chosen algorithm for prediction and commit to open places, the otherside controller can controls us easily if there's no PRNG depend internal states on them.
-Either, if we code normalize such PRNG depend codes, they only causes the jammer knowledge increases on the heuristics algorithm.
-
-The pr4.cc is balanced as to depend expectation of probability based structure as to be unique on the stream and stable enough only. If we normalize them, the jammer can worse jam out us.
-
-# Tips on jammer
-Basically, our opposite jammer makes the PRNG on some of our predictors.
-
-So if our predictor correctly reduces some of the heat on the stream, the jammer also outputs hot result they can cause return to the origin point can often works well.
-
-However, the jammer also switches our predictor combinations, so all we can do them is for non hot result, predict some low number of ours and bet return to the origin point.
-
-So stacking some of the predictor causes the jammer easily jam out us with some of the gulf on handle points.
-
-Also, if we stack nor implement some another predictors, they only causes the jammer gains the result of ours. So we freeze p\*-series with this repository. Or, we need to do this on VMs but this isn't able to do for us because we're in watched (stucked) condition.
-
-Also, the generic jammer often jam out us with changing target predictors range to range.
-
-# Tips when being targetted
-If some of the predictor(s) are being targetted and the computer resource they use can have better than the one we have, we cannot avoid them because some long and long range (hidden) internal states behaves as they're suddenly appears into the stream first look.
-
-If our predictor is not only one predictor but some of the predictor series, the result often seems to have being oscillated concern with the predictors we have. This is from theoretical.
-
-However, the result can be controlled to any if the jammer have any of our codes and states as to be mistaken the result switch case types.
-
-# Tips on PRNGs
-Tips on XXX means we can produce some of the PRNGs by separated time counter and separated algorithms.
-
-This is to make them as: \[0,t\_0\[ : tan(A\_0\*\[s\_0,...,s\_t\_0\]), \[t\_0,t\_1\[ : tan(A\_1\*\[s\_0,...,s\_t\_0,...s\_t\_1\]), ... .
-
-Also, to predict them, we suppose only no time counter and all of the internal state shuffle appears on the stream condition, we need the #{internal state bit} steps, however, if they hides some of the states from the stream condition, we need the 2\^#{internal state bit} steps to predict them.
-So to produce some resilience, we need to hide some of the states from the output stream the PRNGs produces.
-
-So the #{output accuracy \* step number} directly affects to the predictors.
-
-# Tips on prediction sub jammer
-We can jam out input of ourself as to be sign of the series randomized in predictors' meaning.
-This can add some stability on prediction and getting better long range on prediction.
-However, the jamming from original stream can hit the chain of the prediction fails even in this condition. So if we're targetted, either this cannot work well.
-
-<strike>(However, we are doubting the integrity on inputs on our machines even this repository's history in special cases.)</strike> -&gt; The input/output integrity shouldn't be broken however PRNGs outputs some suspiciouses we can observe s.t. the distribution of outputs.
-
-# Tips on progression
-We predict with \{delta(d_k)\}, \{delta(delta(d_k))\}, ... . This results better stable result for us on plain hypothesises.
-
-Also, Pprogression class feeds new states into the plain predictor as a new dimension of linear sum.
-
-p\[012\]'s progression arguments takes the prime number multiplication to avoid some of the period depend jammers in first order.
-So if there's multiple path of same period jammers on input stream, they fails.
-
-# Tips on P0DFT
-P0DFT also kills some of the discontinuity around output such as gulf, this is because they exclude self-similarity based gulfs from outputs.
-
-However, pp3dft.cc also needs p0.cc after doing prediction in many of the cases.
-
-# Tips on usual predictions
-Usually with good enough predictors, the input-stream - prediction-stream inner production stream can be linear nor gulf continues around given input estimation range based ranges, this is because usually the feeding unobserved internal states into input stream is something stable, but sometimes unstable causes prediction fail on after the unstable feeding causes estimation unstable on given range.
-
-Also, the gulf condition isn't avoidable by catgp.cc except the range of them can be increased, it's better with the large range feed into original good enough predictors.
-
-So we cannot avoid them except for the case feeding is stable enough on estimation range condition nor no feed condition nor bitsofcotton/p\[45\] condition.
-
-A bitsofcotton/p\[45\] condition needs concrete base system completely separated with or without the initial value depend outside of low of excluded middle operations. Since we have arithmetic operations on given bit range, so we should read all of the source code and hardware parts on our machines but it's huge enough.
-
-# Tips on usual PRNGs
-Usually, from somehow, with good PRNGs piping predictors, prediction fail heppens very often. After then, re-predicting produced result with enlarging feeding range causes very better result given. This happens in any medium wide range feeding with starting PRNG streams.
-
-I don't have a clue why they behaves like that on them without the probability of the infection nor observation as a initial values outside the box.
-
-Also, we bet they're initial values outside the box because increasing feeding range one by one without any upper bound hypothesis gets better result than them. (However this either have gulfs from uninserted internal states.)
-
-# Tips on open end or closed end
-The p\[0-3789\] predictor inspects input stream as closed end so they're implementation by the pure function with small internal states manner depends on accuracy or stacking layer numbers.
-
-So they're without the implementation growing manner with much of the internal states s.t. ongoing deep learning uses.
-
-We can use weighted average of p1's coefficients, however, the result might be something blurred ones in this case, this can be used to add some of the continuity however, no information amount on them, so in the case, ongoing them are something better with information amount we estimate.
-
-However, if the series structure converges, we don't care which one is the better.
-
-# Tips on predicting reseed
-If we face PRNGs reseeded, the structure of them unchange but the vector doesn't continues before and after the reseed.
-
-In the case, we need to do catgp.cc with better parameter however if period of reseed is unknown one, the problems are harder than them.
-
-So the better PRNGs need to have some entropy for reseeding and their periods.
-So initial number of the entropy and reseeding entropy is the matter so this matches well known ones.
-
-# Tips on broken PRNG on our machine
-Once ancient (more than a decade ago) we had better with p0 below, they had be break, now we can predict by them, they should break after this upload.
-
-cat ... \| cr.py N \| p0 1 3 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py  l 0
-
-The infection might come from some deep inside the kernel/compiler/firmware/hardware with some political matters because of the infection period. So we cannot trust our computing systems even wherever we bought them as a consumer assembly/supply chain line.
-Either, some of the github.com top page nor drive.google.com top page inserts some suspicious javascript codes they behaves like a freeze page, so our computer nor Internet connection is targetted, either yours so.
-
-# Tips on continuous prediction
-We can do cat ... \| cr.py z ... \| cr.py S ... \| p1 \| p0 \| cr.py s \| cr.py l 0 .
-However, this might get to be broken after this upload.
-
-We especially do cat ... \| cr.py z (1\|2\|4\|8) \| cr.py S (1\|2\|4\|8) \| p1 \[01\] \| p0 \[01\] \| cr.py s \| cr.py l 0 .
-However, this also might get to be broken after this upload.
-
-cat ... \| catgp ... \| p1 ... \| p0 ... \| cr.py s \| cr.py l 0 also worked with certain range.
-
-However, after of them, almost any of p2prng generated ones are false positive predicted with cr.py N ... commands, so we cannot test them to detect they're complement relations or not but we can estimate such of them by {x,f(x),states} dimension and algorithm vector they have but if in such a case, each of {catgp, p1, p0} argc they have upper bound is 2 (only 1 parameter) either surface test we have also returns such of them but they can be false positive.
-
-After some test, p2prng \| tee ... \| catgp 0 \| p1 0 \| p0 0 \| cr.py s \| cr.py l 0 \> ..., tee's results is enough complex when we're trying cat ... \| cr.py t 1 \| catgr 3 \| cr.py m when we're in controlled condition.
-
-We hope one of the 3 commands below can effect complements each other, in some extra small rough test says so, but they can be another combinations.
-
-# Relation the gulf we sometime meet and latest predv function.
-We sometimes meet prediction result gulfs with raw input stream with the condition catgp \| p1 \| p0.
-We can spread them as cr.py j ... \| catgp \| p1 \| p0 with blending PRNGs.
-So better large number of spreaded average causes some of the eigen vector PRNG have vs. input stream condition.
-So even in such a case, we rarely but can meet the gulf with such a result.
-So PRNG creation is the matter to predict any input streams.
-
-# After some of the tests.
-We can apply ... catgp .. p1 .. p0 \| cr.py d \| cr.py t .5 \| catgp 2 .. p1 2 .. p0 2 ... \| ... \| catgp 3 .. p1 3 .. p0 3 .. chain by adding step by step.
-This inspects all of offsets condition around 4 variables.
-However, this either can be get into the controlled condition.
-
-# Getting entropy
-If we're using some of the system, -D\_GETENTROPY\_ compiled p2prng.cc better getting CPU oscillator entropy with long term entropy from tty io/network io/disk io.
-However, we get similar (almost same) result occasion with arc4random either system entropy in linux linear mod.
-
-# Return to average after getting walk is similar to value condition
-We sometimes get walk looks like value condition.
-In such a case, a typical result says around 1:10 accuracy in decimal also almost of the points when we differ whole output.
-A cr.py g \| cr.py l 2 command output says if the line \>=0, prediction sign is correct.
-However, we didn't test them as in a feed back loop on generation - prediction on the machine.
-
-# testing around quantum mechanics based RNGs
-There exists XEB score chases and their result bit streams on the Internet.
-We tested them with cat ... \| cr.py x \| catgp 1 \| p1 1 \| p0 1 \| cr.py d \| cr.py g 1 pipe, once we got cr.py l 2 result almost all of the data minus condition (this can be used to negate of the predition better go with), however, some after test isn't says so it's only same behavior as arc4random on our predicctors (as almost all of data plus condition this means RNG delta stream's sign is predictable on some of the probability).
-We cannot understand this result because it should be TRNG in the meaning also the internal states we apply isn't so large enough ones we should use roughly.
-However, we cannot use such RNG bit streams to cast better our predictors (or our machine is infected enough).
-
-# Close tests
-We looked what some sets of the PRNG effect into our predictor set, either in some of the looks like or in fact controlled condition.
-Improving our predictor needs harder PRNG or no controlled but complex one, so we close with this set.
-
-# cr.py p,q command
-The cr.py p command with catgp p1 p0 chain causes commented case.
-We conclude if the stream is deterministic created and data feed to them is enough, some probability we succeeds prediction with these one of 10 predictions.
-However, cr.py q command can attack them, also the new entropy feed is always able, so PRNG generater is slight profitable in any which cases.
-Whether or not we're infected condition, we close the repository with this form.
-
-# cr.py 2 command
-The cr.py 2 command with catgp p1 p0 chain causes p command and their jammer can cause original stream continuity some shift.
-However, there exists q command and attack can cause wavy one they can avoid cr.py 2 predictor.
-Real close.
-
-# Tips about wavy jammer
-If predictor is proper and jammer targets wavy one, p0 some range after or before to predict can improve them.
-
-# Leave
-We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
-
-Should really leave here.
-
-# Another Download Sites (Leave)
-* https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
-* https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
-* https://ja.osdn.net/users/bitsofcotton/
+# Usage:
+    # copy color structure
+    ./ddpmopt(32|64)?(mp)? + <in0out.pgm> <in0in.ppm> ... > cache.txt
+    # apply color structure
+    ./ddpmopt(32|64)?(mp)? - <in0.ppm> ... < cache.txt
+    # predict following image (each bit input)
+    ./ddpmopt(32|64)?(mp)? \[pP\] <in0.ppm> ...
+    # predict with whole pixel context (each bit input)
+    ./ddpmopt(32|64)?(mp)? w <in0.ppm> <in0-4.ppm> ...
+    # predict down scanlines. (each bit input)
+    ./ddpmopt(32|64)?(mp)? \[qQ\] <in0out.ppm> ...
+    # show continuity
+    ./ddpmopt(32|64)?(mp)? [xyit] <in0.ppm> ...
+    # some of the volume curvature like transform
+    ./ddpmopt(32|64)?(mp)? c <in0.ppm> ...
+    # test input series of graphics predictable or not (each bit input)
+    ./ddpmopt(32|64)?(mp)? T <in0.ppm> ...
+    cp `./ddpmopt(32|64)?(mp)? i <in0.ppm> ... | sort | head -n ... | tr '\n' ' '` outdir
+
+# Re5-Leave
+We might re5-leave this repository with this update except for lieonn.hh updates.
+
+Leave here but might return here after another implementations.
 
 # Real close
-2023/02/28
+2023/03/01
 2023/03/09 bug fix after close #1.
-2023/03/13 valid only short range bug fix after close #2.
+2023/03/13 bug fix after close #2.
 2023/03/13 integrate all files into lieonn.hh after close #3.
 2023/03/18 merge latest p0, after close #4.
-2023/03/22 update README from osdn.net, after close #5.
-2023/03/24 code clean, after close #6.
-2023/03/31 persistent resistance to integer calculation jamming, after close #7.
-2023/04/01 source code comment remedy from osdn.jp generic-p2 summary, after close #8.
-2023/04/02 balance between jammer and predictor.
-2023/04/03 merge.
-2023/04/05 update readme.
-2023/04/14 additional closed .cc files.
-2023/04/21 make/revert ProgramInvariant algorithm change.
-2023/05/18 single multiple single fix, so input y-axis ratio is the matter. also fix rand.cc for MAX_RAND range for knuth_b.
-2023/05/18 cr.py rewrote to per single command.
-2023/06/07 delete pfork.py, add pchain.sh, update readme.
-2023/06/18 update readme, p.cc comment (no logic change), cr.py p command.
-2023/06/24 fix to avoid observation matters.
-2023/07/01 op2.py m command relative change, fix indent on p.cc.
-2023/07/07 update readme.md, update comment in .cc files.
-2023/07/08 delete rand.cc, cr.py r is enough to use. invariant causes +1. update readme, eliminate rand.cc, p.cc, comments are moved into readme. op2.py integrated into cr.py.
-2023/08/02 update cr.py, readme, lieonn.hh P012L::next.
-2023/09/20 update cr.py e command.
-2023/09/25 some prng improvement test and update readme.
-2023/10/26 update cr.py v command use with m command.
+2023/03/20 qred makes only row-direction prediction, after close #5.
+2023/03/24 ddpmopt.cc +0 00 -0 command fix, code clean, after close #6.
+2023/03/29 merge p0 pnext, after close #7.
+2023/03/31 persistent prediction to get average 1/2 * 2/3 pixels.
+2023/04/02 merge p2 result.
+2023/04/03 better simple predv.
+2023/04/04 update readme.
+2023/04/05 fix makeProgramInvariant scale accuracy stability.
+2023/04/19 add topt.cc.
+2023/04/21 shape up around makeProgramInvariant/revertProgramInvariant, algorithm changed.
+2023/04/23 qredg.cc prediction/original norm fix.
+2023/05/18 predv function change to better analytical, update README.md.
+2023/06/08 predv normalization fix.
+2023/06/11 topt.cc output normalization fix. update readme.
+2023/06/13 update readme. ddpmopt.cc large change.
+2023/06/14 ddpmopt.cc fix now works, update readme.
+2023/06/15 update readme, some fixes around predg, qredg, ddpmopt.
+2023/06/24 fix qredg.cc autoLevel in lieonn.
+2023/06/27 ddpmopt.cc sz 3 to 2 change, update readme.
+2023/07/07 [pq]redg predict along with middle image/line.
+2023/07/08 invariant causes +1. qredg.cc fix crash.
+2023/07/12 update readme.
+2023/08/02 update topt, lieonn as crush to the last.
+2023/08/03 topt, ddpmopt fix on apply. update readme.
+2023/08/04 update readme. fix predv result norm.
+2023/08/26 ddpmopt - option calculation change, update readme. update [pq]redg for recursive ones to beat with geometric average limit.
+2023/09/04 auto configure predg/qredg param, conservative.
+2023/09/11 auto configure predg/qredg size, aggressive ga param.
+2023/09/12 fix last broken predv func and qredg.cc.
+2023/09/13 change ddpmopt retry and retry on geometric average.
+2023/09/19 autogamma after doing predg. update readme.
+2023/09/19 predvResizeMat resize size fix to most reasonable one.
+2023/09/22 ddpmopt change not to use crush but with linearInvariant.
+2023/09/24 fix last up, don't know why they worked well without crash on last debug.
+2023/09/25 change output size strategy, not using resize, preferring complement to predict.
+2023/10/03 update readme.
+2023/10/05 update readme, should close except for some of the ddpmopt for pairs of the images.
+2023/10/18 update readme.
+2023/10/19 mipmap impl, update readme.
+2023/10/20 revert, mipmap doesn't work well.
+2023/10/22 instead of complement trace of input, we should do shrink after output is done. This is from some of the numerical tests, so whole image orthogonality isn't matter even when input data is small enough, instead of them, we try to vanish some prediction errors with geometric mean.
+2023/10/23 ddpmopt strategy algorithm in/output large change.
+2023/10/26 update readme.
+2023/10/27 update readme. close.
 2023/10/30 copy structure reliably with randtools meaning.
-2024/04/25 add tips on simple controller.
-2024/04/29 add pr4.cc .
-2024/04/30 add tips on bothside controller condition. brush up readme.md.
-2024/05/05 add pr4c.cc update readme, pr4.cc .
-2024/05/06 add tips on jammer, fix some of the readme. eliminate unused commands in cr.py. fix pr4.cc, integrate pr4c.cc into pr4.cc with definition. add tips when being targetted. BRUSH UP README.MD, so some of the description had be DELETED.
-2024/05/07 fix XXX, add tips on PRNGs. really close.
-2024/05/31 compile jammer.
-2024/06/01 fix JAM, also our system is infected because of the test.
-2024/06/02 fix readme, it's from p0.cc:_JAM mis spell.
-2024/06/02 add cr.py j command, elim _JAM.
-2024/06/14 fix cr.py l command, add cr.py 0, - command.
-2024/06/15 add progression and readme.
-2024/06/16 add progression \<0 argv.
-2024/06/17 add readme, something goes well with some of the PRNGs with static, absent repository with this. also fix progression.
-2024/06/19 merge latest lieonn.
-2024/06/21 merge latest lieonn.
-2024/06/21 add p2prng.cc, update readme, merge latest lieonn. INCLUDES command line argument change.
-2024/06/22 update readme, p01 fatal fix. make/revert program invariants change friendly to predictors.
+2023/11/13 update readme.
+2023/11/19 revert each line complement condition, force to use complement.
+2023/11/20 only complement with 2, they smoothes output enough with our measure (&gt; 2/3).
+2023/11/21 update readme.
+2023/11/23 fix known tips, there was at most double error.
+2023/11/25 implement and revert the test to complement before to revertProgramInvariant, they doesn't improve well differed to shrinking.
+2023/12/06 fix ddpmopt.cc as makeProgramInvariant, revertProgramInvariant to better compatible with [0,1].
+2023/12/07 fix ddpmopt.cc makeProgramInvariant double apply serious bug in crush. Also, update readme as compatible with in/output. realclose.
+2023/12/15 use the tactics not to apply twice make/revertProgramInvariant on prediction, the invariant is already taken, however, this can causes P^t 1 == 0 condition on linearInvariant, we don't fix them.
+2024/03/19 half p8 compatible change on prediction P1I to P01 with predg... qredg... binary.
+2024/04/02 fix P01, vanish predvc.
+2024/04/04 only use large accuracy on calculating pnextcache, but this is broken with cache naming.
+2024/04/07 rgb2xyz, xyz2rgb on first/last of predg/qredg if color is 3ch.
+2024/04/09 fix maeProgramInvariant x_k==0 to wrap into x_k:=1, refix pnext with lower digits.
+2024/04/10 we count the function entropy enough beat with in/output on [pq]redg.
+2024/04/12 update readme.
+2024/04/14 take a median after predv before revertProgramInvariant.
+2024/04/15 update readme, it is the specification of this some output to be broken.
+2024/04/17 update readme.
+2024/04/18 add tcont.cc, real close with omake.
+2024/04/18 won't update without lieonn.hh change.
+2024/04/29 update readme.
+2024/05/05 p01 class fix step-step to 1-step correction.
+2024/05/07 correct output depth limit to have a meaning. update readme.
+2024/06/01 add predg0... qredg0... compile option, these using latest results on \{p0,p1,p2\}.
+2024/06/02 revert. it's nonsense.
+2024/06/05 fix p01 crash in rare cases.
+2024/06/07 fix number of predictions to reasonable one. add another implementation on python predg.cc, only QR decomposition is differ but this has a better results?? update readme.
+2024/06/09 factorize into each bit and predict with them. leave with this but this have color intensity == {0,1} confusion bug.
+2024/06/09 fix last bug. average step skips. add readme.
+2024/06/11 update readme.
+2024/06/12 update readme.
+2024/06/13 update readme.
+2024/06/14 update readme.
+2024/06/15 conclude 2024/06/11-2024/06/14 conditions readme.
+2024/06/16 revert P210 to original, then, P01, P0 pred temporarily, update readme.
+2024/06/17 merge p2 logic with p10 class.
+2024/06/18 code cleaning, update readme.
+2024/06/18 speed remedy.
+2024/06/19 add restriction for getting average on PprogressionOnce010n.
+2024/06/20 our machine is infected, take a most logically valid in our program predictions.
+2024/06/21 fix fatal error on PprogressionOnce::next, they doesn't use predictors.
+2024/06/21 revert and brush up, add fiocursed.cc series, brush readme.
+2024/06/22 update readme, updates around pprogression causes only 1 step after/before prediction.
+2024/06/22 p01 fatal fix. make/revert program invariant change friendly to predictions.
 2024/06/23 large change around class instance initializer, also have progression short range fix.
 2024/06/23 fatal fix around last update.
-2024/06/24 fix addp == true progression case.
-2024/06/26 cr.py o command and so on.
-2024/06/26 fix Ppersistent.
-2024/07/07 Pprogression uses shorter range but enough internal states.
-2024/09/09 add z cmd, change s cmd.
-2024/09/22 add pp3dft.cc, elim p210.cc . update readme.
-2024/09/22 integrate pp3dft.cc into p1/pp3.cc so elim them, releave.
-2024/09/27 add usual prediction section readme.
-2024/09/28 eliminate Pprogression, it's a waste of the accuracy.
-2024/09/29 update readme. fix P012L::next avg.O().
-2024/10/26 update readme.
-2024/11/01 update readme, add N command to cr.py.
-2024/11/14 add cr.py p command to continue whole input p0 with fft without accuracy.
-2024/11/16 fix readme.
-2024/12/05 fix readme. exchanged argv[1] and argv[2] meaning.
-2024/12/08 update readme compat with latest p0, p1.
-2024/12/13 should really leave, close readme.md.
-2024/12/14 update readme.md, might still have some glitches on readme.md after update.
-2024/01/27 update readme.md.
-2025/02/05 add f command to cr.py.
-2025/02/07 add persistent.cc .
-2025/02/10 fix and refactor persistent.cc to pp8q.cc (pp8 - .25).
-2025/02/11 add readme.md persistent.cc concerns.
-2025/02/13 a little fix around Persistent.
-2025/02/27 append readme.md, eliminate variable step length.
-2025/03/01 update readme eliminate last section, append second last section.
-2025/03/04 add _CHAIN_ compile option to catgp.cc, merge latest lieonn.
-2025/03/08 add B command for cr.py they returns predicted result and original input pair slided causes some of the controlled condition original stream dump.
-2025/03/09 merge latest lieonn.
-2025/03/17 revert step param.
-2025/03/19 add g, G commands to cr.py.
-2025/03/22 close with this README.md.
-2025/03/28 after burn README.md.
-2025/03/30 adding test result glance around xeb scored ones.
-2025/04/01 append p, q command to cr.py, add readme.md, real close.
-2025/04/02 append 2 command and readme.md notation, real close.
-2025/04/03 compat with simplefloat p, 2 commands also fixed fatal error on them.
-2025/04/04 add y command for condorcet jury with original stream intensity. also simplify separate readme.md on same file.
-2025/04/04 fix y command, add l command option, readme update, real close.
-2025/04/05 fix y command median condition, update readme, really close.
-2025/04/06 fix readme.md usage. ok really close.
-2025/04/16 fix p2prng.cc GETENTROPY pointer and value mis interpretation, I don't know why compiler doesn't mattered this on our environment even the running result was so.
-2025/04/17 merge latest dimension auto tuner from ddpmopt. fixed step argv works well.
+2024/06/24 fatal fix around last update, rotate predMat sloppy case.
+2024/06/26 some of the assertion fix, update readme.
+2024/06/26 update readme, fix around Ppersistent buf.full condition.
+2024/06/27 fix predv last norm condition calculations. predMat bugs might be fixed.
+2024/06/29 update readme and comments.
+2024/06/30 re-insert periods with better stable method. update readme.
+2024/07/06 Ppersistent now use maximum length for predictions. Also readme update.
+2024/07/07 code cleaning. merge Pprogression improve but no affects.
+2024/07/08 internal state range strategy change, use all of the input to reduce. update readme.
+2024/07/09 revert bitwise prediction causes whole image invariant works same as theoretical ones, however, each pixel context isn't enough on prediction but is enough on whole image condition information amount as better weighted. update readme.
+2024/07/10 revert [pq]redg.cc as no each bit condition, instead of this, use goki_check_cc:test.py:bit command.
+2024/07/20 update readme, might our system is infected.
+2024/08/18 update -\[369\] predictors for recursive but equivalent.
+2024/09/03 update \[pq\]redg...p.. for auto tuned recursive but for tiny images.
+2024/09/04 update last up with proper recursive value.
+2024/09/05 omit error output in zeroFix.
+2024/09/06 update and fix readme.
+2024/09/09 merge p1/pp3.cc result, change only output forward pred ones.
+2024/09/10 merge p1/pp3.cc result, re-re-leave.
+2024/09/10 fix pnoise meaning. update readme, re-re-re-leave.
+2024/09/12 update readme. leave.
+2024/09/22 append dft hack, add readme, releave.
+2024/09/23 fix _PREDV_==3 _PREDV_DFT_ case unit value. Changed preddg... to predfg... to make some readability. Fix around comments and readme.md.
+2024/09/24 brush up, eliminate exhaust of the resource to get tiny output improve in finite and up to aleph_0 condition.
+2024/09/25 elim dead code, update readme. leave.
+2024/09/26 improve heap resource efficiency.
+2024/09/27 refactoring predv, predvp0. the target stream we predict is now concrete, so PP0 type changed.
+2024/09/28 add step after predictions.
+2024/09/29 update readme. leave the repository really.
+2024/10/05 add predga.cc and compile option.
+2024/10/26 fix predvall meaning after p2/README.md:Tips on reseed.
+2024/10/31 add predgs.cc.
+2024/11/01 fix last predgs.cc index map, update readme, accuracy is not enough for SVD.
+2024/11/02 update readme. elim predgs.cc, predga.cc.
+2024/11/03 update readme. rerere-leave here. predg.cc a cmd list up fix.
+2024/11/12 delete tips on reseeding, reseeding is not so harder. replaced flip, flop template function in lieonn suitable with gcc however 128bit long double isn't compile on our main pc environment.
+2024/11/14 integreate all commands on this repository into ddpmopt.cc but the binary is very fat.
+2024/11/17 add w command.
+2024/11/19 improved lieonn.hh:taylor command speed and accuracy this causes q command better works. update readme. something error occured first upload of this change on github.com. this change leads us to pnext r variable doubles.
+2024/11/20 update readme for recent knowns.
+2024/11/20 update readme.
+2024/11/30 add c command. update readme.
+2024/12/02 taylor improvement, taylor function reclose with this.
+2024/12/03 w command fix also readme.md update.
+2024/12/04 fix w command output, backward had a glitch, so eliminated. update readme.
+2024/12/05 backport p1 | p0 results, brush up code, replace [0a] command to p command, update readme.
+2024/12/07 c command fix.
+2024/12/09 changed to output only a single prediction. w command crash fix, memory efficiency improve. q command crash fix.
+2024/12/11 fix readme w command usage.
+2024/12/13 leave here, might return here.
+2024/12/26 use montecarlo method instead of doing each step average on prediction.
+2024/12/28 fix 'q', 'w' commands with last change.
+2024/12/29 update 'w' commands suitable with predv1 method impementation is predv4.
+2024/12/30 update readme.
+2025/01/06 eliminate condorcet's jury method, they've no effects.
+2025/01/06 update readme for compatible with latest goki_check_cc.
+2025/01/27 improve pred... memory usage without predv4.
+2025/02/01 fix readme memory usage notation.
+2025/02/05 predv function to get better prediction - real value distribution by PRNG tests.
+2025/02/15 add PP0 as PSVD ... as a dead code, they doesn't improve output enough on our machines with small number of inputs.
+2025/02/16 fix predv4 alignments affects all of outputs w command.
+2025/02/18 revert using predvp0 to using predv, they might come from infection.
+2025/02/20 move include comments into lieonn.hh . update reamde.md fix meaning on predictions we will re freeze with this.
+2025/02/22 not optimal but better looking q command output size with specifying step to predictor.
+2025/02/23 add readme.md notes.
+2025/03/01 add readme.md note around DFT.
+2025/03/03 add T command for test. revert subtraction to multiplication and sgn method to have gokibin bit preprocessed inputs.
+2025/03/04 apply T command tests into original p, w, q command. either revert to original p, w, q commands with renewing T command test.
+2025/03/05 our invariant condition is being attacked, we use 2 of dimension output but in fact we need at least 4 dimension output for all.
+2025/03/06 yellow output is lead by small input number, also some readme fix we often don't need entropy feeding control.
+2025/03/09 brush up lieonn.hh phase periodical jamming matters. we only make hypothesis PRNG we use isn't match the predictor/original stream phase period they have.
+2025/03/11 add and fix readme. close.
+2025/03/12 brush up readme, freeze.
+2025/03/13 add PQ command, update readme around 4 of candidate results.
+2025/03/22 close with this Readme.md.
+2025/04/01 add readme.md because we're in infected condition, also close because of the condition.
+2025/04/17 auto tune dimension in F_2 case other than 4 dimension to target.
+2025/04/18 qQ command strategy change.
 
