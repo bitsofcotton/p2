@@ -551,12 +551,12 @@ elif(sys.argv[1][0] == 'x'):
       elif(c == '0'):
         print(- 1)
 elif(sys.argv[1][0] == 'p'):
-  p0 = subprocess.Popen([sys.argv[2], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  p1 = subprocess.Popen([sys.argv[2], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q0 = subprocess.Popen([sys.argv[3], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q1 = subprocess.Popen([sys.argv[3], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  r0 = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  r1 = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  p0 = subprocess.Popen([sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  p1 = subprocess.Popen([sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q0 = subprocess.Popen([sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q1 = subprocess.Popen([sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  r0 = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  r1 = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   t = 1
   M = D0 = bD = S = SS = S0 = S1 = b0 = b1 = 0
   for line in io.open(sys.stdin.fileno(), 'r', encoding = "utf-8", closefd = False):
@@ -662,7 +662,7 @@ elif(sys.argv[1] == '2'):
   # N.B. Stack 2 layers with hypothesis first layer attack can cause
   #      original stream continuity shift.
   p = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3], sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q = subprocess.Popen([sys.argv[4], "1"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   r = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3], sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     p.stdin.write(line.encode("utf-8"))
