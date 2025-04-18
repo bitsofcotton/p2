@@ -34,10 +34,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <length>? : continue with ";
   if(1 < argc) length = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << length << std::endl;
-  assert(0 <= length);
-  // N.B. randtools meaning, v2v tanglement causes up to 3 dimension.
-  //      This is also from P1I condition this uses internally.
-  PBond<num_t, P012L<num_t> > p(length);
+  PBond012<num_t> p(length);
   std::string s;
   num_t d(int(0));
   auto  M(d);

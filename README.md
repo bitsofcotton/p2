@@ -498,4 +498,5 @@ Should really leave here.
 2025/04/16 fix p2prng.cc GETENTROPY pointer and value mis interpretation, I don't know why compiler doesn't mattered this on our environment even the running result was so.
 2025/04/17 merge latest dimension auto tuner from ddpmopt. fixed step argv works well.
 2025/04/18 eliminate step parameter, they doesn't improve results.
+2025/04/19 merge latest lieonn.
 
