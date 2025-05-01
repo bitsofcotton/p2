@@ -723,13 +723,14 @@ elif(sys.argv[1] == 'y'):
     # N.B. twisted works well because output is targetted into control case.
     if(c == 0):
       if(len(a) % 2 == 0):
-        print((a[int(len(a) / 2)] + a[int(len(a) / 2) - 1]) / 2.)
+        buf = (a[int(len(a) / 2)] + a[int(len(a) / 2) - 1]) / 2.
       else:
-        print(a[int(len(a) / 2)])
+        buf =  a[int(len(a) / 2)]
+      print(buf, ",", buf)
     elif(0 < c):
-      print(a[0])
+      print(a[0], ",", a[- 1])
     else:
-      print(a[- 1])
+      print(a[- 1], ",", a[0])
     sys.stdout.flush()
 elif(sys.argv[1] == 'Q'):
   t = 0
@@ -745,11 +746,11 @@ elif(sys.argv[1] == 'Q'):
       print(0.)
       continue
     # N.B. Cyclic out with complemental weight.
-    if(ifloat(d[t % (len(d) - 1) + 1]) * pow(n2p / n2n, .5) * pow(- 1, t) < 0):
+    if(ifloat(d[t % (len(d) - 1) + 1]) * pow(- 1, t) < 0):
     # N.B. following don't affect better to scatter.
     #if(p * getrand(3) < 0):
-      print(  ifloat(d[0]))
+      print(  ifloat(d[0]) * pow(n2p / n2n, .5))
     else:
-      print(- ifloat(d[0]))
+      print(- ifloat(d[0]) * pow(n2p / n2n, .5))
     t += 1
 

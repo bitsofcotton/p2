@@ -18,6 +18,7 @@ Also, one of a predictor for being controlled stream.
     ... | cr.py l 0 | cr.py 2 catgp p1 p0 | cr.py l 0 1 16 17 18 19 | tee ... | cr.py y
     # double (without cr.py y) to triplet layer resistant predictor
     # however, they can be limited range per each range in controlled cond.
+    # in randtools meaning, 10 of the candidate is enough on us.
     
     # each single/double/triplet layered condition needs enough internal states
     # read from input stream to get stable prediction results.
