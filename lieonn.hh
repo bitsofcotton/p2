@@ -3702,10 +3702,8 @@ template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVec
         / tan(T(int(1)) * atan(T(int(1))) / T(sz)) );
       j < in.size() - int(tan(T(i    ) * atan(T(int(1))) / T(sz))
         / tan(T(int(1)) * atan(T(int(1))) / T(sz)) );
-      j ++, ldenom ++) {
-        std::cout << res.size() << ", " << i << ", " << in.size() << ", " << j << std::endl << std::flush;
+      j ++, ldenom ++)
         res[res.size() - i - 1] += in[j];
-      }
     denom = max(ldenom, denom);
   }
   if(! denom) return SimpleVector<T>();
@@ -3732,10 +3730,8 @@ template <typename T> static inline SimpleVector<SimpleVector<T> > arctanFeeder(
         / tan(T(int(1)) * atan(T(int(1))) / T(in.size() - 1)) );
       j < in.size() - int(tan(T(i    ) * atan(T(int(1))) / T(in.size() - 1))
         / tan(T(int(1)) * atan(T(int(1))) / T(in.size() - 1)) );
-      j ++, ldenom ++) {
-        std::cout << res.size() << ", " << i << ", " << in.size() << ", " << j << std::endl << std::flush;
+      j ++, ldenom ++)
         res[res.size() - i - 1] += in[j];
-      }
     denom = max(ldenom, denom);
   }
   if(! denom) return SimpleVector<SimpleVector<T> >();
