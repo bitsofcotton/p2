@@ -3686,10 +3686,27 @@ private:
   int  t;
 };
 
+template <typename T, typename U = T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
+  const auto sz(1 + int(ceil(U(int(1)) / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) )) );
+  if(sz <= 0) return SimpleVector<T>();
+  SimpleVector<T> res(sz);
+  res.O();
+  for(int i = 0; i < res.size(); i ++)
+    for(int j = in.size() - 1 - int(tan(U(i) * atan(U(int(1))) / U(in.size() - 1))
+        / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) );
+      j < in.size() - 1 - int(tan(U(i + 1) * atan(U(int(1))) / U(in.size() - 1))
+        / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) );
+      j ++)
+      res[res.size() - i - 1] += in[j];
+  const auto denom(ceil(int(tan(U(res.size() - 1) * atan(U(int(1))) / U(in.size() - 1)) / tan(U(res.size()) * atan(U(int(1))) / U(in.size() - 1)) )) );
+  for(int i = 0; i < res.size(); i ++)
+    res[i] /= denom;
+  return res;
+}
+
 // N.B. we omit high frequency part (1/f(x) input) to be treated better in P.
-template <typename T, T (*p)(const SimpleVector<T>&, const int&)> class PBond {
+template <typename T, T (*p)(const SimpleVector<T>&, const int&), bool arctanF = false> class PBond {
 public:
-  inline PBond() { ; }
   inline PBond(const int& status = 0) {
     assert(0 <= status);
     f = idFeeder<T>(status);
@@ -3698,7 +3715,7 @@ public:
   inline ~PBond() { ; }
   inline T next(const T& in) {
     M = max(M, abs(in));
-    auto g(f.next(in));
+    auto g(arctanF ? arctanFeeder<T>(f.next(in)) : f.next(in));
     if(! f.full || g.size() <= 1) return T(int(0));
     // N.B. with 1-norm normalized input:
     T m(g[0] /= M);
@@ -3717,8 +3734,8 @@ public:
   T M;
 };
 
-template <typename T> using PBond0 = PBond<T, p0maxNext<T> >;
-template <typename T> using PBond012 = PBond<T, p012next<T> >;
+template <typename T, bool atf = false> using PBond0 = PBond<T, p0maxNext<T>, atf>;
+template <typename T, bool atf = false> using PBond012 = PBond<T, p012next<T>, atf>;
 
 // N.B. if we use each progression for average into input one, they can
 //      improve the result. however, if prediction is almost linear,

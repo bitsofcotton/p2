@@ -9,13 +9,17 @@ Also, one of a predictor for being controlled stream.
     # line == 0 to use whole input stream to predict next step.
     #   this takes O((input lines)*lg(input lines)) ratio calculation time.
     
+    p2 < data.txt
+    # catgp - p1 - p0 chain with nonlinear x-axis scaling twice with different
+    #   steps.
+    
     cr.py [012a-zA-Z] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py l 0 | cr.py p catgp p1 p0 | cr.py l 0 8 9
+    ... | cr.py l 0 | cr.py p p2 | cr.py l 0 1 2 3 4 5
     # single layer resistant predictor (simple)
     
-    ... | cr.py l 0 | cr.py 2 catgp p1 p0 | cr.py l 0 1 16 17 18 19 | tee ... | cr.py y
+    ... | cr.py l 0 | cr.py 2 p2 p0 | cr.py l 0 1 ... 11 | tee ... | cr.py y
     # double (without cr.py y) to triplet layer resistant predictor
     # however, they can be limited range per each range in controlled cond.
     # in randtools meaning, 10 of the candidate is enough on us.
@@ -500,4 +504,5 @@ Should really leave here.
 2025/04/17 merge latest dimension auto tuner from ddpmopt. fixed step argv works well.
 2025/04/18 eliminate step parameter, they doesn't improve results.
 2025/04/19 merge latest lieonn.
+2025/05/02 add p2.cc predictor for catgp p1 p0 chain with different x-asis scaling twice with different step.
 

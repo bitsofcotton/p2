@@ -553,10 +553,6 @@ elif(sys.argv[1][0] == 'x'):
 elif(sys.argv[1][0] == 'p'):
   p0 = subprocess.Popen([sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   p1 = subprocess.Popen([sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q0 = subprocess.Popen([sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q1 = subprocess.Popen([sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  r0 = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  r1 = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   t = 1
   M = D0 = bD = S = SS = S0 = S1 = b0 = b1 = 0
   for line in io.open(sys.stdin.fileno(), 'r', encoding = "utf-8", closefd = False):
@@ -578,28 +574,16 @@ elif(sys.argv[1][0] == 'p'):
     p1.stdin.flush()
     pr0 = p0.stdout.readline().decode("utf-8")[:- 1].split(",")
     pr1 = p1.stdout.readline().decode("utf-8")[:- 1].split(",")
-    q0.stdin.write((pr0[0] + "," + pr0[1] + "\n").encode("utf-8"))
-    q1.stdin.write((pr1[0] + "," + pr1[1] + "\n").encode("utf-8"))
-    q0.stdin.flush()
-    q1.stdin.flush()
-    qr0 = q0.stdout.readline().decode("utf-8")[:- 1].split(",")
-    qr1 = q1.stdout.readline().decode("utf-8")[:- 1].split(",")
-    r0.stdin.write((qr0[0] + "\n").encode("utf-8"))
-    r1.stdin.write((qr1[0] + "\n").encode("utf-8"))
-    r0.stdin.flush()
-    r1.stdin.flush()
-    rr0 = r0.stdout.readline().decode("utf-8")[:- 1].split(",")
-    rr1 = r1.stdout.readline().decode("utf-8")[:- 1].split(",")
     # N.B. ok:
-    # print(- S0 * (ifloat(rr0[0]) - b0), ",", - S1 * (ifloat(rr1[0]) - b1))
+    # print(- S0 * (ifloat(pr0[0]) - b0), ",", - S1 * (ifloat(pr1[0]) - b1))
     t = - t
-    M0  = ifloat(pr0[1]) * ifloat(qr0[2]) * ifloat(rr0[1])
-    M1  = ifloat(pr1[1]) * ifloat(qr1[2]) * ifloat(rr1[1])
+    M0  = ifloat(pr0[1])
+    M1  = ifloat(pr1[1])
     # ok: (- s0 * S0 * M0 * d + s0 * S0 * b0 - s1 * S1 * M1 * t * d + s1 * S1 * b1 * t)
     # ==  (- (s0 * S0 * M0 + s1 * t * S0 * M1) +
     #       (s0 * S0 * b0 + s1 * S1 * b1 * t))
-    S0 += ifloat(rr0[0]) - b0
-    S1 += ifloat(rr1[0]) - b1
+    S0 += ifloat(pr0[0]) - b0
+    S1 += ifloat(pr1[0]) - b1
     s0  = S1 * b1 * t
     s1  = S0 * b0
     if(0 < s0 * s1):
@@ -617,8 +601,8 @@ elif(sys.argv[1][0] == 'p'):
       M = - (s0 * S0 * M0 + s1 * S1 * M1) / N
     else:
       M = 0
-    b0   = ifloat(rr0[0])
-    b1   = ifloat(rr1[0])
+    b0   = ifloat(pr0[0])
+    b1   = ifloat(pr1[0])
     SS1  = SS + D0
     # N.B. 1x all invariant is controlled cond,
     #      2x only single state,  1x null state, 
@@ -636,7 +620,7 @@ elif(sys.argv[1][0] == 'p'):
     # N.B. however, the PRNG can blend new states in any which case adding to
     #      original stream the predictor must get them by the stream.
     #      so any occasion, PRNG has slight profitable condition.
-    print(D, ",", bD * D0, ",", SS * D0, ",", D0, ",", ifloat(pr0[0]), ",", ifloat(pr1[0]), ",", ifloat(qr0[0]), ",", ifloat(qr1[0]), ",", ifloat(rr0[0]), ",", ifloat(rr1[0]), ",", M, ",", D0, ",", SS1, ",", 1., ",", ifloat(pr0[1]), ",", ifloat(pr1[1]), ",", ifloat(qr0[2]), ",", ifloat(qr1[2]), ",", ifloat(rr0[1]), ",", ifloat(rr1[1]), ",", strd, ",", stre)
+    print(D, ",", bD * D0, ",", SS * D0, ",", D0, ",", ifloat(pr0[0]), ",", ifloat(pr1[0]), ",", M, ",", D0, ",", SS1, ",", 1., ",", ifloat(pr0[1]), ",", ifloat(pr1[1]))
     bD   = D0
     SS   = SS1
     sys.stdout.flush()
@@ -661,9 +645,9 @@ elif(sys.argv[1] == 'q'):
 elif(sys.argv[1] == '2'):
   # N.B. Stack 2 layers with hypothesis first layer attack can cause
   #      original stream continuity shift.
-  p = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3], sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  r = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3], sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  p = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q = subprocess.Popen([sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  r = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     p.stdin.write(line.encode("utf-8"))
     q.stdin.write(line.encode("utf-8"))
@@ -675,16 +659,12 @@ elif(sys.argv[1] == '2'):
     rp = p.stdout.readline().decode("utf-8")[:- 1].split(",")
     rr = r.stdout.readline().decode("utf-8")[:- 1].split(",")
     ra = []
-    for t in range(0, 10):
+    for t in range(0, 6):
       ra.append(rp[t])
       ra.append(rr[t])
-    for t in range(10, 20):
+    for t in range(6, 12):
       ra.append(rp[t])
       ra.append(str(ifloat(rr[t]) * ifloat(rq[1])))
-    ra.append(rp[20])
-    ra.append(rr[20])
-    ra.append(rp[21])
-    ra.append(rr[21])
     print(",".join(ra))
     sys.stdout.flush()
 elif(sys.argv[1] == 'Z'):
