@@ -4,6 +4,7 @@ CXX=	clang++
 # compiler flags.
 CXXFLAGS+=	-std=c++11
 CXXFLAGS+=	-I..
+CXXFLAGS+=	-D_LIBCPP_ENABLE_ASSERTIONS
 MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 #MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
 #CXXFLAGS+=	-pg

@@ -3687,8 +3687,9 @@ private:
 };
 
 template <typename T, typename U = T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
+  if(in.size() <= 3) return SimpleVector<T>();
   const auto sz(1 + int(ceil(U(int(1)) / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) )) );
-  if(sz <= 0) return SimpleVector<T>();
+  if(sz <= 2) return SimpleVector<T>();
   SimpleVector<T> res(sz);
   res.O();
   for(int i = 0; i < res.size(); i ++)
@@ -3699,6 +3700,7 @@ template <typename T, typename U = T> static inline SimpleVector<T> arctanFeeder
       j ++)
       res[res.size() - i - 1] += in[j];
   const auto denom(ceil(int(tan(U(res.size() - 1) * atan(U(int(1))) / U(in.size() - 1)) / tan(U(res.size()) * atan(U(int(1))) / U(in.size() - 1)) )) );
+  if(abs(denom) == U(int(0))) return SimpleVector<T>();
   for(int i = 0; i < res.size(); i ++)
     res[i] /= denom;
   return res;
