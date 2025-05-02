@@ -3699,7 +3699,7 @@ template <typename T, typename U = T> static inline SimpleVector<T> arctanFeeder
         / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) );
       j ++)
       res[res.size() - i - 1] += in[j];
-  const auto denom(int(ceil(tan(U(res.size() - 1) * atan(U(int(1))) / U(in.size() - 1)) / tan(U(res.size()) * atan(U(int(1))) / U(in.size() - 1)) )));
+  const auto denom(int(ceil((tan(U(res.size()) * atan(U(int(1))) / U(in.size() - 1)) - tan(U(res.size() - 1) * atan(U(int(1))) / U(in.size() - 1)) / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) ) )));
   if(abs(denom) == int(0)) return SimpleVector<T>();
   for(int i = 0; i < res.size(); i ++)
     res[i] /= denom;
