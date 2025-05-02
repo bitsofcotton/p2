@@ -404,7 +404,7 @@ If predictor is proper and jammer targets wavy one, p0 some range after or befor
 # Predictor - Jammer Chase On Generic Surface Our End Conclusion
 If the predictor better predicts in some specific values on any input without internal states model set, there's must be jammer in the intent our worlds' dataset described as a single method/vector on such a range, either if such vector is supplied, in theoretical this is true.
 
-Either if we work with some internal states pre trained dataset, there's must be some non uniqueness on the prediction value condition in the intent data model includes such a condition either mode is larger than them, either if the proper model is determined, in theoretical this is true.
+Either if we work with some internal states pre trained dataset, there's must be some non uniqueness on the prediction value condition in the intent data model includes such a condition either model is larger than them, either if the proper model is determined, in theoretical this is true.
 
 So we should determine which condition to be used by supplied data stream first if the predictor is generic one.
 So in such a intensions, the generic predictor must going 1/3 to 2/3 probable prediction on some specific values determined.
@@ -412,6 +412,8 @@ So in such a intensions, the generic predictor must going 1/3 to 2/3 probable pr
 Our p2.cc predictor's cr.py p p2 p2nl command is the generic one we trust (however there can be some undetermined theoretical problems inside them), however, the condition below also be applied.
 
 However, in our p2.cc viewpoint, some of the stacking some layers can pretend simple data structures proper predictor better than 2/3 condition in each, so the brick condition is supplied, we REALLY close this repository with this condition.
+
+Either, if we're in the input stream is jammed condition, we should shirk external obs. dependances into data stream size theirselves as a scrapped ones, so in the case we must have large internal states.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
