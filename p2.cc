@@ -69,7 +69,7 @@ int main(int argc, const char* argv[]) {
       f0.next(std::move(f0n));
     }
 #if defined(_NONLINEAR_X_)
-    const auto  af0(arctanFeeder<SimpleVector<num_t>, num_t>(f0.res));
+    const auto  af0(arctanFeeder<num_t>(f0.res));
 #else
     const auto& af0(f0.res);
 #endif
@@ -88,7 +88,7 @@ int main(int argc, const char* argv[]) {
           f1.next(std::move(f1n));
         }
 #if defined(_NONLINEAR_X_)
-        const auto  af1(arctanFeeder<SimpleVector<num_t>, num_t>(f1.res));
+        const auto  af1(arctanFeeder<num_t>(f1.res));
 #else
         const auto& af1(f1.res);
 #endif

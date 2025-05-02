@@ -3686,21 +3686,59 @@ private:
   int  t;
 };
 
-template <typename T, typename U = T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
+template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
   if(in.size() <= 3) return SimpleVector<T>();
-  const auto sz(1 + int(ceil(U(int(1)) / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) )) );
-  if(sz <= 2) return SimpleVector<T>();
+  int sz(1);
+  for( ; int(floor(T(int(1)) / tan(T(int(1)) * atan(T(int(1))) / T(sz)) )) < in.size(); sz ++) ;
+  if(-- sz <= 2) return SimpleVector<T>();
+  -- sz;
   SimpleVector<T> res(sz);
   res.O();
+  int denom(0);
+  for(int i = 0; i < res.size(); i ++) {
+    int ldenom(0);
+    for(int
+      j = in.size() - int(tan(T(i + 1) * atan(T(int(1))) / T(sz))
+        / tan(T(int(1)) * atan(T(int(1))) / T(sz)) );
+      j < in.size() - int(tan(T(i    ) * atan(T(int(1))) / T(sz))
+        / tan(T(int(1)) * atan(T(int(1))) / T(sz)) );
+      j ++, ldenom ++) {
+        std::cout << res.size() << ", " << i << ", " << in.size() << ", " << j << std::endl << std::flush;
+        res[res.size() - i - 1] += in[j];
+      }
+    denom = max(ldenom, denom);
+  }
+  if(! denom) return SimpleVector<T>();
   for(int i = 0; i < res.size(); i ++)
-    for(int j = in.size() - 1 - int(tan(U(i) * atan(U(int(1))) / U(in.size() - 1))
-        / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) );
-      j < in.size() - 1 - int(tan(U(i + 1) * atan(U(int(1))) / U(in.size() - 1))
-        / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) );
-      j ++)
-      res[res.size() - i - 1] += in[j];
-  const auto denom(int(ceil((tan(U(res.size()) * atan(U(int(1))) / U(in.size() - 1)) - tan(U(res.size() - 1) * atan(U(int(1))) / U(in.size() - 1)) / tan(U(int(1)) * atan(U(int(1))) / U(in.size() - 1)) ) )));
-  if(abs(denom) == int(0)) return SimpleVector<T>();
+    res[i] /= denom;
+  return res;
+}
+
+template <typename T> static inline SimpleVector<SimpleVector<T> > arctanFeeder(const SimpleVector<SimpleVector<T> >& in) {
+  int sz(1);
+  for( ; int(floor(T(int(1)) / tan(T(int(1)) * atan(T(int(1))) / T(sz)) )) < in.size(); sz ++) ;
+  if(-- sz <= 2) return SimpleVector<SimpleVector<T> >();
+  -- sz;
+  SimpleVector<SimpleVector<T> > res(sz);
+  for(int i = 0; i < res.size(); i ++) {
+    res[i].resize(in[0].size());
+    res[i].O();
+  }
+  int denom(0);
+  for(int i = 0; i < res.size(); i ++) {
+    int ldenom(0);
+    for(int
+      j = in.size() - int(tan(T(i + 1) * atan(T(int(1))) / T(in.size() - 1))
+        / tan(T(int(1)) * atan(T(int(1))) / T(in.size() - 1)) );
+      j < in.size() - int(tan(T(i    ) * atan(T(int(1))) / T(in.size() - 1))
+        / tan(T(int(1)) * atan(T(int(1))) / T(in.size() - 1)) );
+      j ++, ldenom ++) {
+        std::cout << res.size() << ", " << i << ", " << in.size() << ", " << j << std::endl << std::flush;
+        res[res.size() - i - 1] += in[j];
+      }
+    denom = max(ldenom, denom);
+  }
+  if(! denom) return SimpleVector<SimpleVector<T> >();
   for(int i = 0; i < res.size(); i ++)
     res[i] /= denom;
   return res;
