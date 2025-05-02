@@ -4,22 +4,22 @@ A predictor formatter for p0, p1.
 Also, one of a predictor for being controlled stream.
 
 # Usage
-    catgp(32|64)? <line>? < data.txt
+    ./catgp(32|64)? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     #   this takes O((input lines)*lg(input lines)) ratio calculation time.
     
-    p2 < data.txt
-    # catgp - p1 - p0 chain with nonlinear x-axis scaling twice with different
-    #   steps.
+    ./p2(nl|-)?(32|64)? < data.txt
+    # catgp - p1 - p0 chain with linear or nonlinear x-axis scaling twice
+    #   with different steps.
     
     cr.py [012a-zA-Z] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py l 0 | cr.py p p2 | cr.py l 0 1 2 3 4 5
+    ... | cr.py l 0 | cr.py p p2 p2nl | cr.py l 0 1 2 3 4 5
     # single layer resistant predictor (simple)
     
-    ... | cr.py l 0 | cr.py 2 p2 p0 | cr.py l 0 1 ... 11 | tee ... | cr.py y
+    ... | cr.py l 0 | cr.py 2 p2 p2nl p0 | cr.py l 0 1 ... 11 | tee ... | cr.py y
     # double (without cr.py y) to triplet layer resistant predictor
     # however, they can be limited range per each range in controlled cond.
     # in randtools meaning, 10 of the candidate is enough on us.
@@ -401,10 +401,17 @@ Real close.
 # Tips about wavy jammer
 If predictor is proper and jammer targets wavy one, p0 some range after or before to predict can improve them.
 
-# Leave
-We leave this repository. However, some of the improvements or fix on each file, we can reopen here.
+# Predictor - Jammer Chase On Generic Surface Our End Conclusion
+If the predictor better predicts in some specific values on any input without internal states model set, there's must be jammer in the intent our worlds' dataset described as a single method/vector on such a range, either if such vector is supplied, in theoretical this is true.
 
-Should really leave here.
+Either if we work with some internal states pre trained dataset, there's must be some non uniqueness on the prediction value condition in the intent data model includes such a condition either mode is larger than them, either if the proper model is determined, in theoretical this is true.
+
+So we should determine which condition to be used by supplied data stream first if the predictor is generic one.
+So in such a intensions, the generic predictor must going 1/3 to 2/3 probable prediction on some specific values determined.
+
+Our p2.cc predictor's cr.py p p2 p2nl command is the generic one we trust (however there can be some undetermined theoretical problems inside them), however, the condition below also be applied.
+
+However, in our p2.cc viewpoint, some of the stacking some layers can pretend simple data structures proper predictor better than 2/3 condition in each, so the brick condition is supplied, we REALLY close this repository with this condition.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -505,4 +512,5 @@ Should really leave here.
 2025/04/18 eliminate step parameter, they doesn't improve results.
 2025/04/19 merge latest lieonn.
 2025/05/02 add p2.cc predictor for catgp p1 p0 chain with different x-asis scaling twice with different step.
+2025/05/03 Select the strategy to separate binary x-axis linear and nonlinear case. update readme close condition.
 

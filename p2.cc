@@ -30,9 +30,15 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
+#if defined(_NONLINEAR_X_)
   PBond012<num_t, true> p0, p1;
   idFeeder<SimpleVector<num_t> > f0, f1;
   PBond0<num_t, true> r0, r1;
+#else
+  PBond012<num_t> p0, p1;
+  idFeeder<SimpleVector<num_t> > f0, f1;
+  PBond0<num_t> r0, r1;
+#endif
   std::string s;
   int   t(0);
   num_t d(t);
@@ -62,7 +68,11 @@ int main(int argc, const char* argv[]) {
       f0n[1] = (Mp0 + num_t(int(1))) / num_t(int(2));
       f0.next(std::move(f0n));
     }
-    const auto af0(arctanFeeder<SimpleVector<num_t>, num_t>(f0.res));
+#if defined(_NONLINEAR_X_)
+    const auto  af0(arctanFeeder<SimpleVector<num_t>, num_t>(f0.res));
+#else
+    const auto& af0(f0.res);
+#endif
     if(9 < af0.size()) {
       Mq0 = (predv0<num_t, 0>(af0.entity, af0.entity.size())[0] + num_t(int(1))) / num_t(int(2));
       Mr0 = r0.next(dq0);
@@ -77,7 +87,11 @@ int main(int argc, const char* argv[]) {
           f1n[1] = (Mp1 + num_t(int(1))) / num_t(int(2));
           f1.next(std::move(f1n));
         }
-        const auto af1(arctanFeeder<SimpleVector<num_t>, num_t>(f1.res));
+#if defined(_NONLINEAR_X_)
+        const auto  af1(arctanFeeder<SimpleVector<num_t>, num_t>(f1.res));
+#else
+        const auto& af1(f1.res);
+#endif
         if(9 < af1.size()) {
           Mq1 = (predv0<num_t, 0>(af1.entity, af1.entity.size())[0] + num_t(int(1))) / num_t(int(2));
           Mr1 = r1.next(dq1);
