@@ -18,6 +18,8 @@ Also, one of a predictor for being controlled stream.
     
     ... | cr.py l 0 | cr.py p p2 p2nl | cr.py l 0 1 2 3 4 5
     # single layer resistant predictor (simple)
+    ... | cr.py l 0 | cr.py p p2 p2nl | cr.py 4 5 0
+    # often works well with 3 of the results
     
     ... | cr.py l 0 | cr.py 2 p2 p2nl p0 | cr.py l 0 1 ... 11 | tee ... | cr.py y
     # double (without cr.py y) to triplet layer resistant predictor
@@ -34,6 +36,10 @@ Also, one of a predictor for being controlled stream.
     # N.B. resistant condition layer and their attack is also saturated by them.
     #      there remains residue which includes much of cultivated entropies.
     #      we need much input length either we cannot attack them by first-look.
+    
+    ... | cr.py l 0 | tee 0 | cr.py 2 p2 p2nl p0 | ...
+    cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
+    # listen residue with rand_correct.mid.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -514,5 +520,5 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 2025/04/18 eliminate step parameter, they doesn't improve results.
 2025/04/19 merge latest lieonn.
 2025/05/02 add p2.cc predictor for catgp p1 p0 chain with different x-asis scaling twice with different step.
-2025/05/03 Select the strategy to separate binary x-axis linear and nonlinear case. update readme close condition.
+2025/05/03 Select the strategy to separate binary x-axis linear and nonlinear case. update readme close condition. code clean.
 

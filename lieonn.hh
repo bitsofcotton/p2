@@ -3686,57 +3686,58 @@ private:
   int  t;
 };
 
-template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
-  if(in.size() <= 3) return SimpleVector<T>();
+template <typename T> static inline int tanPio4Scale(const int& idx, const int& size) {
+  const static T pio4(atan(T(int(1)) ));
+  return int(tan(T(idx) / T(size) * pio4) / tan(pio4 / T(size)) );
+}
+
+template <typename T> static inline int ceilInvTanPio4Scale(const int& y, const int& idx) {
+  // N.B. code readability reason, we select simplicity instead of the speed.
   int sz(1);
-  for( ; int(floor(T(int(1)) / tan(T(int(1)) * atan(T(int(1))) / T(sz)) )) < in.size(); sz ++) ;
-  if(-- sz <= 2) return SimpleVector<T>();
-  -- sz;
+  for( ; tanPio4Scale<T>(idx, sz) < y; sz ++) ;
+  return sz;
+}
+
+template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
+  const static SimpleVector<T> null;
+  if(! in.size()) return null;
+  const auto sz(ceilInvTanPio4Scale<T>(in.size(), in.size()) - 1);
+  if(sz <= 1) return null;
   SimpleVector<T> res(sz);
   res.O();
-  int denom(0);
-  for(int i = 0; i < res.size(); i ++) {
-    int ldenom(0);
-    for(int
-      j = in.size() - int(tan(T(i + 1) * atan(T(int(1))) / T(sz))
-        / tan(T(int(1)) * atan(T(int(1))) / T(sz)) );
-      j < in.size() - int(tan(T(i    ) * atan(T(int(1))) / T(sz))
-        / tan(T(int(1)) * atan(T(int(1))) / T(sz)) );
-      j ++, ldenom ++)
-        res[res.size() - i - 1] += in[j];
-    denom = max(ldenom, denom);
-  }
-  if(! denom) return SimpleVector<T>();
   for(int i = 0; i < res.size(); i ++)
-    res[i] /= denom;
+    for(int j = in.size() - tanPio4Scale<T>(i + 1, sz);
+            j < in.size() - tanPio4Scale<T>(i, sz); j ++)
+      res[res.size() - i - 1] += in[j];
+  // N.B. tanPio4Scale is monotonic increasingly function.
+  int denom(ceil(tanPio4Scale<T>(sz, sz) - tanPio4Scale<T>(sz - 1, sz)));
+  if(! denom) return null;
+  // XXX: CPU float glitch.
+  denom ++;
+  for(int i = 0; i < res.size(); i ++)
+    res[i] /= T(denom);
   return res;
 }
 
 template <typename T> static inline SimpleVector<SimpleVector<T> > arctanFeeder(const SimpleVector<SimpleVector<T> >& in) {
-  int sz(1);
-  for( ; int(floor(T(int(1)) / tan(T(int(1)) * atan(T(int(1))) / T(sz)) )) < in.size(); sz ++) ;
-  if(-- sz <= 2) return SimpleVector<SimpleVector<T> >();
-  -- sz;
+  const static SimpleVector<SimpleVector<T> > null;
+  if(! in.size()) return null;
+  const auto sz(ceilInvTanPio4Scale<T>(in.size(), in.size()) - 1);
+  if(sz <= 1) return null;
   SimpleVector<SimpleVector<T> > res(sz);
   for(int i = 0; i < res.size(); i ++) {
     res[i].resize(in[0].size());
     res[i].O();
   }
-  int denom(0);
-  for(int i = 0; i < res.size(); i ++) {
-    int ldenom(0);
-    for(int
-      j = in.size() - int(tan(T(i + 1) * atan(T(int(1))) / T(in.size() - 1))
-        / tan(T(int(1)) * atan(T(int(1))) / T(in.size() - 1)) );
-      j < in.size() - int(tan(T(i    ) * atan(T(int(1))) / T(in.size() - 1))
-        / tan(T(int(1)) * atan(T(int(1))) / T(in.size() - 1)) );
-      j ++, ldenom ++)
-        res[res.size() - i - 1] += in[j];
-    denom = max(ldenom, denom);
-  }
-  if(! denom) return SimpleVector<SimpleVector<T> >();
   for(int i = 0; i < res.size(); i ++)
-    res[i] /= denom;
+    for(int j = in.size() - tanPio4Scale<T>(i + 1, sz);
+            j < in.size() - tanPio4Scale<T>(i, sz); j ++)
+      res[res.size() - i - 1] += in[j];
+  int denom(ceil(tanPio4Scale<T>(sz, sz) - tanPio4Scale<T>(sz - 1, sz)));
+  if(! denom) return null;
+  denom ++;
+  for(int i = 0; i < res.size(); i ++)
+    res[i] /= T(denom);
   return res;
 }
 

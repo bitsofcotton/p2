@@ -78,6 +78,7 @@ int main(int argc, const char* argv[]) {
       Mr0 = r0.next(dq0);
       br0 += dr0;
       if((t ++) & 1) {
+        br0 /= num_t(int(2));
         const auto dp1(Mp1 * br0);
         const auto dq1(Mp1 * Mq1 * br0);
         Mp1 = p1.next(br0);
