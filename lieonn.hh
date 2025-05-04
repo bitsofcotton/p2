@@ -3692,11 +3692,9 @@ template <typename T> static inline int tanPio4Scale(const int& idx, const int& 
 }
 
 template <typename T> static inline int ceilInvTanPio4Scale(const int& y) {
-  // N.B. code readability reason, we select simplicity instead of the speed.
   const static T pio4(atan(T(int(1)) ));
-  int sz(1);
-  for( ; int(tan(pio4) / tan(pio4 / T(sz)) ) < y; sz ++) ;
-  return sz;
+  // for( ; int(tan(pio4) / tan(pio4 / T(sz)) ) < y; sz ++) ;
+  return int(ceil(pio4 / atan(T(int(1)) / T(y)) ));
 }
 
 template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
