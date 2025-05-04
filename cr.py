@@ -288,17 +288,18 @@ elif(sys.argv[1][0] == 'm'):
     bw = []
   mid.save('rand_correct.mid')
 elif(sys.argv[1][0] == 'h'):
-  for line in sys.stdin:
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     if(len(line.split("[")) <= 1): continue
     for w in line.split("[")[1].split("]")[0].split(","):
       print(float(w))
+      sys.stdout.flush()
 elif(sys.argv[1][0] == 'e'):
   import numpy
   mC = []
   loop = - 1
   if(2 < len(sys.argv)):
     loop = int(sys.argv[2])
-  for line in sys.stdin:
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     if(len(line.split("[")) <= 1): continue
     ff = line.split("[")[1].split("]")[0].split(",")
     if(loop <= 0):
@@ -328,6 +329,7 @@ elif(sys.argv[1][0] == 'e'):
       for w in ffu[1:]:
         ffuu.append(str(float(w) * float(ffu[0])))
       print(len(ffuu), ": [", ", ".join(ffuu), "]")
+      sys.stdout.flush()
     mC = []
 elif(sys.argv[1][0] == 'E'):
   for line in sys.stdin:

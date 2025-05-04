@@ -40,6 +40,9 @@ Also, one of a predictor for being controlled stream.
     ... | cr.py l 0 | tee 0 | cr.py 2 p2 p2nl p0 | ...
     cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
     # listen residue with rand_correct.mid.
+    
+    p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
+    # pseudo-harden PRNGs, more number of chain works.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -522,4 +525,5 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 2025/05/02 add p2.cc predictor for catgp p1 p0 chain with different x-asis scaling twice with different step.
 2025/05/03 Select the strategy to separate binary x-axis linear and nonlinear case. update readme close condition. code clean.
 2025/05/04 fix last up arctanFeeder initial scaling.
+2025/05/05 pseudo-harden prng command. close.
 
