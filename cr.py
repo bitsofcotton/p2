@@ -319,7 +319,11 @@ elif(sys.argv[1][0] == 'e'):
         buf = 0.
         for v in range(0, len(ff)):
           buf += float(ff[v]) * float(mC[u][v])
-        ffu.append(numpy.tan(buf))
+        if(buf < 0):
+          buf = abs(buf)
+          ffu.append(- (buf - numpy.floor(buf)))
+        else:
+          ffu.append(   buf - numpy.floor(buf))
       ffuu = []
       for w in ffu[1:]:
         ffuu.append(str(float(w) * float(ffu[0])))
@@ -457,7 +461,7 @@ elif(sys.argv[1][0] == 'M'):
 elif(sys.argv[1][0] == 'f'):
   d = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d.append(line.split(",")[0])
+    d.append(line[:- 1].split(",")[0])
     if(len(d) % int(sys.argv[2]) == 0):
       print(len(d), ": [", ",".join(d), "]")
       sys.stdout.flush()
