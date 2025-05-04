@@ -3691,17 +3691,18 @@ template <typename T> static inline int tanPio4Scale(const int& idx, const int& 
   return int(tan(T(idx) / T(size) * pio4) / tan(pio4 / T(size)) );
 }
 
-template <typename T> static inline int ceilInvTanPio4Scale(const int& y, const int& idx) {
+template <typename T> static inline int ceilInvTanPio4Scale(const int& y) {
   // N.B. code readability reason, we select simplicity instead of the speed.
+  const static T pio4(atan(T(int(1)) ));
   int sz(1);
-  for( ; tanPio4Scale<T>(idx, sz) < y; sz ++) ;
+  for( ; int(tan(pio4) / tan(pio4 / T(sz)) ) < y; sz ++) ;
   return sz;
 }
 
 template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVector<T>& in) {
   const static SimpleVector<T> null;
   if(! in.size()) return null;
-  const auto sz(ceilInvTanPio4Scale<T>(in.size(), in.size()) - 1);
+  const auto sz(ceilInvTanPio4Scale<T>(in.size()) - 1);
   if(sz <= 1) return null;
   SimpleVector<T> res(sz);
   res.O();
@@ -3722,7 +3723,7 @@ template <typename T> static inline SimpleVector<T> arctanFeeder(const SimpleVec
 template <typename T> static inline SimpleVector<SimpleVector<T> > arctanFeeder(const SimpleVector<SimpleVector<T> >& in) {
   const static SimpleVector<SimpleVector<T> > null;
   if(! in.size()) return null;
-  const auto sz(ceilInvTanPio4Scale<T>(in.size(), in.size()) - 1);
+  const auto sz(ceilInvTanPio4Scale<T>(in.size()) - 1);
   if(sz <= 1) return null;
   SimpleVector<SimpleVector<T> > res(sz);
   for(int i = 0; i < res.size(); i ++) {

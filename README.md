@@ -521,4 +521,5 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 2025/04/19 merge latest lieonn.
 2025/05/02 add p2.cc predictor for catgp p1 p0 chain with different x-asis scaling twice with different step.
 2025/05/03 Select the strategy to separate binary x-axis linear and nonlinear case. update readme close condition. code clean.
+2025/05/04 fix last up arctanFeeder initial scaling.
 
