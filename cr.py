@@ -501,14 +501,21 @@ elif(sys.argv[1][0] == 'u'):
       print(",".join(ff))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'B'):
-  p = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  a = []
+  pt = int(sys.argv[2])
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = line[:- 1].split(",")[0]
-    p.stdin.write((d + "\n").encode("utf-8"))
-    p.stdin.flush()
-    D = p.stdout.readline().decode("utf-8")[:- 1].split(",")[0]
-    print(D, ", ", d)
-    sys.stdout.flush()
+    a.append(ifloat(line[:- 1].split(",")[0]))
+    if(pt * pt <= len(a)):
+      b  = []
+      for t in range(0, pt):
+        b.append(0)
+      for aa in a:
+        b[int((aa + 1.) / 2. * pt)] += 1
+      c  = []
+      for t in range(0, len(b)):
+        c.append(str(b[t] / pt / pt))
+      print(",".join(c))
+      sys.stdout.flush()
 elif(sys.argv[1][0] == 'g'):
   avg = 0.
   pd  = []
@@ -729,4 +736,19 @@ elif(sys.argv[1] == 'Q'):
     else:
       print(- ifloat(d[0]) * pow(n2p / n2n, .5))
     t += 1
+elif(sys.argv[1] == 'H'):
+  p = []
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    d = line[:- 1].split(",")
+    if(len(p) < len(d)):
+      for t in range(len(p), len(d)):
+        p.append(subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
+    for t in range(0, len(d)):
+      p[t].stdin.write((d[t] + "\n").encode("utf-8"))
+      p[t].stdin.flush()
+    s = 0.
+    for t in range(0, len(d)):
+      s += ifloat(p[t].stdout.readline().decode("utf-8").split(",")[0])
+    print(s)
+    sys.stdout.flush()
 

@@ -43,6 +43,12 @@ Also, one of a predictor for being controlled stream.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
+    
+    ... | cr.py B ... | p1 | cut -f 1-... -d , | cr.py H p0 | p0 | ...
+    # cut horizontal ranges and predict with them but not the actual result.
+    # N.B. we need this in case we cannot define measurable condition on plain
+    #      input stream but with some of the continuous probabilitic ones with
+    #      walk conditions with the result some of the arg z on each band.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -526,4 +532,5 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 2025/05/03 Select the strategy to separate binary x-axis linear and nonlinear case. update readme close condition. code clean.
 2025/05/04 fix last up arctanFeeder initial scaling.
 2025/05/05 pseudo-harden prng command. close.
+2025/05/10 add cr.py H cmd, change cr.py B cmd. update readme.
 
