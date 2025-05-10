@@ -516,12 +516,13 @@ elif(sys.argv[1][0] == 'B'):
       for t in range(0, pt):
         b.append(0)
       for aa in a:
-        b[int((aa + 1.) / 2. * pt)] += 1
+        b[int((aa + 1.) / 2. * pt)] += aa
       c  = []
       for t in range(0, len(b)):
-        c.append(str(b[t] / pt / pt * (t - (len(b) - 1) / 2) / ((len(b) - 1) / 2)))
+        c.append(str(b[t] / pt / pt))
       print(",".join(c))
       sys.stdout.flush()
+      a = []
 elif(sys.argv[1][0] == 'g'):
   avg = 0.
   pd  = []
@@ -756,5 +757,20 @@ elif(sys.argv[1] == 'H'):
     for t in range(0, len(d)):
       s += ifloat(p[t].stdout.readline().decode("utf-8").split(",")[0])
     print(s)
+    sys.stdout.flush()
+elif(sys.argv[1] == 'V'):
+  p = []
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    d = line[:- 1].split(",")
+    if(len(p) < len(d)):
+      for t in range(len(p), len(d)):
+        p.append(subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
+    for t in range(0, len(d)):
+      p[t].stdin.write((d[t] + "\n").encode("utf-8"))
+      p[t].stdin.flush()
+    s = []
+    for t in range(0, len(d)):
+      s.append(p[t].stdout.readline().decode("utf-8").split(",")[0])
+    print(",".join(s))
     sys.stdout.flush()
 
