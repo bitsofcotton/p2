@@ -44,11 +44,13 @@ Also, one of a predictor for being controlled stream.
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
     
-    ... | cr.py B ... | p1 | cut -f 1-... -d , | cr.py H p0 | p0 | ...
+    ... | cr.py B ... | cr.py d | p1? | cut -f 1-... -d , | cr.py H p0 ... | p0? ... | ...
     # cut horizontal ranges and predict with them but not the actual result.
     # N.B. we need this in case we cannot define measurable condition on plain
     #      input stream but with some of the continuous probabilitic ones with
     #      walk conditions with the result some of the arg z on each band.
+    # N.B. the result cannot be applied in actual steps, it's only on sectional
+    #      measured ones.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.

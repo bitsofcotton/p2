@@ -157,11 +157,17 @@ elif(sys.argv[1][0] == 'a'):
     M  = M[- int(sys.argv[3]):]
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'd'):
-  bd = 0
+  bd = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d  = ifloat(line.split(",")[0])
-    print(d - bd)
-    bd = d
+    d  = line.split(",")
+    if(len(bd) < len(d)):
+      for t in range(len(bd), len(d)):
+        bd.append(0.)
+    s  = []
+    for t in range(0, len(d)):
+      s.append(str((ifloat(d[t]) - bd[t]) / 2.))
+      bd[t] = ifloat(d[t])
+    print(",".join(s))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 's'):
   s = []
@@ -513,7 +519,7 @@ elif(sys.argv[1][0] == 'B'):
         b[int((aa + 1.) / 2. * pt)] += 1
       c  = []
       for t in range(0, len(b)):
-        c.append(str(b[t] / pt / pt))
+        c.append(str(b[t] / pt / pt * (t - (len(b) - 1) / 2) / ((len(b) - 1) / 2)))
       print(",".join(c))
       sys.stdout.flush()
 elif(sys.argv[1][0] == 'g'):
