@@ -51,9 +51,8 @@ Also, one of a predictor for being controlled stream.
     #      walk conditions with the result some of the arg z on each band.
     # N.B. the result cannot be applied in actual steps, it's only on sectional
     #      measured ones.
-    ... | tee 0 | cr.py E cr.py H ... | ... > 1
-    # sectional measurement actual prediction.
-    # we need to see both 0 and 1 output.
+    ... | cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | cr.py s | cr.py k 81 | cr.py d | cr.py t .02469 | p2nl | ...
+    # cf.  one of a actual sectional measurement predictor.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -538,5 +537,5 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 2025/05/04 fix last up arctanFeeder initial scaling.
 2025/05/05 pseudo-harden prng command. close.
 2025/05/10 add cr.py H cmd, change cr.py B cmd. update readme.
-2025/05/11 change cr.py E cmd, elim M cmd, add actual sectional measurement.
+2025/05/11 change cr.py E cmd, elim M cmd, add actual sectional measurement. update readme.
 
