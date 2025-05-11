@@ -53,6 +53,8 @@ Also, one of a predictor for being controlled stream.
     #      measured ones.
     ... | cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | cr.py s | cr.py k 81 | cr.py d | cr.py t .02469 | p2nl | ...
     # cf.  one of a actual sectional measurement predictor.
+    ... | cr.py D 1 sh -c 'cr.py z 8 | p1 243 | p0 243' , cr.py D 81 cr.py p2 p2nl , ksh -c 'cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | p0 243' | cr.py l 0 2 5 6 7 15 | ...
+    # cf.  3-way 3-way predictor. however even with this, the jammer can exist.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.

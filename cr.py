@@ -789,4 +789,33 @@ elif(sys.argv[1] == 'V'):
       s.append(p[t].stdout.readline().decode("utf-8").split(",")[0])
     print(",".join(s))
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'D'):
+  comma = 3
+  for t in range(3, len(sys.argv)):
+    if(sys.argv[t][0] == ','):
+      comma = t
+      break
+  p = subprocess.Popen(sys.argv[3:comma], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q = subprocess.Popen(sys.argv[comma + 1:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  d = 0.
+  t = 0
+  D = []
+  D0 = []
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    if((t % int(sys.argv[2])) == 0):
+      p.stdin.write(line.encode("utf-8"))
+      p.stdin.flush()
+      D = p.stdout.readline().decode("utf-8")[:- 1].split(",")
+      D0 = []
+      for s in range(0, len(D)): D0.append("0")
+      t = 0
+    else:
+      D = []
+      for s in range(0, len(D0)): D.append("0")
+    q.stdin.write(line.encode("utf-8"))
+    q.stdin.flush()
+    D.extend(q.stdout.readline().decode("utf-8")[:- 1].split(","))
+    print(",".join(D))
+    sys.stdout.flush()
+    t += 1
 
