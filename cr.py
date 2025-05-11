@@ -337,13 +337,6 @@ elif(sys.argv[1][0] == 'e'):
       print(len(ffuu), ": [", ", ".join(ffuu), "]")
       sys.stdout.flush()
     mC = []
-elif(sys.argv[1][0] == 'E'):
-  for line in sys.stdin:
-    if(len(line.split("[")) <= 1): continue
-    ff = line.split("[")[1].split("]")[0].split(",")
-    for f in ff:
-      f = str(float(f) * 1e4)
-    print(len(ff), ": [", ", ".join(ff), "]")
 elif(sys.argv[1][0] == 'v'):
   a = []
   for line in sys.stdin:
@@ -463,9 +456,6 @@ elif(sys.argv[1][0] == 'N'):
     print(d)
     bd = d
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'M'):
-  for x in range(0, 729):
-    subprocess.call(["sh", "-c", "p2prng | python3 " + sys.argv[0] + " l 1 | head -n " + str(int(sys.argv[2])) + " | catgr 5 | python3 " + sys.argv[0] + " E | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | python3 " + sys.argv[0] + " e | tail -n 20"])
 elif(sys.argv[1][0] == 'f'):
   d = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -523,6 +513,29 @@ elif(sys.argv[1][0] == 'B'):
       print(",".join(c))
       sys.stdout.flush()
       a = []
+elif(sys.argv[1][0] == 'E'):
+  a  = []
+  M  = 0.
+  pt = int(sys.argv[2])
+  p  = subprocess.Popen(sys.argv[3:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    a.append(ifloat(line[:- 1].split(",")[0]))
+    D = a[- 1] * M
+    if(pt * pt <= len(a)):
+      b  = []
+      for t in range(0, pt):
+        b.append(0)
+      for aa in a:
+        b[int((aa + 1.) / 2. * pt)] += aa
+      c  = []
+      for t in range(0, len(b)):
+        c.append(str(b[t] / pt / pt))
+      p.stdin.write((",".join(c) + "\n").encode("utf-8"))
+      p.stdin.flush()
+      M = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[1])
+      a = []
+    print(D, ",", M)
+    sys.stdout.flush()
 elif(sys.argv[1][0] == 'g'):
   avg = 0.
   pd  = []
@@ -753,10 +766,13 @@ elif(sys.argv[1] == 'H'):
     for t in range(0, len(d)):
       p[t].stdin.write((d[t] + "\n").encode("utf-8"))
       p[t].stdin.flush()
-    s = 0.
+    D = 0.
+    M = 0.
     for t in range(0, len(d)):
-      s += ifloat(p[t].stdout.readline().decode("utf-8").split(",")[0])
-    print(s)
+      buf = p[t].stdout.readline().decode("utf-8").split(",")
+      D += ifloat(buf[0])
+      M += ifloat(buf[1])
+    print(D, ",", M)
     sys.stdout.flush()
 elif(sys.argv[1] == 'V'):
   p = []
