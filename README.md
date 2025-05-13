@@ -53,7 +53,7 @@ Also, one of a predictor for being controlled stream.
     #      measured ones.
     ... | cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | cr.py s | cr.py k 81 | cr.py d | cr.py t .02469 | p2nl | ...
     # cf.  one of a actual sectional measurement predictor.
-    ... | cr.py D 1 sh -c 'cr.py z 8 | p1 243 | p0 243' , cr.py D 81 cr.py p2 p2nl , ksh -c 'cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | p0 243' | cr.py l 0 2 5 6 7 14 | ...
+    ... | cr.py D 1 sh -c 'cr.py z 8 | p1 243 | p0 243' , cr.py D 81 cr.py p p2 p2nl , ksh -c 'cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | p0 243' | cr.py l 0 2 5 6 7 14 | ...
     # cf.  3-way 3-way predictor. however even with this, the jammer can exist.
 
 # XXX
@@ -436,6 +436,16 @@ However, in our p2.cc viewpoint, some of the stacking some layers can pretend si
 
 Either, if we're in the input stream is jammed condition, we should shirk external obs. dependances into data stream size theirselves as a scrapped ones, so in the case we must have large internal states.
 
+# Close
+A cr.py D command one of the usage have is universal but 3 to 4 of a output predictor we have on our test PRNGs on our machine.
+We feel our machine is infected either controlled input stream but we have 3 of a sectional continuous on selecting one of 3 meaning in some each continue average sum ranges however we often meet gulfs with some step some selection of them.
+Because we have 3 of the different prediction ways, so they are seldom but we can meet 4 of them simultaneously meet the gulf in another words uncontinuous on such a place in 4 of the meaning.
+
+Either we have brick conditions with cr.py, p0, p1, catgp, p2, even such a controlled conditions, so we leave here.
+
+N.B. The internal condition size we can get from stream upper bound is bitstream number \* bitstream accuracy when we apply low of excluded middle explicitly.
+So if jammer have the cultivated information size either some algorithm switch case changes on the stream worse condition size than the stream input, we cannot avoid such a place the prediction fails in principle when we explicitly apply the low on our computing algorithms, however, once binary coded, we cannot run away in general (without some of the obs. change on #f table).
+
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -540,4 +550,5 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 2025/05/05 pseudo-harden prng command. close.
 2025/05/10 add cr.py H cmd, change cr.py B cmd. update readme.
 2025/05/11 change cr.py E cmd, elim M cmd, add actual sectional measurement. update readme.
+2025/05/14 fix last of usage, add readme.md close section.
 
