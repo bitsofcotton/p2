@@ -818,4 +818,18 @@ elif(sys.argv[1][0] == 'D'):
     print(",".join(D))
     sys.stdout.flush()
     t += 1
+elif(sys.argv[1][0] == 'M'):
+  d = []
+  M = 0.
+  m = 0.
+  for line in sys.stdin:
+    d.append(ifloat(line[:- 1].split(",")[0]))
+    M = max(M, d[- 1])
+    m = min(m, d[- 1])
+  if(sys.argv[2][0] == '+'):
+    for l in d:
+      print((l - m) / (M - m))
+  else:
+    for l in d:
+      print((l - (m + M) / 2.) / (M - m) * 2.)
 

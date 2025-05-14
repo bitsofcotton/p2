@@ -55,6 +55,9 @@ Also, one of a predictor for being controlled stream.
     # cf.  one of a actual sectional measurement predictor.
     ... | cr.py D 1 sh -c 'cr.py z 8 | p1 243 | p0 243' , cr.py D 81 cr.py p p2 p2nl , ksh -c 'cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | p0 243' | cr.py l 0 2 5 6 7 14 | ...
     # cf.  3-way 3-way predictor. however even with this, the jammer can exist.
+    
+    ... | cr.py M + | p0 ... | cr.py M | p0 ... | ...
+    # cf.  p0 with indented bit offset prediction which we cannot decide by ourself.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -551,4 +554,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/05/10 add cr.py H cmd, change cr.py B cmd. update readme.
 2025/05/11 change cr.py E cmd, elim M cmd, add actual sectional measurement. update readme.
 2025/05/14 fix last of usage, add readme.md close section.
+2025/05/15 change cr.py M cmd meaning, add usage.
 
