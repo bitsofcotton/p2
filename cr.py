@@ -820,16 +820,41 @@ elif(sys.argv[1][0] == 'D'):
     t += 1
 elif(sys.argv[1][0] == 'M'):
   d = []
-  M = 0.
-  m = 0.
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    if(sys.argv[2][0] == '+'):
+      print((ifloat(line[:- 1].split(",")[0]) + 1.) / 2.)
+    else:
+      print( ifloat(line[:- 1].split(",")[0]) * 2. - 1.)
+    sys.stdout.flush()
+elif(sys.argv[1][0] == 'X'):
+  d = []
+  M = 0
+  m = 0
   for line in sys.stdin:
     d.append(ifloat(line[:- 1].split(",")[0]))
     M = max(M, d[- 1])
     m = min(m, d[- 1])
-  if(sys.argv[2][0] == '+'):
-    for l in d:
-      print((l - m) / (M - m))
-  else:
-    for l in d:
-      print((l - (m + M) / 2.) / (M - m) * 2.)
+  for l in d:
+    print((l - (m + M) / 2.) / (M - m) * 2.)
+elif(sys.argv[1][0] == 'Y'):
+  comma = 3
+  for t in range(3, len(sys.argv)):
+    if(sys.argv[t][0] == ','):
+      comma = t
+      break
+  p = subprocess.Popen(["ksh", "-c", "python3 " + sys.argv[0] + " M + | " + " ".join(sys.argv[2:comma])], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q = subprocess.Popen(["ksh", "-c", "python3 " + sys.argv[0] + " M - | " + " ".join(sys.argv[comma + 1:])], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  M = 0.
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = float(line[:- 1].split(",")[0])
+    p.stdin.write((str(d) + "\n").encode("utf-8"))
+    p.stdin.flush()
+    M0 = p.stdout.readline().decode("utf-8").split(",")
+    q.stdin.write((M0[0] + "\n").encode("utf-8"))
+    q.stdin.flush()
+    M1 = q.stdout.readline().decode("utf-8").split(",")
+    M2 = float(M1[1]) * (float(M0[1]) * 2. - 1.)
+    print(float(M1[0]) - M, ",", M2)
+    M  = M2
+    sys.stdout.flush()
 
