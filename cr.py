@@ -655,13 +655,13 @@ elif(sys.argv[1] == 'q'):
     d = ifloat(line[:- 1].split(",")[0])
     p.stdin.write((str(d) + "\n").encode("utf-8"))
     p.stdin.flush()
-    if(M * pow(- 1, t) < 0):
+    D = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[0])
+    if(D * pow(- 1, t) < 0):
     # N.B. following don't affect better to scatter.
-    #if(M * getrand(3) < 0):
+    #if(D * getrand(3) < 0):
       print(  d)
     else:
       print(- d)
-    M = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[0])
     t += 1
     t  = t % 2
     sys.stdout.flush()
@@ -853,8 +853,14 @@ elif(sys.argv[1][0] == 'Y'):
     q.stdin.write((M0[0] + "\n").encode("utf-8"))
     q.stdin.flush()
     M1 = q.stdout.readline().decode("utf-8").split(",")
-    M2 = float(M1[1]) * (float(M0[1]) * 2. - 1.)
-    print(float(M1[0]) - M, ",", M2)
+    # m0[0] == m0 * (d + 1) / 2
+    # m1[0] == m1 * (m0[0] * 2 - 1)
+    #       == m1 * (m0 * (d + 1) / 2 * 2 - 1)
+    #       == m1 * (m0 * d + m0 - 1)
+    #       == m1 * m0 * d + m1 * (m0 - 1)
+    M2 = float(M1[1]) * (float(M0[1]) - 1.)
+    # m1[0] - m1 * (m0 * 2 - 1) == m1 * m0 * d - m1 * m0 == m1 * m0 * (d - 1)
+    print(float(M1[0]) - M, ",", float(M0[1]) * float(M1[1]))
     M  = M2
     sys.stdout.flush()
 
