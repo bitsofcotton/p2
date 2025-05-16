@@ -4363,7 +4363,9 @@ template <typename T> static inline SimpleMatrix<T> center(const SimpleMatrix<T>
 // N.B. with using predv with PRNG, we can apply before applying PP0 P012L.
 //      our tests on PRNG can improves the result.
 template <typename T> static inline T PP0(const SimpleVector<T>& in, const int& ratio) {
- return p01next<T, p01delimNext<T>, true>(in, ratio);
+  return p01next<T, p01delimNext<T>, true>(in, ratio);
+  // N.B. our test either goes better with this, don't know why.
+  // return p0max0next<T>(in.subVector(in.size() - 3, 3), ratio);
 }
 
 // N.B. as ddpmopt:README.md, PP3 is least and enough normally.
@@ -4401,7 +4403,7 @@ template <typename T, int nprogress = 20> static inline SimpleVector<T> predv0(c
 }
 
 // N.B. we maybe in invariant controlled condition, so return 2 of candidates.
-template <typename T, int nprogress = 20> static inline pair<SimpleVector<T>, SimpleVector<T> > predv1(vector<SimpleVector<T> >& in) {
+template <typename T, int nprogress = 20> static inline SimpleVector<T> predv1(vector<SimpleVector<T> >& in) {
   static const auto step(1);
   assert(0 < step && 10 + step * 2 <= in.size() && 1 < in[0].size());
   // N.B. we use whole width to get better result in average.
@@ -4431,9 +4433,19 @@ template <typename T, int nprogress = 20> static inline pair<SimpleVector<T>, Si
 #endif
   for(int i = start + step; i < ip.rows(); i ++) {
     for(int j = 0; j < ip.cols(); j ++)
-      ip(i, j) =
-        (in[i - ip.rows() + in.size()][j] * T(int(2)) - T(int(1)) ) *
-        (p[i - ip.rows() + p.size() - step][j] * T(int(2)) - T(int(1)) );
+      ip(i, j) = in[i - ip.rows() + in.size()][j] *
+        p[i - ip.rows() + p.size() - step][j];
+  }
+  auto ipp(ip);
+  ipp.O();
+  for(int i = 3; i < ip.rows(); i ++) {
+    cerr << "pnext: " << i << " / " << ip.rows() << endl;
+    ipp(i, 0) = p0max0next<T>(ip.col(0).subVector(0, i + 1));
+#if defined(_OPENMP)
+#pragma omp parallel for schedule(static, 1)
+#endif
+    for(int j = 1; j < ip.cols(); j ++)
+      ipp(i, j) = p0max0next<T>(ip.col(j).subVector(0, i + 1));
   }
   // N.B. dftcache need to be single thread on first call.
   // N.B. we bet combination subtracted series is continuous.
@@ -4450,27 +4462,15 @@ template <typename T, int nprogress = 20> static inline pair<SimpleVector<T>, Si
   //      we can use delta input, sum output instead of this,
   //      however we select resc condition because of P01 4 dimension condition.
   //      if we do them with this hack, 4 dimensions we returns.
-  resc[0] = res[0] = (p0max0next<T>(ip.col(0)) *
-    (p[p.size() - 1][0] * T(int(2)) - T(int(1)) ) + T(int(1)) ) / T(int(2));
-  for(int j = start + step + 1; j < p.size() - 1; j ++) {
-    cerr << "pnext: " << j << " / " << p.size() - 1 << endl;
-    resc[0] -= (p0max0next<T>(ip.col(0).subVector(0, j + 1)) *
-      (p[j][0] * T(int(2)) - T(int(1)) ) + T(int(1)) ) / T(int(2));
-  }
+  res[0] = p0max0next<T>(ipp.col(0)) * p[p.size() - 1][0];
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(static, 1)
 #endif
   for(int i = 1; i < res.size(); i ++) {
-    if(nprogress && ! (i % max(int(1), int(res.size() / nprogress))) )
-      cerr << i << " / " << res.size() << endl;
-    resc[i] = res[i] = (p0max0next<T>(ip.col(i)) *
-      (p[p.size() - 1][i] * T(int(2)) - T(int(1)) ) + T(int(1)) ) / T(int(2));
-    for(int j = start + step + 1; j < p.size() - 1; j ++)
-      resc[i] -= (p0max0next<T>(ip.col(i).subVector(0, j + 1)) *
-        (p[j][i] * T(int(2)) - T(int(1)) ) + T(int(1)) ) / T(int(2));
+    res[i] = p0max0next<T>(ipp.col(i)) * p[p.size() - 1][i];
   }
   in.resize(0);
-  return make_pair(res, resc);
+  return normalize<T>(res);
 }
 
 // N.B. we apply PRNGs before to predict each of prediction in general.
@@ -4486,13 +4486,11 @@ template <typename T, int nprogress = 20> static inline pair<SimpleVector<T>, Si
 //      structure enough with ours.
 //      in the most of the cases, we don't need P012L with better PRNGs.
 //      we suppose phase period doesn't connected to the original structures.
-template <typename T, int nrecur = 0, int nprogress = 20> static inline pair<SimpleVector<T>, SimpleVector<T> > predv(vector<SimpleVector<T> >& in) {
+template <typename T, int nrecur = 0, int nprogress = 20> static inline SimpleVector<T> predv(vector<SimpleVector<T> >& in) {
   if(! nrecur) return predv1<T, nprogress>(in);
-  pair<SimpleVector<T>, SimpleVector<T> > res;
-  res.first.resize(in[0].size());
-  res.second.resize(in[0].size());
-  res.first.O();
-  res.second.O();
+  SimpleVector<T> res;
+  res.resize(in[0].size());
+  res.O();
   for(int i = 0; i < nrecur; i ++) {
     auto rin(in);
     for(int i = 0; i < rin.size(); i ++)
@@ -4503,13 +4501,9 @@ template <typename T, int nrecur = 0, int nprogress = 20> static inline pair<Sim
         rin[i][j] = (rin[i][j] + T(random() % 0x20000) / T(0x20000 - 1)) / T(int(2));
 #endif
     // N.B. PRNG parts going to gray + small noise with large enough nrecur.
-    auto n(predv1<T, nprogress>(rin));
-    res.first  += n.first;
-    res.second += n.second;
+    res += predv1<T, nprogress>(rin);
   }
-  res.first  /= T(nrecur);
-  res.second /= T(nrecur);
-  return res;
+  return res /= T(nrecur);
 }
 
 // N.B. predv only returns last one picture on some of our tests with real
@@ -4533,14 +4527,13 @@ template <typename T, int nrecur = 0, int nprogress = 20> static inline pair<Sim
 
 // N.B. predv4 is for masp generated -4.ppm predictors.
 //      mostly with slight speed hacks.
-template <typename T, int nprogress = 6> static inline pair<SimpleVector<T>, SimpleVector<T> > predv4(vector<SimpleVector<T> >& in) {
+template <typename T, int nprogress = 6> static inline SimpleVector<T> predv4(vector<SimpleVector<T> >& in) {
   assert(1 < in.size() && (in[in.size() - 1].size() == 4 ||
                            in[in.size() - 1].size() == 12) );
   static const T zero(0);
   static const T one(1);
   static const T two(2);
   SimpleVector<T> res(in[in.size() - 2].size());
-  SimpleVector<T> resc(in[in.size() - 2].size());
   vector<SimpleVector<T> > inw;
   inw.reserve(in.size());
   SimpleVector<T> nwork(in.size());
@@ -4565,7 +4558,7 @@ template <typename T, int nprogress = 6> static inline pair<SimpleVector<T>, Sim
       //  1 + ((i / (in[in.size() - 2].size() / in[in.size() - 1].size())) & (~ 0x03)), 4));
       vw[4] = inw[j * 2 + 2][i];
       toeplitz0.row(j) =
-        makeProgramInvariant<T>(vw, T(j) / T(int(toeplitz0.rows() + 1)) ).first;
+        makeProgramInvariant<T>(R2bin<T>(vw), T(j) / T(int(toeplitz0.rows() + 1)) ).first;
     }
     for(int i1 = 9; i1 <= toeplitz0.rows(); i1 ++) {
       if(nprogress && ! (i1 % max(int(1), int(toeplitz0.rows() / nprogress))) )
@@ -4584,10 +4577,10 @@ template <typename T, int nprogress = 6> static inline pair<SimpleVector<T>, Sim
               && sqrt(work.dot(work) * SimpleMatrix<T>().epsilon()) <
                  abs(work[work.size() - 1] - last); ii ++) {
         last = work[work.size() - 1];
-        const auto work2(makeProgramInvariant<T>(work, one));
-        work[work.size() - 1] = revertProgramInvariant<T>(make_pair(
+        const auto work2(makeProgramInvariant<T>(R2bin<T>(work), one));
+        work[work.size() - 1] = bin2R<T>(revertProgramInvariant<T>(make_pair(
           - (invariant.dot(work2.first) - invariant[4] * work2.first[4]) /
-          invariant[4], work2.second));
+          invariant[4], work2.second)) );
       }
       gwork0(i, i1 - 1) = work[work.size() - 1];
     }
@@ -4605,34 +4598,31 @@ template <typename T, int nprogress = 6> static inline pair<SimpleVector<T>, Sim
   for(int i = 0; i < gwork1.rows(); i ++)
     for(int j = 9; j < gwork1.cols(); j ++)
       gwork1(i, j) =
-        (in[(j - gwork1.cols()) * 2 + in.size()][i] * T(int(2)) - T(int(1)) ) *
-        (gwork0(i, j - 1) * T(int(2)) - T(int(1)) );
-  // N.B. same logic as predv, we bet only the sign of them.
-  resc[0] = res[0] = (p0max0next<T>(gwork1.row(0)) *
-    (gwork0(0, gwork0.cols() - 1) * T(int(2)) - T(int(1)) ) +
-      T(int(1)) ) / T(int(2));
-  for(int j = 11; j < gwork1.cols() - 1; j ++) {
-    cerr << "pnext: " << j << " / " << gwork1.cols() - 1 << endl;
-    resc[0] -= (p0max0next<T>(gwork1.row(0).subVector(0, j + 1)) *
-      (gwork0(0, gwork0.cols() - 1) * T(int(2)) - T(int(1)) ) +
-        T(int(1)) ) / T(int(2));
+        in[(j - gwork1.cols()) * 2 + in.size()][i] * gwork0(i, j - 1);
+  auto gwork2(gwork1);
+  gwork2.O();
+  for(int i = 3; i < gwork2.cols(); i ++) {
+    cerr << "pnext: " << i << " / " << gwork2.cols() << endl;
+    gwork2(0, i) = p0max0next<T>(gwork1.row(0).subVector(0, i + 1));
+#if defined(_OPENMP)
+#pragma omp parallel for schedule(static, 1)
+#endif
+    for(int j = 1; j < gwork2.rows(); j ++)
+      gwork2(j, i) = p0max0next<T>(gwork1.row(j).subVector(0, i + 1));
   }
+  // N.B. dftcache need to be single thread on first call.
+  // N.B. same logic as predv, we bet only the sign of them.
+  res[0] = p0max0next<T>(gwork2.row(0)) * gwork0(0, gwork0.cols() - 1);
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(static, 1)
 #endif
   for(int i = 1; i < res.size(); i ++) {
-    resc[i] = res[i] = (p0max0next<T>(gwork1.row(i)) *
-      (gwork0(i, gwork0.cols() - 1) * T(int(2)) - T(int(1)) ) +
-        T(int(1)) ) / T(int(2));
-    for(int j = 11; j < gwork1.cols() - 1; j ++)
-      resc[i] -= (p0max0next<T>(gwork1.row(i).subVector(0, j + 1))
-        * (gwork0(i, gwork0.cols() - 1) * T(int(2)) - T(int(1)) ) +
-          T(int(1)) ) / T(int(2));
+    res[i] = p0max0next<T>(gwork1.row(i)) * gwork0(i, gwork0.cols() - 1);
   }
-  return make_pair(res, resc);
+  return normalize<T>(res);
 }
 
-template <typename T> pair<vector<SimpleVector<T> >, vector<SimpleVector<T> > > predVec(vector<vector<SimpleVector<T> > >& in0) {
+template <typename T> vector<SimpleVector<T> > predVec(vector<vector<SimpleVector<T> > >& in0) {
   assert(in0.size() && in0[0].size() && in0[0][0].size());
   vector<SimpleVector<T> > in;
   in.resize(in0.size());
@@ -4649,13 +4639,10 @@ template <typename T> pair<vector<SimpleVector<T> >, vector<SimpleVector<T> > > 
   const auto size1(in0[0][0].size());
   in0.resize(0);
   auto p(predv<T>(in));
-  pair<vector<SimpleVector<T> >, vector<SimpleVector<T> > > res;
-  res.first.resize(size0);
-  res.second.resize(size0);
-  for(int j = 0; j < res.first.size(); j ++) {
-    res.first[j]  = p.first.subVector( size1 * j, size1);
-    res.second[j] = p.second.subVector(size1 * j, size1);
-  }
+  vector<SimpleVector<T> > res;
+  res.resize(size0);
+  for(int j = 0; j < res.size(); j ++)
+    res[j]  = p.subVector(size1 * j, size1);
   return res;
 }
 
@@ -4667,7 +4654,7 @@ template <typename T> pair<vector<SimpleVector<T> >, vector<SimpleVector<T> > > 
 //      on predv they uses statistics continuity as half of output.
 // N.B. either, linear predictors doesn't affected by such of DFT
 //      transformations.
-template <typename T> pair<vector<SimpleMatrix<T> >, vector<SimpleMatrix<T> > > predMat(vector<vector<SimpleMatrix<T> > >& in0) {
+template <typename T> vector<SimpleMatrix<T> > predMat(vector<vector<SimpleMatrix<T> > >& in0) {
   assert(in0.size() && in0[0].size() && in0[0][0].rows() && in0[0][0].cols());
   vector<SimpleVector<T> > in;
   in.resize(in0.size());
@@ -4687,21 +4674,17 @@ template <typename T> pair<vector<SimpleMatrix<T> >, vector<SimpleMatrix<T> > > 
   const auto cols(in0[0][0].cols());
   in0.resize(0);
   auto p(predv<T>(in));
-  pair<vector<SimpleMatrix<T> >, vector<SimpleMatrix<T> > > res;
-  res.first.resize( size);
-  res.second.resize(size);
-  for(int j = 0; j < res.first.size(); j ++) {
-    res.first[ j].resize(rows, cols);
-    res.second[j].resize(rows, cols);
-    for(int k = 0; k < rows; k ++) {
-      res.first[ j].row(k) = p.first.subVector( j * rows * cols + k * cols, cols);
-      res.second[j].row(k) = p.second.subVector(j * rows * cols + k * cols, cols);
-    }
+  vector<SimpleMatrix<T> > res;
+  res.resize(size);
+  for(int j = 0; j < res.size(); j ++) {
+    res[j].resize(rows, cols);
+    for(int k = 0; k < rows; k ++)
+      res[j].row(k) = p.subVector(j * rows * cols + k * cols, cols);
   }
   return res;
 }
 
-template <typename T> pair<SimpleSparseTensor<T>, SimpleSparseTensor<T> > predSTen(vector<SimpleSparseTensor<T> >& in0, const vector<int>& idx) {
+template <typename T> SimpleSparseTensor<T> predSTen(vector<SimpleSparseTensor<T> >& in0, const vector<int>& idx) {
   assert(idx.size() && in0.size());
   // N.B. we don't do input scaling.
   // N.B. we should use each bit extended input stream but not now.
@@ -4733,17 +4716,13 @@ template <typename T> pair<SimpleSparseTensor<T>, SimpleSparseTensor<T> > predST
   }
   in0.resize(0);
   auto p(predv<T>(in));
-  pair<SimpleSparseTensor<T>, SimpleSparseTensor<T> > res;
+  SimpleSparseTensor<T> res;
   for(int j = 0, cnt = 0; j < idx.size(); j ++)
     for(int k = 0; k < idx.size(); k ++)
       for(int m = 0; m < idx.size(); m ++)
         if(binary_search(attend.begin(), attend.end(),
-             make_pair(j, make_pair(k, m)))) {
-          res.first[idx[j]][idx[k]][idx[m]] =
-            p.first[cnt] * T(int(2)) - T(int(1));
-          res.second[idx[j]][idx[k]][idx[m]] =
-            p.second[cnt ++] * T(int(2)) - T(int(1));
-        }
+             make_pair(j, make_pair(k, m))))
+          res[idx[j]][idx[k]][idx[m]] = p[cnt ++] * T(int(2)) - T(int(1));
   return res;
 }
 
@@ -6963,12 +6942,9 @@ template <typename T, typename U> ostream& predTOC(ostream& os, const U& input, 
   os << input;
   corpus<T, U> pstats;
   auto p(predSTen<T>(in, idx));
-  pstats.corpust = move(p.first);
+  pstats.corpust = move(p);
   getAbbreved<T>(pstats, detailtitle, detail, delimiter);
   os << pstats.simpleThresh(threshin / T(int(4))).serialize();
-  pstats.corpust = move(p.second);
-  getAbbreved<T>(pstats, detailtitle, detail, delimiter);
-  os << " --- or --- " << pstats.simpleThresh(threshin / T(int(4))).serialize();
   return os;
 }
 

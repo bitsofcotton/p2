@@ -56,9 +56,10 @@ Also, one of a predictor for being controlled stream.
     ... | cr.py D 1 sh -c 'cr.py z 8 | p1 243 | p0 243' , cr.py D 81 cr.py p p2 p2nl , ksh -c 'cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | p0 243' | cr.py l 0 2 5 6 7 14 | ...
     # cf.  3-way 3-way predictor. however even with this, the jammer can exist.
     
-    ... | cr.py X | cr.py M + | cr.py Y p0 3 , p0 3 | cr.py M + | p0 3 | ...
+    ... | cr.py X | cr.py Y p0 3 , p0 3 | p0 3 | ...
     # cf.  p0 with inserting artificial measurable condition.
     # N.B. we need to test this with real jammer.
+    # N.B. not actual p value but can be fixed.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -557,4 +558,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/05/14 fix last of usage, add readme.md close section.
 2025/05/15 change cr.py M cmd meaning, add usage.
 2025/05/16 change cr.py M cmd meaning, add X, Y command, freeze close because we cannot find our targetted data stream isn't affected by the universal one. What we need is graphics predictor, we move to ddpmopt impl.
+2025/05/17 fix typo on readme.md, we don't know why this mixed into readme.md.
 
