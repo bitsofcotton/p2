@@ -11,12 +11,6 @@
 #include <assert.h>
 #include <sys/resource.h>
 
-#if defined(_NONLINEAR_X_)
-# define _NONLIN_ true
-#else
-# define _NONLIN_ false
-#endif
-
 /*
 #if defined(_FLOAT_BITS_)
 #define int int64_t
@@ -61,7 +55,11 @@ int main(int argc, const char* argv[]) {
 #else
     std::cout << d * M << ", ";
 #endif
-    Mp0 = pbond<num_t, p0maxNext<num_t>, _NONLIN_>(p0.next(d));
+#if defined(_NONLINEAR_X_)
+    Mp0 = pbond<num_t, p0maxNext<num_t> >(arctanFeeder<num_t>(p0.next(d)));
+#else
+    Mp0 = pbond<num_t, p0maxNext<num_t> >(p0.next(d));
+#endif
     {
       SimpleVector<num_t> f0n(2);
       f0n[0] = (dp0 + num_t(int(1))) / num_t(int(2));
@@ -75,13 +73,21 @@ int main(int argc, const char* argv[]) {
 #endif
     if(9 < af0.size()) {
       Mq0 = (predv0<num_t, 0>(af0.entity, af0.entity.size())[0] + num_t(int(1))) / num_t(int(2));
-      Mr0 = pbond<num_t, p012next<num_t>, _NONLIN_>(r0.next(dq0));
+#if defined(_NONLINEAR_X_)
+      Mr0 = pbond<num_t, p012next<num_t> >(arctanFeeder<num_t>(r0.next(dq0)));
+#else
+      Mr0 = pbond<num_t, p012next<num_t> >(r0.next(dq0));
+#endif
       br0 += dr0;
       if((t ++) & 1) {
         br0 /= num_t(int(2));
         const auto dp1(Mp1 * br0);
         const auto dq1(Mp1 * Mq1 * br0);
-        Mp1 = pbond<num_t, p0maxNext<num_t>, _NONLIN_>(p1.next(br0));
+#if defined(_NONLINEAR_X_)
+        Mp1 = pbond<num_t, p0maxNext<num_t> >(arctanFeeder<num_t>(p1.next(br0)));
+#else
+        Mp1 = pbond<num_t, p0maxNext<num_t> >(p1.next(br0));
+#endif
         {
           SimpleVector<num_t> f1n(2);
           f1n[0] = (dp1 + num_t(int(1))) / num_t(int(2));
@@ -95,7 +101,11 @@ int main(int argc, const char* argv[]) {
 #endif
         if(9 < af1.size()) {
           Mq1 = (predv0<num_t, 0>(af1.entity, af1.entity.size())[0] + num_t(int(1))) / num_t(int(2));
-          Mr1 = pbond<num_t, p012next<num_t>, _NONLIN_>(r1.next(dq1));
+#if defined(_NONLINEAR_X_)
+          Mr1 = pbond<num_t, p012next<num_t> >(arctanFeeder<num_t>(r1.next(dq1)));
+#else
+          Mr1 = pbond<num_t, p012next<num_t> >(r1.next(dq1));
+#endif
         }
         br0 = num_t(int(0));
       }
