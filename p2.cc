@@ -11,6 +11,12 @@
 #include <assert.h>
 #include <sys/resource.h>
 
+#if defined(_NONLINEAR_X_)
+# define _NONLIN_ true
+#else
+# define _NONLIN_ false
+#endif
+
 /*
 #if defined(_FLOAT_BITS_)
 #define int int64_t
@@ -30,15 +36,9 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-#if defined(_NONLINEAR_X_)
-  PBond012<num_t, true> p0, p1;
+  idFeeder<num_t> p0, p1;
   idFeeder<SimpleVector<num_t> > f0, f1;
-  PBond0<num_t, true> r0, r1;
-#else
-  PBond012<num_t> p0, p1;
-  idFeeder<SimpleVector<num_t> > f0, f1;
-  PBond0<num_t> r0, r1;
-#endif
+  idFeeder<num_t> r0, r1;
   std::string s;
   int   t(0);
   num_t d(t);
@@ -61,7 +61,7 @@ int main(int argc, const char* argv[]) {
 #else
     std::cout << d * M << ", ";
 #endif
-    Mp0 = p0.next(d);
+    Mp0 = pbond<num_t, p0maxNext<num_t>, _NONLIN_>(p0.next(d));
     {
       SimpleVector<num_t> f0n(2);
       f0n[0] = (dp0 + num_t(int(1))) / num_t(int(2));
@@ -75,13 +75,13 @@ int main(int argc, const char* argv[]) {
 #endif
     if(9 < af0.size()) {
       Mq0 = (predv0<num_t, 0>(af0.entity, af0.entity.size())[0] + num_t(int(1))) / num_t(int(2));
-      Mr0 = r0.next(dq0);
+      Mr0 = pbond<num_t, p012next<num_t>, _NONLIN_>(r0.next(dq0));
       br0 += dr0;
       if((t ++) & 1) {
         br0 /= num_t(int(2));
         const auto dp1(Mp1 * br0);
         const auto dq1(Mp1 * Mq1 * br0);
-        Mp1 = p1.next(br0);
+        Mp1 = pbond<num_t, p0maxNext<num_t>, _NONLIN_>(p1.next(br0));
         {
           SimpleVector<num_t> f1n(2);
           f1n[0] = (dp1 + num_t(int(1))) / num_t(int(2));
@@ -95,7 +95,7 @@ int main(int argc, const char* argv[]) {
 #endif
         if(9 < af1.size()) {
           Mq1 = (predv0<num_t, 0>(af1.entity, af1.entity.size())[0] + num_t(int(1))) / num_t(int(2));
-          Mr1 = r1.next(dq1);
+          Mr1 = pbond<num_t, p012next<num_t>, _NONLIN_>(r1.next(dq1));
         }
         br0 = num_t(int(0));
       }

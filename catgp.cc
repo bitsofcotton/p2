@@ -34,7 +34,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <length>? : continue with ";
   if(1 < argc) length = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << length << std::endl;
-  PBond012<num_t> p(length);
+  idFeeder<num_t> p(length);
   std::string s;
   num_t d(int(0));
   auto  M(d);
@@ -46,7 +46,7 @@ int main(int argc, const char* argv[]) {
 #else
     std::cout << d * M << ", ";
 #endif
-    std::cout << (M = p.next(d)) << std::endl << std::flush;
+    std::cout << (M = pbond<num_t, p012next<num_t> >(p.next(d)) ) << std::endl << std::flush;
   }
   return 0;
 }
