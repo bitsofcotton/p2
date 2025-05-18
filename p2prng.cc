@@ -46,7 +46,7 @@ int main(int argc, const char* argv[]) {
     uint8_t rnd[4];
     for(int i = 0; i < 1600000 / 4; i ++)
       getentropy(rnd, sizeof rnd);
-    std::cout << num_t(((uint32_t&)(*rnd) % 3) - 1);
+    std::cout << num_t(((int32_t&)(*rnd) % 3) - 1);
 # endif
 #else
     std::cout << fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) << ",";
