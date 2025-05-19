@@ -1,7 +1,5 @@
 # p2
-A predictor formatter for p0, p1.
-
-Also, one of a predictor for being controlled stream.
+A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
     ./catgp(32|64)? <line>? < data.txt
@@ -11,60 +9,38 @@ Also, one of a predictor for being controlled stream.
     
     ./p2(nl|-)?(32|64)? < data.txt
     # catgp - p1 - p0 chain with linear or nonlinear x-axis scaling twice
-    #   with different steps.
+    #   with different steps (persistent).
     
-    cr.py [012a-zA-Z] ...
+    cr.py [rjRsSdiltFkvPmhebfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py l 0 | cr.py p p2 p2nl | cr.py l 0 1 2 3 4 5
-    # single layer resistant predictor (simple)
-    ... | cr.py l 0 | cr.py p p2 p2nl | cr.py 4 5 0
-    # often works well with 3 of the results
+    ... | cr.py D 'cr.py D p0p "cr.py t -1 | p0p"' 'cr.py D p2 p2nl' | cr.py 0 2 4 6 | ...
+    ... | cr.py E ... cr.py H ... | ...
+    # yet another pair of single layer persistent predictor cut by y, x-axis.
+    # N.B. these are targetting {- 1, 1} input stream.
+    # N.B. this might matche bricks condition, so we can stack layers with
+    #      this form to pretend to be applied predictors but we have some of the
+    #      unpredictable point if we make them as a unique predictor condition
+    #      if the jammer affects us either the condition says some of the
+    #      stream we can input.
+    # N.B. each condition needs enough internal states read from input stream
+    #      to get stable prediction results.
     
-    ... | cr.py l 0 | cr.py 2 p2 p2nl p0 | cr.py l 0 1 ... 11 | tee ... | cr.py y
-    # double (without cr.py y) to triplet layer resistant predictor
-    # however, they can be limited range per each range in controlled cond.
-    # in randtools meaning, 10 of the candidate is enough on us.
+    cr.py L ... ... | cr.py l ... | cr.py Q | ...
+    # jammer, this often makes better predictable result.
     
-    # each single/double/triplet layered condition needs enough internal states
-    # read from input stream to get stable prediction results.
-    
-    cr.py L ... ... | cr.py Q | ...
-    # second order of jammer and predict with some predictors.
-    # this often makes better predictable result.
-    
-    # N.B. resistant condition layer and their attack is also saturated by them.
-    #      there remains residue which includes much of cultivated entropies.
-    #      we need much input length either we cannot attack them by first-look.
-    
-    ... | cr.py l 0 | tee 0 | cr.py 2 p2 p2nl p0 | ...
+    ... | cr.py l 0 | tee 0 | /* predictor */ | ...
     cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
     # listen residue with rand_correct.mid.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
-    
-    ... | cr.py B ... | cr.py d | p1? | cut -f 1-... -d , | cr.py H p0 ... | p0? ... | ...
-    # cut horizontal ranges and predict with them but not the actual result.
-    # N.B. we need this in case we cannot define measurable condition on plain
-    #      input stream but with some of the continuous probabilitic ones with
-    #      walk conditions with the result some of the arg z on each band.
-    # N.B. the result cannot be applied in actual steps, it's only on sectional
-    #      measured ones.
-    ... | cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | cr.py s | cr.py k 81 | cr.py d | cr.py t .02469 | p2nl | ...
-    # cf.  one of a actual sectional measurement predictor.
-    ... | cr.py D 1 sh -c 'cr.py z 8 | p1 243 | p0 243' , cr.py D 81 cr.py p p2 p2nl , sh -c 'cr.py E 3 cr.py H cr.py E 3 cr.py H p2nl | p0 243' | cr.py l 0 2 5 6 7 14 | ...
-    # cf.  3-way 3-way predictor. however even with this, the jammer can exist.
-    
-    ... | cr.py X | cr.py M + | p0 3 | cr.py M - | p0 3 | ...
-    # prediction with pivot, we cannot apply this to original stream.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
 
 So if there's a slow variable they're hidden by counter or so on, our first hypothesis fails on such time counter place, however, after combine the state some of the steps, our first hypothesis fullfilled on some range, however, the jammer can attack to the sign of the result even in such cases.
 
-# XXX
 Either, even this predictor can have the jammer to us.
 Normally, such a jammer should have some wavy streams.
 
@@ -558,4 +534,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/05/16 change cr.py M cmd meaning, add X, Y command, freeze close because we cannot find our targetted data stream isn't affected by the universal one. What we need is graphics predictor, we move to ddpmopt impl.
 2025/05/17 fix typo on readme.md, we don't know why this mixed into readme.md.
 2025/05/17 elim Y dependant commands.
+2025/05/19 applying p0p can have slim cr.py result.
 

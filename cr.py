@@ -75,22 +75,11 @@ elif(sys.argv[1][0] == 'r'):
   while(True):
     print(getrand(int(sys.argv[2])))
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'C'):
-  import numpy
-  for t in range(0, abs(int(sys.argv[2]))):
-    if(int(sys.argv[2]) < 0):
-      print(numpy.cos(t / float(int(sys.argv[2])) * 2. * numpy.pi * int(sys.argv[3])))
-    else:
-      if(int(sys.argv[3]) < 0):
-        print(- pow((t - abs(int(sys.argv[2])) / 2.), - int(sys.argv[3])))
-      else:
-        print(  pow((t - abs(int(sys.argv[2])) / 2.),   int(sys.argv[3])))
-elif(sys.argv[1][0] == 'n'):
-  for t in range(0, abs(int(sys.argv[2]))):
-    if(int(sys.argv[2]) < 0):
-      print(- ((t % abs(int(sys.argv[3]))) - abs(int(sys.argv[3])) / 2.))
-    else:
-      print(   (t % abs(int(sys.argv[3]))) - abs(int(sys.argv[3])) / 2.)
+elif(sys.argv[1][0] == 'j'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    print(d * getrand(int(sys.argv[2])))
+    sys.stdout.flush()
 elif(sys.argv[1][0] == 'R'):
   while(True):
     a = []
@@ -105,29 +94,6 @@ elif(sys.argv[1][0] == 'R'):
     for byte in a:
       print(byte - 127.5)
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'c'):
-  import numpy
-  while(True):
-    a = []
-    idx = 0
-    for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-      a.append(ifloat(line.split(",")[0]))
-      if(abs(int(sys.argv[2])) <= idx): break
-      idx += 1
-    a = numpy.fft.ifft(a)
-    for aa in a:
-      print(aa.real)
-elif(sys.argv[1][0] == 'w'):
-  cnt = bd = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    if(float(sys.argv[2]) < abs(d - bd)):
-      if(int(sys.argv[3]) < cnt):
-        print(d)
-        sys.stdout.flush()
-        cnt = 0
-      cnt += 1
-      bd   = d
 elif(sys.argv[1][0] == 'S'):
   t = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -138,24 +104,6 @@ elif(sys.argv[1][0] == 'S'):
       sys.stdout.flush()
       t = int(sys.argv[2])
     t += 1
-elif(sys.argv[1][0] == 'a'):
-  d = [0.]
-  M = [0.]
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    MM = M[0]
-    for MMM in M[1:]:
-      MM += MMM
-    d.append(ifloat(line.split(",")[0]))
-    print(MM * d[- 1])
-    # N.B. average shift they kills some normal jammers.
-    #      this takes return to origin, then, return to average.
-    d  = d[- int(sys.argv[2]):]
-    dd = d[0]
-    for ddd in d[1:]:
-      dd += ddd
-    M.append(dd)
-    M  = M[- int(sys.argv[3]):]
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'd'):
   bd = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
@@ -200,12 +148,6 @@ elif(sys.argv[1][0] == 't'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     print(ifloat(line.split(",")[0]) * float(sys.argv[2]))
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'T'):
-  tt = 1
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(ifloat(line.split(",")[0]) * pow(2., tt / float(sys.argv[2])))
-    tt += 1
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'F'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     b = hex(int(ifloat(line.split(",")[0]) * pow(2., int(sys.argv[2])) ))
@@ -220,6 +162,12 @@ elif(sys.argv[1][0] == 'k'):
       sys.stdout.flush()
       t = 0
     t += 1
+elif(sys.argv[1][0] == 'v'):
+  a = []
+  for line in sys.stdin:
+    a.append(line[:- 1])
+  for t in range(0, len(a)):
+    print(a[- 1 - t])
 elif(sys.argv[1][0] == 'P'):
   from PIL import Image
   mC  = []
@@ -337,12 +285,6 @@ elif(sys.argv[1][0] == 'e'):
       print(len(ffuu), ": [", ", ".join(ffuu), "]")
       sys.stdout.flush()
     mC = []
-elif(sys.argv[1][0] == 'v'):
-  a = []
-  for line in sys.stdin:
-    a.append(line[:- 1])
-  for t in range(0, len(a)):
-    print(a[- 1 - t])
 elif(sys.argv[1][0] == 'b'):
   a = []
   for line in sys.stdin:
@@ -370,60 +312,14 @@ elif(sys.argv[1][0] == 'b'):
     c += (aa - s) * (aa - s)
   c /= len(a)
   print(s, c, a[int(len(a) / 2)], a[int(len(a) / 4)], a[int(len(a) * 3 / 4)])
-elif(sys.argv[1][0] == 'j'):
+elif(sys.argv[1][0] == 'f'):
+  d = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    print(d * getrand(int(sys.argv[2])))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == '0'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(line[:- 1])
-    print(0)
-    sys.stdout.flush()
-elif(sys.argv[1][0] == '-'):
-  t = 1
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(t * ifloat(line[:- 1]))
-    t = - t
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'I'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print("num_t(", int(ifloat(line[:- 1])), ") ,")
-    sys.stdout.flush()
-elif(sys.argv[1][0] == ','):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print("num_t(", line[:- 1], ") ,")
-    sys.stdout.flush()
-elif(sys.argv[1][0] == '<'):
-  for fn in sys.argv[2:]:
-    for line in open(fn, mode = "r"):
-      print("\"" + line[:- 1] + "\\n\"")
-    print(",")
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'o'):
-  a = []
-  M = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    a.append(line[:- 1].split(",")[0])
-    try:
-      e = 0
-      tbl = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, \
-        '8': 8, '9': 9, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15, \
-        ' ': -1, '\t': -1, '\n': -1, '-': 16}
-      m = False
-      for ff in line[:- 1].split(",")[0].split("*")[1][2:]:
-        if(tbl[ff] < 0): continue
-        if(tbl[ff] == 16):
-          m = True
-          continue
-        e *= 16
-        e += tbl[ff]
-      if(m): e = - e
-      M = max(M, e)
-    except:
-      pass
-  for line in a:
-    print(ifloat(line, M))
+    d.append(line[:- 1].split(",")[0])
+    if(len(d) % int(sys.argv[2]) == 0):
+      print(len(d), ": [", ",".join(d), "]")
+      sys.stdout.flush()
+      d = []
 elif(sys.argv[1][0] == 'z'):
   bd = []
   for t in range(0, int(sys.argv[2])):
@@ -433,123 +329,6 @@ elif(sys.argv[1][0] == 'z'):
     d = [line[:- 1].split(",")[0]]
     d.extend(bd[:- 1])
     bd = d
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'A'):
-  bd = []
-  for t in range(0, int(sys.argv[2])):
-    bd.append(0)
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    for t in range(1, len(bd) - 1):
-      bd[- t] = bd[- t - 1]
-    bd[0] = ifloat(line[:- 1].split(",")[0])
-    dd = 0
-    da = 0
-    for t in range(0, len(bd)):
-      dd += bd[t] * float(len(bd) - t)
-      da += float(len(bd) - t)
-    print(dd / da)
-elif(sys.argv[1][0] == 'N'):
-  bd = 0.
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d  = ifloat(line.split(",")[0])
-    print((bd + d) / 2.)
-    print(d)
-    bd = d
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'f'):
-  d = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d.append(line[:- 1].split(",")[0])
-    if(len(d) % int(sys.argv[2]) == 0):
-      print(len(d), ": [", ",".join(d), "]")
-      sys.stdout.flush()
-      d = []
-elif(sys.argv[1][0] == 'u'):
-  import numpy
-  d = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    df = line.split(",")
-    d.append([])
-    for dd in df:
-      d[- 1].append(ifloat(dd))
-    d = d[max(- len(d), - len(df)):]
-    if(len(df) <= len(d)):
-      fd = []
-      fe = []
-      for t in range(0, len(d)):
-        fd.append(numpy.fft.fft(d[t]))
-        for s in range(0, len(fd[t])):
-          fd[t][s] *= - 2.j * numpy.pi * s / float(len(fd[- 1]))
-        fd[t] = numpy.fft.ifft(fd[t]).real
-      for t in range(0, len(d[0])):
-        fe.append([])
-        for s in range(0, len(d)):
-          fe[t].append(d[s][t])
-        for s in range(0, len(fe[t])):
-          fe[t][s] *= - 2.j * numpy.pi * s / float(len(fe[- 1]))
-        fe[t] = numpy.fft.ifft(fe[t]).real
-      ff = []
-      for t in range(0, len(d[- 1])):
-        if(d[- 1][t] < 0):
-          ff.append(str(- (fd[- 1][t] * fd[- 1][t] + fe[- 1][t] * fe[- 1][t] + d[- 1][t] * d[- 1][t]) / (2. * numpy.pi * 2. * numpy.pi + 1) ))
-        else:
-          ff.append(str(  (fd[- 1][t] * fd[- 1][t] + fe[- 1][t] * fe[- 1][t] + d[- 1][t] * d[- 1][t]) / (2. * numpy.pi * 2. * numpy.pi + 1) ))
-      print(",".join(ff))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'B'):
-  a = []
-  pt = int(sys.argv[2])
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    a.append(ifloat(line[:- 1].split(",")[0]))
-    if(pt * pt <= len(a)):
-      b  = []
-      for t in range(0, pt):
-        b.append(0)
-      for aa in a:
-        b[int((aa + 1.) / 2. * pt)] += aa
-      c  = []
-      for t in range(0, len(b)):
-        c.append(str(b[t] / pt / pt))
-      print(",".join(c))
-      sys.stdout.flush()
-      a = []
-elif(sys.argv[1][0] == 'E'):
-  a  = []
-  M  = 0.
-  pt = int(sys.argv[2])
-  p  = subprocess.Popen(sys.argv[3:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    a.append(ifloat(line[:- 1].split(",")[0]))
-    D = a[- 1] * M
-    if(pt * pt <= len(a)):
-      b  = []
-      for t in range(0, pt):
-        b.append(0)
-      for aa in a:
-        b[int((aa + 1.) / 2. * pt)] += aa
-      c  = []
-      for t in range(0, len(b)):
-        c.append(str(b[t] / pt / pt))
-      p.stdin.write((",".join(c) + "\n").encode("utf-8"))
-      p.stdin.flush()
-      M = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[1])
-      a = []
-    print(D, ",", M)
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'g'):
-  avg = 0.
-  pd  = []
-  for t in range(0, int(sys.argv[2])):
-    pd.append(0.)
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d    = ifloat(line.split(",")[0])
-    if(d == 0.):
-      print(d * pd[0], ",", d - pd[0], ",", 0.)
-    else:
-      print(d * pd[0], ",", d - pd[0], ",", pd[0] / d + 1.)
-    avg += d
-    pd = pd[1:]
-    pd.append(- avg)
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'G'):
   f = []
@@ -576,165 +355,6 @@ elif(sys.argv[1][0] == 'L'):
       d.extend(l.split(","))
     print(",".join(d))
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'x'):
-  for line in sys.stdin:
-    for c in line:
-      if(c == '1'):
-        print(1)
-      elif(c == '0'):
-        print(- 1)
-elif(sys.argv[1][0] == 'p'):
-  p0 = subprocess.Popen([sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  p1 = subprocess.Popen([sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  t = 1
-  M = D0 = bD = S = SS = S0 = S1 = b0 = b1 = 0
-  for line in io.open(sys.stdin.fileno(), 'r', encoding = "utf-8", closefd = False):
-    D0 = ifloat(line.split(",")[0])
-    D  = D0 * M
-    p0.stdin.write(line.encode("utf-8"))
-    p1.stdin.write(line.encode("utf-8"))
-    p0.stdin.flush()
-    p1.stdin.flush()
-    pr0 = p0.stdout.readline().decode("utf-8")[:- 1].split(",")
-    pr1 = p1.stdout.readline().decode("utf-8")[:- 1].split(",")
-    # N.B. ok:
-    # print(- S0 * (ifloat(pr0[0]) - b0), ",", - S1 * (ifloat(pr1[0]) - b1))
-    t = - t
-    M0  = ifloat(pr0[1])
-    M1  = ifloat(pr1[1])
-    # ok: (- s0 * S0 * M0 * d + s0 * S0 * b0 - s1 * S1 * M1 * t * d + s1 * S1 * b1 * t)
-    # ==  (- (s0 * S0 * M0 + s1 * t * S0 * M1) +
-    #       (s0 * S0 * b0 + s1 * S1 * b1 * t))
-    S0 += ifloat(pr0[0]) - b0
-    S1 += ifloat(pr1[0]) - b1
-    s0  = S1 * b1 * t
-    s1  = S0 * b0
-    if(0 < s0 * s1):
-      s0  = abs(s0)
-      s1  = abs(s1)
-    else:
-      if(abs(s0) < abs(s1)):
-        s0 = - abs(s0)
-        s1 =   abs(s1)
-      else:
-        s0 =   abs(s0)
-        s1 = - abs(s1)
-    N   = pow(s0 * s0 + s1 * s1, .5)
-    if(N != 0):
-      M = - (s0 * S0 * M0 + s1 * S1 * M1) / N
-    else:
-      M = 0
-    b0   = ifloat(pr0[0])
-    b1   = ifloat(pr1[0])
-    SS1  = SS + D0
-    # N.B. 1x all invariant is controlled cond,
-    #      2x only single state,  1x null state, 
-    #      2-way 3x making invariant as measurement insertion.
-    #      their measurement condition starts binary states either,
-    #      ends if we can write down them as a binary tree.
-    # N.B. we make the hypothesis the original stream is deterministic
-    #      single function with long internal state generated one.
-    # N.B. in such of the case, we can shirk them to 3 of the numerical pillar
-    #      start with, the internal states can have many much of them
-    #      however after words they can be treated as such one.
-    # N.B. so the binary tree copied structure says the relation to 3 of their
-    #      pillars and the produced stream relation.
-    # N.B. this might collect all condition, but isn't checked carefully.
-    # N.B. however, the PRNG can blend new states in any which case adding to
-    #      original stream the predictor must get them by the stream.
-    #      so any occasion, PRNG has slight profitable condition.
-    print(D, ",", bD * D0, ",", SS * D0, ",", D0, ",", pr0[0], ",", pr1[0], ",", M, ",", D0, ",", SS1, ",", 1., ",", pr0[1], ",", pr1[1])
-    bD   = D0
-    SS   = SS1
-    sys.stdout.flush()
-elif(sys.argv[1] == 'q'):
-  # Beating prediction stream:
-  p = subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  M = t = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    d = ifloat(line[:- 1].split(",")[0])
-    p.stdin.write((str(d) + "\n").encode("utf-8"))
-    p.stdin.flush()
-    D = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[0])
-    if(D * pow(- 1, t) < 0):
-    # N.B. following don't affect better to scatter.
-    #if(D * getrand(3) < 0):
-      print(  d)
-    else:
-      print(- d)
-    t += 1
-    t  = t % 2
-    sys.stdout.flush()
-elif(sys.argv[1] == '2'):
-  # N.B. Stack 2 layers with hypothesis first layer attack can cause
-  #      original stream continuity shift.
-  p = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q = subprocess.Popen([sys.argv[4]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  r = subprocess.Popen(["python3", sys.argv[0], "p", sys.argv[2], sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    p.stdin.write(line.encode("utf-8"))
-    q.stdin.write(line.encode("utf-8"))
-    p.stdin.flush()
-    q.stdin.flush()
-    rq = q.stdout.readline().decode("utf-8")[:- 1].split(",")
-    r.stdin.write((rq[0] + "\n").encode("utf-8"))
-    r.stdin.flush()
-    rp = p.stdout.readline().decode("utf-8")[:- 1].split(",")
-    rr = r.stdout.readline().decode("utf-8")[:- 1].split(",")
-    ra = []
-    for t in range(0, 6):
-      ra.append(rp[t])
-      ra.append(rr[t])
-    for t in range(6, 12):
-      ra.append(rp[t])
-      ra.append(str(ifloat(rr[t]) * ifloat(rq[1])))
-    print(",".join(ra))
-    sys.stdout.flush()
-elif(sys.argv[1] == 'Z'):
-  # N.B. normalize summation output on each column.
-  M = []
-  d = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    d.append(line[:- 1].split(","))
-    if(len(M) < len(d[- 1])):
-      dM = len(d[- 1]) - len(M)
-      for t in range(0, dM):
-        M.append(0.)
-    for t in range(0, len(M)):
-      if(M[t] < abs(ifloat(d[- 1][t]))):
-        M[t] = abs(ifloat(d[- 1][t]))
-  for t in range(0, len(M)):
-    if(M[t] == 0): M[t] = 1.
-  for line in d:
-    s = []
-    for t in range(0, len(line)):
-      s.append(str(ifloat(line[t]) / M[t]))
-    print(",".join(s))
-elif(sys.argv[1] == 'y'):
-  # Condorcet jury with original intensity.
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    d = line.split(",")
-    c = 0
-    a = []
-    for t in d:
-      a.append(ifloat(t))
-      if(t[0] == '-' or t[1] == '-'):
-        c -= 1
-      else:
-        c += 1
-    a = sorted(a)
-    # N.B. twisted works well because output is targetted into control case.
-    if(c == 0):
-      if(len(a) % 2 == 0):
-        buf = (a[int(len(a) / 2)] + a[int(len(a) / 2) - 1]) / 2.
-      else:
-        buf =  a[int(len(a) / 2)]
-      print(buf, ",", buf)
-    elif(0 < c):
-      print(a[0], ",", a[- 1])
-    else:
-      print(a[- 1], ",", a[0])
-    sys.stdout.flush()
 elif(sys.argv[1] == 'Q'):
   t = 0
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
@@ -756,6 +376,29 @@ elif(sys.argv[1] == 'Q'):
     else:
       print(- ifloat(d[0]) * pow(n2p / n2n, .5))
     t += 1
+elif(sys.argv[1][0] == 'E'):
+  a  = []
+  M  = 0.
+  pt = int(sys.argv[2])
+  p  = subprocess.Popen(sys.argv[3:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    a.append(ifloat(line[:- 1].split(",")[0]))
+    D = a[- 1] * M
+    if(pt * pt <= len(a)):
+      b  = []
+      for t in range(0, pt):
+        b.append(0)
+      for aa in a:
+        b[int((aa + 1.) / 2. * pt)] += aa
+      c  = []
+      for t in range(0, len(b)):
+        c.append(str(b[t] / pt / pt))
+      p.stdin.write((",".join(c) + "\n").encode("utf-8"))
+      p.stdin.flush()
+      M = ifloat(p.stdout.readline().decode("utf-8")[:- 1].split(",")[1])
+      a = []
+    print(D, ",", M)
+    sys.stdout.flush()
 elif(sys.argv[1] == 'H'):
   p = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
@@ -774,58 +417,39 @@ elif(sys.argv[1] == 'H'):
       M += ifloat(buf[1])
     print(D, ",", M)
     sys.stdout.flush()
-elif(sys.argv[1] == 'V'):
-  p = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    d = line[:- 1].split(",")
-    if(len(p) < len(d)):
-      for t in range(len(p), len(d)):
-        p.append(subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
-    for t in range(0, len(d)):
-      p[t].stdin.write((d[t] + "\n").encode("utf-8"))
-      p[t].stdin.flush()
-    s = []
-    for t in range(0, len(d)):
-      s.append(p[t].stdout.readline().decode("utf-8").split(",")[0])
-    print(",".join(s))
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'D'):
-  comma = 3
-  for t in range(3, len(sys.argv)):
-    if(sys.argv[t][0] == ','):
-      comma = t
-      break
-  p = subprocess.Popen(sys.argv[3:comma], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q = subprocess.Popen(sys.argv[comma + 1:], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  p = subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  q = subprocess.Popen(["sh", "-c", sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   d = 0.
-  t = 0
-  D = []
-  D0 = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    if((t % int(sys.argv[2])) == 0):
-      p.stdin.write(line.encode("utf-8"))
-      p.stdin.flush()
-      D = p.stdout.readline().decode("utf-8")[:- 1].split(",")
-      D0 = []
-      for s in range(0, len(D)): D0.append("0")
-      t = 0
-    else:
-      D = []
-      for s in range(0, len(D0)): D.append("0")
+    p.stdin.write(line.encode("utf-8"))
     q.stdin.write(line.encode("utf-8"))
+    p.stdin.flush()
     q.stdin.flush()
+    D = p.stdout.readline().decode("utf-8")[:- 1].split(",")
     D.extend(q.stdout.readline().decode("utf-8")[:- 1].split(","))
     print(",".join(D))
     sys.stdout.flush()
-    t += 1
-elif(sys.argv[1][0] == 'M'):
+elif(sys.argv[1] == 'Z'):
+  # N.B. normalize summation output on each column.
+  M = []
   d = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    if(sys.argv[2][0] == '+'):
-      print((ifloat(line[:- 1].split(",")[0]) + 1.) / 2.)
-    else:
-      print( ifloat(line[:- 1].split(",")[0]) * 2. - 1.)
-    sys.stdout.flush()
+    d.append(line[:- 1].split(","))
+    if(len(M) < len(d[- 1])):
+      dM = len(d[- 1]) - len(M)
+      for t in range(0, dM):
+        M.append(0.)
+    for t in range(0, len(M)):
+      if(M[t] < abs(ifloat(d[- 1][t]))):
+        M[t] = abs(ifloat(d[- 1][t]))
+  for t in range(0, len(M)):
+    if(M[t] == 0): M[t] = 1.
+  for line in d:
+    s = []
+    for t in range(0, len(line)):
+      s.append(str(ifloat(line[t]) / M[t]))
+    print(",".join(s))
 elif(sys.argv[1][0] == 'X'):
   d = []
   M = 0
@@ -836,31 +460,11 @@ elif(sys.argv[1][0] == 'X'):
     m = min(m, d[- 1])
   for l in d:
     print((l - (m + M) / 2.) / (M - m) * 2.)
-elif(sys.argv[1][0] == 'Y'):
-  comma = 3
-  for t in range(3, len(sys.argv)):
-    if(sys.argv[t][0] == ','):
-      comma = t
-      break
-  p = subprocess.Popen(["ksh", "-c", "python3 " + sys.argv[0] + " M + | " + " ".join(sys.argv[2:comma])], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q = subprocess.Popen(["ksh", "-c", "python3 " + sys.argv[0] + " M - | " + " ".join(sys.argv[comma + 1:])], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  M = 0.
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = float(line[:- 1].split(",")[0])
-    p.stdin.write((str(d) + "\n").encode("utf-8"))
-    p.stdin.flush()
-    M0 = p.stdout.readline().decode("utf-8").split(",")
-    q.stdin.write((M0[0] + "\n").encode("utf-8"))
-    q.stdin.flush()
-    M1 = q.stdout.readline().decode("utf-8").split(",")
-    # m0[0] == m0 * (d + 1) / 2
-    # m1[0] == m1 * (m0[0] * 2 - 1)
-    #       == m1 * (m0 * (d + 1) / 2 * 2 - 1)
-    #       == m1 * (m0 * d + m0 - 1)
-    #       == m1 * m0 * d + m1 * (m0 - 1)
-    M2 = float(M1[1]) * (float(M0[1]) - 1.)
-    # m1[0] - m1 * (m0 * 2 - 1) == m1 * m0 * d - m1 * m0 == m1 * m0 * (d - 1)
-    print(float(M1[0]) - M, ",", float(M0[1]) * float(M1[1]))
-    M  = M2
-    sys.stdout.flush()
+elif(sys.argv[1][0] == 'x'):
+  for line in sys.stdin:
+    for c in line:
+      if(c == '1'):
+        print(1)
+      elif(c == '0'):
+        print(- 1)
 
