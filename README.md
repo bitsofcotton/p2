@@ -14,7 +14,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     cr.py [rjRsSdiltFkvPmhebfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py D 'cr.py D p0p "cr.py t -1 | p0p"' 'cr.py D p2 p2nl' | cr.py 0 2 4 6 | ...
+    ... | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py l 0 2 5 7 -1 | ...
     ... | cr.py E ... cr.py H ... | ...
     # yet another pair of single layer persistent predictor cut by y, x-axis.
     # N.B. these are targetting {- 1, 1} input stream.
@@ -26,10 +26,10 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # N.B. each condition needs enough internal states read from input stream
     #      to get stable prediction results.
     
-    cr.py L ... ... | cr.py l ... | cr.py Q | ...
-    # jammer, this often makes better predictable result.
+    ... | tee 0-0 | <predictor> | tee 0-1 | cr.py l ... | cr.py Q | ... | tee 0-... | ...
+    # jammer. N.B. this often makes better n-th predictable result.
     
-    ... | cr.py l 0 | tee 0 | /* predictor */ | ...
+    ... | cr.py l 0 | tee 0 | <predictor> | ...
     cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
     # listen residue with rand_correct.mid.
     
@@ -535,4 +535,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/05/17 fix typo on readme.md, we don't know why this mixed into readme.md.
 2025/05/17 elim Y dependant commands.
 2025/05/19 applying p0p can have slim cr.py result.
+2025/05/27 update cr.py locking, D cmd output +1 original col, readme.md.
 

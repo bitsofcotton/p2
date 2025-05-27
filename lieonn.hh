@@ -7626,7 +7626,7 @@ template <typename T> static inline vector<T> cutText(const T& input, const vect
   return result;
 }
 
-static inline std::string utf8align(const std::string& tob) {
+static inline string utf8align(const string& tob) {
   int head = 0;
   while(head < tob.size() && (tob[head] & 0xc0) == 0x80) head ++;
   int tail = head;
@@ -7638,39 +7638,39 @@ static inline std::string utf8align(const std::string& tob) {
 }
 
 template <typename T, typename U> static inline void makelword(vector<U>& words, const U& input, const vector<U>& delimiter, const bool& show = false, const bool& utf8 = true, const int& limit = - 1) {
-  std::vector<gram_t<U> > found;
+  vector<gram_t<U> > found;
   const auto lwords(lword<char, U>(int(log(T(int(input.size() ))) / log(T(int(2)) ) )).compute(input));
   for(auto itr = lwords.begin(); itr != lwords.end(); ++ itr) {
     if(itr->rptr.size() < 2 && itr->str.size() < 3)
       continue;
-    const auto lb(std::lower_bound(found.begin(), found.end(), *itr));
+    const auto lb(lower_bound(found.begin(), found.end(), *itr));
     if(found.begin() <= lb && lb < found.end() && lb->str == itr->str)
       lb->rptr.insert(lb->rptr.end(), itr->rptr.begin(), itr->rptr.end());
     else
       found.emplace_back(*itr);
   }
   for(auto itr = found.begin(); itr != found.end(); ++ itr) {
-    std::sort(itr->rptr.begin(), itr->rptr.end());
-    itr->rptr.erase(std::unique(itr->rptr.begin(), itr->rptr.end()), itr->rptr.end());
+    sort(itr->rptr.begin(), itr->rptr.end());
+    itr->rptr.erase(unique(itr->rptr.begin(), itr->rptr.end()), itr->rptr.end());
   }
-  std::sort(found.begin(), found.end(), lessCount<U>);
-  found.erase(std::unique(found.begin(), found.end()), found.end());
+  sort(found.begin(), found.end(), lessCount<U>);
+  found.erase(unique(found.begin(), found.end()), found.end());
   if(0 < limit && limit < found.size()) found.resize(limit);
   words.reserve(words.size() + found.size());
   for(auto itr(found.begin()); itr < found.end(); ++ itr) {
     const auto tob(utf8 ? utf8align(itr->str) : itr->str);
     if(! tob.size()) continue;
     words.emplace_back(tob);
-    if(show) std::cout << tob << ", " << itr->rptr.size() << std::endl;
+    if(show) std::cout << tob << ", " << itr->rptr.size() << endl;
   }
-  std::sort(words.begin(), words.end());
-  words.erase(std::unique(words.begin(), words.end()), words.end());
+  sort(words.begin(), words.end());
+  words.erase(unique(words.begin(), words.end()), words.end());
   auto mydelim(delimiter);
   mydelim.insert(mydelim.end(), words.begin(), words.end());
   sort(mydelim.begin(), mydelim.end());
   auto inputs(cutText(input, words, mydelim));
-  std::sort(inputs.begin(), inputs.end());
-  inputs.erase(std::unique(inputs.begin(), inputs.end()), inputs.end());
+  sort(inputs.begin(), inputs.end());
+  inputs.erase(unique(inputs.begin(), inputs.end()), inputs.end());
   if(utf8)
     for(int i = 0; i < inputs.size(); i ++) {
       inputs[i] = utf8align(inputs[i]);
@@ -7678,11 +7678,11 @@ template <typename T, typename U> static inline void makelword(vector<U>& words,
     }
   else
     words.insert(words.end(), inputs.begin(), inputs.end());
-  std::sort(words.begin(), words.end());
-  words.erase(std::unique(words.begin(), words.end()), words.end());
+  sort(words.begin(), words.end());
+  words.erase(unique(words.begin(), words.end()), words.end());
   if(show)
     for(int i = 0; i < inputs.size(); i ++)
-      if(inputs[i].size()) std::cout << inputs[i] << ", 1" << std::endl;
+      if(inputs[i].size()) std::cout << inputs[i] << ", 1" << endl;
   return;
 }
 

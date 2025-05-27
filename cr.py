@@ -375,6 +375,7 @@ elif(sys.argv[1] == 'Q'):
       print(  ifloat(d[0]) * pow(n2p / n2n, .5))
     else:
       print(- ifloat(d[0]) * pow(n2p / n2n, .5))
+    sys.stdout.flush()
     t += 1
 elif(sys.argv[1][0] == 'E'):
   a  = []
@@ -428,6 +429,7 @@ elif(sys.argv[1][0] == 'D'):
     q.stdin.flush()
     D = p.stdout.readline().decode("utf-8")[:- 1].split(",")
     D.extend(q.stdout.readline().decode("utf-8")[:- 1].split(","))
+    D.extend(line[:- 1].split(","))
     print(",".join(D))
     sys.stdout.flush()
 elif(sys.argv[1] == 'Z'):
