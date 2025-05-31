@@ -14,7 +14,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     cr.py [rjRsSdiltFkvPmhebfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py l 0 2 5 7 -1 | ...
+    ... | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py l -1 0 2 5 7 | ...
     ... | cr.py E ... cr.py H ... | ...
     # yet another pair of single layer persistent predictor cut by y, x-axis.
     # N.B. these are targetting {- 1, 1} input stream.
@@ -35,6 +35,15 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
+    
+    <{-1,1}-input> | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py -1 0 2 5 7 | tee 0-1 | cr.py Q | cr.py D ... > 0-3
+    ... > 2-3
+    cr.py L 2-[123] | cr.py l 11 13
+    # Once we met *false positive* result with this which is revertable
+    # prediction which whole stream can be produced from first 6-bit.
+    # This makes 3-depth jammer to black-box of 3-depth jammer.
+    # Once we might saturate them as a result of false positive, then,
+    # they're slipped. So our machine (or ourself) might be infected.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -536,4 +545,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/05/17 elim Y dependant commands.
 2025/05/19 applying p0p can have slim cr.py result.
 2025/05/27 update cr.py locking, D cmd output +1 original col, readme.md.
+2025/05/31 cr.py Q command match the double of input stream. update readme.
 

@@ -95,7 +95,6 @@ public:
   inline DUInt(const DUInt<DUInt<T,bits>,bits*2>& src) { *this = src; }
   inline DUInt(DUInt<T,bits>&& src) { *this = src; }
   inline ~DUInt() { ; }
-  
   inline DUInt<T,bits>& operator ++ () {
     ++ e[0];
     if(!e[0]) ++ e[1];
@@ -412,7 +411,6 @@ public:
   inline SimpleFloat(const SimpleFloat<T,W,bits,U>& src) { *this = src; }
   inline SimpleFloat(SimpleFloat<T,W,bits,U>&& src) { *this = src; }
   inline ~SimpleFloat() { ; }
-  
   inline SimpleFloat<T,W,bits,U>  operator -  () const {
     auto work(*this);
     work.s ^= 1 << SIGN;
@@ -512,7 +510,6 @@ public:
     m  = T(mm >> bits);
     return ensureFlag();
   }
-
   inline SimpleFloat<T,W,bits,U>  operator %  (const SimpleFloat<T,W,bits,U>& src) const {
     return *this - (*this / src).floor() * src;
   }
@@ -624,7 +621,6 @@ public:
     }
     return fl;
   }
-
   inline SimpleFloat<T,W,bits,U>  abs()  const {
     auto work(*this);
     work.s &= ~ (1 << SIGN);
@@ -1188,7 +1184,6 @@ public:
     _imag = move(imag);
   }
   inline ~Complex() { ; }
-
   inline Complex<T>  operator ~  ()                    const {
     return Complex<T>(  _real, - _imag);
   }
@@ -1307,7 +1302,6 @@ public:
   inline             operator T    () const {
     return this->_real;
   }
-  
   const Complex<T>& i() const {
     const static auto I(Complex<T>(T(int(0)), T(int(1))));
     return I;
@@ -1489,7 +1483,6 @@ public:
   inline SimpleVector(const SimpleVector<T>& other) { *this = other; }
   inline SimpleVector(SimpleVector<T>&& other) { *this = other; }
   inline ~SimpleVector() { ; }
-  
   inline       SimpleVector<T>  operator -  () const {
     SimpleVector<T> res(entity.size());
 #if defined(_OPENMP)
@@ -1727,7 +1720,6 @@ public:
     }
     return is;
   }
-  
   vector<T> entity;
 };
 
@@ -1747,7 +1739,6 @@ public:
   inline SimpleMatrix(const SimpleMatrix<T>& other) { *this = other; }
   inline SimpleMatrix(SimpleMatrix<T>&& other) { *this = other; }
   inline ~SimpleMatrix() { ; }
-  
   inline       SimpleMatrix<T>  operator -  () const {
     SimpleMatrix<T> res(entity.size(), ecols);
 #if defined(_OPENMP)
@@ -2019,7 +2010,6 @@ public:
 #endif
     return eps;
   }
-
   friend ostream& operator << (ostream& os, const SimpleMatrix<T>& v) {
     SimpleMatrix<string> buf(v.rows(), v.cols());
     int M(0);
@@ -2781,7 +2771,6 @@ public:
   inline SimpleSparseVector(const SimpleSparseVector<T>& other) { *this = other; }
   inline SimpleSparseVector(SimpleSparseVector<T>&& other) { *this = other; }
   inline ~SimpleSparseVector() { ; }
-  
   inline SimpleSparseVector<T>  operator -  () const {
     auto res(*this);
     for(auto itr(res.entity.begin()); itr != res.entity.end(); ++ itr)
@@ -5012,7 +5001,7 @@ template <typename T> bool loadobj(vector<SimpleVector<T> >& data, vector<Simple
   }
   return true;
 }
-  
+
 template <typename T> static inline bool saveMTL(const char* photo, const char* filename) {
   ofstream output;
   output.open(filename, std::ios::out);
@@ -5066,7 +5055,7 @@ template <typename T> static inline bool loaddat(const char* filename, string& h
   }
   return true;
 }
-  
+
 template <typename T> static inline bool savedat(const char* filename, string& header, vector<vector<T> >& data) {
   ofstream output;
   output.open(filename, std::ios::out);
@@ -5084,7 +5073,7 @@ template <typename T> static inline bool savedat(const char* filename, string& h
   }
   return true;
 }
-  
+
 template <typename T> static inline bool loadcenterr(vector<SimpleVector<T> >& center, vector<T>& r, const char* filename) {
   center = vector<SimpleVector<T> >();
   r      = vector<T>();
@@ -5735,7 +5724,6 @@ template <typename T> static inline vector<match_t<T> > matchPartial(const vecto
     m[i] = ~ m[i];
   return m;
 }
-
 
 template <typename T> static inline void drawMatchLine(SimpleMatrix<T>& map, const SimpleVector<T>& lref0, const SimpleVector<T>& lref1, const T& c) {
   int idxm(0);
@@ -6442,9 +6430,7 @@ public:
     this->dicts.resize(loop, vector<gram_t<U> >());
   }
   inline ~lword() { ; }
-  
   vector<gram_t<U> > compute(const U& input);
-
 private:
   inline bool       isin(const U& key) {
     assert(key.size() < dicts.size());
@@ -6454,7 +6440,6 @@ private:
     auto p(lower_bound(dict.begin(), dict.end(), key0));
     return dict.begin() <= p && p < dict.end() && p->str == key;
   }
-
   inline gram_t<U>& find(const U& key) {
     static gram_t<U> dummy;
     assert(key.size() < dicts.size());
@@ -6468,7 +6453,6 @@ private:
     }
     return *p;
   }
-
   inline void       assign(const gram_t<U>& val) {
     assert(val.str.size() < dicts.size());
     vector<gram_t<U> >& dict(dicts[val.str.size()]);
@@ -6489,7 +6473,6 @@ private:
       dict.erase(p);
     return;
   }
-
   vector<T>                   dict0;
   vector<vector<gram_t<U> > > dicts;
 };
@@ -6612,12 +6595,10 @@ public:
   typedef SimpleSparseTensor<T> Tensor;
 
   corpus(const U& input, const vector<U>& delimiter);
-
   inline corpus() { ; }
   inline corpus(const corpus<T, U>& other) { *this = other; }
   inline corpus(corpus<T, U>&& other) { *this = other; }
   inline ~corpus() { ; }
-
   inline U getAttributed(const vector<U>& highlight) const {
     U   result;
     int i;
@@ -7040,7 +7021,6 @@ template <typename T, typename U> U corpus<T, U>::serializeSub(const vector<int>
 template <typename T, typename U> pair<T, T> corpus<T, U>::compareStructure(const corpus<T, U>& src, const T& thresh, const T& thresh2) const {
   // get H-SVD singular values for each of them and sort:
   const auto s0(singularValues()), s1(src.singularValues());
-
   // get compared.
   pair<T, T> result;
   result.first = result.second = T(0);

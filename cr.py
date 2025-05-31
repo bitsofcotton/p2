@@ -331,17 +331,13 @@ elif(sys.argv[1][0] == 'z'):
     bd = d
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'G'):
-  f = []
-  for ff in sys.argv[2:]:
-    f.append(open(ff, 'r', encoding = "utf-8"))
-  while(True):
-    d = 0.
-    for g in f:
-      l  = g.readline()
-      if(l == ""): exit(0)
-      d += ifloat(l.split(",")[0])
-    d /= len(f)
-    print(d)
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = line.split(",")
+    s = 0.
+    for dd in d:
+      s += ifloat(dd)
+    s /= len(d)
+    print(s)
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'L'):
   f = []
@@ -365,9 +361,15 @@ elif(sys.argv[1] == 'Q'):
       n2n += pow(ifloat(d[s]), 2.)
       if(t % (len(d) - 1) + 1 != s):
         n2p += pow(ifloat(d[s]), 2.)
-    if(n2n == 0.):
+    if(n2n == 0. and 2 < len(d)):
       print(0.)
       continue
+    elif(len(d) <= 2):
+      n2n = ifloat(d[0]) * ifloat(d[0]) + ifloat(d[1]) * ifloat(d[1])
+      n2p = ifloat(d[1]) * ifloat(d[1])
+      if(n2n == 0):
+        print(0.)
+        continue
     # N.B. Cyclic out with complemental weight.
     if(ifloat(d[t % (len(d) - 1) + 1]) * pow(- 1, t) < 0):
     # N.B. following don't affect better to scatter.
