@@ -100,7 +100,11 @@ int main(int argc, const char* argv[]) {
         const auto& af1(f1.res);
 #endif
         if(9 < af1.size()) {
-          Mq1 = (predv0<num_t, 0>(af1.entity, af1.entity.size())[0] + num_t(int(1))) / num_t(int(2));
+          try {
+            Mq1 = (predv0<num_t, 0>(af1.entity, af1.entity.size())[0] + num_t(int(1))) / num_t(int(2));
+          } catch (const char* e) {
+            Mq1 = num_t(int(0));
+          }
 #if defined(_NONLINEAR_X_)
           Mr1 = pbond<num_t, p012next<num_t> >(arctanFeeder<num_t>(r1.next(dq1)));
 #else

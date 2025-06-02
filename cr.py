@@ -353,6 +353,9 @@ elif(sys.argv[1][0] == 'L'):
     sys.stdout.flush()
 elif(sys.argv[1] == 'Q'):
   t = 0
+  # N.B. we can also we should shuffle the indices for jamming.
+  # N.B. harden predictor chain slips with shuffling because the pattern
+  #      predictors added slips when indices are shuffled.
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     d = line.split(",")
     n2p = 0
