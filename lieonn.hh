@@ -3844,7 +3844,7 @@ template <typename T, T (*p)(const SimpleVector<T>&)> static inline T deep(const
 // N.B. pack p0, p01, p012 into one function with idFeeder reference chain.
 //      we should pack them into class capsule, however we don't because of
 //      portability.
-template <typename T, bool atf = false> static inline pair<vector<T>, vector<T> > p2next(vector<T>& lastM, const SimpleVector<T>& p0, idFeeder<T>& p1, idFeeder<SimpleVector<T> >& f0, idFeeder<SimpleVector<T> >& f1, idFeeder<T>& r0, idFeeder<T>& r1, T& br0, int& t) {
+template <typename T, bool atf = false> static inline vector<T> p2next(const vector<T>& lastM, const SimpleVector<T>& p0, idFeeder<T>& p1, idFeeder<SimpleVector<T> >& f0, idFeeder<SimpleVector<T> >& f1, idFeeder<T>& r0, idFeeder<T>& r1, T& br0, int& t) {
   vector<T> dn;
   vector<T> M;
   const auto& d(p0[p0.size() - 1]);
@@ -3897,7 +3897,7 @@ template <typename T, bool atf = false> static inline pair<vector<T>, vector<T> 
     for( ; dn.size() < 6; dn.emplace_back(T(int(0))) ) ;
     for( ;  M.size() < 6;  M.emplace_back(lastM[M.size()]) ) ;
   }
-  return make_pair(move(dn), lastM = M);
+  return move(M);
 }
 
 // N.B. unit for prediction bricks.
@@ -3910,10 +3910,7 @@ template <typename T> static inline pair<vector<T>, vector<T> > pbullet4(const S
     p1 = deep<T, p0maxNext<T> >(minin, 3);
   }
   auto t0(t);
-  auto p2(p2next<T, false>(lastM[2], in, f0[0], f1[0], f1[1], f0[1], f0[2], br[0], t0));
-  auto p3(p2next<T, true >(lastM[3], in, f0[3], f1[2], f1[3], f0[4], f0[5], br[1], t));
   vector<T> dn;
-  vector<T> M;
   dn.reserve(4);
   dn.emplace_back(lastM[0][0] * in[in.size() - 1]);
   dn.emplace_back(lastM[1][0] * in[in.size() - 1]);
@@ -3924,14 +3921,17 @@ template <typename T> static inline pair<vector<T>, vector<T> > pbullet4(const S
   for(int i = 1; i < lastM[3].size(); i ++) lM *= lastM[3][i];
   dn.emplace_back(lM);
 
+  lastM[2] = p2next<T, false>(lastM[2], in, f0[0], f1[0], f1[1], f0[1], f0[2], br[0], t0);
+  lastM[3] = p2next<T, true >(lastM[3], in, f0[3], f1[2], f1[3], f0[4], f0[5], br[1], t);
+  vector<T> M;
   M.reserve(dn.size());
   M.emplace_back(move(p0));
   M.emplace_back(move(p1));
-  auto MM(p2.second[0]);
-  for(int i = 1; i < p2.second.size(); i ++) MM *= p2.second[i];
+  auto MM(lastM[2][0]);
+  for(int i = 1; i < lastM[2].size(); i ++) MM *= lastM[2][i];
   M.emplace_back(MM);
-  MM = p3.second[0];
-  for(int i = 1; i < p3.second.size(); i ++) MM *= p3.second[i];
+  MM = lastM[3][0];
+  for(int i = 1; i < lastM[3].size(); i ++) MM *= lastM[3][i];
   M.emplace_back(move(MM));
   lastM[0][0] = M[0];
   lastM[1][0] = M[1];
@@ -3989,7 +3989,7 @@ template <typename T> static inline vector<T> pSlipJamQuad3(const SimpleVector<T
   }
   auto r0(pSubesube<T>(q2.first, pbullet4(pipe[5].next(q2.first), lastM[6], f0[6], f1[6], br[6], t0), t0, shf));
   t0 = t;
-  auto r1(pSubesube<T>(q0.first, pbullet4(pipe[6].next(r0.first), lastM[7], f0[7], f1[7], br[7], t0), t0, shf));
+  auto r1(pSubesube<T>(r0.first, pbullet4(pipe[6].next(r0.first), lastM[7], f0[7], f1[7], br[7], t0), t0, shf));
   t0 = t;
   auto r2(pbullet4(pipe[7].next(r1.first), lastM[8], f0[8], f1[8], br[8], t0));
   // N.B. r2's M operation.
