@@ -3047,7 +3047,8 @@ template <typename T> static inline pair<SimpleVector<T>, T> makeProgramInvarian
 }
 
 template <typename T> static inline T revertProgramInvariant(const pair<T, T>& in) {
-  const auto r0(in.first / in.second);
+  const auto r0(in.second == T(int(0)) ?
+    sgn<T>(in.second) / SimpleMatrix<T>().epsilon() : in.first / in.second);
   const auto r1(T(int(0)) < r0 ? r0 - floor(r0) : ceil(- r0) + r0);
   return T(int(0)) == r1 ? T(int(1)) : r1;
 }
@@ -3630,10 +3631,6 @@ template <typename T> static inline T p0maxNext(const SimpleVector<T>& in) {
   // return sumCNext<T, true, sumCNext<T, false, logCNext<T, logCNext<T, P0DFT<T, p0max0next<T> > > > > >(in);
 }
 
-template <typename T> static inline T p01delimNext(const SimpleVector<T>& in) {
-  return in[in.size() - 1];
-}
-
 // Get invariant structure that
 // \[- &alpha, &alpha;\[ register computer with deterministic calculation.
 // cf. bitsofcotton/randtools .
@@ -3700,7 +3697,7 @@ template <typename T, const bool cultivated = true, const bool nonlinear = true>
   }
   return - invariant.dot(work) / invariant[varlen - 1];
 }
- 
+
 // N.B. class-capsules for serial stream.
 template <typename T> class idFeeder {
 public:
@@ -3732,7 +3729,7 @@ public:
 private:
   int  t;
 };
-
+ 
 template <typename T> static inline int tanPio4Scale(const int& idx, const int& size) {
   const static T pio4(atan(T(int(1)) ));
   return int(tan(T(idx) / T(size) * pio4) / tan(pio4 / T(size)) );
@@ -3790,6 +3787,7 @@ template <typename T> static inline SimpleVector<SimpleVector<T> > arctanFeeder(
 // N.B. we omit high frequency part (1/f(x) input) to be treated better in P.
 template <typename T, T (*p)(const SimpleVector<T>&)> static inline T pbond(SimpleVector<T> in) {
   if(in.size() <= 1) return T(int(0));
+  for(int i = 0; i < in.size(); i ++) if(! isfinite(in[i])) return T(int(0));
   auto M(abs(in[0]));
   for(int i = 1; i < in.size(); i ++)
     M = max(M, in[i]);
@@ -3841,6 +3839,162 @@ template <typename T, T (*p)(const SimpleVector<T>&)> static inline T deep(const
       (M = - M) += depth[j].res[depth[j].res.size() - 1];
   }
   return M;
+}
+
+// N.B. pack p0, p01, p012 into one function with idFeeder reference chain.
+//      we should pack them into class capsule, however we don't because of
+//      portability.
+template <typename T, bool atf = false> static inline pair<vector<T>, vector<T> > p2next(vector<T>& lastM, const SimpleVector<T>& p0, idFeeder<T>& p1, idFeeder<SimpleVector<T> >& f0, idFeeder<SimpleVector<T> >& f1, idFeeder<T>& r0, idFeeder<T>& r1, T& br0, int& t) {
+  vector<T> dn;
+  vector<T> M;
+  const auto& d(p0[p0.size() - 1]);
+  dn.reserve(6);
+  dn.emplace_back(lastM[0] * d);
+  dn.emplace_back(lastM[1] * lastM[0] * d);
+  dn.emplace_back(lastM[2] * lastM[1] * lastM[0] * d);
+  M.reserve(6);
+  M.emplace_back(pbond<T, p0maxNext<T> >(atf ? arctanFeeder<T>(p0) : p0));
+  {
+    SimpleVector<T> f0n(2);
+    f0n[0] = offsetHalf<T>(dn[0]);
+    f0n[1] = offsetHalf<T>(M[0]);
+    f0.next(move(f0n));
+  }
+  const auto af0(atf ? arctanFeeder<T>(f0.res) : f0.res);
+  if(9 < af0.size()) {
+    M.emplace_back(unOffsetHalf<T>(
+      predv0<T, 0>(af0.entity, af0.entity.size())[0] ));
+    M.emplace_back(pbond<T, p012next<T> >(atf ?
+      arctanFeeder<T>(r0.next(dn[1])) : r0.next(dn[1]) ));
+    br0 += dn[2];
+    if((t ++) & 1) {
+      br0 /= T(int(2));
+      dn.emplace_back(lastM[3] * br0);
+      dn.emplace_back(lastM[4] * lastM[3] * br0);
+      dn.emplace_back(lastM[5] * lastM[4] * lastM[3] * br0);
+      M.emplace_back(pbond<T, p0maxNext<T> >(atf ?
+        arctanFeeder<T>(p1.next(br0)) : p1.next(br0) ));
+      {
+        SimpleVector<T> f1n(2);
+        f1n[0] = offsetHalf<T>(dn[3]);
+        f1n[1] = offsetHalf<T>(M[3]);
+        f1.next(move(f1n));
+      }
+      const auto af1(atf ? arctanFeeder<T>(f1.res) : f1.res);
+      if(9 < af1.size())
+        M.emplace_back(unOffsetHalf<T>(
+          predv0<T, 0>(af1.entity, af1.entity.size())[0] ));
+      else
+        M.emplace_back(T(int(0)));
+      M.emplace_back(pbond<T, p012next<T> >(atf ?
+        arctanFeeder<T>(r1.next(dn[4])) : r1.next(dn[4]) ));
+      br0 = T(int(0));
+    } else {
+      for( ; dn.size() < 6; dn.emplace_back(T(int(0))) ) ;
+      for( ;  M.size() < 6;  M.emplace_back(lastM[M.size()]) ) ;
+    }
+  } else {
+    for( ; dn.size() < 6; dn.emplace_back(T(int(0))) ) ;
+    for( ;  M.size() < 6;  M.emplace_back(lastM[M.size()]) ) ;
+  }
+  return make_pair(move(dn), lastM = M);
+}
+
+// N.B. unit for prediction bricks.
+template <typename T> static inline pair<vector<T>, vector<T> > pbullet4(const SimpleVector<T>& in, vector<vector<T> >& lastM, vector<idFeeder<T> >& f0, vector<idFeeder<SimpleVector<T> > >& f1, vector<T>& br, int& t) {
+  auto p0(deep<T, p0maxNext<T> >(in, 3));
+  auto p1(p0);
+  {
+    auto minin(in);
+    for(int i = 0; i < minin.size(); i ++) minin[i] = - minin[i];
+    p1 = deep<T, p0maxNext<T> >(minin, 3);
+  }
+  auto t0(t);
+  auto p2(p2next<T, false>(lastM[2], in, f0[0], f1[0], f1[1], f0[1], f0[2], br[0], t0));
+  auto p3(p2next<T, true >(lastM[3], in, f0[3], f1[2], f1[3], f0[4], f0[5], br[1], t));
+  vector<T> dn;
+  vector<T> M;
+  dn.reserve(4);
+  dn.emplace_back(lastM[0][0] * in[in.size() - 1]);
+  dn.emplace_back(lastM[1][0] * in[in.size() - 1]);
+  auto lM(lastM[2][0] * in[in.size() - 1]);
+  for(int i = 1; i < lastM[2].size(); i ++) lM *= lastM[2][i];
+  dn.emplace_back(lM);
+  lM = lastM[3][0] * in[in.size() - 1];
+  for(int i = 1; i < lastM[3].size(); i ++) lM *= lastM[3][i];
+  dn.emplace_back(lM);
+
+  M.reserve(dn.size());
+  M.emplace_back(move(p0));
+  M.emplace_back(move(p1));
+  auto MM(p2.second[0]);
+  for(int i = 1; i < p2.second.size(); i ++) MM *= p2.second[i];
+  M.emplace_back(MM);
+  MM = p3.second[0];
+  for(int i = 1; i < p3.second.size(); i ++) MM *= p3.second[i];
+  M.emplace_back(move(MM));
+  lastM[0][0] = M[0];
+  lastM[1][0] = M[1];
+  return make_pair(move(dn), move(M));
+}
+
+// N.B. jammer to the predictor to make grip or lose grip.
+//      we want to use this jammer to lose usual grip on predictor.
+template <typename T> static inline pair<T, T> pSubesube(const T& d0, const pair<vector<T>, vector<T> >& j, const int& t, const vector<int>& idx = vector<int>()) {
+  assert(j.first.size() == j.second.size());
+  assert(! idx.size() || idx.size() == j.first.size());
+  T n2n(int(0));
+  for(int i = 0; i < j.first.size(); i ++)
+    n2n += j.first[i] * j.first[i];
+  if(n2n == T(int(0))) return make_pair(T(int(0)), T(int(0)));
+  const auto ridx(idx.size() ? idx[t % j.first.size()] : t % j.first.size());
+  const auto tt(t + 1);
+  const auto rridx(idx.size() ? idx[tt % j.first.size()] : tt % j.first.size());
+  T M2n(int(0));
+  for(int i = 0; i < j.second.size(); i ++)
+    M2n += j.second[i] * j.second[i];
+  const auto sq(M2n - j.second[rridx] * j.second[rridx]);
+  const auto absM(M2n == T(int(0)) || sq <= T(int(0)) ? T(int(0)) : sqrt(sq / M2n));
+  const auto sq2(n2n - j.first[ridx] * j.first[ridx]);
+  const auto rd0(n2n == T(int(0)) || sq2 <= T(int(0)) ? T(int(0)) : d0 * sqrt(sq2 / n2n));
+  if(j.first[ridx] * (t & 1 ? T(1) : - T(1)) )
+    return make_pair(rd0, sgn<T>(j.first[rridx]) * absM * (t & 1 ? - T(1) : T(1)));
+  return make_pair(- rd0, sgn<T>(j.first[rridx]) * absM * (t & 1 ? - T(1) : T(1)));
+}
+
+// N.B. one of the bricks stack condition, so not unique and verbose to impl.
+template <typename T> static inline vector<T> pSlipJamQuad3(const SimpleVector<T>& in, vector<idFeeder<T> >& pipe, vector<vector<vector<T> > >& lastM, vector<vector<idFeeder<T> > >& f0, vector<vector<idFeeder<SimpleVector<T> > > >& f1, vector<vector<T> >& br, vector<int>& shf, vector<int>& nshf, const int& t) {
+  auto t0(t);
+  auto p0(pSubesube<T>(in[in.size() - 1], pbullet4(in, lastM[0], f0[0], f1[0], br[0], t0), t0));
+  t0 = t;
+  auto p1(pSubesube<T>(p0.first, pbullet4(pipe[0].next(p0.first), lastM[1], f0[1], f1[1], br[1], t0), t0));
+  t0 = t;
+  auto p2(pSubesube<T>(in[in.size() - 1], pbullet4(pipe[1].next(p1.first), lastM[2], f0[2], f1[2], br[2], t0), t0));
+
+  t0 = t;
+  const auto tridx(arc4random_uniform(5));
+  auto q0(pSubesube<T>(p2.first, pbullet4(pipe[2].next(p2.first), lastM[3], f0[3], f1[3], br[3], t0), tridx));
+  t0 = t;
+  auto q1(pSubesube<T>(q0.first, pbullet4(pipe[3].next(q0.first), lastM[4], f0[4], f1[4], br[4], t0), tridx));
+  t0 = t;
+  auto q2(pSubesube<T>(p2.first, pbullet4(pipe[4].next(q1.first), lastM[5], f0[5], f1[5], br[5], t0), tridx));
+   
+  t0 = t;
+  shf[(t + 1) % shf.size()] = nshf[(t + 1) % shf.size()];
+  if(! ((t + 2) % shf.size()) ) {
+    for(int i = 0; i < nshf.size(); i ++) nshf[i] = i;
+    std::random_device seed_gen;
+    std::mt19937 engine(seed_gen());
+    std::shuffle(nshf.begin(), nshf.end(), engine);
+  }
+  auto r0(pSubesube<T>(q2.first, pbullet4(pipe[5].next(q2.first), lastM[6], f0[6], f1[6], br[6], t0), t0, shf));
+  t0 = t;
+  auto r1(pSubesube<T>(q0.first, pbullet4(pipe[6].next(r0.first), lastM[7], f0[7], f1[7], br[7], t0), t0, shf));
+  t0 = t;
+  auto r2(pbullet4(pipe[7].next(r1.first), lastM[8], f0[8], f1[8], br[8], t0));
+  // N.B. r2's M operation.
+  // XXX: test to return d value.
+  return r2.first;
 }
 
 // N.B. start det diag operations.

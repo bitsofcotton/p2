@@ -547,4 +547,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/05/27 update cr.py locking, D cmd output +1 original col, readme.md.
 2025/05/31 cr.py Q command match the double of input stream. update readme.
 2025/06/03 fix crash on p2... around zero division on _FLOAT_BITS_ specified case, not with cpu float they can crash in some condition. cr.py Q cmd comment change, G command chg.
+2025/06/04 import Q command chain try into lieonn.
 

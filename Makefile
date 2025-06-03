@@ -17,8 +17,8 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32
-all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32
+	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32
+all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -45,4 +45,8 @@ p2:
 	${CXX} ${CXXFLAGS} -static -o p2 p2.cc
 p2-32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2-32 p2.cc
+p2qt:
+	${CXX} ${CXXFLAGS} -static -o p2qt p2qt.cc
+p2qt32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2qt32 p2qt.cc
 
