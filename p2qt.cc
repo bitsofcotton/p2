@@ -75,7 +75,7 @@ int main(int argc, const char* argv[]) {
     std::shuffle(shf.begin(), shf.end(), engine);
     std::shuffle(nshf.begin(), nshf.end(), engine);
   }
-  idFeeder<num_t> pi(3), po(3);
+  idFeeder<num_t> pi(3);
   std::string s;
   int   t(0);
   num_t d(t);
@@ -84,10 +84,11 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    auto pqt(pSlipJamQuad3(in.next(d), pipe, lastM, f0, f1, br, shf, nshf, t ++));
-    std::cout << d * Mi << ", " << pqt.first * Mo << ", " << pqt.first << std::endl << std::flush;
-    Mi = p0maxNext<num_t>(pi.next(d));
-    Mo = p0maxNext<num_t>(po.next(pqt.first));
+    std::cout << d * Mo << ", " << d * Mi << "," << std::flush;
+    std::cout << (Mi = p0maxNext<num_t>(pi.next(d))) << "," << std::flush;
+    std::cout << (Mo = pSlipJamQuad3(in.next(d), pipe, lastM, f0, f1, br, shf, nshf, t ++)) << std::endl << std::flush;
+    // N.B. Mo == 0 result means we better to kill some types of the
+    //      jammers on the place if input isn't sparse.
   }
   return 0;
 }
