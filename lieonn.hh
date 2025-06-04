@@ -3885,7 +3885,7 @@ template <typename T, bool atf = false> static inline vector<T> p2next(const vec
         M.emplace_back(unOffsetHalf<T>(
           predv0<T, 0>(af1.entity, af1.entity.size())[0] ));
       else
-        M.emplace_back(T(int(0)));
+        M.emplace_back(lastM[4]);
       M.emplace_back(pbond<T, p012next<T> >(atf ?
         arctanFeeder<T>(r1.next(dn[4])) : r1.next(dn[4]) ));
       br0 = T(int(0));
@@ -3912,12 +3912,8 @@ template <typename T> static inline pair<vector<T>, vector<T> > pbullet4(const S
 
   vector<T> M;
   M.reserve(dn.size());
-  M.emplace_back(deep<T, p0maxNext<T> >(in, 3));
-  {
-    auto minin(in);
-    for(int i = 0; i < minin.size(); i ++) minin[i] = - minin[i];
-    M.emplace_back(deep<T, p0maxNext<T> >(minin, 3));
-  }
+  M.emplace_back(  deep<T, p0maxNext<T> >(  in, 3));
+  M.emplace_back(- deep<T, p0maxNext<T> >(- in, 3));
   auto t0(t);
   lastM[2] = p2next<T, false>(lastM[2], in, f0[0], f1[0], f1[1], f0[1], f0[2], br[0], t0);
   lastM[3] = p2next<T, true >(lastM[3], in, f0[3], f1[2], f1[3], f0[4], f0[5], br[1], t);
@@ -3938,25 +3934,24 @@ template <typename T> static inline pair<T, T> pSubesube(const T& d0, const pair
   assert(j.first.size() == j.second.size());
   assert(! idx.size() || idx.size() == j.first.size());
   T n2n(int(0));
+  T M2n(int(0));
   for(int i = 0; i < j.first.size(); i ++)
     n2n += j.first[i] * j.first[i];
-  if(n2n == T(int(0))) return make_pair(T(int(0)), T(int(0)));
+  for(int i = 0; i < j.second.size(); i ++)
+    M2n += j.second[i] * j.second[i];
   const auto ridx(idx.size() ? idx[t % j.first.size()] : t % j.first.size());
   const auto tt(t + 1);
   const auto rridx(idx.size() ? idx[tt % j.first.size()] : tt % j.first.size());
-  T M2n(int(0));
-  for(int i = 0; i < j.second.size(); i ++)
-    M2n += j.second[i] * j.second[i];
-  const auto sq(M2n - j.second[rridx] * j.second[rridx]);
-  const auto absM(M2n == T(int(0)) || sq <= T(int(0)) ? T(int(0)) : sqrt(sq / M2n));
-  const auto sq2(n2n - j.first[ridx] * j.first[ridx]);
-  const auto rd0(n2n == T(int(0)) || sq2 <= T(int(0)) ? T(int(0)) : d0 * sqrt(sq2 / n2n));
-  return make_pair(rd0 * sgn<T>(j.first[ridx] * (t & 1 ? T(1) : - T(1)) ),
-    absM * sgn<T>(j.first[rridx] * (t & 1 ? - T(1) : T(1)) ) );
+  const auto sq0(n2n - j.first[ridx] * j.first[ridx]);
+  const auto sqM(M2n - j.second[rridx] * j.second[rridx]);
+  const auto rd0( n2n == T(int(0)) || sq0 <= T(int(0)) ? T(int(0)) : d0 * sqrt(sq0 / n2n));
+  const auto absM(M2n == T(int(0)) || sqM <= T(int(0)) ? T(int(0)) :      sqrt(sqM / M2n));
+  return make_pair(rd0  * sgn<T>(j.first[  ridx] * (t & 1 ? T(1) : - T(1)) ),
+                   absM * sgn<T>(j.second[rridx] * (t & 1 ? - T(1) : T(1)) ) );
 }
 
 // N.B. one of the bricks stack condition, so not unique and verbose to impl.
-// N.B. this aims to kill *jammer-like-behaviour on input stream feedback*.
+// N.B. this aims to kill 'jammer-like-behaviour on input stream feedback'.
 template <typename T> static inline pair<T, T> pSlipJamQuad3(const SimpleVector<T>& in, vector<idFeeder<T> >& pipe, vector<vector<vector<T> > >& lastM, vector<vector<idFeeder<T> > >& f0, vector<vector<idFeeder<SimpleVector<T> > > >& f1, vector<vector<T> >& br, vector<int>& shf, vector<int>& nshf, const int& t) {
   vector<pair<vector<T>, vector<T> > > apb;
   vector<pair<T, T> > aq;
@@ -3965,85 +3960,50 @@ template <typename T> static inline pair<T, T> pSlipJamQuad3(const SimpleVector<
 
   auto t0(t);
   apb.emplace_back(pbullet4(in, lastM[0], f0[0], f1[0], br[0], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[0], t0));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[0].next(aq[0].first), lastM[1], f0[1], f1[1], br[1], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[0].first, apb[1], t0));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[1].next(aq[1].first), lastM[2], f0[2], f1[2], br[2], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[2], t0));
+  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[0], t0 = t));
+  apb.emplace_back(pbullet4(pipe[0].next(aq[0].first), lastM[1], f0[1], f1[1], br[1], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[0].first, apb[1], t0 = t));
+  apb.emplace_back(pbullet4(pipe[1].next(aq[1].first), lastM[2], f0[2], f1[2], br[2], t0 = t));
+  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[2], t0 = t));
 
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[2].next(aq[2].first), lastM[3], f0[3], f1[3], br[3], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[2].first, apb[3], t0));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[3].next(aq[3].first), lastM[4], f0[4], f1[4], br[4], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[3].first, apb[4], t0));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[4].next(aq[4].first), lastM[5], f0[5], f1[5], br[5], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[5], t0));
+  apb.emplace_back(pbullet4(pipe[2].next(aq[2].first), lastM[3], f0[3], f1[3], br[3], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[2].first, apb[3], t0 = t));
+  apb.emplace_back(pbullet4(pipe[3].next(aq[3].first), lastM[4], f0[4], f1[4], br[4], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[3].first, apb[4], t0 = t));
+  apb.emplace_back(pbullet4(pipe[4].next(aq[4].first), lastM[5], f0[5], f1[5], br[5], t0 = t));
+  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[5], t0 = t));
 
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[5].next(aq[5].first), lastM[6], f0[6], f1[6], br[6], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[5].first, apb[6], t0));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[6].next(aq[6].first), lastM[7], f0[7], f1[7], br[7], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[6].first, apb[7], t0));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[7].next(aq[7].first), lastM[8], f0[8], f1[8], br[8], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[8], t0));
+  apb.emplace_back(pbullet4(pipe[5].next(aq[5].first), lastM[6], f0[6], f1[6], br[6], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[5].first, apb[6], t0 = t));
+  apb.emplace_back(pbullet4(pipe[6].next(aq[6].first), lastM[7], f0[7], f1[7], br[7], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[6].first, apb[7], t0 = t));
+  apb.emplace_back(pbullet4(pipe[7].next(aq[7].first), lastM[8], f0[8], f1[8], br[8], t0 = t));
+  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[8], t0 = t));
 
 #if defined(_ARCFOUR_)
   const auto tridx(arc4random_uniform(5));
 #else
   const auto tridx(random() % 6);
 #endif
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[8].next(aq[8].first), lastM[9], f0[9], f1[9], br[9], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[8].next(aq[8].first), lastM[9], f0[9], f1[9], br[9], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[8].first, apb[9], tridx));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[9].next(aq[9].first), lastM[10], f0[10], f1[10], br[10], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[9].next(aq[9].first), lastM[10], f0[10], f1[10], br[10], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[9].first, apb[10], tridx));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[10].next(aq[10].first), lastM[11], f0[11], f1[11], br[11], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[10].next(aq[10].first), lastM[11], f0[11], f1[11], br[11], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[8].first, apb[11], tridx));
 
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[11].next(aq[11].first), lastM[12], f0[12], f1[12], br[12], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[11].next(aq[11].first), lastM[12], f0[12], f1[12], br[12], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[11].first, apb[12], tridx));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[12].next(aq[12].first), lastM[13], f0[13], f1[13], br[13], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[12].next(aq[12].first), lastM[13], f0[13], f1[13], br[13], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[12].first, apb[13], tridx));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[13].next(aq[13].first), lastM[14], f0[14], f1[14], br[14], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[13].next(aq[13].first), lastM[14], f0[14], f1[14], br[14], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[8].first, apb[14], tridx));
 
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[14].next(aq[14].first), lastM[15], f0[15], f1[15], br[15], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[14].next(aq[14].first), lastM[15], f0[15], f1[15], br[15], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[14].first, apb[15], tridx));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[15].next(aq[15].first), lastM[16], f0[16], f1[16], br[16], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[15].next(aq[15].first), lastM[16], f0[16], f1[16], br[16], t0 = t));
   aq.emplace_back(pSubesube<T>(aq[15].first, apb[16], tridx));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[16].next(aq[16].first), lastM[17], f0[17], f1[17], br[17], t0));
-  t0 = t;
+  apb.emplace_back(pbullet4(pipe[16].next(aq[16].first), lastM[17], f0[17], f1[17], br[17], t0 = t));
   // aq.emplace_back(pSubesube<T>(aq[8].first, apb[17], tridx));
   aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[17], tridx));
    
@@ -4054,45 +4014,27 @@ template <typename T> static inline pair<T, T> pSlipJamQuad3(const SimpleVector<
     std::mt19937 engine(seed_gen());
     std::shuffle(nshf.begin(), nshf.end(), engine);
   }
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[17].next(aq[17].first), lastM[18], f0[18], f1[18], br[18], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[17].first, apb[18], t0, shf));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[18].next(aq[18].first), lastM[19], f0[19], f1[19], br[19], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[18].first, apb[19], t0, shf));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[19].next(aq[19].first), lastM[20], f0[20], f1[20], br[20], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[17].first, apb[20], t0, shf));
+  apb.emplace_back(pbullet4(pipe[17].next(aq[17].first), lastM[18], f0[18], f1[18], br[18], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[17].first, apb[18], t0 = t, shf));
+  apb.emplace_back(pbullet4(pipe[18].next(aq[18].first), lastM[19], f0[19], f1[19], br[19], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[18].first, apb[19], t0 = t, shf));
+  apb.emplace_back(pbullet4(pipe[19].next(aq[19].first), lastM[20], f0[20], f1[20], br[20], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[17].first, apb[20], t0 = t, shf));
 
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[20].next(aq[20].first), lastM[21], f0[21], f1[21], br[21], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[20].first, apb[21], t0, shf));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[21].next(aq[21].first), lastM[22], f0[22], f1[22], br[22], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[21].first, apb[22], t0, shf));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[22].next(aq[22].first), lastM[23], f0[23], f1[23], br[23], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[17].first, apb[23], t0, shf));
+  apb.emplace_back(pbullet4(pipe[20].next(aq[20].first), lastM[21], f0[21], f1[21], br[21], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[20].first, apb[21], t0 = t, shf));
+  apb.emplace_back(pbullet4(pipe[21].next(aq[21].first), lastM[22], f0[22], f1[22], br[22], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[21].first, apb[22], t0 = t, shf));
+  apb.emplace_back(pbullet4(pipe[22].next(aq[22].first), lastM[23], f0[23], f1[23], br[23], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[17].first, apb[23], t0 = t, shf));
 
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[23].next(aq[23].first), lastM[24], f0[24], f1[24], br[24], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[23].first, apb[24], t0, shf));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[24].next(aq[24].first), lastM[25], f0[25], f1[25], br[25], t0));
-  t0 = t;
-  aq.emplace_back(pSubesube<T>(aq[24].first, apb[25], t0, shf));
-  t0 = t;
-  apb.emplace_back(pbullet4(pipe[25].next(aq[25].first), lastM[26], f0[26], f1[26], br[26], t0));
-  t0 = t;
-  // aq.emplace_back(pSubesube<T>(aq[17].first, apb[26], t0, shf));
-  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[26], t0, shf));
+  apb.emplace_back(pbullet4(pipe[23].next(aq[23].first), lastM[24], f0[24], f1[24], br[24], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[23].first, apb[24], t0 = t, shf));
+  apb.emplace_back(pbullet4(pipe[24].next(aq[24].first), lastM[25], f0[25], f1[25], br[25], t0 = t));
+  aq.emplace_back(pSubesube<T>(aq[24].first, apb[25], t0 = t, shf));
+  apb.emplace_back(pbullet4(pipe[25].next(aq[25].first), lastM[26], f0[26], f1[26], br[26], t0 = t));
+  // aq.emplace_back(pSubesube<T>(aq[17].first, apb[26], t0 = t, shf));
+  aq.emplace_back(pSubesube<T>(in[in.size() - 1], apb[26], t0 = t, shf));
   
   // XXX: test to return d value, non exact M value.
   assert(apb.size() == aq.size());
