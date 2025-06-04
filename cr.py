@@ -285,6 +285,24 @@ elif(sys.argv[1][0] == 'e'):
       print(len(ffuu), ": [", ", ".join(ffuu), "]")
       sys.stdout.flush()
     mC = []
+elif(sys.argv[1][0] == 'B'):
+  d = []
+  for line in sys.stdin:
+    d.append(line.split(","))
+    if(len(d[0]) != len(d[- 1])):
+      print("NG on column num")
+      exit(- 1)
+  cntp = []
+  cntm = []
+  for t in range(0, len(d[0])):
+    cntp.append(0)
+    cntm.append(0)
+  for dd in d:
+    for t in range(0, len(dd)):
+      if(ifloat(dd[t]) < 0): cntm[t] += 1
+      elif(0 < ifloat(dd[t])): cntp[t] += 1
+  for t in range(0, len(cntp)):
+    print(cntp[t], ",", cntm[t], ",", t)
 elif(sys.argv[1][0] == 'b'):
   a = []
   for line in sys.stdin:

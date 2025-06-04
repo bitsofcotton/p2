@@ -36,17 +36,17 @@ int main(int argc, const char* argv[]) {
   while(true) {
 #if defined(_BIT_)
     // XXX: ud(...) <= 2 case is not handled.
-    std::cout << num_t(int(arc4random_uniform(3)) - 1) << ", ";
+    std::cout << num_t(int(arc4random_uniform(3)) - 1) << ",";
     std::cout << num_t(ud(er) % 3 - 1) << ",";
     std::cout << num_t(ud(mt) % 3 - 1) << ",";
     std::cout << num_t(ud(rl24) % 3 - 1) << ",";
     std::cout << num_t(ud(rl48) % 3 - 1) << ",";
-    std::cout << num_t(ud(kb) % 3 - 1) << ",";
+    std::cout << num_t(ud(kb) % 3 - 1);
 # if defined(_GETENTROPY_)
     uint8_t rnd[4];
     for(int i = 0; i < 1600000 / 4; i ++)
       getentropy(rnd, sizeof rnd);
-    std::cout << num_t(((int32_t&)(*rnd) % 3) - 1);
+    std::cout << "," << num_t(((int32_t&)(*rnd) % 3) - 1);
 # endif
 #else
     std::cout << fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) << ",";
@@ -54,13 +54,13 @@ int main(int argc, const char* argv[]) {
     std::cout << fl(ud(mt) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(rl24) - 0x1000, 0x1000) << ",";
     std::cout << fl(ud(rl48) - 0x1000, 0x1000) << ",";
-    std::cout << fl(ud(kb) - 0x1000, 0x1000) << ",";
+    std::cout << fl(ud(kb) - 0x1000, 0x1000);
 # if defined(_GETENTROPY_)
     uint8_t rnd[4];
     for(int i = 0; i < 1600000 / 4; i ++)
       getentropy(rnd, sizeof rnd);
     // XXX: [-1,1[ case, we in fact need: [-1,1].
-    std::cout << fl(((uint32_t&)(*rnd) & 0x1fff) - 0x1000, 0x1000);
+    std::cout << "," << fl(((uint32_t&)(*rnd) & 0x1fff) - 0x1000, 0x1000);
 # endif
 #endif
     std::cout << std::endl << std::flush;

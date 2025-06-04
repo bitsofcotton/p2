@@ -39,7 +39,7 @@ int main(int argc, const char* argv[]) {
   vector<vector<num_t> > br;
   vector<int> shf;
   vector<int> nshf;
-  pipe.resize(8);
+  pipe.resize(3 * 3 * 3 - 1);
   {
     vector<vector<num_t> > lM;
     vector<num_t> llM;
@@ -50,20 +50,20 @@ int main(int argc, const char* argv[]) {
     llM.resize(6, num_t(int(0)));
     lM.emplace_back(llM);
     lM.emplace_back(llM);
-    lastM.resize(9, lM);
+    lastM.resize(27, lM);
   }
   {
     vector<idFeeder<num_t> > lf0;
     vector<idFeeder<SimpleVector<num_t> > > lf1;
     lf0.resize(6);
     lf1.resize(4);
-    f0.resize(9, lf0);
-    f1.resize(9, lf1);
+    f0.resize(27, lf0);
+    f1.resize(27, lf1);
   }
   {
     vector<num_t> lbr;
     lbr.resize(2, num_t(int(0)));
-    br.resize(9, lbr);
+    br.resize(27, lbr);
   }
   shf.reserve(4);
   nshf.reserve(4);
@@ -75,16 +75,19 @@ int main(int argc, const char* argv[]) {
     std::shuffle(shf.begin(), shf.end(), engine);
     std::shuffle(nshf.begin(), nshf.end(), engine);
   }
+  idFeeder<num_t> pi(3), po(3);
   std::string s;
   int   t(0);
   num_t d(t);
+  auto  Mi(d);
+  auto  Mo(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     auto pqt(pSlipJamQuad3(in.next(d), pipe, lastM, f0, f1, br, shf, nshf, t ++));
-    for(int i = 0; i < pqt.size(); i ++)
-      std::cout << pqt[i] << ", ";
-    std::cout << endl;
+    std::cout << d * Mi << ", " << pqt.first * Mo << ", " << pqt.first << std::endl << std::flush;
+    Mi = p0maxNext<num_t>(pi.next(d));
+    Mo = p0maxNext<num_t>(po.next(pqt.first));
   }
   return 0;
 }
