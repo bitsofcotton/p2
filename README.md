@@ -44,6 +44,11 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # This makes 3-depth jammer to black-box of 3-depth jammer.
     # Once we might saturate them as a result of false positive, then,
     # they're slipped. So our machine (or ourself) might be infected.
+    
+    ... | p2qt | ...
+    # if left hand side is made by something feedback to be controlled,
+    # we make jam out them but this is only with the usual method.
+    # we can also use ... | cr.py D p2qt p2qt | ... chain.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -549,4 +554,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/03 fix crash on p2... around zero division on _FLOAT_BITS_ specified case, not with cpu float they can crash in some condition. cr.py Q cmd comment change, G command chg.
 2025/06/04 import Q command chain try into lieonn.
 2025/06/05 fix p2qt as reasonable one but not with real pred-value. add B cmd to cr.py.
+2025/06/06 ok p2qt for our machine which original stream seems better continuous on ours.
 
