@@ -31,7 +31,7 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  idFeeder<num_t> in;
+  // Construct initial instances.
   vector<idFeeder<num_t> > pipe;
   vector<vector<vector<num_t> > > lastM;
   vector<vector<idFeeder<num_t> > > f0;
@@ -75,20 +75,21 @@ int main(int argc, const char* argv[]) {
     std::shuffle(shf.begin(), shf.end(), engine);
     std::shuffle(nshf.begin(), nshf.end(), engine);
   }
-  idFeeder<num_t> pi(3);
+  // loop local variables and instances.
   std::string s;
   int   t(0);
   num_t d(t);
-  auto  Mi(d);
-  auto  Mo(d);
+  auto  M(d);
+  idFeeder<num_t> in;
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    std::cout << d * Mo << ", " << d * Mi << "," << std::flush;
-    std::cout << (Mi = p0maxNext<num_t>(pi.next(d))) << "," << std::flush;
-    std::cout << (Mo = pSlipJamQuad3(in.next(d), pipe, lastM, f0, f1, br, shf, nshf, t ++)) << std::endl << std::flush;
-    // N.B. Mo == 0 result means we better to kill some types of the
+    std::cout << d * M << ", ";
+    // N.B. M == 0 result means we better to kill some types of the
     //      jammers on the place if input isn't sparse.
+    // N.B. however, this usualy only move the gulf point to after the original
+    //      place in the meaning of predictors' one.
+    std::cout << (M = pSlipJamQuad3(in.next(d), pipe, lastM, f0, f1, br, shf, nshf, t ++)) << std::endl << std::flush;
   }
   return 0;
 }

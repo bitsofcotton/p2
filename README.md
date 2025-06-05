@@ -555,4 +555,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/04 import Q command chain try into lieonn.
 2025/06/05 fix p2qt as reasonable one but not with real pred-value. add B cmd to cr.py.
 2025/06/06 ok p2qt for our machine which original stream seems better continuous on ours.
+2025/06/06 exclude p0maxRank(idFeeder(3)) prediction from p2qt into p0.
 

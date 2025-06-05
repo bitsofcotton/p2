@@ -16,6 +16,9 @@ CXXFLAGS+=	-O2 -mtune=native -gfull
 LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
+# lieonn.hh flags
+CXXFLAGS+=	-D_ARCFOUR_
+
 clean:
 	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32
 all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32
