@@ -11,44 +11,35 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # catgp - p1 - p0 chain with linear or nonlinear x-axis scaling twice
     #   with different steps (persistent).
     
-    cr.py [rjRsSdiltFkvPmhebfzGLQEHDZxX] ...
+    cr.py [rjRsSdiltFkvPmhebBfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
     ... | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py l -1 0 2 5 7 | ...
     ... | cr.py E ... cr.py H ... | ...
     # yet another pair of single layer persistent predictor cut by y, x-axis.
     # N.B. these are targetting {- 1, 1} input stream.
-    # N.B. this might matche bricks condition, so we can stack layers with
-    #      this form to pretend to be applied predictors but we have some of the
-    #      unpredictable point if we make them as a unique predictor condition
-    #      if the jammer affects us either the condition says some of the
-    #      stream we can input.
+    # N.B. this might match bricks condition, so we can stack layers with
+    #      this form to pretend to be applied predictors.
     # N.B. each condition needs enough internal states read from input stream
     #      to get stable prediction results.
     
     ... | tee 0-0 | <predictor> | tee 0-1 | cr.py l ... | cr.py Q | ... | tee 0-... | ...
-    # jammer. N.B. this often makes better n-th predictable result.
+    # jammer. N.B. this often makes better n-th predictable result,
+    # can be stacked.
     
-    ... | cr.py l 0 | tee 0 | <predictor> | ...
-    cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
-    # listen residue with rand_correct.mid.
+    ... | p2qt <para> | ...
+    # if left hand side is made by something feedback to be controlled,
+    # we make jam out them but this is only with the usual method.
+    # so one of left or right hand is better to predict when such a case.
+    # with below combination, usual result is 1:5 or so on (might be configured
+    # by p2qt argv), with usually double layered single predictor brick.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
     
-    <{-1,1}-input> | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py -1 0 2 5 7 | tee 0-1 | cr.py Q | cr.py D ... > 0-3
-    ... > 2-3
-    cr.py L 2-[123] | cr.py l 11 13
-    # Once we met *false positive* result with this which is revertable
-    # prediction which whole stream can be produced from first 6-bit.
-    # This makes 3-depth jammer to black-box of 3-depth jammer.
-    # Once we might saturate them as a result of false positive, then,
-    # they're slipped. So our machine (or ourself) might be infected.
-    
-    ... | p2qt | ...
-    # if left hand side is made by something feedback to be controlled,
-    # we make jam out them but this is only with the usual method.
-    # we can also use ... | cr.py D p2qt p2qt | ... chain.
+    ... | cr.py l 0 | tee 0 | <predictor> | ...
+    cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
+    # listen residue with rand_correct.mid.
 
 # XXX
 The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
@@ -62,9 +53,10 @@ Normally, such a jammer should have some wavy streams.
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
 In this case, if there's pattenizable jamming into data series, we can correct them.
 
+Either, some of the predictors fighting with jammers, for non usual input streams.
+
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
-
 
 
 # General Tips
@@ -556,4 +548,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/05 fix p2qt as reasonable one but not with real pred-value. add B cmd to cr.py.
 2025/06/06 ok p2qt for our machine which original stream seems better continuous on ours.
 2025/06/06 exclude p0maxRank(idFeeder(3)) prediction from p2qt into p0.
+2025/06/06 add p2qt argv causes ok result for us test stream on our machine. update readme.
 

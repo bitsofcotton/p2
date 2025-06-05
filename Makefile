@@ -52,4 +52,9 @@ p2qt:
 	${CXX} ${CXXFLAGS} -static -o p2qt p2qt.cc
 p2qt32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2qt32 p2qt.cc
+# XXX: crashes (around mem region operation?)
+p2qtmp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -o p2qtmp p2qt.cc
+p2qt32mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -o p2qt32mp p2qt.cc
 
