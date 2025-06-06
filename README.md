@@ -7,14 +7,10 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # line == 0 to use whole input stream to predict next step.
     #   this takes O((input lines)*lg(input lines)) ratio calculation time.
     
-    ./p2(nl|-)?(32|64)? < data.txt
-    # catgp - p1 - p0 chain with linear or nonlinear x-axis scaling twice
-    #   with different steps (persistent).
-    
     cr.py [rjRsSdiltFkvPmhebBfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | cr.py D 'cr.py D "p0 3" "cr.py t -1 | p0 3"' 'cr.py D p2 p2nl' | cr.py l -1 0 2 5 7 | ...
+    ... | p2qt <para> | cr.py l -1 0 1 2 3 | cr.py Q | p0 2 | ...
     ... | cr.py E ... cr.py H ... | ...
     # yet another pair of single layer persistent predictor cut by y, x-axis.
     # N.B. these are targetting {- 1, 1} input stream.
@@ -27,30 +23,17 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # jammer. N.B. this often makes better n-th predictable result,
     # can be stacked.
     
-    ... | p2qt <para> | cr.py l -1 0 1 2 3 | cr.py Q | ((do-twice)) | p0 2 | ...
-    # once we had better result with them but will slips soon from
-    # our experiences.
-    
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
     
     ... | cr.py l 0 | tee 0 | <predictor> | ...
-    cr.py l 0 < 0 | catgr 3 | cr.py E | cr.py e | cr.py m
+    cr.py l 0 < 0 | catgr 3 | cr.py h ... cr.py f ... | cr.py e | cr.py m
     # listen residue with rand_correct.mid.
-
-# XXX
-The p\*-series makes the hypothesis the function is unique and how to use internal status is completely only unique.
-
-So if there's a slow variable they're hidden by counter or so on, our first hypothesis fails on such time counter place, however, after combine the state some of the steps, our first hypothesis fullfilled on some range, however, the jammer can attack to the sign of the result even in such cases.
-
-Either, even this predictor can have the jammer to us.
-Normally, such a jammer should have some wavy streams.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
-In this case, if there's pattenizable jamming into data series, we can correct them.
 
-Either, some of the predictors fighting with jammers, for non usual input streams.
+Either, some of the predictors fighting with jammers, for non usual input streams however, even this predictor can have the jammer to us.
 
 # Known Bug
 If we use cr.py with lieonn.hh description, we should pass the parameter reasonable (output to be less than INT_MAX), otherwise, periodical clipping will occur causes broken result.
@@ -546,5 +529,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/06 ok p2qt for our machine which original stream seems better continuous on ours.
 2025/06/06 exclude p0maxRank(idFeeder(3)) prediction from p2qt into p0.
 2025/06/06 add p2qt argv causes ok result for us test stream on our machine. update readme.
-2025/06/07 update readme. change reasonable implementation p2qt.cc and around them.
+2025/06/07 update readme. change reasonable implementation p2qt.cc and around them. elim p2.cc and concerns, it's not used deeply in any of the predictors.
 

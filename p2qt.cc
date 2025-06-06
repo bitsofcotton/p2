@@ -49,16 +49,16 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    for(int i = 0; i < M.size(); i ++) std::cout << (M[i] *= d) << ", ";
-    std::cout << std::flush;
+    auto dd(M);
+    for(int i = 0; i < dd.size(); i ++) dd[i] *= d;
     // N.B. M == 0 result means we better to kill some types of the
     //      jammers on the place if input isn't sparse.
     // N.B. however, this usualy only move the gulf point to after the original
     //      place in the meaning of predictors' one.
     // N.B. pSlipJamQuad3 each first call is not thread safe.
-    M = pSlipJam443<num_t>(in.next(d), pslip, t ++);
-    for(int i = 0; i < M.size(); i ++) std::cout << M[i] << ", ";
-    std::cout << d << std::endl << std::flush;
+    M = pSlipJam443<num_t>(in.next(d), pslip, t);
+    auto res(pSubesube<num_t>(d, make_pair(dd, M), t ++));
+    std::cout << res.first << ", " << res.second << std::endl << std::flush;
   }
   return 0;
 }
