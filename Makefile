@@ -20,8 +20,8 @@ LDFLAGS+=	-lc++
 CXXFLAGS+=	-D_ARCFOUR_
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32
-all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32
+	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32 p2qtmp p2qt32mp
+all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2 p2-32 p2nl p2nl32 p2qt p2qt32 p2qtmp p2qt32mp
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -52,7 +52,6 @@ p2qt:
 	${CXX} ${CXXFLAGS} -static -o p2qt p2qt.cc
 p2qt32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2qt32 p2qt.cc
-# XXX: crashes (around mem region operation?)
 p2qtmp:
 	${CXX} ${CXXFLAGS} ${MPFLAGS} -o p2qtmp p2qt.cc
 p2qt32mp:

@@ -27,12 +27,9 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # jammer. N.B. this often makes better n-th predictable result,
     # can be stacked.
     
-    ... | p2qt <para> | ...
-    # if left hand side is made by something feedback to be controlled,
-    # we make jam out them but this is only with the usual method.
-    # so one of left or right hand is better to predict when such a case.
-    # with below combination, usual result is 1:5 or so on (might be configured
-    # by p2qt argv), with usually double layered single predictor brick.
+    ... | p2qt <para> | cr.py l -1 0 1 2 3 | cr.py Q | ((do-twice)) | p0 2 | ...
+    # once we had better result with them but will slips soon from
+    # our experiences.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
@@ -549,4 +546,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/06 ok p2qt for our machine which original stream seems better continuous on ours.
 2025/06/06 exclude p0maxRank(idFeeder(3)) prediction from p2qt into p0.
 2025/06/06 add p2qt argv causes ok result for us test stream on our machine. update readme.
+2025/06/07 update readme. change reasonable implementation p2qt.cc and around them.
 
