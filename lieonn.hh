@@ -3841,12 +3841,12 @@ template <typename T, T (*p)(const SimpleVector<T>&)> static inline T deep(const
 }
 
 // N.B. unit for prediction bricks.
-template <typename T> static inline pair<vector<T>, vector<T> > pbullet2(const SimpleVector<T>& in, vector<T>& M) {
-  vector<T> dn(M);
-  for(int i = 0; i < 2; i ++) dn[i] *= in[in.size() - 1];
-  M[0] =   deep<T, p0maxNext<T> >(  in, 3);
-  M[1] = - deep<T, p0maxNext<T> >(- in, 3);
-  return make_pair(move(dn), M);
+template <typename T> static inline vector<T> pbullet2(const SimpleVector<T>& in) {
+  vector<T> M;
+  M.reserve(2);
+  M.emplace_back(  deep<T, p0maxNext<T> >(  in, 3));
+  M.emplace_back(- deep<T, p0maxNext<T> >(- in, 3));
+  return M;
 }
 
 // N.B. jammer to the predictor to make grip or lose grip.
@@ -3902,16 +3902,16 @@ public:
 // N.B. one of the bricks stack condition, so not unique and verbose to impl.
 // N.B. this aims to kill 'jammer-like-behaviour on input stream feedback'.
 template <typename T> static inline T pSlipJamQuad3(const SimpleVector<T>& in, vector<idFeeder<T> >& pipe, vector<vector<T> >& lastM, vector<int>& shf, vector<int>& nshf, const int& t) {
-  vector<pair<vector<T>, vector<T> > > apb;
+  vector<vector<T> > apb;
   vector<pair<T, T> > aq;
   apb.reserve(3 * 3 * 3);
   aq.reserve(3 * 3 * 3);
 
   auto t0(t);
 #define UPDPSJQ3(inp,qinp,sec,i) \
-  apb.emplace_back(pbullet2((inp), lastM[(i)])); \
-  for(int k = 0; k < apb[(i)].second.size(); k ++) apb[(i)].second[k] *= (sec); \
-  aq.emplace_back(pSubesube<T>((qinp), apb[(i)], t0 = t));
+  apb.emplace_back(pbullet2(inp)); \
+  for(int k = 0; k < apb[(i)].size(); k ++) apb[(i)][k] *= (sec); \
+  aq.emplace_back(pSubesube<T>((qinp), make_pair(lastM[(i)], apb[(i)]), t0 = t));
 
   UPDPSJQ3(in,in[in.size()-1],T(1),0);
   
@@ -3951,9 +3951,9 @@ template <typename T> static inline T pSlipJamQuad3(const SimpleVector<T>& in, v
 #endif
 #undef UPDPSJQ3
 #define UPDPSJQ3(inp,qinp,sec,i) \
-  apb.emplace_back(pbullet2((inp), lastM[(i)])); \
-  for(int k = 0; k < apb[(i)].second.size(); k ++) apb[(i)].second[k] *= (sec); \
-  aq.emplace_back(pSubesube<T>((qinp), apb[(i)], tridx));
+  apb.emplace_back(pbullet2(inp)); \
+  for(int k = 0; k < apb[(i)].size(); k ++) apb[(i)][k] *= (sec); \
+  aq.emplace_back(pSubesube<T>((qinp), make_pair(lastM[(i)], apb[(i)]), tridx));
 
   pipe[8].next(aq[8].first);
   UPDPSJQ3(pipe[8].res,aq[8].first,aq[8].second,9);
@@ -4004,9 +4004,9 @@ template <typename T> static inline T pSlipJamQuad3(const SimpleVector<T>& in, v
   }
 #undef UPDPSJQ3
 #define UPDPSJQ3(inp,qinp,sec,i) \
-  apb.emplace_back(pbullet2((inp), lastM[(i)])); \
-  for(int k = 0; k < apb[(i)].second.size(); k ++) apb[(i)].second[k] *= (sec); \
-  aq.emplace_back(pSubesube<T>((qinp), apb[(i)], t0 = t, shf));
+  apb.emplace_back(pbullet2(inp)); \
+  for(int k = 0; k < apb[(i)].size(); k ++) apb[(i)][k] *= (sec); \
+  aq.emplace_back(pSubesube<T>((qinp), make_pair(lastM[(i)], apb[(i)]), t0 = t, shf));
 
   pipe[17].next(aq[17].first);
   UPDPSJQ3(pipe[17].res,aq[17].first,aq[17].second,18);
@@ -4049,8 +4049,8 @@ template <typename T> static inline T pSlipJamQuad3(const SimpleVector<T>& in, v
   
 #undef UPDPSJQ3
 
-  // XXX: test to return d value, non exact M value.
   assert(apb.size() == aq.size());
+  lastM = move(apb);
   return aq[aq.size() - 1].second;
 }
 

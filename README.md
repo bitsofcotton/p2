@@ -5,23 +5,15 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     ./catgp(32|64)? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
-    #   this takes O((input lines)*lg(input lines)) ratio calculation time.
+    #   this takes O((input lines)^2) ratio calculation time.
     
     cr.py [rjRsSdiltFkvPmhebBfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
     ... | p2qt <para> | cr.py l -1 0 1 2 3 | cr.py Q | p0 2 | ...
     ... | cr.py E ... cr.py H ... | ...
-    # yet another pair of single layer persistent predictor cut by y, x-axis.
-    # N.B. these are targetting {- 1, 1} input stream.
-    # N.B. this might match bricks condition, so we can stack layers with
-    #      this form to pretend to be applied predictors.
-    # N.B. each condition needs enough internal states read from input stream
-    #      to get stable prediction results.
-    
-    ... | tee 0-0 | <predictor> | tee 0-1 | cr.py l ... | cr.py Q | ... | tee 0-... | ...
-    # jammer. N.B. this often makes better n-th predictable result,
-    # can be stacked.
+    # yet yet another pair of persistent predictor cut by y, x-axis.
+    # N.B. these are targetting sign bit on the stream.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
