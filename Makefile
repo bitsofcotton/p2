@@ -20,8 +20,8 @@ LDFLAGS+=	-lc++
 CXXFLAGS+=	-D_ARCFOUR_
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2qt p2qt32 p2qtmp p2qt32mp
-all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2qt p2qt32 p2qtmp p2qt32mp
+	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2qt p2qt32
+all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2qt p2qt32
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -44,8 +44,4 @@ p2qt:
 	${CXX} ${CXXFLAGS} -static -o p2qt p2qt.cc
 p2qt32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2qt32 p2qt.cc
-p2qtmp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -o p2qtmp p2qt.cc
-p2qt32mp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -o p2qt32mp p2qt.cc
 

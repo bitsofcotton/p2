@@ -10,10 +10,13 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     cr.py [rjRsSdiltFkvPmhebBfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
-    ... | p2qt <para> | cr.py l -1 0 1 2 3 | cr.py Q | p0 2 | ...
+    ... | cr.py D 'cr.py D "p0 3" "p0 0"' 'cr.py z 3 | p1 | p0 0' | cr.py l -1 0 2 5 | tee 0-0 | cr.py Q | ((recursive)) ...
     ... | cr.py E ... cr.py H ... | ...
     # yet yet another pair of persistent predictor cut by y, x-axis.
     # N.B. these are targetting sign bit on the stream.
+    
+    ... | p2qt | ...
+    # jammer to jammer if we're targetted, otherwise, this don't make sense.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
@@ -522,4 +525,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/06 exclude p0maxRank(idFeeder(3)) prediction from p2qt into p0.
 2025/06/06 add p2qt argv causes ok result for us test stream on our machine. update readme.
 2025/06/07 update readme. change reasonable implementation p2qt.cc and around them. elim p2.cc and concerns, it's not used deeply in any of the predictors.
+2025/06/07 revert, Q command result sign doesn't depend on the place sign, so fixed.
 

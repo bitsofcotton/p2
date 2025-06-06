@@ -395,9 +395,10 @@ elif(sys.argv[1] == 'Q'):
     if(ifloat(d[t % (len(d) - 1) + 1]) * pow(- 1, t) < 0):
     # N.B. following don't affect better to scatter.
     #if(p * getrand(3) < 0):
-      print(  ifloat(d[0]) * pow(n2p / n2n, .5))
+      # N.B. we need abs to avoid sgn(d[0])^2 result.
+      print(  abs(ifloat(d[0])) * pow(n2p / n2n, .5))
     else:
-      print(- ifloat(d[0]) * pow(n2p / n2n, .5))
+      print(- abs(ifloat(d[0])) * pow(n2p / n2n, .5))
     sys.stdout.flush()
     t += 1
 elif(sys.argv[1][0] == 'E'):

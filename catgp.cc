@@ -8,6 +8,7 @@
 #include <map>
 #include <iomanip>
 #include <algorithm>
+#include <random>
 #include <assert.h>
 #include <sys/resource.h>
 

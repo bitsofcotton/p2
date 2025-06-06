@@ -32,30 +32,19 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int para(1);
-  if(argc < 2) std::cerr << argv[0] << " <para>? : continue with ";
-  if(1 < argc) para = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << para << std::endl;
-  assert(0 < para);
-  vector<pslip_t<num_t> > pslip;
-  pslip.reserve(para *= 4);
-  for(int i = 0; i < para; i ++) pslip.emplace_back(pslip_t<num_t>());
+  pslip_t<num_t> pslip;
   std::string s;
   int   t(0);
   num_t d(t);
-  vector<num_t> M;
-  idFeeder<num_t> in;
-  M.resize(4, d);
+  auto  M(d);
+  idFeeder<num_t> in(0);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    for(int i = 0; i < M.size(); i ++) std::cout << (M[i] *= d) << ", ";
-    std::cout << d << std::endl;
-    M = pSlipJam443<num_t>(in.next(d), pslip, t);
-/*
-    auto res(pSubesube<num_t>(d, make_pair(lM, M), t ++));
-    std::cout << res.first << ", " << res.second << std::endl << std::flush;
-*/
+    std::cout << (M *= d) << ", " << std::flush;
+    M = pSlipJamQuad3<num_t>(in.next(d), pslip.pipe, pslip.lastM,
+      pslip.shf, pslip.nshf, t++);
+    std::cout << M << std::endl << std::flush;
   }
   return 0;
 }
