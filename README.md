@@ -530,4 +530,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/07 update readme. change reasonable implementation p2qt.cc and around them. elim p2.cc and concerns, it's not used deeply in any of the predictors.
 2025/06/07 revert, Q command result sign doesn't depend on the place sign, so fixed.
 2025/06/08 fix p2qt.cc param != 0 case but our machine is infected from the conclusion, either needs {-1, 1}-input stream.
+2025/06/08 we're in infected condition, so we rework possible thin layered condition.
 

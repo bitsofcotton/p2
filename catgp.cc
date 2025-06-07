@@ -47,7 +47,7 @@ int main(int argc, const char* argv[]) {
 #else
     std::cout << d * M << ", ";
 #endif
-    std::cout << (M = pbond<num_t, p012next<num_t> >(p.next(d)) ) << std::endl << std::flush;
+    std::cout << (M = p012next<num_t>(p.next(d)) ) << std::endl << std::flush;
   }
   return 0;
 }
