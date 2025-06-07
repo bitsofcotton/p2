@@ -37,17 +37,17 @@ template <typename T> static inline pair<T, T> ptry(const SimpleVector<T>& in, v
     MM[i] = pSlipJamQuad3<num_t>(in, pslip[i].pipe, pslip[i].lastM,
       pslip[i].shf, pslip[i].nshf, t);
   auto lM2(M2);
-  // XXX: this makes hard to revert:
-  {
-    for(int i = 0; i < lM2.size(); i ++) lM2[i] *= d;
-  }
   for(int i = 0; i < 4; i ++)
     M2[i] = MM[i];
   for(int i = 4; i < MM.size(); i ++)
     M2[i & 3] += MM[i];
   for(int i = 0; i < 4; i ++)
     M2[i] /= num_t(MM.size() / 4);
-  return pSubesube(d, make_pair(lM2, M2), t);
+  // XXX: this makes not to revert but mostly we can trust result:
+  //      we take non exact d-value M-value invariant, so we enable this.
+  return pSubesube(num_t(int(1)), make_pair(lM2, M2), t);
+  // N.B. usually we do:
+  //   return pSubesube(d, make_pair(lM2, M2), t);
 }
 
 int main(int argc, const char* argv[]) {
@@ -82,6 +82,7 @@ int main(int argc, const char* argv[]) {
   vector<num_t> M2;
   M2.resize(4, num_t(int(0)));
   idFeeder<num_t> fb(3);
+  idFeeder<num_t> backlog(4);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
@@ -93,38 +94,31 @@ int main(int argc, const char* argv[]) {
     } else {
       in.next(d);
       if(! in.full) continue;
-      auto res(ptry<num_t>(in.res, pslip, MM, M2, t ++));
-      const auto& ref(fb.next(res.first)[1]);
       std::cout << (M *= d) << ", " << std::flush;
+      const auto  res(ptry<num_t>(in.res, pslip, MM, M2, t ++));
+      const auto& ref(fb.next(res.first)[1]);
       if(fb.full) {
-        auto inw(in);
-        auto pslipw(pslip);
-        auto MMM(MM);
-        auto MM2(M2);
-        const auto nextn(ptry<num_t>(inw.next(- num_t(int(1))), pslipw,
-          MMM, MM2, t).first);
-        inw    = in;
-        pslipw = pslip;
-        MMM    = MM;
-        MM2    = M2;
-        const auto nextp(ptry<num_t>(inw.next(  num_t(int(1))), pslipw,
-          MMM, MM2, t).first);
-        if((M = sgn<num_t>(abs(ref - nextn) - abs(ref - nextp))) ==
-            num_t(int(0)) ) {
-          if((M = sgn<num_t>(abs(sgn<num_t>(ref) - nextn) -
-            abs(sgn<num_t>(ref) - nextp)) ) == num_t(int(0)) ) {
-            // N.B. 2 of the n (mostly greater than 1k) degree equation == 0
-            //      condition. (a_0+a_1*x+...+a_n*x^n==0 for pair).
-            //      => x*Pi(a'_k-x) == 0 condition but x =={-1,1} satisfiy this.
-            //        should we count up a'_k or Sum a'_k (from coefficient)???
-            // N.B. instead of them, we add some of the continuity on output
-            //      stream from input stream.
-            xtr ++;
-            M = sgn<num_t>(ref) * res.second;
-            
-            // N.B. otherwise, M is correct from our shallow test stream.
-          }
+        const auto bblog(backlog.res);
+        // N.B. we need 2 step after because one step after should have same
+        //      meanings' invariant is lost from somehow we don't track,
+        //      it's on {-1,1}-stream input.
+        //      *** SHOULD FROM INFECTED CONDITION ***
+        for(int i = 0; i < 4; i ++) {
+          auto inw(in);
+          auto pslipw(pslip);
+          auto MMM(MM);
+          auto MM2(M2);
+          ptry<num_t>(inw.next(i & 1 ? num_t(int(1)) : - num_t(int(1))),
+            pslipw, MMM, MM2, t);
+          backlog.next(ptry<num_t>(
+            inw.next(int((i >> 1) & 1) ? num_t(int(1)) : - num_t(int(1))),
+            pslipw, MMM, MM2, t + 1).first);
         }
+        if((M = sgn<num_t>(
+          abs(ref - (num_t(int(0)) < d ? bblog[2] : bblog[0])) -
+          abs(ref - (num_t(int(0)) < d ? bblog[3] : bblog[1])) ) ) ==
+            num_t(int(0)) )
+          xtr ++;
       }
       std::cout << M << ", " << (t - xtr) << ", " << res.first * fb.res[0] << std::endl << std::flush;
     }
