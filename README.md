@@ -19,6 +19,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # param <  0 : 12 slide jammer in the worst case we add some continuity.
     # 0  < param : whole step jammer also param < 0 case.
     # param == 0 : thin jammer to jammer.
+    # 0 != param needs {-1, 1}-input stream.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
@@ -528,4 +529,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/06 add p2qt argv causes ok result for us test stream on our machine. update readme.
 2025/06/07 update readme. change reasonable implementation p2qt.cc and around them. elim p2.cc and concerns, it's not used deeply in any of the predictors.
 2025/06/07 revert, Q command result sign doesn't depend on the place sign, so fixed.
+2025/06/08 fix p2qt.cc param != 0 case but our machine is infected from the conclusion, either needs {-1, 1}-input stream.
 
