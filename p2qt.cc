@@ -57,7 +57,7 @@ int main(int argc, const char* argv[]) {
 #endif
 */
   std::cout << std::setprecision(30);
-  int revertible(- 1);
+  int revertible(0);
   if(argc < 2) std::cerr << argv[0] << " <revertible>? : continue with ";
   if(1 < argc) revertible = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << revertible << std::endl;
@@ -90,11 +90,14 @@ int main(int argc, const char* argv[]) {
       std::cout << (M *= d) << ", " << std::flush;
       std::cout <<
         (M = pSlipJamQuad3<num_t>(in.next(d), pslip[0].pipe, pslip[0].lastM,
-          pslip[0].shf, pslip[0].nshf, t ++) ) << std::endl << std::flush;
+          pslip[0].shf, pslip[0].nshf, t ++) ) << ", " << d << std::endl << std::flush;
     } else {
       in.next(d);
-      if(! in.full) continue;
       std::cout << (M *= d) << ", " << std::flush;
+      if(! in.full) {
+        std::cout << M << ", " << d << ", " << (t - xtr) << ", " << num_t(int(0)) << std::endl << std::flush;
+        continue;
+      }
       const auto  res(ptry<num_t>(in.res, pslip, MM, M2, t ++));
       const auto& ref(fb.next(res.first)[1]);
       if(fb.full) {
@@ -120,7 +123,8 @@ int main(int argc, const char* argv[]) {
             num_t(int(0)) )
           xtr ++;
       }
-      std::cout << M << ", " << (t - xtr) << ", " << res.first * fb.res[0] << std::endl << std::flush;
+     nxt:
+      std::cout << M << ", " << d << ", " << (t - xtr) << ", " << res.first * fb.res[0] << std::endl << std::flush;
     }
   }
   return 0;

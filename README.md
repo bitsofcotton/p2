@@ -15,7 +15,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # yet yet another pair of persistent predictor cut by y, x-axis.
     # N.B. these are targetting sign bit on the stream.
     
-    ... | p2qt <param> | ...
+    ... | p2qt <param> | ((cr.py l 2 0 | cr.py Q |)) ...
     # param <  0 : 12 slide jammer in the worst case we add some continuity.
     # 0  < param : whole step jammer also param < 0 case.
     # param == 0 : thin jammer to jammer.
