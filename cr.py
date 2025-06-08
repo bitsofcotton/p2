@@ -2,14 +2,8 @@
 import sys
 import io
 import struct
-import random
 import hashlib
 import subprocess
-
-# mersenne twister:
-rr = random.Random()
-# /dev/urandom:
-sr = random.SystemRandom()
 
 def ifloat(x, offset = 0):
   try:
@@ -44,42 +38,8 @@ def ifloat(x, offset = 0):
       pass
   return 0.
 
-def getrand(mm):
-  m = abs(mm)
-  # if mm < 0, shuffles random methods.
-  if(mm < 0):
-    return getrand(abs(getrand(m) * 6 * 2))
-  # if 6 <= m, divide them.
-  if((m / 6) % 2 == 1):
-   return getrand(abs(m) % 6) / getrand(abs(m) % 6)
-  global rr, sr
-  if(m % 6 == 0):
-    return rr.uniform(- 1., 1.)
-  elif(m % 6 == 1):
-    return rr.gauss(0., 1.)
-  elif(m % 6 == 2):
-    return rr.randint(0, 255) - 127.5
-  elif(m % 6 == 3):
-    return sr.uniform(- 1., 1.)
-  elif(m % 6 == 4):
-    return sr.gauss(0., 1.)
-  return sr.randint(0, 255) - 127.5
-
 if(len(sys.argv) < 2):
   print("not much arguments")
-elif(sys.argv[1][0] == 'r'):
-  # N.B. only to ease our mind, scatter initialized states.
-  scatter = 1000 + int(getrand(int(sys.argv[2])) * 8)
-  for s in range(0, scatter):
-    getrand(int(sys.argv[2]))
-  while(True):
-    print(getrand(int(sys.argv[2])))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'j'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    print(d * getrand(int(sys.argv[2])))
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'R'):
   while(True):
     a = []
@@ -94,74 +54,12 @@ elif(sys.argv[1][0] == 'R'):
     for byte in a:
       print(byte - 127.5)
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'S'):
-  t = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    if(t < int(sys.argv[2])):
-      pass
-    else:
-      print(line[:- 1])
-      sys.stdout.flush()
-      t = int(sys.argv[2])
-    t += 1
-elif(sys.argv[1][0] == 'd'):
-  bd = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d  = line.split(",")
-    if(len(bd) < len(d)):
-      for t in range(len(bd), len(d)):
-        bd.append(0.)
-    s  = []
-    for t in range(0, len(d)):
-      s.append(str((ifloat(d[t]) - bd[t]) / 2.))
-      bd[t] = ifloat(d[t])
-    print(",".join(s))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 's'):
-  s = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = line.split(",")
-    if(len(s) < len(d)):
-      for t in range(0, len(d) - len(s)):
-        s.append(0.)
-    ss = []
-    for t in range(0, len(d)):
-      s[t] += ifloat(d[t])
-      ss.append(str(s[t]))
-    print(",".join(ss))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'i'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = ifloat(line.split(",")[0])
-    if(d != 0.):
-      print(1. / d)
-      sys.stdout.flush()
-elif(sys.argv[1][0] == 'l'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = line[:- 1].split(",")
-    b = []
-    for t in sys.argv[2:]:
-      b.append(d[int(t)])
-    print(",".join(b))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 't'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(ifloat(line.split(",")[0]) * float(sys.argv[2]))
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'F'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     b = hex(int(ifloat(line.split(",")[0]) * pow(2., int(sys.argv[2])) ))
     if(b[0] == '-'): print(b[0] + b[3:] + "*2^-" + hex(int(sys.argv[2]))[2:])
     else: print(b[2:] + "*2^-" + hex(int(sys.argv[2]))[2:])
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'k'):
-  t = 0
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    if(t % int(sys.argv[2]) == 0):
-      print(line[:- 1])
-      sys.stdout.flush()
-      t = 0
-    t += 1
 elif(sys.argv[1][0] == 'v'):
   a = []
   for line in sys.stdin:
@@ -241,12 +139,6 @@ elif(sys.argv[1][0] == 'm'):
       track[w].append(Message('note_off', note=f, time=(120 * int(abs(numpy.arctan(abs(numpy.tan(float(bw[w])))) * 3) + 1)) ))
     bw = []
   mid.save('rand_correct.mid')
-elif(sys.argv[1][0] == 'h'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    if(len(line.split("[")) <= 1): continue
-    for w in line.split("[")[1].split("]")[0].split(","):
-      print(float(w))
-      sys.stdout.flush()
 elif(sys.argv[1][0] == 'e'):
   import numpy
   mC = []
@@ -330,33 +222,6 @@ elif(sys.argv[1][0] == 'b'):
     c += (aa - s) * (aa - s)
   c /= len(a)
   print(s, c, a[int(len(a) / 2)], a[int(len(a) / 4)], a[int(len(a) * 3 / 4)])
-elif(sys.argv[1][0] == 'f'):
-  d = []
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d.append(line[:- 1].split(",")[0])
-    if(len(d) % int(sys.argv[2]) == 0):
-      print(len(d), ": [", ",".join(d), "]")
-      sys.stdout.flush()
-      d = []
-elif(sys.argv[1][0] == 'z'):
-  bd = []
-  for t in range(0, int(sys.argv[2])):
-    bd.append("0")
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    print(line[:- 1].split(",")[0], ",", ",".join(bd))
-    d = [line[:- 1].split(",")[0]]
-    d.extend(bd[:- 1])
-    bd = d
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'G'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = line.split(",")
-    s = 0.
-    for dd in d:
-      s += ifloat(dd)
-    s /= len(d)
-    print(s)
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'L'):
   f = []
   for ff in sys.argv[2:]:
@@ -369,38 +234,6 @@ elif(sys.argv[1][0] == 'L'):
       d.extend(l.split(","))
     print(",".join(d))
     sys.stdout.flush()
-elif(sys.argv[1] == 'Q'):
-  t = 0
-  # N.B. we can also we should shuffle the indices for jamming.
-  # N.B. harden predictor chain slips with shuffling because the pattern
-  #      predictors added slips when indices are shuffled.
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    d = line.split(",")
-    n2p = 0
-    n2n = 0
-    for s in range(1, len(d)):
-      n2n += pow(ifloat(d[s]), 2.)
-      if(t % (len(d) - 1) + 1 != s):
-        n2p += pow(ifloat(d[s]), 2.)
-    if(n2n == 0. and 2 < len(d)):
-      print(0.)
-      continue
-    elif(len(d) <= 2):
-      n2n = ifloat(d[0]) * ifloat(d[0]) + ifloat(d[1]) * ifloat(d[1])
-      n2p = ifloat(d[1]) * ifloat(d[1])
-      if(n2n == 0):
-        print(0.)
-        continue
-    # N.B. Cyclic out with complemental weight.
-    if(ifloat(d[t % (len(d) - 1) + 1]) * pow(- 1, t) < 0):
-    # N.B. following don't affect better to scatter.
-    #if(p * getrand(3) < 0):
-      # N.B. we need abs to avoid sgn(d[0])^2 result.
-      print(  abs(ifloat(d[0])) * pow(n2p / n2n, .5))
-    else:
-      print(- abs(ifloat(d[0])) * pow(n2p / n2n, .5))
-    sys.stdout.flush()
-    t += 1
 elif(sys.argv[1][0] == 'E'):
   a  = []
   M  = 0.

@@ -20,8 +20,8 @@ LDFLAGS+=	-lc++
 CXXFLAGS+=	-D_ARCFOUR_
 
 clean:
-	@rm -rf catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2sg p2sg32
-all:	catgp catgp32 p2prng p2prng32 p2prngb p2prngb32 p2sg p2sg32
+	@rm -rf catgp catgp32 p2cr p2cr32 p2sg p2sg32
+all:	catgp catgp32 p2cr p2cr32 p2sg p2sg32
 catgp:
 	${CXX} ${CXXFLAGS} -static -o catgp catgp.cc
 catgp32:
@@ -32,14 +32,10 @@ catgpc:
 	${CXX} ${CXXFLAGS} -static -D_CHAIN_ -o catgpc catgp.cc
 catgpc32:
 	${CXX} ${CXXFLAGS} -static -D_CHAIN_ -D_FLOAT_BITS_=32 -o catgpc32 catgp.cc
-p2prng:
-	${CXX} ${CXXFLAGS} -static -o p2prng p2prng.cc
-p2prng32:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2prng32 p2prng.cc
-p2prngb:
-	${CXX} ${CXXFLAGS} -static -D_BIT_ -o p2prngb p2prng.cc
-p2prngb32:
-	${CXX} ${CXXFLAGS} -static -D_BIT_ -D_FLOAT_BITS_=32 -o p2prngb32 p2prng.cc
+p2cr:
+	${CXX} ${CXXFLAGS} -static -o p2cr p2cr.cc
+p2cr32:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2cr32 p2cr.cc
 p2sg:
 	${CXX} ${CXXFLAGS} -static -o p2sg p2sg.cc
 p2sg32:
