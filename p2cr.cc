@@ -124,12 +124,13 @@ int main(int argc, const char* argv[]) {
         const auto& d(in[0]);
         vector<num_t> M;
         M.reserve(in.size() - 1);
-        for(int i = 0; i < in.size() - 1; i ++)
-          M.emplace_back(d == num_t(int(0)) ? d : in[i + 1] / d);
+        for(int i = 1; i < in.size(); i ++)
+          M.emplace_back(d == num_t(int(0)) ? d : in[i] / d);
         if(M.size() == b.size()) {
           const auto res(pSubesube<num_t>(d, make_pair(M, b), t ++));
           std::cout << res.first << ", " << res.second << std::endl << std::flush;
-        }
+        } else
+          std::cout << num_t(int(0)) << ", " << num_t(int(0)) << std::endl << std::flush;
         b = move(M);
         continue;
       }

@@ -17,7 +17,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # pair of persistent predictor cut by y, x-axis.
     # N.B. these are targetting sign bit on the stream in argument meaning.
     
-    ... | ./p2sg <param> | ((p2cr l 2 0 | p2cr Q |)) ...
+    ... | ./p2sg <param> | ((p2cr l 2 0 2 | p2cr Q |)) ...
     # jammer to jammer.
     # N.B. we hope this slides original stream predictors' gulf result
     #      when we repredict output stream by same method.
@@ -530,5 +530,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/08 fix p2qt.cc param != 0 case but our machine is infected from the conclusion, either needs {-1, 1}-input stream.
 2025/06/08 we're in infected condition, so we rework possible thin layered condition.
 2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring. fix catgp 0 crash.
-2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips.
+2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips. also fix p2cr Q cmd align.
 

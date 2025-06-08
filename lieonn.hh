@@ -3792,8 +3792,8 @@ template <typename T> static inline pair<T, T> pSubesube(const T& d0, const pair
 
 template <typename T> class pslip_t {
 public:
-  inline pslip_t() {
-    pipe.resize(3 * 3 * 3 - 1);
+  inline pslip_t(const int& len = 0) {
+    pipe.resize(3 * 3 * 3 - 1, idFeeder<T>(len));
     M.resize(27 * 2);
     M.O();
     shf.resize(2, 0);
