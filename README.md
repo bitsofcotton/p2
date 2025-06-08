@@ -2,17 +2,17 @@
 A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
-    ./catgp(32|64)? <line>? < data.txt
-    # 0 < line : number of back lines the predictor uses.
-    # line == 0 to use whole input stream to predict next step.
-    #   this takes O((input lines)^2) ratio calculation time.
-    
     cr.py [rjRsSdiltFkvPmhebBfzGLQEHDZxX] ...
     # predictor formatter with many of the scrapped commands.
     
+    ./catgp(32|64)? <line>? < data.txt
+    # patternizable jammer predictor.
+    # 0 < line : number of back lines the predictor uses.
+    # line == 0 to use whole input stream to predict next step.
+    
     ... | cr.py D 'cr.py D "p0 3" "p0 0"' 'cr.py z 3 | p1 | p0 0' | cr.py l -1 0 2 5 | tee 0-0 | cr.py Q | ((recursive)) ...
     ... | cr.py E ... cr.py H ... | ...
-    # yet yet another pair of persistent predictor cut by y, x-axis.
+    # pair of persistent predictor cut by y, x-axis.
     # N.B. these are targetting sign bit on the stream in argument meaning.
     
     ... | p2sg <param> | ((cr.py l 2 0 | cr.py Q |)) ...
@@ -527,5 +527,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/07 revert, Q command result sign doesn't depend on the place sign, so fixed.
 2025/06/08 fix p2qt.cc param != 0 case but our machine is infected from the conclusion, either needs {-1, 1}-input stream.
 2025/06/08 we're in infected condition, so we rework possible thin layered condition.
-2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring.
+2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring. fix catgp 0 crash.
 
