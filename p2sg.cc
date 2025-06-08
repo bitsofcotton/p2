@@ -40,13 +40,12 @@ int main(int argc, const char* argv[]) {
   num_t d(t);
   auto  M(d);
   idFeeder<num_t> in(1 < argc ? 7 : 0);
-  idFeeder<num_t> bb(1 < argc ? 2 : 1);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     std::cout << (M *= d) << ", " << std::flush;
     std::cout <<
-      bb.next(M = pSlipGulf0short<num_t>(in.next(d), pslip, t ++) )[0] <<
+      (M = pSlipGulf0short<num_t>(in.next(d), pslip, t ++) ) <<
         ", " << d << std::endl << std::flush;
   }
   return 0;

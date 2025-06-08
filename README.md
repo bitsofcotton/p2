@@ -6,21 +6,24 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     ./p2cr [rRfhzSdsiltkGQ] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2cr only depends on c++ concerned bootstrap with this repository.
+    # XXX: p2cr Q command is one step before condition because they don't really
+    #      treat prediction values, only treats walk values.
     
     ./catgp(32|64)? <line>? < data.txt
     # patternizable jammer predictor.
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     
-    ... | cr.py D 'cr.py D "p0 3" "p0 0"' 'p2cr z 3 | p1 | p0 0' | p2cr l 4 0 2 5 | tee 0-0 | p2cr Q | ((recursive)) ...
+    ... | cr.py D "p0 ..." "p2cr z 3 | p1 | p0 0" | p2cr l 4 0 2 4 | tee 0-0 | p2cr Q | ((recursive)) ...
     ... | cr.py E ... cr.py H ... | ...
     # pair of persistent predictor cut by y, x-axis.
     # N.B. these are targetting sign bit on the stream in argument meaning.
     
     ... | ./p2sg <param> | ((p2cr l 2 0 2 | p2cr Q |)) ...
-    # jammer to jammer.
-    # N.B. we hope this slides original stream predictors' gulf result
-    #      when we repredict output stream by same method.
+    # This often make worse high entropy feeding in result (jammer to jammer).
+    # However, we can do (p2cr s | p2cr k ... | p2cr d) chain, so medium
+    # stable entropy feeding could be gained, they causes typically 1:2 result
+    # in sign.
     
     p2cr [rR]b | p2cr l ... | p2cr t 8 | p2cr f ... | cr.py e ... | p2cr h ...
     # pseudo-harden PRNGs, more number of chain works.
@@ -530,5 +533,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/08 fix p2qt.cc param != 0 case but our machine is infected from the conclusion, either needs {-1, 1}-input stream.
 2025/06/08 we're in infected condition, so we rework possible thin layered condition.
 2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring. fix catgp 0 crash.
-2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips. also fix p2cr Q cmd align.
+2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips. also fix p2cr Q cmd align. fix p2sg as invertible.
 

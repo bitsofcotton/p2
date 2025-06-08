@@ -95,7 +95,6 @@ int main(int argc, const char* argv[]) {
   } else if(argv[1][0] == 'z') {
     SimpleVector<num_t> b(std::atoi(argv[2]));
     b.O();
-    int t(0);
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ss(s);
       ss >> b[b.size() - 1];
