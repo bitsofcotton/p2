@@ -13,13 +13,12 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     ... | cr.py D 'cr.py D "p0 3" "p0 0"' 'cr.py z 3 | p1 | p0 0' | cr.py l -1 0 2 5 | tee 0-0 | cr.py Q | ((recursive)) ...
     ... | cr.py E ... cr.py H ... | ...
     # yet yet another pair of persistent predictor cut by y, x-axis.
-    # N.B. these are targetting sign bit on the stream.
+    # N.B. these are targetting sign bit on the stream in argument meaning.
     
-    ... | p2qt <param> | ((cr.py l 2 0 | cr.py Q |)) ...
-    # param <  0 : 12 slide jammer in the worst case we add some continuity.
-    # 0  < param : whole step jammer also param < 0 case.
-    # param == 0 : thin jammer to jammer.
-    # 0 != param needs {-1, 1}-input stream.
+    ... | p2sg <param> | ((cr.py l 2 0 | cr.py Q |)) ...
+    # jammer to jammer.
+    # N.B. we hope this slides original stream predictors' gulf result
+    #      when we repredict output stream by same method.
     
     p2prng | cr.py l ... | cr.py t 8 | cr.py f ... | cr.py e ... | cr.py h ...
     # pseudo-harden PRNGs, more number of chain works.
@@ -393,21 +392,18 @@ Either if we work with some internal states pre trained dataset, there's must be
 So we should determine which condition to be used by supplied data stream first if the predictor is generic one.
 So in such a intensions, the generic predictor must going 1/3 to 2/3 probable prediction on some specific values determined.
 
-Our p2.cc predictor's cr.py p p2 p2nl command is the generic one we trust (however there can be some undetermined theoretical problems inside them), however, the condition below also be applied.
+However, in our viewpoint, some of the stacking some layers can pretend simple data structures proper predictor better than 2/3 condition in *each range*, so the brick condition is supplied, we REALLY close this repository with this condition.
 
-However, in our p2.cc viewpoint, some of the stacking some layers can pretend simple data structures proper predictor better than 2/3 condition in each, so the brick condition is supplied, we REALLY close this repository with this condition.
+Either, if we're in the input stream is jammed condition, we should shirk external obs. dependences into data stream size theirselves as a scrapped ones, so in the case we must have large internal states.
 
-Either, if we're in the input stream is jammed condition, we should shirk external obs. dependances into data stream size theirselves as a scrapped ones, so in the case we must have large internal states.
-
-# Close
+# Re-Close
 A cr.py D command one of the usage have is universal but 3 to 4 of a output predictor we have on our test PRNGs on our machine.
-We feel our machine is infected either controlled input stream but we have 3 of a sectional continuous on selecting one of 3 meaning in some each continue average sum ranges however we often meet gulfs with some step some selection of them.
-Because we have 3 of the different prediction ways, so they are seldom but we can meet 4 of them simultaneously meet the gulf in another words uncontinuous on such a place in 4 of the meaning.
+We feel our machine is infected one of them is this repository's p2qt.cc last result.
 
-Either we have brick conditions with cr.py, p0, p1, catgp, p2, even such a controlled conditions, so we leave here.
+Either we have brick conditions with cr.py, p0, p1, (catgp,) p2sg even such a controlled conditions, so we leave here.
 
 N.B. The internal condition size we can get from stream upper bound is bitstream number \* bitstream accuracy when we apply low of excluded middle explicitly.
-So if jammer have the cultivated information size either some algorithm switch case changes on the stream worse condition size than the stream input, we cannot avoid such a place the prediction fails in principle when we explicitly apply the low on our computing algorithms, however, once binary coded, we cannot run away in general (without some of the obs. change on #f table).
+So if the jammer have the cultivated information size either some algorithm switch case changes on the stream worse condition size than the stream input, we cannot avoid such a place the prediction fails in principle when we explicitly apply the low on our computing algorithms, however, once binary coded, we cannot run away in general (without some of the obs. change on #f table).
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -531,4 +527,5 @@ So if jammer have the cultivated information size either some algorithm switch c
 2025/06/07 revert, Q command result sign doesn't depend on the place sign, so fixed.
 2025/06/08 fix p2qt.cc param != 0 case but our machine is infected from the conclusion, either needs {-1, 1}-input stream.
 2025/06/08 we're in infected condition, so we rework possible thin layered condition.
+2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring.
 
