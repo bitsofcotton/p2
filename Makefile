@@ -20,8 +20,8 @@ LDFLAGS+=	-lc++
 CXXFLAGS+=	-D_ARCFOUR_
 
 clean:
-	@rm -rf p2 p2-32
-all:	p2 p2-32
+	@rm -rf p2 p2-32 pp
+all:	p2 p2-32 pp
 p2:
 	${CXX} ${CXXFLAGS} -static -o p2 p2.cc
 p2-32:
@@ -30,4 +30,6 @@ p:
 	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -o p p2.cc
 p32:
 	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=32 -o p32 p2.cc
+pp:
+	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=64 -D_PERSISTENT_ -o pp p2.cc
 

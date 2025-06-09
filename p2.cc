@@ -17,6 +17,8 @@
 
 #include <random>
 
+#define int int32_t
+//#define int int64_t
 #include "lieonn.hh"
 typedef myfloat num_t;
 
@@ -24,7 +26,10 @@ static inline num_t fl(int x, int M) {
   return num_t(x) / num_t(M + 1);
 }
 
+#undef int
 int main(int argc, const char* argv[]) {
+#define int int32_t
+//#define int int64_t
   assert(1 < argc);
   std::cout << std::setprecision(30);
   std::string s;

@@ -11,6 +11,10 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     #      easily with compiler options.
     # XXX: p2 Q command is one step before condition because they don't really
     #      treat prediction values, only treats walk values.
+    # N.B. ./pp uses only persistent use uint32_t for arithmatic operations
+    #      both float/int but not with pointer calculation except for 32bit
+    #      systems. also slightly used int32_t for index operations but we
+    #      want to exclude the type from calculation flow for debug things.
     
     p2(-32)? c <line>? < data.txt
     # patternizable jammer predictor.
@@ -542,4 +546,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring. fix catgp 0 crash.
 2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips. also fix p2cr Q cmd align. fix p2sg as invertible.
 2025/06/09 merge catgp.cc, p2sg,cc, p2cr.cc into p2.cc one binaried. (should we integrate p0, p1, p2 into p as one binaried?). refactor readme.md.
+2025/06/10 persistent uint32_t use in calculation option but they also use int32_t, also void*.
 
