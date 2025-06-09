@@ -2,38 +2,45 @@
 A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
-    cr.py [RFvPmebBLEHDZxX] ...
-    ./p2cr [rRfhzSdsiltkGQ] ...
+    cr.py [RfFvmebBLEHDZxX] ...
+    ./p2(-32)? [rRfhzSdsiltkGQcCjPT] ...
     # predictor formatter with many of the scrapped commands.
-    # N.B. p2cr only depends on c++ concerned bootstrap with this repository.
-    # XXX: p2cr Q command is one step before condition because they don't really
+    # N.B. p2 only depends on c++ concerned bootstrap with this repository.
+    #      this excludes CPU float glitches because we can use *unique*
+    #      CPU integer only either we can exclude SIMD operations for debug
+    #      easily with compiler options.
+    # XXX: p2 Q command is one step before condition because they don't really
     #      treat prediction values, only treats walk values.
     
-    ./catgp(32|64)? <line>? < data.txt
+    p2(-32)? c <line>? < data.txt
     # patternizable jammer predictor.
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     
-    ... | cr.py D "p0 ..." "p2cr z 3 | p1 | p0 0" | p2cr l 4 0 2 4 | tee 0-0 | p2cr Q | ((recursive)) ...
+    ... | cr.py D "p0 ..." "p2 z 3 | p1 | p0 0" | p2 l 4 0 2 4 | tee 0-0 | p2 Q | ((recursive)) ...
     ... | cr.py E ... cr.py H ... | ...
     # pair of persistent predictor cut by y, x-axis.
     # N.B. these are targetting sign bit on the stream in argument meaning.
     
-    ... | ./p2sg <param> | ((p2cr l 2 0 2 | p2cr Q |)) ...
+    ... | ./p2 j+? <param> | ((p2 l 2 0 2 | p2 Q |)) ...
     # This often make worse high entropy feeding in result (jammer to jammer).
-    # However, we can do (p2cr s | p2cr k ... | p2cr d) chain, so medium
+    # However, we can do (p2 s | p2 k ... | p2 d) chain, so medium
     # stable entropy feeding could be gained, they causes typically 1:2 result
     # in sign.
     
-    p2cr [rR]b | p2cr l ... | p2cr t 8 | p2cr f ... | cr.py e ... | p2cr h ...
+    # N.B. each of cr.py D, cr.py E, p2 j... predictor jammer jammer condition
+    #      results higher entropy stream they causes reducing some complexity
+    #      works with ddpmopt T condition well.
+    
+    p2 [rR]b | p2 l ... | p2 t 8 | p2 f ... | cr.py e ... | p2 h ...
     # pseudo-harden PRNGs, more number of chain works.
     
-    ... | p2cr l 0 | tee 0 | <predictor> | ...
-    p2cr l 0 < 0 | catgr 3 | p2cr h ... p2cr f ... | cr.py e | cr.py m
+    ... | p2 l 0 | tee 0 | <predictor> | ...
+    p2 l 0 < 0 | catgr 3 | p2 h ... p2 f ... | cr.py e | cr.py m
     # listen residue with rand_correct.mid.
 
 # Description:
-If we don't have better prediction with p0, p1, we categorize series of input and predict with them by catgp.
+If we don't have better prediction with p0, p1, we categorize series of input and predict with them by p2 c.
 
 Either, some of the predictors fighting with jammers, for non usual input streams however, even this predictor can have the jammer to us.
 
@@ -44,7 +51,7 @@ If we use cr.py with lieonn.hh description, we should pass the parameter reasona
 # General Tips
 If there exists correctly predict next one step with \[...,x_n,f(...,x_n),f(...,f(...,x_n)),..\], we can suppose f as a linear with \[...,a\*x_n+b,a\*f(...,x_n)+b,a\*f(...,f(...,x_n))+b,...\] if (some range)-markov with below and the finite accuracy condition, some range skipped series. This concludes the structure of f is f(x):=(\<a,x\>). So p0 and p1 is reasonable in this meaning. But, if there exists predictor function, there is able to be non-predictable function on the meaning to them. (because there exists the stream that flip the predicted ones.) The dimension of a vector depends on original f nonlinear part threshold.
 
-Converting monotone nonlinear function causes some taylor coefficients conversion, but with p0 and p1 and catgp, it's also in their condition.
+Converting monotone nonlinear function causes some taylor coefficients conversion, but with p0 and p1 and p2 c, it's also in their condition.
 
 # Important General Tips
 With 2^x:=\[1,x_0, ..., x_n, x_0 and x_1, ..., x_{n-1} and x_n, ..., x_0 and ... and x_n\] form, the operation 'and' and 'not' can be described as each taylor series that is also in y:=A\*2^x, A in R^{N\*N}, 2^x in {0, 1}^N.  
@@ -55,7 +62,7 @@ If we predict with p1, it depends f(x)'s complexity on status bit, if we average
 # Tips on p1, p2:
 p1, p2 is using makeProgramInvariant and revert... with the form randtools invariant. So it has a little difference on the description itself. Because of them, they has a little glitch on the prediction.
 
-The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, catgp behaves as if calculation dimension is smaller than original function.
+The vector size to predict depends on the dimension the original functions have on infinite accuracy. This is because of P1 representation on the program on full rank input. So if there's creation or destruction or no concern or concern on the dimension that we have, p2 c behaves as if calculation dimension is smaller than original function.
 
 The two operand operator is described in R^4 vector, so collect another pairs and symmetrize them, R^8 is enough dimension to calculate. But if there's not enough data on the series, we should skip some steps each. (The case skip smaller than we need causes the gulf, another case skip larger than we need can causes accuracy not enough nor no clear prediction we get.)
 
@@ -65,15 +72,15 @@ The case varlen == 3 is valid in the case all of the status rank is in the each 
 The case varlen == 7 is valid in the case all of the status rank is in the each data condition and doesn't have any symmetry in matrix description meaning. From somewhat, we need this condition on almost all of the PRNGs. (This might be caused by one function depends on the counter we input.)
 The case otherwise, we should choose valren \> 7 condition. This is the case clipped status datas on the data series and we can't get max rank on them in varlen == 7. Otherwise, please sum up some each range on input.
 
-N.B. in ideal, x+ := Ax\*(x_1...x_n)^m form, so with eigen decomposition, P^-1 x+ == A' P^-1 x \* (x_1...x_n)^m. if we average \<P 1, x\> form, it's very stable and it has only one form to calculate next one. If we average \<1, x\> form input/output, the form is A' p^-1_k depend vector we have, but it is also a little stable. So predict such with catgp can result continuous ones.
+N.B. in ideal, x+ := Ax\*(x_1...x_n)^m form, so with eigen decomposition, P^-1 x+ == A' P^-1 x \* (x_1...x_n)^m. if we average \<P 1, x\> form, it's very stable and it has only one form to calculate next one. If we average \<1, x\> form input/output, the form is A' p^-1_k depend vector we have, but it is also a little stable. So predict such with p2 c can result continuous ones.
 
 N.B. we need 3 variable on predictor because we get invariant on the data stream. This is because Lanczos transform leads us some average can have 3-term operator. We cannot use eigen decomposition itself because former one and latter one has a different vector.
 
 N.B. If we average enough range on input and if input don't have periods smaller than them, it's better than original prediction because we average original matrix's row sometimes that is larger than average on first any interval scan. Otherwise, if input has a period, we can define pseudo prediction on it's period.
 
-N.B. If original stream doesn't show full status (not enough rank on the data linear dependance), the prediction p1 and catgp fails as the edge clear gulf. This is avoidable with larger average length because of the matrix rank. Skip non period step also causes to avoid them.
+N.B. If original stream doesn't show full status (not enough rank on the data linear dependance), the prediction p1 and p2 c fails as the edge clear gulf. This is avoidable with larger average length because of the matrix rank. Skip non period step also causes to avoid them.
 
-N.B. A catgp corrects noise, this is because catgp includes p1 with some random noise index.
+N.B. A p2 c corrects noise, this is because p2 c includes p1 with some random noise index.
 
 N.B. The status that PRNG have is often larger than 1000, this is because of the period and complexity itself.
 
@@ -135,7 +142,7 @@ If our calculator is being jammed from some existence, we cannot avoid them at a
 # Any of the predictor, any of the jammer (n times).
 We choose the predictor as simple enough.
 This is because when we're in being jammed condition, to make counter measure to them causes worse predictable (saved) input as well.
-This is also with the condition catgp as well.
+This is also with the condition p2 c as well.
 So whether or not we choose satate out of the length we treat, it's the same condition. So we only target strict on the states on fixed length in p.cc.
 
 So all we can do the best is to re-predict with another argv after saving the input and close the connection to PRNG which generates suspicious stream.
@@ -156,8 +163,8 @@ We avoid small part of them by limiting invariant dimension, but utterly, we can
 So this often fails with some of the artificial created streams.
 So with such case, we need to deal with some of the average on input.
 
-# Tips around catgp.
-A catgp treats input data as clustered parts combination on status length.
+# Tips around p2 c.
+A p2 c treats input data as clustered parts combination on status length.
 This permits some larger dimension invariants differed from the dimension cdot we apply in blur.
 However, this also has trivial upper bounds as status length.
 
@@ -290,7 +297,7 @@ However, pp3dft.cc also needs p0.cc after doing prediction in many of the cases.
 # Tips on usual predictions
 Usually with good enough predictors, the input-stream - prediction-stream inner production stream can be linear nor gulf continues around given input estimation range based ranges, this is because usually the feeding unobserved internal states into input stream is something stable, but sometimes unstable causes prediction fail on after the unstable feeding causes estimation unstable on given range.
 
-Also, the gulf condition isn't avoidable by catgp.cc except the range of them can be increased, it's better with the large range feed into original good enough predictors.
+Also, the gulf condition isn't avoidable by p2.cc c except the range of them can be increased, it's better with the large range feed into original good enough predictors.
 
 So we cannot avoid them except for the case feeding is stable enough on estimation range condition nor no feed condition nor bitsofcotton/p\[45\] condition.
 
@@ -315,7 +322,7 @@ However, if the series structure converges, we don't care which one is the bette
 # Tips on predicting reseed
 If we face PRNGs reseeded, the structure of them unchange but the vector doesn't continues before and after the reseed.
 
-In the case, we need to do catgp.cc with better parameter however if period of reseed is unknown one, the problems are harder than them.
+In the case, we need to do p2.cc c with better parameter however if period of reseed is unknown one, the problems are harder than them.
 
 So the better PRNGs need to have some entropy for reseeding and their periods.
 So initial number of the entropy and reseeding entropy is the matter so this matches well known ones.
@@ -323,35 +330,35 @@ So initial number of the entropy and reseeding entropy is the matter so this mat
 # Tips on broken PRNG on our machine
 Once ancient (more than a decade ago) we had better with p0 below, they had be break, now we can predict by them, they should break after this upload.
 
-cat ... \| cr.py N \| p0 1 3 \| cr.py S \[12\] \| cr.py k 2 \| cr.py s \| cr.py  l 0
+cat ... \| cr.py N \| p0 1 3 \| p2 S \[12\] \| p2 k 2 \| p2 s \| p2 l 0
 
 The infection might come from some deep inside the kernel/compiler/firmware/hardware with some political matters because of the infection period. So we cannot trust our computing systems even wherever we bought them as a consumer assembly/supply chain line.
 Either, some of the github.com top page nor drive.google.com top page inserts some suspicious javascript codes they behaves like a freeze page, so our computer nor Internet connection is targetted, either yours so.
 
 # Tips on continuous prediction
-We can do cat ... \| cr.py z ... \| cr.py S ... \| p1 \| p0 \| cr.py s \| cr.py l 0 .
+We can do cat ... \| p2 z ... \| p2 S ... \| p1 \| p0 \| p2 s \| p2 l 0 .
 However, this might get to be broken after this upload.
 
-We especially do cat ... \| cr.py z (1\|2\|4\|8) \| cr.py S (1\|2\|4\|8) \| p1 \[01\] \| p0 \[01\] \| cr.py s \| cr.py l 0 .
+We especially do cat ... \| p2 z (1\|2\|4\|8) \| p2 S (1\|2\|4\|8) \| p1 \[01\] \| p0 \[01\] \| p2 s \| p2 l 0 .
 However, this also might get to be broken after this upload.
 
-cat ... \| catgp ... \| p1 ... \| p0 ... \| cr.py s \| cr.py l 0 also worked with certain range.
+cat ... \| p2 c ... \| p1 ... \| p0 ... \| p2 s \| p2 l 0 also worked with certain range.
 
-However, after of them, almost any of p2prng generated ones are false positive predicted with cr.py N ... commands, so we cannot test them to detect they're complement relations or not but we can estimate such of them by {x,f(x),states} dimension and algorithm vector they have but if in such a case, each of {catgp, p1, p0} argc they have upper bound is 2 (only 1 parameter) either surface test we have also returns such of them but they can be false positive.
+However, after of them, almost any of p2prng generated ones are false positive predicted with cr.py N ... commands, so we cannot test them to detect they're complement relations or not but we can estimate such of them by {x,f(x),states} dimension and algorithm vector they have but if in such a case, each of {p2, p1, p0} argc they have upper bound is 2 (only 1 parameter) either surface test we have also returns such of them but they can be false positive.
 
-After some test, p2prng \| tee ... \| catgp 0 \| p1 0 \| p0 0 \| cr.py s \| cr.py l 0 \> ..., tee's results is enough complex when we're trying cat ... \| cr.py t 1 \| catgr 3 \| cr.py m when we're in controlled condition.
+After some test, p2prng \| tee ... \| p2 c 0 \| p1 0 \| p0 0 \| p2 s \| p2 l 0 \> ..., tee's results is enough complex when we're trying cat ... \| p2 t 1 \| catgr 3 \| cr.py m when we're in controlled condition.
 
 We hope one of the 3 commands below can effect complements each other, in some extra small rough test says so, but they can be another combinations.
 
 # Relation the gulf we sometime meet and latest predv function.
-We sometimes meet prediction result gulfs with raw input stream with the condition catgp \| p1 \| p0.
-We can spread them as cr.py j ... \| catgp \| p1 \| p0 with blending PRNGs.
+We sometimes meet prediction result gulfs with raw input stream with the condition p2 c \| p1 \| p0.
+We can spread them as cr.py j ... \| p2 c \| p1 \| p0 with blending PRNGs.
 So better large number of spreaded average causes some of the eigen vector PRNG have vs. input stream condition.
 So even in such a case, we rarely but can meet the gulf with such a result.
 So PRNG creation is the matter to predict any input streams.
 
 # After some of the tests.
-We can apply ... catgp .. p1 .. p0 \| cr.py d \| cr.py t .5 \| catgp 2 .. p1 2 .. p0 2 ... \| ... \| catgp 3 .. p1 3 .. p0 3 .. chain by adding step by step.
+We can apply ... p2 c .. p1 .. p0 \| p2 d \| p2 t .5 \| p2 c 2 .. p1 2 .. p0 2 ... \| ... \| p2 c 3 .. p1 3 .. p0 3 .. chain by adding step by step.
 This inspects all of offsets condition around 4 variables.
 However, this either can be get into the controlled condition.
 
@@ -362,12 +369,12 @@ However, we get similar (almost same) result occasion with arc4random either sys
 # Return to average after getting walk is similar to value condition
 We sometimes get walk looks like value condition.
 In such a case, a typical result says around 1:10 accuracy in decimal also almost of the points when we differ whole output.
-A cr.py g \| cr.py l 2 command output says if the line \>=0, prediction sign is correct.
+A cr.py g \| p2 l 2 command output says if the line \>=0, prediction sign is correct.
 However, we didn't test them as in a feed back loop on generation - prediction on the machine.
 
 # testing around quantum mechanics based RNGs
 There exists XEB score chases and their result bit streams on the Internet.
-We tested them with cat ... \| cr.py x \| catgp 1 \| p1 1 \| p0 1 \| cr.py d \| cr.py g 1 pipe, once we got cr.py l 2 result almost all of the data minus condition (this can be used to negate of the predition better go with), however, some after test isn't says so it's only same behavior as arc4random on our predicctors (as almost all of data plus condition this means RNG delta stream's sign is predictable on some of the probability).
+We tested them with cat ... \| cr.py x \| catgp 1  \| p1 1 \| p0 1 \| p2 d \| cr.py g 1 pipe, once we got p2 l 2 result almost all of the data minus condition (this can be used to negate of the predition better go with), however, some after test isn't says so it's only same behavior as arc4random on our predicctors (as almost all of data plus condition this means RNG delta stream's sign is predictable on some of the probability).
 We cannot understand this result because it should be TRNG in the meaning also the internal states we apply isn't so large enough ones we should use roughly.
 However, we cannot use such RNG bit streams to cast better our predictors (or our machine is infected enough).
 
@@ -376,13 +383,13 @@ We looked what some sets of the PRNG effect into our predictor set, either in so
 Improving our predictor needs harder PRNG or no controlled but complex one, so we close with this set.
 
 # cr.py p,q command
-The cr.py p command with catgp p1 p0 chain causes commented case.
+The cr.py p command with p2 c p1 p0 chain causes commented case.
 We conclude if the stream is deterministic created and data feed to them is enough, some probability we succeeds prediction with these one of 10 predictions.
 However, cr.py q command can attack them, also the new entropy feed is always able, so PRNG generater is slight profitable in any which cases.
 Whether or not we're infected condition, we close the repository with this form.
 
 # cr.py 2 command
-The cr.py 2 command with catgp p1 p0 chain causes p command and their jammer can cause original stream continuity some shift.
+The cr.py 2 command with p2 c p1 p0 chain causes p command and their jammer can cause original stream continuity some shift.
 However, there exists q command and attack can cause wavy one they can avoid cr.py 2 predictor.
 Real close.
 
@@ -405,7 +412,7 @@ Either, if we're in the input stream is jammed condition, we should shirk extern
 A cr.py D command one of the usage have is universal but 3 to 4 of a output predictor we have on our test PRNGs on our machine.
 We feel our machine is infected one of them is this repository's p2qt.cc last result.
 
-Either we have brick conditions with cr.py, p0, p1, (catgp,) p2sg even such a controlled conditions, so we leave here.
+Either we have brick conditions with p0, p1, p2 even such a controlled conditions, so we leave here.
 
 N.B. The internal condition size we can get from stream upper bound is bitstream number \* bitstream accuracy when we apply low of excluded middle explicitly.
 So if the jammer have the cultivated information size either some algorithm switch case changes on the stream worse condition size than the stream input, we cannot avoid such a place the prediction fails in principle when we explicitly apply the low on our computing algorithms, however, once binary coded, we cannot run away in general (without some of the obs. change on #f table).
@@ -534,4 +541,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/08 we're in infected condition, so we rework possible thin layered condition.
 2025/06/08 we move p2qt.cc into p2sg.cc correct meaning from test result also update readme. also the concerned functions refactoring. fix catgp 0 crash.
 2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips. also fix p2cr Q cmd align. fix p2sg as invertible.
+2025/06/09 merge catgp.cc, p2sg,cc, p2cr.cc into p2.cc one binaried. (should we integrate p0, p1, p2 into p as one binaried?). refactor readme.md.
 

@@ -54,6 +54,10 @@ elif(sys.argv[1][0] == 'R'):
     for byte in a:
       print(byte - 127.5)
     sys.stdout.flush()
+elif(sys.argv[1][0] == 'f'):
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    print(ifloat(line.split(",")[0]))
+    sys.stdout.flush()
 elif(sys.argv[1][0] == 'F'):
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
     b = hex(int(ifloat(line.split(",")[0]) * pow(2., int(sys.argv[2])) ))
@@ -66,28 +70,6 @@ elif(sys.argv[1][0] == 'v'):
     a.append(line[:- 1])
   for t in range(0, len(a)):
     print(a[- 1 - t])
-elif(sys.argv[1][0] == 'P'):
-  from PIL import Image
-  mC  = []
-  ctr = 0
-  for line in sys.stdin:
-    if(len(line.split("[")) <= 1): continue
-    ff = line.split("[")[1].split("]")[0].split(",")
-    print(ff)
-    sq = int(pow(float(len(ff)), .5))
-    im = Image.new("RGB", (sq, sq), (256, 256, 256))
-    x = y = 0
-    for f in ff:
-      v = int(float(f) * 127. + 128)
-      im.putpixel((x, y), (v, v, v))
-      x += 1
-      if(sq <= x):
-        x = 0
-        y += 1
-        if(sq <= y):
-          break
-      im.save("./rand_png-" + str(ctr) + ".png")
-    ctr += 1
 elif(sys.argv[1][0] == 'm'):
   import numpy
   import mido
