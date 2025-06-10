@@ -255,7 +255,7 @@ elif(sys.argv[1] == 'H'):
       buf = p[t].stdout.readline().decode("utf-8").split(",")
       D += ifloat(buf[0])
       M += ifloat(buf[1])
-    print(D, ",", M)
+    print(D / len(p), ",", M / len(p))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'D'):
   p = subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)

@@ -3,7 +3,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
 
 # Usage
     cr.py [RfFvmebBLEHDZxX] ...
-    ./p2(-32)? [rRfhzSdsiltkGQcCjPT] ...
+    ./p2(-32)? [rRfhzSdsiltkGQcCjPTm] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2 only depends on c++ concerned bootstrap with this repository.
     #      this excludes CPU float glitches because we can use *unique*
@@ -20,6 +20,9 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # patternizable jammer predictor.
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
+    
+    p2(-32)? m[0-6] <num> < data.txt
+    # mix PRNG into input stream.
     
     ... | cr.py D "p0 ..." "p2 z 3 | p1 | p0 0" | p2 l 4 0 2 4 | tee 0-0 | p2 Q | ((recursive)) ...
     ... | cr.py E ... cr.py H ... | ...

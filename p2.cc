@@ -80,6 +80,58 @@ int main(int argc, const char* argv[]) {
       std::cout << std::endl << std::flush;
     }
     break;
+  } case 'm': {
+    std::random_device r;
+    std::default_random_engine er(r());
+    std::mt19937 mt(r());
+    std::ranlux24 rl24(r());
+    std::ranlux48 rl48(r());
+    std::knuth_b kb(r());
+    std::uniform_int_distribution<int> ud(0, 0x2000);
+    const auto& sw(argv[1][1]);
+    num_t d(t);
+    while(std::getline(std::cin, s, '\n')) {
+      std::stringstream ins(s);
+      ins >> d;
+      for(int i = 0; i < std::atoi(argv[2]); i ++) {
+        switch(sw) {
+          case '0':
+            std::cout << (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+          case '1':
+            std::cout << (fl(ud(er) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+          case '2':
+            std::cout << (fl(ud(mt) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+          case '3':
+            std::cout << (fl(ud(rl24) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+          case '4':
+            std::cout << (fl(ud(rl48) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+          case '5':
+            std::cout << (fl(ud(kb) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+#if defined(_GETENTROPY_)
+          case '6': {
+            uint8_t rnd[4];
+            for(int i = 0; i < 1600000 / 4; i ++)
+              getentropy(rnd, sizeof rnd);
+            // XXX: [-1,1[ case, we in fact need: [-1,1].
+            std::cout << (fl(((uint32_t&)(*rnd) & 0x1fff) - 0x1000, 0x1000) + d) / num_t(int(2));
+            break;
+          }
+#endif
+          default: assert(0 && "no such command");
+        }
+        if(i == std::atoi(argv[2]) - 1)
+          std::cout << ", ";
+        else
+          std::cout << std::endl << std::flush;
+      }
+    }
+    break;
   } case 'j': {
     pslip_t<num_t> pslip(argv[1][1] == '+' ? 7 : 0);
     num_t d(t);
@@ -162,10 +214,12 @@ int main(int argc, const char* argv[]) {
   } case '0': {
     auto& length(t);
     if(2 < argc) length = std::atoi(argv[2]);
+    const bool chain(argv[1][1] == 'c');
     #include "../p0/p0.cc"
   } case '1': {
     auto& stat(t);
     if(2 < argc) stat = std::atoi(argv[2]);
+    const bool chain(argv[1][1] == 'c');
     #include "../p1/pp3.cc"
 #endif
   } default: {
