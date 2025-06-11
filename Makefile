@@ -21,7 +21,9 @@ LDFLAGS+=	-lc++
 
 # lieonn.hh flags
 CXXFLAGS+=	-D_ARCFOUR_
-#CXXFLAGS+=	-D_OLDCPP_
+
+# N.B. sed -e s/static\ inline//g | sed -e s/inline//g
+#CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
 
 clean:
 	@rm -rf p2 p2-32 pp
