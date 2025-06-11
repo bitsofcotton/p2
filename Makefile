@@ -1,13 +1,16 @@
 CXX=	clang++
 #CXX=	eg++
+#CXX=	c++
 
 # compiler flags.
 CXXFLAGS+=	-std=c++11
+#CXXFLAGS+=	-std=gnu++98
 CXXFLAGS+=	-I..
 CXXFLAGS+=	-D_LIBCPP_ENABLE_ASSERTIONS
 #MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
 #CXXFLAGS+=	-pg
+#CXXFLAGS+=	-O2 -g3
 CXXFLAGS+=	-O2 -mtune=native -gfull
 #CXXFLAGS+=	-Ofast -mtune=native -gfull
 #CXXFLAGS+=	-Oz -mtune=native -gfull
@@ -18,6 +21,7 @@ LDFLAGS+=	-lc++
 
 # lieonn.hh flags
 CXXFLAGS+=	-D_ARCFOUR_
+#CXXFLAGS+=	-D_OLDCPP_
 
 clean:
 	@rm -rf p2 p2-32 pp

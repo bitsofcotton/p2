@@ -550,4 +550,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/09 move into p2cr from p2prng.cc and cr.py concerned parts this makes python to exclude from prediction chain however this once improves enough but will slips. also fix p2cr Q cmd align. fix p2sg as invertible.
 2025/06/09 merge catgp.cc, p2sg,cc, p2cr.cc into p2.cc one binaried. (should we integrate p0, p1, p2 into p as one binaried?). refactor readme.md.
 2025/06/10 persistent uint32_t use in calculation option but they also use int32_t, also void*.
+2025/06/11 compat compile option to gcc4.2.1.
 

@@ -15,7 +15,9 @@
 #include <unistd.h>
 #endif
 
+#if !defined(_OLDCPP_)
 #include <random>
+#endif
 
 #define int int32_t
 //#define int int64_t
@@ -36,6 +38,7 @@ int main(int argc, const char* argv[]) {
   int   t(0);
   switch(argv[1][0]) {
   case 'r': case 'R': {
+#if !defined(_OLDCPP_)
     std::random_device r;
     std::default_random_engine er(r());
     std::mt19937 mt(r());
@@ -43,15 +46,21 @@ int main(int argc, const char* argv[]) {
     std::ranlux48 rl48(r());
     std::knuth_b kb(r());
     std::uniform_int_distribution<int> ud(0, 0x2000);
+#endif
     while(true) {
       if(argv[1][1] == 'b') {
-        // XXX: ud(...) <= 2 case is not handled.
-        std::cout << num_t(int(arc4random_uniform(3)) - 1) << ",";
-        std::cout << num_t(ud(er) % 3 - 1) << ",";
+#if defined(_ARCFOUR_)
+        std::cout << num_t(int(arc4random_uniform(3)) - 1);
+#else
+        std::cout << num_t(int(random() % 3) - 1);
+#endif
+#if !defined(_OLDCPP_)
+        std::cout << "," << num_t(ud(er) % 3 - 1) << ",";
         std::cout << num_t(ud(mt) % 3 - 1) << ",";
         std::cout << num_t(ud(rl24) % 3 - 1) << ",";
         std::cout << num_t(ud(rl48) % 3 - 1) << ",";
         std::cout << num_t(ud(kb) % 3 - 1);
+#endif
 #if defined(_GETENTROPY_)
         if(argv[1][0] == 'R') {
           uint8_t rnd[4];
@@ -61,12 +70,18 @@ int main(int argc, const char* argv[]) {
         }
 #endif
       } else {
-        std::cout << fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) << ",";
-        std::cout << fl(ud(er) - 0x1000, 0x1000) << ",";
+#if defined(_ARCFOUR_)
+        std::cout << fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000);
+#else
+        std::cout << fl(int(random() % 0x2001) - 0x1000, 0x1000);
+#endif
+#if !defined(_OLDCPP_)
+        std::cout << "," << fl(ud(er) - 0x1000, 0x1000) << ",";
         std::cout << fl(ud(mt) - 0x1000, 0x1000) << ",";
         std::cout << fl(ud(rl24) - 0x1000, 0x1000) << ",";
         std::cout << fl(ud(rl48) - 0x1000, 0x1000) << ",";
         std::cout << fl(ud(kb) - 0x1000, 0x1000);
+#endif
 #if defined(_GETENTROPY_)
         if(argv[1][0] == 'R') {
           uint8_t rnd[4];
@@ -81,6 +96,7 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'm': {
+#if !defined(_OLDCPP_)
     std::random_device r;
     std::default_random_engine er(r());
     std::mt19937 mt(r());
@@ -88,7 +104,8 @@ int main(int argc, const char* argv[]) {
     std::ranlux48 rl48(r());
     std::knuth_b kb(r());
     std::uniform_int_distribution<int> ud(0, 0x2000);
-    const auto& sw(argv[1][1]);
+#endif
+    const char& sw(argv[1][1]);
     num_t d(t);
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
@@ -96,8 +113,13 @@ int main(int argc, const char* argv[]) {
       for(int i = 0; i < std::atoi(argv[2]); i ++) {
         switch(sw) {
           case '0':
+#if defined(_ARCFOUR_)
             std::cout << (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2));
+#else
+            std::cout << (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2));
+#endif
             break;
+#if !defined(_OLDCPP_)
           case '1':
             std::cout << (fl(ud(er) - 0x1000, 0x1000) + d) / num_t(int(2));
             break;
@@ -113,6 +135,7 @@ int main(int argc, const char* argv[]) {
           case '5':
             std::cout << (fl(ud(kb) - 0x1000, 0x1000) + d) / num_t(int(2));
             break;
+#endif
 #if defined(_GETENTROPY_)
           case '6': {
             uint8_t rnd[4];
@@ -135,7 +158,7 @@ int main(int argc, const char* argv[]) {
   } case 'j': {
     pslip_t<num_t> pslip(argv[1][1] == '+' ? 7 : 0);
     num_t d(t);
-    auto  M(d);
+    num_t M(d);
     idFeeder<num_t> in(argv[1][1] == '+' ? 7 : 0);
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
@@ -147,11 +170,11 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'c': case 'C': {
-    auto& length(t);
+    int& length(t);
     if(2 < argc) length = std::atoi(argv[2]);
     idFeeder<num_t> p(length);
     num_t d(t);
-    auto  M(d);
+    num_t M(d);
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
       ins >> d;
@@ -203,7 +226,7 @@ int main(int argc, const char* argv[]) {
       p.emplace_back(SimpleMatrix<num_t>(sq, sq));
       for(int i = 0; i < p[0].rows(); i ++)
         p[0].row(i) = w.subVector(i * p[0].cols(), p[0].cols());
-      if(! savep2or3<num_t>((std::string("rand_pgm-") + std::to_string(t ++) + std::string(".pgm")).c_str(), p) ) {
+      if(! savep2or3<num_t>((std::string("rand_pgm-") + to_string(t ++) + std::string(".pgm")).c_str(), p) ) {
         std::cerr << "failed to save." << std::endl;
         // if saveing file failed, safe to exit.
         break;
@@ -212,12 +235,12 @@ int main(int argc, const char* argv[]) {
     break;
 #if defined(_ONEBINARY_)
   } case '0': {
-    auto& length(t);
+    int& length(t);
     if(2 < argc) length = std::atoi(argv[2]);
     const bool chain(argv[1][1] == 'c');
     #include "../p0/p0.cc"
   } case '1': {
-    auto& stat(t);
+    int& stat(t);
     if(2 < argc) stat = std::atoi(argv[2]);
     const bool chain(argv[1][1] == 'c');
     #include "../p1/pp3.cc"
@@ -238,13 +261,13 @@ int main(int argc, const char* argv[]) {
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
       if(argv[1][0] == 'Q') {
-        const auto& d(in[0]);
+        const num_t& d(in[0]);
         vector<num_t> M;
         M.reserve(in.size() - 1);
         for(int i = 1; i < in.size(); i ++)
           M.emplace_back(d == num_t(int(0)) ? d : in[i] / d);
         if(M.size() == b.size()) {
-          const auto res(pSubesube<num_t>(d, make_pair(M, b), t ++));
+          const pair<num_t, num_t> res(pSubesube<num_t>(d, make_pair(M, b), t ++));
           std::cout << res.first << ", " << res.second << std::endl << std::flush;
         } else
           std::cout << num_t(int(0)) << ", " << num_t(int(0)) << std::endl << std::flush;
@@ -280,14 +303,15 @@ int main(int argc, const char* argv[]) {
           std::cout << in[std::atoi(argv[i])] << ", ";
         std::cout << in[std::atoi(argv[argc - 1])] << std::endl;
         break;
-      case 't': {
-        string a2(argv[2]);
+      case 't': case 'a': {
+        string a2(2 < argc ? argv[2] : "");
         std::stringstream ss(a2);
         num_t tt(int(0));
         ss >> tt;
         for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << (in[i] * tt) << ", ";
-        std::cout << (in[in.size() - 1] * tt) << std::endl;
+          std::cout << (argv[1][0] == 'a' ? abs(in[i]) : in[i] * tt) << ", ";
+        std::cout << (argv[1][0] == 'a' ? abs(in[in.size() - 1]) :
+          in[in.size() - 1] * tt) << std::endl;
         break;
       } case 'k':
         if(t % std::atoi(argv[2])) break;
@@ -305,7 +329,8 @@ int main(int argc, const char* argv[]) {
             bf[i] : ++ bf[i]) << ", ";
         std::cout << (num_t(int(0)) <= in[in.size() - 1] &&
           in[in.size() - 1] < num_t(int(1)) ?
-            bf[in.size() - 1] : ++ bf[in.size() - 1]) << std::endl;
+            bf[in.size() - 1] : ++ bf[in.size() - 1]) << ", " <<
+              (++ t) << std::endl;
         break;
       } deafult:
         assert(0 && "no such command.");
