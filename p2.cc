@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <assert.h>
 #include <stdint.h>
-#include <sys/resource.h>
 #if defined(_GETENTROPY_)
 #include <unistd.h>
 #endif
@@ -173,7 +172,7 @@ int main(int argc, const char* argv[]) {
 #endif
           default: assert(0 && "no such command");
         }
-        if(i == std::atoi(argv[2]) - 1)
+        if(i < std::atoi(argv[2]) - 1)
           std::cout << ", ";
         else
           std::cout << std::endl << std::flush;
