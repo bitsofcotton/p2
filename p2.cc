@@ -17,11 +17,10 @@
 
 #if !defined(_OLDCPP_)
 #include <random>
-#endif
-
 #define int int32_t
 //#define int int64_t
-#define _COMPILE_PRED_
+#endif
+
 #include "lieonn.hh"
 typedef myfloat num_t;
 
@@ -29,10 +28,14 @@ static inline num_t fl(int x, int M) {
   return num_t(x) / num_t(M + 1);
 }
 
+#if !defined(_OLDCPP_)
 #undef int
+#endif
 int main(int argc, const char* argv[]) {
+#if !defined(_OLDCPP_)
 #define int int32_t
 //#define int int64_t
+#endif
   assert(1 < argc);
   std::cout << std::setprecision(30);
   std::string s;
@@ -68,6 +71,27 @@ int main(int argc, const char* argv[]) {
           for(int i = 0; i < 1600000 / 4; i ++)
             getentropy(rnd, sizeof rnd);
           std::cout << "," << num_t(((int32_t&)(*rnd) % 3) - 1);
+        }
+#endif
+      } else if(argv[1][1] == 'B') {
+#if defined(_ARCFOUR_)
+        std::cout << num_t(int(arc4random() & 1)) * num_t(int(2)) - num_t(int(1));
+#else
+        std::cout << num_t(int(random() & 1)) * num_t(int(2)) - num_t(int(1));
+#endif
+#if !defined(_OLDCPP_)
+        std::cout << "," << num_t(ud(er) & 1) * num_t(int(2)) - num_t(int(1)) << ",";
+        std::cout << num_t(ud(mt) & 1) * num_t(int(2)) - num_t(int(1)) << ",";
+        std::cout << num_t(ud(rl24) & 1) * num_t(int(2)) - num_t(int(1)) << ",";
+        std::cout << num_t(ud(rl48) & 1) * num_t(int(2)) - num_t(int(1)) << ",";
+        std::cout << num_t(ud(kb) & 1) * num_t(int(2)) - num_t(int(1));
+#endif
+#if defined(_GETENTROPY_)
+        if(argv[1][0] == 'R') {
+          uint8_t rnd[4];
+          for(int i = 0; i < 1600000 / 4; i ++)
+            getentropy(rnd, sizeof rnd);
+          std::cout << "," << num_t(((int32_t&)(*rnd) & 1) - 1) * num_t(int(2)) - num_t(int(1));
         }
 #endif
       } else {
@@ -226,7 +250,7 @@ int main(int argc, const char* argv[]) {
       vector<SimpleMatrix<num_t> > p;
       p.emplace_back(SimpleMatrix<num_t>(sq, sq));
       for(int i = 0; i < p[0].rows(); i ++)
-        p[0].row(i) = w.subVector(i * p[0].cols(), p[0].cols());
+        p[0].row(i) = binMargin<num_t>(offsetHalf<num_t>(w.subVector(i * p[0].cols(), p[0].cols())));
       if(! savep2or3<num_t>((std::string("rand_pgm-") + to_string(t ++) + std::string(".pgm")).c_str(), p) ) {
         std::cerr << "failed to save." << std::endl;
         // if saveing file failed, safe to exit.

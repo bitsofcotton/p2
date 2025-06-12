@@ -21,6 +21,7 @@ LDFLAGS+=	-lc++
 
 # lieonn.hh flags
 CXXFLAGS+=	-D_ARCFOUR_
+CXXFLAGS+=	-D_GETENTROPY_
 
 # N.B. sed -e s/static\ inline//g | sed -e s/inline//g
 #CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
