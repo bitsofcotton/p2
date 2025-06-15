@@ -356,7 +356,7 @@ int main(int argc, const char* argv[]) {
             bf[in.size() - 1] : ++ bf[in.size() - 1]) << ", " <<
               (++ t) << std::endl;
         break;
-      } deafult:
+      } default:
         assert(0 && "no such command.");
       }
       std::cout << std::flush;

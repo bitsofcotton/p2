@@ -308,4 +308,12 @@ elif(sys.argv[1][0] == 'x'):
         print(1)
       elif(c == '0'):
         print(- 1)
+elif(sys.argv[1][0] == 'w'):
+  bd = 0
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
+    d = ifloat(line.split(",")[0])
+    if(float(sys.argv[2]) < abs(d - bd)):
+      print(d)
+      sys.stdout.flush()
+      bd = d
 
