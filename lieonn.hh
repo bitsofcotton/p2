@@ -388,8 +388,8 @@ public:
     return dynamic_cast<const T&>(*this) != dynamic_cast<const T&>(src);
   }
   inline bool operator <  (const Signed<T,bits>& src) const {
-    const Signed<T,bits> mthis(int(*this >> (bits - 1)));
-    const Signed<T,bits> msrc( int(src   >> (bits - 1)));
+    const int mthis(int(*this >> (bits - 1)));
+    const int msrc( int(src   >> (bits - 1)));
     if(mthis ^ msrc) return mthis;
     if(mthis)
       return - dynamic_cast<const T&>(src) < - dynamic_cast<const T&>(*this);
@@ -3901,6 +3901,7 @@ template <typename T, T (*p)(const SimpleVector<T>&)> static inline T deep(const
         T q(p(depth[j - 1].res));
         d *= q;
         depth[j].next(move(q));
+        // depth[j].next(unOffsetHalf<T>(move(q)));
       } else {
         T q(p(depth[j - 1].res));
         d = - (d -= q);
@@ -3915,9 +3916,16 @@ template <typename T, T (*p)(const SimpleVector<T>&)> static inline T deep(const
     if(! depth[j].full) continue;
     if(j & 1)
       M *= depth[j].res[depth[j].res.size() - 1];
+      // M *= offsetHalf<T>(depth[j].res[depth[j].res.size() - 1]);
     else
-      (M = - M) += depth[j].res[depth[j].res.size() - 1];
+      (M = - M) += unOffsetHalf<T>(depth[j].res[depth[j].res.size() - 1]);
   }
+  // N.B. the comment out code causes (...(in+1)*p/2-1/2+1)*q/2-1/2+1)*r...)
+  //      also the code causes (...(-((in+1)*p/2+q+1)/2*p'+q'+1)/2...)
+  //  the reverse of former makes a sense because it's only a pivoting.
+  //  the second one case also makes a sense forward conversion because
+  //  they're also a pivoting with sign reverse chain.
+  //  the reverse of second needs unOffsetHalf chain so we fixed this.
   return M;
 }
 
