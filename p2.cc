@@ -119,7 +119,7 @@ int main(int argc, const char* argv[]) {
       std::cout << std::endl << std::flush;
     }
     break;
-  } case 'm': {
+  } case 'm': case 'M': {
 #if !defined(_OLDCPP_)
     std::random_device r;
     std::default_random_engine er(r());
@@ -138,26 +138,26 @@ int main(int argc, const char* argv[]) {
         switch(sw) {
           case '0':
 #if defined(_ARCFOUR_)
-            std::cout << (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
 #else
-            std::cout << (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
 #endif
             break;
 #if !defined(_OLDCPP_)
           case '1':
-            std::cout << (fl(ud(er) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(er) & 1 ? 1 : - 1) * d : (fl(ud(er) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '2':
-            std::cout << (fl(ud(mt) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(mt) & 1 ? 1 : - 1) * d : (fl(ud(mt) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '3':
-            std::cout << (fl(ud(rl24) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl24) & 1 ? 1 : - 1) * d : (fl(ud(rl24) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '4':
-            std::cout << (fl(ud(rl48) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl48) & 1 ? 1 : - 1) * d : (fl(ud(rl48) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '5':
-            std::cout << (fl(ud(kb) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(kb) & 1 ? 1 : - 1) * d : (fl(ud(kb) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
 #endif
 #if defined(_GETENTROPY_)
@@ -166,7 +166,7 @@ int main(int argc, const char* argv[]) {
             for(int i = 0; i < 1600000 / 4; i ++)
               getentropy(rnd, sizeof rnd);
             // XXX: [-1,1[ case, we in fact need: [-1,1].
-            std::cout << (fl(((uint32_t&)(*rnd) & 0x1fff) - 0x1000, 0x1000) + d) / num_t(int(2));
+            std::cout << (argv[1][0] == 'M' ? num_t((uint32_t&)(*rnd) & 1 ? 1 : - 1) * d : (fl(((uint32_t&)(*rnd) & 0x1fff) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           }
 #endif
