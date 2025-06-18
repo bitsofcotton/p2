@@ -354,7 +354,7 @@ int main(int argc, const char* argv[]) {
         std::cout << (num_t(int(0)) <= in[in.size() - 1] &&
           in[in.size() - 1] < num_t(int(1)) ?
             bf[in.size() - 1] : ++ bf[in.size() - 1]) << ", " <<
-              (++ t) << std::endl;
+              t << std::endl;
         break;
       } default:
         assert(0 && "no such command.");

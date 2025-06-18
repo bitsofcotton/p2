@@ -552,4 +552,6 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/10 persistent uint32_t use in calculation option but they also use int32_t, also void*.
 2025/06/11 compat compile option to gcc4.2.1.
 2025/06/12 compat compile option with one variant of gcc2.95.3.
+2025/06/17 merge latest ddpmopt fix.
+2025/06/19 merge latest ddpmopt fix.
 
