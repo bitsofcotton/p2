@@ -3,7 +3,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
 
 # Usage
     cr.py [RfFvmebBLEHDZxX] ...
-    ./p2(-32)? [rRfhzSdsiltkGQcCjPTm] ...
+    ./p2(-32)? [rRfhzSdsiltkGQcCjPTmM] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2 only depends on c++ concerned bootstrap with this repository.
     #      this excludes CPU float glitches because we can use *unique*
@@ -21,7 +21,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     
-    p2(-32)? m[0-6] <num> < data.txt
+    p2(-32)? [mM][0-6] <num> < data.txt
     # mix PRNG into input stream.
     
     ... | cr.py D "p0 ..." "p2 z 3 | p1 | p0 0" | p2 l 4 0 2 4 | tee 0-0 | p2 Q | ((recursive)) ...
@@ -424,6 +424,12 @@ Either we have brick conditions with p0, p1, p2 even such a controlled condition
 N.B. The internal condition size we can get from stream upper bound is bitstream number \* bitstream accuracy when we apply low of excluded middle explicitly.
 So if the jammer have the cultivated information size either some algorithm switch case changes on the stream worse condition size than the stream input, we cannot avoid such a place the prediction fails in principle when we explicitly apply the low on our computing algorithms, however, once binary coded, we cannot run away in general (without some of the obs. change on #f table).
 
+# Re-Re-Close
+We or p2, p binaries are somehow targetted as a *false positive* result binary from some of the reason.
+So we cannot test or cast our predictors on our machine to continue developing or completely agreeable predictor result is given already (but should not because of *false positive* them).
+So we close freeze this repository for now.
+We want completely trust-able calculation system to continue however we high probable cannot get from consumer line now.
+
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -553,5 +559,5 @@ So if the jammer have the cultivated information size either some algorithm swit
 2025/06/11 compat compile option to gcc4.2.1.
 2025/06/12 compat compile option with one variant of gcc2.95.3.
 2025/06/17 merge latest ddpmopt fix.
-2025/06/19 merge latest ddpmopt fix. add M command on p2.cc.
+2025/06/19 merge latest ddpmopt fix. add M command on p2.cc. add cr.py H[+-] command.
 

@@ -239,8 +239,9 @@ elif(sys.argv[1][0] == 'E'):
       a = []
     print(D, ",", M)
     sys.stdout.flush()
-elif(sys.argv[1] == 'H'):
+elif(sys.argv[1][0] == 'H'):
   p = []
+  b = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     d = line[:- 1].split(",")
     if(len(p) < len(d)):
@@ -251,11 +252,22 @@ elif(sys.argv[1] == 'H'):
       p[t].stdin.flush()
     D = 0.
     M = 0.
+    bb = []
+    cnt = 0
     for t in range(0, len(d)):
       buf = p[t].stdout.readline().decode("utf-8").split(",")
-      D += ifloat(buf[0])
-      M += ifloat(buf[1])
-    print(D / len(p), ",", M / len(p))
+      if(sys.argv[1][- 1] == 'H' or \
+        (sys.argv[1][- 1] == '+' and 0 < len(b) and 0 < b[t] * ifloat(d[t])) or \
+        (sys.argv[1][- 1] == '-' and 0 < len(b) and b[t] * ifloat(d[t]) < 0) ):
+        D += ifloat(buf[0])
+        M += ifloat(buf[1])
+        cnt += 1
+      bb.append(ifloat(buf[1]))
+    b = bb
+    if(0 < cnt):
+      print(D / cnt, ",", M / cnt)
+    else:
+      print(D, ",", M)
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'D'):
   p = subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
