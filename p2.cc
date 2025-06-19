@@ -16,8 +16,15 @@
 
 #if !defined(_OLDCPP_)
 #include <random>
-#define int int32_t
-//#define int int64_t
+#if defined(_PERSISTENT_)
+# if _FLOAT_BITS_ == 64
+#  define int int32_t
+# elif _FLOAT_BITS_ == 128
+#  define int int64_t
+# else
+#  error Cannot handle PERSISTENT option
+# endif
+#endif
 #endif
 
 #include "lieonn.hh"
@@ -27,13 +34,18 @@ static inline num_t fl(int x, int M) {
   return num_t(x) / num_t(M + 1);
 }
 
-#if !defined(_OLDCPP_)
-#undef int
+#if !defined(_OLDCPP_) && defined(_PERSISTENT_)
+# undef int
 #endif
 int main(int argc, const char* argv[]) {
-#if !defined(_OLDCPP_)
-#define int int32_t
-//#define int int64_t
+#if !defined(_OLDCPP_) && defined(_PERSISTENT_)
+# if _FLOAT_BITS_ == 64
+#  define int int32_t
+# elif _FLOAT_BITS_ == 128
+#  define int int64_t
+# else
+#  error Cannot handle PERSISTENT option
+# endif
 #endif
   assert(1 < argc);
   std::cout << std::setprecision(30);

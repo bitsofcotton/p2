@@ -159,51 +159,6 @@ elif(sys.argv[1][0] == 'e'):
       print(len(ffuu), ": [", ", ".join(ffuu), "]")
       sys.stdout.flush()
     mC = []
-elif(sys.argv[1][0] == 'B'):
-  d = []
-  for line in sys.stdin:
-    d.append(line.split(","))
-    if(len(d[0]) != len(d[- 1])):
-      print("NG on column num")
-      exit(- 1)
-  cntp = []
-  cntm = []
-  for t in range(0, len(d[0])):
-    cntp.append(0)
-    cntm.append(0)
-  for dd in d:
-    for t in range(0, len(dd)):
-      if(ifloat(dd[t]) < 0): cntm[t] += 1
-      elif(0 < ifloat(dd[t])): cntp[t] += 1
-  for t in range(0, len(cntp)):
-    print(cntp[t], ",", cntm[t], ",", t)
-elif(sys.argv[1][0] == 'b'):
-  a = []
-  for line in sys.stdin:
-    a.append(float(line[:- 1]))
-  l = int(pow(len(a), .5))
-  for t in range(0, l):
-    s = 0.
-    for aa in a[t * l : (t + 1) * l]:
-      s += aa
-    b  = sorted(a[t * l : (t + 1) * l])
-    s /= len(b)
-    c  = 0.
-    for aa in b:
-      c += (aa - s) * (aa - s)
-    c /= len(b)
-    print(s, c, b[int(len(b) / 2)], b[int(len(b) / 4)], b[int(len(b) * 3 / 4)])
-  print("---")
-  s = 0.
-  for aa in a:
-    s += aa
-  a  = sorted(a)
-  s /= len(a)
-  c  = 0.
-  for aa in a:
-    c += (aa - s) * (aa - s)
-  c /= len(a)
-  print(s, c, a[int(len(a) / 2)], a[int(len(a) / 4)], a[int(len(a) * 3 / 4)])
 elif(sys.argv[1][0] == 'L'):
   f = []
   for ff in sys.argv[2:]:
@@ -241,7 +196,6 @@ elif(sys.argv[1][0] == 'E'):
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'H'):
   p = []
-  b = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     d = line[:- 1].split(",")
     if(len(p) < len(d)):
@@ -250,24 +204,14 @@ elif(sys.argv[1][0] == 'H'):
     for t in range(0, len(d)):
       p[t].stdin.write((d[t] + "\n").encode("utf-8"))
       p[t].stdin.flush()
-    D = 0.
-    M = 0.
-    bb = []
-    cnt = 0
+    D = M = F = 0
     for t in range(0, len(d)):
       buf = p[t].stdout.readline().decode("utf-8").split(",")
-      if(sys.argv[1][- 1] == 'H' or \
-        (sys.argv[1][- 1] == '+' and 0 < len(b) and 0 < b[t] * ifloat(d[t])) or \
-        (sys.argv[1][- 1] == '-' and 0 < len(b) and b[t] * ifloat(d[t]) < 0) ):
-        D += ifloat(buf[0])
-        M += ifloat(buf[1])
-        cnt += 1
-      bb.append(ifloat(buf[1]))
-    b = bb
-    if(0 < cnt):
-      print(D / cnt, ",", M / cnt)
-    else:
-      print(D, ",", M)
+      D += ifloat(buf[0])
+      if(0 < ifloat(d[t])): F += 1
+      elif(ifloat(d[t]) < 0): F -= 1
+      M += ifloat(buf[1])
+    print(D / len(p), ",", M / len(p), ",", F / len(p))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'D'):
   p = subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
@@ -283,7 +227,7 @@ elif(sys.argv[1][0] == 'D'):
     D.extend(line[:- 1].split(","))
     print(",".join(D))
     sys.stdout.flush()
-elif(sys.argv[1] == 'Z'):
+elif(sys.argv[1][0] == 'Z'):
   # N.B. normalize summation output on each column.
   M = []
   d = []

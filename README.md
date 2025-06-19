@@ -2,21 +2,21 @@
 A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
-    cr.py [RfFvmebBLEHDZxX] ...
-    ./p2(-32)? [rRfhzSdsiltkGQcCjPTmM] ...
+    cr.py [RfFvmeLEHDZxXw] ...
+    ./p2(-32)? [rRfhzSdsiltakGQcCjPTmM] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2 only depends on c++ concerned bootstrap with this repository.
     #      this excludes CPU float glitches because we can use *unique*
     #      CPU integer only either we can exclude SIMD operations for debug
     #      easily with compiler options.
-    # XXX: p2 Q command is one step before condition because they don't really
-    #      treat prediction values, only treats walk values.
     # N.B. ./pp uses only persistent use uint32_t for arithmatic operations
     #      both float/int but not with pointer calculation except for 32bit
     #      systems. also slightly used int32_t for index operations but we
     #      want to exclude the type from calculation flow for debug things.
+    # N.B. p2 Q command is one step before condition because they don't really
+    #      treat prediction values, only treats walk values.
     
-    p2(-32)? c <line>? < data.txt
+    p2(-32)? [cC] <line>? < data.txt
     # patternizable jammer predictor.
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
@@ -39,7 +39,7 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     #      results higher entropy stream they causes reducing some complexity
     #      works with ddpmopt T condition well.
     
-    p2 [rR]b | p2 l ... | p2 t 8 | p2 f ... | cr.py e ... | p2 h ...
+    p2 [rR][bB] | p2 l ... | p2 t 8 | p2 f ... | cr.py e ... | p2 h ...
     # pseudo-harden PRNGs, more number of chain works.
     
     ... | p2 l 0 | tee 0 | <predictor> | ...
@@ -560,4 +560,5 @@ We want completely trust-able calculation system to continue however we high pro
 2025/06/12 compat compile option with one variant of gcc2.95.3.
 2025/06/17 merge latest ddpmopt fix.
 2025/06/19 merge latest ddpmopt fix. add M command on p2.cc. add cr.py H[+-] command.
+2025/06/20 cleanup some commands and source code. fix around persistent especially operator >> accuracy on simplefloat.
 
