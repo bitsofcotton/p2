@@ -351,6 +351,15 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][0] == 'a' ? abs(in[in.size() - 1]) :
           in[in.size() - 1] * tt) << std::endl;
         break;
+      } case 'o': {
+        string a2(2 < argc ? argv[2] : "");
+        std::stringstream ss(a2);
+        num_t tt(int(0));
+        ss >> tt;
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << (in[i] + tt) << ", ";
+        std::cout << (in[in.size() - 1] + tt) << std::endl;
+        break;
       } case 'k':
         if(t % std::atoi(argv[2])) break;
         std::cout << s << std::endl;

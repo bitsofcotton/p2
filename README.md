@@ -2,42 +2,25 @@
 A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
-    cr.py [RfFvmeLEHDZxXw] ...
-    ./p2(-32)? [rRfhzSdsiltakGQcCjPTmM] ...
+    cr.py [RfFmLEHDveZxXw] ...
+    ./p2(-32)? [rRfhzSdsiltakGQcCjPTmMo] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2 only depends on c++ concerned bootstrap with this repository.
     #      this excludes CPU float glitches because we can use *unique*
     #      CPU integer only either we can exclude SIMD operations for debug
-    #      easily with compiler options.
-    # N.B. ./pp uses only persistent use uint32_t for arithmatic operations
-    #      both float/int but not with pointer calculation except for 32bit
-    #      systems. also slightly used int32_t for index operations but we
-    #      want to exclude the type from calculation flow for debug things.
-    # N.B. p2 Q command is one step before condition because they don't really
-    #      treat prediction values, only treats walk values.
+    #      easily with compiler options. persistent option only uses
+    #      size_t for float and ssize_t for index but with int for stdc++ libs.
     
     p2(-32)? [cC] <line>? < data.txt
     # patternizable jammer predictor.
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     
+    ./p2 j+? <param> | ((p2 l 2 0 2 | p2 Q |)) ...
+    # This often make worse high entropy feeding in result (jammer to jammer).
+    
     p2(-32)? [mM][0-6] <num> < data.txt
     # mix PRNG into input stream.
-    
-    ... | cr.py D "p0 ..." "p2 z 3 | p1 | p0 0" | p2 l 4 0 2 4 | tee 0-0 | p2 Q | ((recursive)) ...
-    ... | cr.py E ... cr.py H ... | ...
-    # pair of persistent predictor cut by y, x-axis.
-    # N.B. these are targetting sign bit on the stream in argument meaning.
-    
-    ... | ./p2 j+? <param> | ((p2 l 2 0 2 | p2 Q |)) ...
-    # This often make worse high entropy feeding in result (jammer to jammer).
-    # However, we can do (p2 s | p2 k ... | p2 d) chain, so medium
-    # stable entropy feeding could be gained, they causes typically 1:2 result
-    # in sign.
-    
-    # N.B. each of cr.py D, cr.py E, p2 j... predictor jammer jammer condition
-    #      results higher entropy stream they causes reducing some complexity
-    #      works with ddpmopt T condition well.
     
     p2 [rR][bB] | p2 l ... | p2 t 8 | p2 f ... | cr.py e ... | p2 h ...
     # pseudo-harden PRNGs, more number of chain works.
@@ -45,6 +28,10 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     ... | p2 l 0 | tee 0 | <predictor> | ...
     p2 l 0 < 0 | catgr 3 | p2 h ... p2 f ... | cr.py e | cr.py m
     # listen residue with rand_correct.mid.
+    
+    # N.B. there's many much of the combibnations, if we upload them on
+    #      this README.md they'd slip from somehow in our experience some years
+    #      ago. so we absent intentionally blank them.
 
 # Description:
 If we don't have better prediction with p0, p1, we categorize series of input and predict with them by p2 c.
@@ -560,5 +547,5 @@ We want completely trust-able calculation system to continue however we high pro
 2025/06/12 compat compile option with one variant of gcc2.95.3.
 2025/06/17 merge latest ddpmopt fix.
 2025/06/19 merge latest ddpmopt fix. add M command on p2.cc. add cr.py H[+-] command.
-2025/06/20 cleanup some commands and source code. fix around persistent especially operator >> accuracy on simplefloat.
+2025/06/20 cleanup some commands and source code. fix around persistent especially operator >> accuracy on simplefloat. Intentionally absent documentation but on the source codes.
 
