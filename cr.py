@@ -204,14 +204,16 @@ elif(sys.argv[1][0] == 'H'):
     for t in range(0, len(d)):
       p[t].stdin.write((d[t] + "\n").encode("utf-8"))
       p[t].stdin.flush()
-    D = M = F = 0
+    Dp = Dm = cntp = cntm = 0
     for t in range(0, len(d)):
       buf = p[t].stdout.readline().decode("utf-8").split(",")
-      D += ifloat(buf[0])
-      if(0 < ifloat(d[t])): F += 1
-      elif(ifloat(d[t]) < 0): F -= 1
-      M += ifloat(buf[1])
-    print(D / len(p), ",", M / len(p), ",", F / len(p))
+      if(0 < ifloat(d[t])):
+        Dp += ifloat(buf[0])
+        cntp += 1
+      else:
+        Dm += ifloat(buf[0])
+        cntm += 1
+    print(Dp / cntp, ",", Dm / cntm)
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'D'):
   p = subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)

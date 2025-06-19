@@ -275,11 +275,13 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) length = std::atoi(argv[2]);
     const bool chain(argv[1][1] == 'c');
     #include "../p0/p0.cc"
+    break;
   } case '1': {
     int& stat(t);
     if(2 < argc) stat = std::atoi(argv[2]);
     const bool chain(argv[1][1] == 'c');
     #include "../p1/pp3.cc"
+    break;
 #endif
   } default: {
     std::vector<num_t> b;
