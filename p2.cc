@@ -434,7 +434,7 @@ int main(int argc, const char* argv[]) {
     flags &= ~ O_NONBLOCK; \
     if(fcntl((fd), F_SETFL, flags) == - 1) assert(0 && "F_SETFL)"); \
   }
-  } case 'H': {
+  } case 'H': case '@': {
     vector<int> sock;
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
@@ -463,17 +463,33 @@ int main(int argc, const char* argv[]) {
         close(sp[1]);
         sock.emplace_back(sp[0]);
       }
+      vector<num_t> dd;
+      dd.resize(min(int(sock.size()), cnt), num_t(int(0)));
       for(int i = 0; i < min(int(sock.size()), cnt); i ++) {
         for( ; idx < s.size() && s[idx] != ','; idx ++) ;
         string ss(s.substr(bidx, (++ idx) - bidx) );
         bidx = idx;
         ss += string("\n");
         write(sock[i], ss.c_str(), ss.size());
+        if(argv[1][0] == '@') {
+          stringstream ins(ss);
+          ins >> dd[i];
+        }
       }
       for(int i = 0; i < min(int(sock.size()), cnt); i ++) {
-        char buf[1];
-        while(read(sock[i], buf, 1) && buf[0] != '\n')
-          std::cout << buf[0];
+        char buf[2];
+        buf[1] = 0;
+        if(argv[1][0] == 'H') 
+          while(read(sock[i], buf, 1) && buf[0] != '\n')
+            std::cout << buf[0];
+        else {
+          string sbuf;
+          while(read(sock[i], buf, 1) && buf[0] != '\n') sbuf += string(buf);
+          stringstream ins(sbuf);
+          num_t d(int(0));
+          ins >> d;
+          std::cout << offsetHalf<num_t>(sgn<num_t>(unOffsetHalf<num_t>(dd[i])) * unOffsetHalf<num_t>(d));
+        }
         if(i < sock.size() - 1) std::cout << ", " << std::flush;
       }
       std::cout << std::endl << std::flush;
@@ -625,7 +641,7 @@ int main(int argc, const char* argv[]) {
         break;
       case 'G': {
         for(int i = 1; i < in.size(); i ++) in[0] += in[i];
-        std::cout << in[0] << std::endl;
+        std::cout << (in[0] /= num_t(int(in.size())) ) << std::endl;
         break;
       } case 'T': {
         if(bf.size() < in.size()) bf.resize(in.size(), 0);
@@ -643,6 +659,11 @@ int main(int argc, const char* argv[]) {
           std::cout << (tt < abs(in[i] - b[i]) ? b[i] = in[i] : b[i]) << ", ";
         std::cout << (tt < abs(in[in.size() - 1] - b[b.size() - 1]) ?
           b[b.size() - 1] = in[in.size() - 1] : b[b.size() - 1]) << std::endl;
+        break;
+      } case 'b': {
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << sgn<num_t>(in[i]) << ", ";
+        std::cout << sgn<num_t>(in[in.size() - 1]) << std::endl;
         break;
       } case 'F': {
 #if defined(_FLOAT_BITS_)
