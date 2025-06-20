@@ -13,6 +13,12 @@
 #if defined(_GETENTROPY_)
 #include <unistd.h>
 #endif
+#if defined(_FORK_)
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+extern char* environ[];
+#endif
 
 #if !defined(_OLDCPP_)
 #include <random>
@@ -308,6 +314,7 @@ int main(int argc, const char* argv[]) {
       std::vector<num_t> m;
       sbuf.reserve(buf.size());
       for(int i = 0; i < buf.size(); i ++) {
+        s = buf[i];
         int cnt(1);
         for(int i = 0; i < s.size(); i ++)
           if(s[i] == ',') cnt ++;
@@ -321,10 +328,13 @@ int main(int argc, const char* argv[]) {
         sbuf.emplace_back(move(in));
       }
       for(int i = 0; i < sbuf.size(); i ++) {
-        if(M.size() < sbuf[i].size()) M.resize(sbuf[i].size(), num_t(int(0)));
+        if(M.size() < sbuf[i].size()) {
+          M.resize(sbuf[i].size(), num_t(int(0)));
+          m.resize(sbuf[i].size(), num_t(int(0)));
+        }
         for(int j = 0; j < sbuf[i].size(); j ++) {
-          M[i] = max(M[i], sbuf[i][j]);
-          m[i] = min(m[i], sbuf[i][j]);
+          M[j] = max(M[j], sbuf[i][j]);
+          m[j] = min(m[j], sbuf[i][j]);
         }
       }
       if(argv[1][0] == 'Z') {
@@ -337,15 +347,18 @@ int main(int argc, const char* argv[]) {
           std::cout << (sbuf[i][sbuf[i].size() - 1] / M[sbuf[i].size() - 1]) << std::endl;
         }
         std::cout << std::flush;
-      } else if(argv[1][0] == 'X')
+      } else if(argv[1][0] == 'X') {
+        for(int i = 0; i < M.size(); i ++)
+          if(M[i] == m[i]) M[i] = m[i] + num_t(int(1));
         for(int i = 0; i < sbuf.size(); i ++) {
           for(int j = 0; j < sbuf[i].size() - 1; j ++)
             std::cout << ((sbuf[i][j] - (m[j] + M[j]) / num_t(int(2))) /
               (M[j] - m[j]) * num_t(int(2)) ) << ", ";
           const int j(sbuf[i].size() - 1);
           std::cout << ((sbuf[i][j] - (m[j] + M[j]) / num_t(int(2))) /
-            (M[j] - m[j]) * num_t(int(2)) ) << ", ";
+            (M[j] - m[j]) * num_t(int(2)) ) << std::endl;
         }
+      }
       break;
     } default: assert(0 && "no such command.");
     }
@@ -385,6 +398,140 @@ int main(int argc, const char* argv[]) {
       std::cout << sect << std::endl << std::flush;
     }
     break;
+  } case 'L': {
+    std::vector<std::ifstream> f;
+    f.reserve(argc - 1);
+    for(int i = 2; i < argc; i ++) {
+      f.emplace_back(std::ifstream(argv[i]));
+      if(! f[i - 2].is_open()) {
+        std::cerr << "Could not open " << argv[i] << std::endl;
+        for(int j = 0; j < f.size() - 1; j ++) f[j].close();
+        f.resize(0);
+        break;
+      }
+    }
+    bool loop(f.size() != 0);
+    while(loop) {
+      for(int i = 0; i < f.size(); i ++) {
+        if(! std::getline(f[i], s)) {
+          loop = false;
+          break;
+        }
+        std::cout << s << (i == f.size() - 1 ? "" : ",");
+      }
+      std::cout << std::endl << std::flush;
+    }
+    for(int i = 0; i < f.size(); i ++) f[i].close();
+    break;
+#if defined(_FORK_)
+#if !defined(_OLDCPP_) && defined(_PERSISTENT_)
+# undef int
+#endif
+#define IOSYNC(fd) \
+  { \
+    int flags; \
+    if((flags = fcntl((fd), F_GETFL)) == - 1) assert(0 && "F_GETFL"); \
+    flags &= ~ O_NONBLOCK; \
+    if(fcntl((fd), F_SETFL, flags) == - 1) assert(0 && "F_SETFL)"); \
+  }
+  } case 'H': {
+    vector<int> sock;
+    while(std::getline(std::cin, s, '\n')) {
+      int cnt(1);
+      int idx(0), bidx(0);
+      for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
+      while(sock.size() < cnt) {
+        int sp[2];
+        if(socketpair(AF_UNIX, SOCK_STREAM, PF_UNSPEC, sp) == - 1) return - 1;
+        IOSYNC(sp[0]);
+        IOSYNC(sp[1]);
+        int pidf;
+        if((pidf = fork()) == - 1) return - 1;
+        if(pidf == 0) {
+          // N.B. child process.
+          close(sp[0]);
+          dup2(sp[1], 0);
+          dup2(sp[1], 1);
+          char* myargv[4];
+          myargv[0] = "sh";
+          myargv[1] = "-c";
+          myargv[2] = const_cast<char*>(argv[2]);
+          myargv[3] = 0;
+          execve("/bin/sh", myargv, environ);
+          assert(0 && "SHOULD NOT BE REACHED");
+        }
+        close(sp[1]);
+        sock.emplace_back(sp[0]);
+      }
+      for(int i = 0; i < min(int(sock.size()), cnt); i ++) {
+        for( ; idx < s.size() && s[idx] != ','; idx ++) ;
+        string ss(s.substr(bidx, (++ idx) - bidx) );
+        bidx = idx;
+        ss += string("\n");
+        write(sock[i], ss.c_str(), ss.size());
+      }
+      for(int i = 0; i < min(int(sock.size()), cnt); i ++) {
+        char buf[1];
+        while(read(sock[i], buf, 1) && buf[0] != '\n')
+          std::cout << buf[0];
+        if(i < sock.size() - 1) std::cout << ", " << std::flush;
+      }
+      std::cout << std::endl << std::flush;
+    }
+    // N.B. child will auto exit when stdin close.
+    for(int i = 0; i < sock.size(); i ++) close(sock[i]);
+  } case 'D': {
+    vector<int> sock;
+    sock.reserve(argc - 1);
+    for(int i = 2; i < argc; i ++) {
+      int sp[2];
+      if(socketpair(AF_UNIX, SOCK_STREAM, PF_UNSPEC, sp) == - 1) return - 1;
+      IOSYNC(sp[0]);
+      IOSYNC(sp[1]);
+      int pidf;
+      if((pidf = fork()) == - 1) return - 1;
+      if(pidf == 0) {
+        // N.B. child process.
+        close(sp[0]);
+        dup2(sp[1], 0);
+        dup2(sp[1], 1);
+        char* myargv[4];
+        myargv[0] = "sh";
+        myargv[1] = "-c";
+        myargv[2] = const_cast<char*>(argv[i]);
+        myargv[3] = 0;
+        execve("/bin/sh", myargv, environ);
+        assert(0 && "SHOULD NOT BE REACHED");
+      }
+      close(sp[1]);
+      sock.emplace_back(sp[0]);
+    }
+    while(std::getline(std::cin, s, '\n')) {
+      s += string("\n");
+      for(int i = 0; i < sock.size(); i ++)
+        write(sock[i], s.c_str(), s.size());
+      for(int i = 0; i < sock.size(); i ++) {
+        char buf[1];
+        while(read(sock[i], buf, 1) && buf[0] != '\n')
+          std::cout << buf[0];
+        if(i < sock.size() - 1) std::cout << ", " << std::flush;
+      }
+      std::cout << std::endl << std::flush;
+    }
+    // N.B. child will auto exit when stdin close.
+    for(int i = 0; i < sock.size(); i ++) close(sock[i]);
+    break;
+#undef IOSYNC
+#if !defined(_OLDCPP_) && defined(_PERSISTENT_)
+# if _FLOAT_BITS_ == 64
+#  define int int32_t
+# elif _FLOAT_BITS_ == 128
+#  define int int64_t
+# else
+#  error Cannot handle PERSISTENT option
+# endif
+#endif
+#endif
 #if defined(_ONEBINARY_)
   } case '0': {
     int& length(t);
@@ -496,6 +643,20 @@ int main(int argc, const char* argv[]) {
           std::cout << (tt < abs(in[i] - b[i]) ? b[i] = in[i] : b[i]) << ", ";
         std::cout << (tt < abs(in[in.size() - 1] - b[b.size() - 1]) ?
           b[b.size() - 1] = in[in.size() - 1] : b[b.size() - 1]) << std::endl;
+        break;
+      } case 'F': {
+#if defined(_FLOAT_BITS_)
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << double(in[i]) << ", ";
+        std::cout << double(in[in.size() - 1]) << std::endl;
+#else
+        for(int i = 0; i < in.size() - 1; i ++) {
+          SimpleFloat<unsigned int, DUInt<unsigned int, sizeof(unsigned int) * 8>, sizeof(unsigned int) * 8, int> f(int(in[i] * pow(myfloat(2), myfloat(tt)) ));
+          std::cout << (f >>= tt) << ", ";
+        }
+        SimpleFloat<unsigned int, DUInt<unsigned int, sizeof(unsigned int) * 8>, sizeof(unsigned int) * 8, int> f(int(in[in.size() - 1] * pow(myfloat(2), myfloat(tt)) ));
+        std::cout << (f >>= tt) << std::endl;
+#endif
         break;
       } default:
         assert(0 && "no such command.");

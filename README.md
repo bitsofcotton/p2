@@ -2,8 +2,8 @@
 A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
-    cr.py [RfFmLHD] ...
-    p2(-32)? [rRfhzSdsiltakGQcCjPTmMoEveZxXw] ...
+    cr.py ([Rm]|[HD]?) ...
+    p2(-32)? [rRfhzSdsiltakGQcCjPTmMoEveZxXwFLHD] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2 only depends on c++ concerned bootstrap with this repository.
     #      this excludes CPU float glitches because we can use *unique*
@@ -29,6 +29,8 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     catgr 3 < 0 | p2 h ... p2 f ... | p2 e | cr.py m
     # listen residue with rand_correct.mid.
     
+    p2 F <bits>
+    # convert between SimpleFloat and double.
     # N.B. there's many much of the combibnations, if we upload them on
     #      this README.md they'd slip from somehow in our experience some years
     #      ago. so we absent intentionally blank them.

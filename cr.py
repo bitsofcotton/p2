@@ -21,45 +21,6 @@ elif(sys.argv[1][0] == 'R'):
     for byte in a:
       print(byte - 127.5)
     sys.stdout.flush()
-elif(sys.argv[1][0] == 'f'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = line.split(",")
-    for t in range(0, len(d)):
-      b = x.split("*")
-      n = e = 0.
-      tbl = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, \
-        '8': 8, '9': 9, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15, \
-        ' ': -1, '\t': -1, '\n': -1, '-': 16}
-      m = False
-      for ff in b[0]:
-        if(tbl[ff] < 0): continue
-        if(tbl[ff] == 16):
-          m = True
-          continue
-        n *= 16
-        n += tbl[ff]
-      if(m): n = - n
-      m = False
-      for ff in b[1][2:]:
-        if(tbl[ff] < 0): break
-        if(tbl[ff] == 16):
-          m = True
-          continue
-        e *= 16
-        e += tbl[ff]
-      if(m): e = - e
-      d[t] = str(n * pow(2., e - offset))
-    print(",".join(d))
-    sys.stdout.flush()
-elif(sys.argv[1][0] == 'F'):
-  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = "utf-8", closefd = False):
-    d = line.split(",")
-    for t in range(0, len(d)):
-      b = hex(int(float(d[t][0]) * pow(2., int(sys.argv[2])) ))
-      if(b[0] == '-'): d[t] = b[0] + b[3:] + "*2^-" + hex(int(sys.argv[2]))[2:]
-      else: d[t] = b[2:] + "*2^-" + hex(int(sys.argv[2]))[2:]
-    print(",".join(d))
-    sys.stdout.flush()
 elif(sys.argv[1][0] == 'm'):
   import numpy
   import mido
@@ -111,25 +72,14 @@ elif(sys.argv[1][0] == 'm'):
       track[w].append(Message('note_off', note=f, time=(120 * int(abs(numpy.arctan(abs(numpy.tan(float(bw[w])))) * 3) + 1)) ))
     bw = []
   mid.save('rand_correct.mid')
-elif(sys.argv[1][0] == 'L'):
-  f = []
-  for ff in sys.argv[2:]:
-    f.append(open(ff, 'r', encoding = "utf-8"))
-  while(True):
-    d = []
-    for g in f:
-      l = g.readline()[:- 1]
-      if(l == ""): exit(0)
-      d.extend(l.split(","))
-    print(",".join(d))
-    sys.stdout.flush()
+  # XXX: following are duplicate for non unistd systems.
 elif(sys.argv[1][0] == 'H'):
   p = []
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     d = line[:- 1].split(",")
     if(len(p) < len(d)):
       for t in range(len(p), len(d)):
-        p.append(subprocess.Popen(sys.argv[2:], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
+        p.append(subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
     for t in range(0, len(d)):
       p[t].stdin.write((d[t] + "\n").encode("utf-8"))
       p[t].stdin.flush()
@@ -139,15 +89,16 @@ elif(sys.argv[1][0] == 'H'):
     print(",".join(J))
     sys.stdout.flush()
 elif(sys.argv[1][0] == 'D'):
-  p = subprocess.Popen(["sh", "-c", sys.argv[2]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-  q = subprocess.Popen(["sh", "-c", sys.argv[3]], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+  p = []
+  for a in sys.argv[2:]:
+    p.append(subprocess.Popen(["sh", "-c", a], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    p.stdin.write(line.encode("utf-8"))
-    q.stdin.write(line.encode("utf-8"))
-    p.stdin.flush()
-    q.stdin.flush()
-    D = p.stdout.readline().decode("utf-8")[:- 1].split(",")
-    D.extend(q.stdout.readline().decode("utf-8")[:- 1].split(","))
+    for pp in p:
+      pp.stdin.write(line.encode("utf-8"))
+      pp.stdin.flush()
+    D = []
+    for pp in p:
+      D.extend(pp.stdout.readline().decode("utf-8")[:- 1].split(","))
     D.extend(line[:- 1].split(","))
     print(",".join(D))
     sys.stdout.flush()
