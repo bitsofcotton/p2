@@ -218,6 +218,31 @@ int main(int argc, const char* argv[]) {
       std::cout << (M = p012next<num_t>(p.next(d)) ) << std::endl << std::flush;
     }
     break;
+  } case 'e': {
+    string a3(3 < argc ? argv[3] : "");
+    std::stringstream ss(a3);
+    num_t tt(int(0));
+    ss >> tt;
+    int loop(tt);
+    int t2(0);
+    SimpleMatrix<num_t> A(std::atoi(argv[2]), std::atoi(argv[2]));
+    SimpleVector<num_t> b(std::atoi(argv[2]));
+    while(std::getline(std::cin, s, '\n')) {
+      std::stringstream ss(s);
+      ss >> b[(t ++) % b.size()];
+      if(! (t %= b.size())) {
+        if(! loop) {
+          for(int i = 1; i < b.size(); i ++) b[0] += b[i];
+          loop = abs(b[0] * tt);
+          continue;
+        }
+        if(A.rows() <= t2) {
+          for(int i = 0; i <= loop; i ++) std::cout << (b = A * b);
+          t2 = 0;
+        } else A.row(t2 ++) = b;
+      }
+    }
+    break;
   } case 'f': {
     SimpleVector<num_t> b(std::atoi(argv[2]));
     while(std::getline(std::cin, s, '\n')) {
@@ -269,6 +294,97 @@ int main(int argc, const char* argv[]) {
       }
     }
     break;
+  } case 'Z': case 'X': case 'v': {
+    std::vector<std::string> buf;
+    while(std::getline(std::cin, s, '\n')) buf.emplace_back(s);
+    switch(argv[1][0]) {
+    case 'v':
+      for(int i = 0; i < buf.size(); i ++)
+        std::cout << buf[buf.size() - i - 1] << std::endl;
+      break;
+    case 'X': case 'Z': {
+      std::vector<std::vector<num_t> > sbuf;
+      std::vector<num_t> M;
+      std::vector<num_t> m;
+      sbuf.reserve(buf.size());
+      for(int i = 0; i < buf.size(); i ++) {
+        int cnt(1);
+        for(int i = 0; i < s.size(); i ++)
+          if(s[i] == ',') cnt ++;
+        std::vector<num_t> in;
+        in.resize(cnt);
+        for(int i = 0, j = 0; i < s.size(); i ++) {
+          std::stringstream ins(s.substr(i, s.size() - i));
+          ins >> in[j ++];
+          for( ; s[i] != ',' && i < s.size(); i ++) ;
+        }
+        sbuf.emplace_back(move(in));
+      }
+      for(int i = 0; i < sbuf.size(); i ++) {
+        if(M.size() < sbuf[i].size()) M.resize(sbuf[i].size(), num_t(int(0)));
+        for(int j = 0; j < sbuf[i].size(); j ++) {
+          M[i] = max(M[i], sbuf[i][j]);
+          m[i] = min(m[i], sbuf[i][j]);
+        }
+      }
+      if(argv[1][0] == 'Z') {
+        for(int i = 0; i < M.size(); i ++)
+          if((M[i] = max(abs(M[i]), abs(m[i]))) == num_t(int(0)))
+            M[i] = num_t(int(1));
+        for(int i = 0; i < sbuf.size(); i ++) {
+          for(int j = 0; j < sbuf[i].size() - 1; j ++)
+            std::cout << (sbuf[i][j] / M[j]) << ", ";
+          std::cout << (sbuf[i][sbuf[i].size() - 1] / M[sbuf[i].size() - 1]) << std::endl;
+        }
+        std::cout << std::flush;
+      } else if(argv[1][0] == 'X')
+        for(int i = 0; i < sbuf.size(); i ++) {
+          for(int j = 0; j < sbuf[i].size() - 1; j ++)
+            std::cout << ((sbuf[i][j] - (m[j] + M[j]) / num_t(int(2))) /
+              (M[j] - m[j]) * num_t(int(2)) ) << ", ";
+          const int j(sbuf[i].size() - 1);
+          std::cout << ((sbuf[i][j] - (m[j] + M[j]) / num_t(int(2))) /
+            (M[j] - m[j]) * num_t(int(2)) ) << ", ";
+        }
+      break;
+    } default: assert(0 && "no such command.");
+    }
+    break;
+  } case 'x': {
+    while(std::getline(std::cin, s, '\n'))
+      for(int i = 0; i < s.size(); i ++) {
+        if(s[i] == '0') std::cout << (- num_t(1)) << std::endl;
+        else if(s[i] == '1') std::cout << num_t(1) << std::endl;
+      }
+    break;
+  } case 'E': {
+    num_t in(int(0));
+    string a2(2 < argc ? argv[2] : "");
+    std::stringstream ss(a2);
+    int tt(0);
+    ss >> tt;
+    std::vector<idFeeder<num_t> > f;
+    f.resize(tt, idFeeder<num_t>(tt * tt));
+    num_t tt_width(num_t(int(2)) / num_t(int(tt)));
+    while(std::getline(std::cin, s, '\n')) {
+      std::stringstream ins(s);
+      ins >> in;
+      for(int i = 0; i < tt; i ++)
+        if(tt_width * num_t(int(i)) - num_t(int(1)) <= in &&
+           in < tt_width * num_t(int(i + 1)) - num_t(int(1)) )
+          f[i].next(in);
+        else f[i].next(f[i].res[f[i].res.size() - 1]);
+      for(int i = 0; i < tt - 1; i ++) {
+        num_t sect(int(0));
+        for(int j = 0; j < f[i].res.size(); j ++) sect += f[i].res[j];
+        std::cout << sect << ", ";
+      }
+      const int i(tt - 1);
+      num_t sect(int(0));
+      for(int j = 0; j < f[i].res.size(); j ++) sect += f[i].res[j];
+      std::cout << sect << std::endl << std::flush;
+    }
+    break;
 #if defined(_ONEBINARY_)
   } case '0': {
     int& length(t);
@@ -286,6 +402,10 @@ int main(int argc, const char* argv[]) {
   } default: {
     std::vector<num_t> b;
     std::vector<int> bf;
+    string a2(2 < argc ? argv[2] : "");
+    std::stringstream ss(a2);
+    num_t tt(int(0));
+    ss >> tt;
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
       for(int i = 0; i < s.size(); i ++)
@@ -342,20 +462,12 @@ int main(int argc, const char* argv[]) {
         std::cout << in[std::atoi(argv[argc - 1])] << std::endl;
         break;
       case 't': case 'a': {
-        string a2(2 < argc ? argv[2] : "");
-        std::stringstream ss(a2);
-        num_t tt(int(0));
-        ss >> tt;
         for(int i = 0; i < in.size() - 1; i ++)
           std::cout << (argv[1][0] == 'a' ? abs(in[i]) : in[i] * tt) << ", ";
         std::cout << (argv[1][0] == 'a' ? abs(in[in.size() - 1]) :
           in[in.size() - 1] * tt) << std::endl;
         break;
       } case 'o': {
-        string a2(2 < argc ? argv[2] : "");
-        std::stringstream ss(a2);
-        num_t tt(int(0));
-        ss >> tt;
         for(int i = 0; i < in.size() - 1; i ++)
           std::cout << (in[i] + tt) << ", ";
         std::cout << (in[in.size() - 1] + tt) << std::endl;
@@ -379,11 +491,17 @@ int main(int argc, const char* argv[]) {
             bf[in.size() - 1] : ++ bf[in.size() - 1]) << ", " <<
               t << std::endl;
         break;
+      } case 'w': {
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << (tt < abs(in[i] - b[i]) ? b[i] = in[i] : b[i]) << ", ";
+        std::cout << (tt < abs(in[in.size() - 1] - b[b.size() - 1]) ?
+          b[b.size() - 1] = in[in.size() - 1] : b[b.size() - 1]) << std::endl;
+        break;
       } default:
         assert(0 && "no such command.");
       }
       std::cout << std::flush;
-      if(argv[1][0] != 's' || !b.size()) b = in;
+      if((argv[1][0] != 's' && argv[1][0] != 'w') || !b.size()) b = in;
       t ++;
     }
   } }

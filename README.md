@@ -2,8 +2,8 @@
 A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
 
 # Usage
-    cr.py [RfFmLEHDveZxXw] ...
-    ./p2(-32)? [rRfhzSdsiltakGQcCjPTmMo] ...
+    cr.py [RfFmLHD] ...
+    p2(-32)? [rRfhzSdsiltakGQcCjPTmMoEveZxXw] ...
     # predictor formatter with many of the scrapped commands.
     # N.B. p2 only depends on c++ concerned bootstrap with this repository.
     #      this excludes CPU float glitches because we can use *unique*
@@ -16,17 +16,17 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     
-    ./p2 j+? <param> | ((p2 l 2 0 2 | p2 Q |)) ...
+    p2 j+? <param> | ((p2 l 2 0 2 | p2 Q |)) ...
     # This often make worse high entropy feeding in result (jammer to jammer).
     
     p2(-32)? [mM][0-6] <num> < data.txt
     # mix PRNG into input stream.
     
-    p2 [rR][bB] | p2 l ... | p2 t 8 | p2 f ... | cr.py e ... | p2 h ...
+    p2 [rR][bB] | p2 l ... | p2 t 8 | p2 f ... | p2 e ... | p2 h ...
     # pseudo-harden PRNGs, more number of chain works.
     
-    ... | p2 l 0 | tee 0 | <predictor> | ...
-    p2 l 0 < 0 | catgr 3 | p2 h ... p2 f ... | cr.py e | cr.py m
+    p2 l 0 | tee 0 | <predictor> | ...
+    catgr 3 < 0 | p2 h ... p2 f ... | p2 e | cr.py m
     # listen residue with rand_correct.mid.
     
     # N.B. there's many much of the combibnations, if we upload them on
@@ -346,7 +346,7 @@ We hope one of the 3 commands below can effect complements each other, in some e
 
 # Relation the gulf we sometime meet and latest predv function.
 We sometimes meet prediction result gulfs with raw input stream with the condition p2 c \| p1 \| p0.
-We can spread them as cr.py j ... \| p2 c \| p1 \| p0 with blending PRNGs.
+We can spread them as p2 j ... \| p2 c \| p1 \| p0 with blending PRNGs.
 So better large number of spreaded average causes some of the eigen vector PRNG have vs. input stream condition.
 So even in such a case, we rarely but can meet the gulf with such a result.
 So PRNG creation is the matter to predict any input streams.
@@ -368,7 +368,7 @@ However, we didn't test them as in a feed back loop on generation - prediction o
 
 # testing around quantum mechanics based RNGs
 There exists XEB score chases and their result bit streams on the Internet.
-We tested them with cat ... \| cr.py x \| catgp 1  \| p1 1 \| p0 1 \| p2 d \| cr.py g 1 pipe, once we got p2 l 2 result almost all of the data minus condition (this can be used to negate of the predition better go with), however, some after test isn't says so it's only same behavior as arc4random on our predicctors (as almost all of data plus condition this means RNG delta stream's sign is predictable on some of the probability).
+We tested them with cat ... \| p2 x \| p2 c 1  \| p1 1 \| p0 1 \| p2 d \| cr.py g 1 pipe, once we got p2 l 2 result almost all of the data minus condition (this can be used to negate of the predition better go with), however, some after test isn't says so it's only same behavior as arc4random on our predicctors (as almost all of data plus condition this means RNG delta stream's sign is predictable on some of the probability).
 We cannot understand this result because it should be TRNG in the meaning also the internal states we apply isn't so large enough ones we should use roughly.
 However, we cannot use such RNG bit streams to cast better our predictors (or our machine is infected enough).
 
@@ -548,4 +548,5 @@ We want completely trust-able calculation system to continue however we high pro
 2025/06/17 merge latest ddpmopt fix.
 2025/06/19 merge latest ddpmopt fix. add M command on p2.cc. add cr.py H[+-] command.
 2025/06/20 cleanup some commands and source code. fix around persistent especially operator >> accuracy on simplefloat. Intentionally absent documentation but on the source codes.
+2025/06/20 code cleaning, cr.py to p2.cc implement.
 
