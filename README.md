@@ -551,4 +551,5 @@ We want completely trust-able calculation system to continue however we high pro
 2025/06/19 merge latest ddpmopt fix. add M command on p2.cc. add cr.py H[+-] command.
 2025/06/20 cleanup some commands and source code. fix around persistent especially operator >> accuracy on simplefloat. Intentionally absent documentation but on the source codes.
 2025/06/20 code cleaning, cr.py to p2.cc implement.
+2025/06/22 change T command output to better reasonable one, PERSISTENT improve.
 

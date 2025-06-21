@@ -30,8 +30,8 @@ CXXFLAGS+=	-D_FORK_
 #CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
 
 clean:
-	@rm -rf p2 p2-32 pp
-all:	p2 p2-32 pp
+	@rm -rf p2 p2-32 p pp
+all:	p2 p2-32
 p2:
 	${CXX} ${CXXFLAGS} -static -o p2 p2.cc
 p2-32:
@@ -41,7 +41,9 @@ p:
 p32:
 	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=32 -o p32 p2.cc
 pp:
-	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=64 -D_PERSISTENT_ -o pp p2.cc
+	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_PERSISTENT_ -o pp p2.cc
+pp32:
+	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=64 -D_PERSISTENT_ -o pp32 p2.cc
 pp64:
 	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=128 -D_PERSISTENT_ -o pp64 p2.cc
 

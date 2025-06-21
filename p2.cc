@@ -23,7 +23,9 @@ extern char* environ[];
 #if !defined(_OLDCPP_)
 #include <random>
 #if defined(_PERSISTENT_)
-# if _FLOAT_BITS_ == 64
+# if !defined(_FLOAT_BITS_)
+#  define int ssize_t
+# elif _FLOAT_BITS_ == 64
 #  define int int32_t
 # elif _FLOAT_BITS_ == 128
 #  define int int64_t
@@ -45,7 +47,9 @@ static inline num_t fl(int x, int M) {
 #endif
 int main(int argc, const char* argv[]) {
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
-# if _FLOAT_BITS_ == 64
+# if !defined(_FLOAT_BITS_)
+#  define int ssize_t
+# elif _FLOAT_BITS_ == 64
 #  define int int32_t
 # elif _FLOAT_BITS_ == 128
 #  define int int64_t
@@ -69,6 +73,7 @@ int main(int argc, const char* argv[]) {
     std::uniform_int_distribution<int> ud(0, 0x2000);
 #endif
     while(true) {
+      // N.B. rand < lower bound we estimate case isn't handled.
       if(argv[1][1] == 'b') {
 #if defined(_ARCFOUR_)
         std::cout << num_t(int(arc4random_uniform(3)) - 1);
@@ -118,11 +123,11 @@ int main(int argc, const char* argv[]) {
         std::cout << fl(int(random() % 0x2001) - 0x1000, 0x1000);
 #endif
 #if !defined(_OLDCPP_)
-        std::cout << "," << fl(ud(er) - 0x1000, 0x1000) << ",";
-        std::cout << fl(ud(mt) - 0x1000, 0x1000) << ",";
-        std::cout << fl(ud(rl24) - 0x1000, 0x1000) << ",";
-        std::cout << fl(ud(rl48) - 0x1000, 0x1000) << ",";
-        std::cout << fl(ud(kb) - 0x1000, 0x1000);
+        std::cout << "," << fl(ud(er) % 0x2001 - 0x1000, 0x1000) << ",";
+        std::cout << fl(ud(mt) % 0x2001 - 0x1000, 0x1000) << ",";
+        std::cout << fl(ud(rl24) % 0x2001 - 0x1000, 0x1000) << ",";
+        std::cout << fl(ud(rl48) % 0x2001  - 0x1000, 0x1000) << ",";
+        std::cout << fl(ud(kb) % 0x2001 - 0x1000, 0x1000);
 #endif
 #if defined(_GETENTROPY_)
         if(argv[1][0] == 'R') {
@@ -153,6 +158,7 @@ int main(int argc, const char* argv[]) {
       std::stringstream ins(s);
       ins >> d;
       for(int i = 0; i < std::atoi(argv[2]); i ++) {
+        // N.B. rand < 0x2001 case isn't handled.
         switch(sw) {
           case '0':
 #if defined(_ARCFOUR_)
@@ -163,19 +169,19 @@ int main(int argc, const char* argv[]) {
             break;
 #if !defined(_OLDCPP_)
           case '1':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(er) & 1 ? 1 : - 1) * d : (fl(ud(er) - 0x1000, 0x1000) + d) / num_t(int(2)));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(er) & 1 ? 1 : - 1) * d : (fl(ud(er) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '2':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(mt) & 1 ? 1 : - 1) * d : (fl(ud(mt) - 0x1000, 0x1000) + d) / num_t(int(2)));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(mt) & 1 ? 1 : - 1) * d : (fl(ud(mt) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '3':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl24) & 1 ? 1 : - 1) * d : (fl(ud(rl24) - 0x1000, 0x1000) + d) / num_t(int(2)));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl24) & 1 ? 1 : - 1) * d : (fl(ud(rl24) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '4':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl48) & 1 ? 1 : - 1) * d : (fl(ud(rl48) - 0x1000, 0x1000) + d) / num_t(int(2)));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl48) & 1 ? 1 : - 1) * d : (fl(ud(rl48) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           case '5':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(kb) & 1 ? 1 : - 1) * d : (fl(ud(kb) - 0x1000, 0x1000) + d) / num_t(int(2)));
+            std::cout << (argv[1][0] == 'M' ? num_t(ud(kb) & 1 ? 1 : - 1) * d : (fl(ud(kb) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
 #endif
 #if defined(_GETENTROPY_)
@@ -183,8 +189,7 @@ int main(int argc, const char* argv[]) {
             uint8_t rnd[4];
             for(int i = 0; i < 1600000 / 4; i ++)
               getentropy(rnd, sizeof rnd);
-            // XXX: [-1,1[ case, we in fact need: [-1,1].
-            std::cout << (argv[1][0] == 'M' ? num_t((uint32_t&)(*rnd) & 1 ? 1 : - 1) * d : (fl(((uint32_t&)(*rnd) & 0x1fff) - 0x1000, 0x1000) + d) / num_t(int(2)));
+            std::cout << (argv[1][0] == 'M' ? num_t((uint32_t&)(*rnd) & 1 ? 1 : - 1) * d : (fl(((uint32_t&)(*rnd) % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
             break;
           }
 #endif
@@ -488,7 +493,7 @@ int main(int argc, const char* argv[]) {
           stringstream ins(sbuf);
           num_t d(int(0));
           ins >> d;
-          std::cout << offsetHalf<num_t>(sgn<num_t>(unOffsetHalf<num_t>(dd[i])) * unOffsetHalf<num_t>(d));
+          std::cout << (dd[i] * d);
         }
         if(i < sock.size() - 1) std::cout << ", " << std::flush;
       }
@@ -539,7 +544,9 @@ int main(int argc, const char* argv[]) {
     break;
 #undef IOSYNC
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
-# if _FLOAT_BITS_ == 64
+# if !defined(_FLOAT_BITS_)
+#  define int ssize_t
+# elif _FLOAT_BITS_ == 64
 #  define int int32_t
 # elif _FLOAT_BITS_ == 128
 #  define int int64_t
@@ -647,12 +654,11 @@ int main(int argc, const char* argv[]) {
         if(bf.size() < in.size()) bf.resize(in.size(), 0);
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << (num_t(int(0)) <= in[i] && in[i] < num_t(int(1)) ?
-            bf[i] : ++ bf[i]) << ", ";
-        std::cout << (num_t(int(0)) <= in[in.size() - 1] &&
-          in[in.size() - 1] < num_t(int(1)) ?
-            bf[in.size() - 1] : ++ bf[in.size() - 1]) << ", " <<
-              t << std::endl;
+          std::cout << num_t(num_t(int(0)) <= in[i] && in[i] < num_t(int(1)) ?
+            bf[i] : ++ bf[i]) / num_t(t + 1) << ", ";
+        const int i(in.size() - 1);
+        std::cout << num_t(num_t(int(0)) <= in[i] && in[i] < num_t(int(1)) ?
+          bf[i] : ++ bf[i]) / num_t(t + 1) << std::endl;
         break;
       } case 'w': {
         for(int i = 0; i < in.size() - 1; i ++)
@@ -666,7 +672,7 @@ int main(int argc, const char* argv[]) {
         std::cout << sgn<num_t>(in[in.size() - 1]) << std::endl;
         break;
       } case 'F': {
-#if defined(_FLOAT_BITS_)
+#if defined(_FLOAT_BITS_) || defined(_PERSISTENT_)
         for(int i = 0; i < in.size() - 1; i ++)
           std::cout << double(in[i]) << ", ";
         std::cout << double(in[in.size() - 1]) << std::endl;
