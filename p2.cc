@@ -572,6 +572,7 @@ int main(int argc, const char* argv[]) {
   } default: {
     std::vector<num_t> b;
     std::vector<int> bf;
+    std::vector<int> bg;
     string a2(2 < argc ? argv[2] : "");
     std::stringstream ss(a2);
     num_t tt(int(0));
@@ -651,16 +652,21 @@ int main(int argc, const char* argv[]) {
         std::cout << (in[0] /= num_t(int(in.size())) ) << std::endl;
         break;
       } case 'T': {
-        if(bf.size() < in.size()) bf.resize(in.size(), 0);
+        if(bf.size() < in.size()) {
+          bf.resize(in.size(), 1);
+          bg.resize(in.size(), 1);
+        }
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << num_t(tt <= in[i] &&
-            (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-            bf[i] : ++ bf[i]) / num_t(t + 1) << ", ";
+          std::cout << (abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
+            num_t(num_t(int(0)) <= in[i] &&
+              (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
+                bf[i] : ++ bf[i]) / num_t(++ bg[i])) << ", ";
         const int i(in.size() - 1);
-        std::cout << num_t(tt <= in[i] &&
+        std::cout << (abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
+          num_t(num_t(int(0)) <= in[i] &&
             (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-          bf[i] : ++ bf[i]) / num_t(t + 1) << std::endl;
+              bf[i] : ++ bf[i]) / num_t(++ bg[i])) << endl;
         break;
       } case 'w': {
         for(int i = 0; i < in.size() - 1; i ++)
