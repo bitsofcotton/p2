@@ -654,10 +654,12 @@ int main(int argc, const char* argv[]) {
         if(bf.size() < in.size()) bf.resize(in.size(), 0);
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << num_t(num_t(int(0)) <= in[i] && in[i] < num_t(int(1)) ?
+          std::cout << num_t(tt <= in[i] &&
+            (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
             bf[i] : ++ bf[i]) / num_t(t + 1) << ", ";
         const int i(in.size() - 1);
-        std::cout << num_t(num_t(int(0)) <= in[i] && in[i] < num_t(int(1)) ?
+        std::cout << num_t(tt <= in[i] &&
+            (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
           bf[i] : ++ bf[i]) / num_t(t + 1) << std::endl;
         break;
       } case 'w': {
