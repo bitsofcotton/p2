@@ -553,4 +553,5 @@ We want completely trust-able calculation system to continue however we high pro
 2025/06/20 code cleaning, cr.py to p2.cc implement.
 2025/06/22 change T command output to better reasonable one, PERSISTENT improve.
 2025/06/23 code clean, flush.
+2025/06/25 merge latest ddpmopt result. also need to implant readme.md into lieonn.hh.
 
