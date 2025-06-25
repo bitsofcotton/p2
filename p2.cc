@@ -233,11 +233,11 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'e': {
-    string a3(3 < argc ? argv[3] : "");
+    string a3(3 < argc ? argv[3] : "0");
     std::stringstream ss(a3);
-    num_t tt(int(0));
-    ss >> tt;
-    int loop(tt);
+    int loop0(0);
+    ss >> loop0;
+    int loop(loop0);
     int t2(0);
     SimpleMatrix<num_t> A(std::atoi(argv[2]), std::atoi(argv[2]));
     SimpleVector<num_t> b(std::atoi(argv[2]));
@@ -247,11 +247,13 @@ int main(int argc, const char* argv[]) {
       if(! (t %= b.size())) {
         if(! loop) {
           for(int i = 1; i < b.size(); i ++) b[0] += b[i];
-          loop = abs(b[0] * tt);
+          loop = abs(b[0] * num_t(int(16)));
           continue;
         }
         if(A.rows() <= t2) {
-          for(int i = 0; i <= loop; i ++) std::cout << (b = A * b);
+          for(int i = 0; i <= loop; i ++) std::cout <<
+            (b = A * b / num_t(int(std::atoi(argv[2])))) << std::flush;
+          loop = loop0;
           t2 = 0;
         } else A.row(t2 ++) = b;
       }
@@ -745,6 +747,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
   cerr << "# take sum columns each line on input stream" << endl << argv[0] << " G" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
+  cerr << "# take column 0 horizontal cut output to each column" << endl << argv[0] << " E <number>" << endl;
+  cerr << "# take column 0 to harden PRNG part vector output" << endl << argv[0] << " e" << endl;
   cerr << "# take opposite type output string each on input stream" << endl << argv[0] << " F <bit number>" << endl;
   cerr << endl << " *** PRNG part ***" << endl;
   cerr << "# make [-1,1]   PRNG stream" << endl << argv[0] << " [rR]  <proto>" << endl;
@@ -765,11 +769,9 @@ int main(int argc, const char* argv[]) {
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
   cerr << "# input vector stream to pgm graphics output" << endl << argv[0] << " P" << endl;
-  cerr << "# input vector stream to harden PRNG part" << endl << argv[0] << " e" << endl;
 #if defined(_FORK_)
   cerr << endl << " *** multi process call part ***" << endl;
   cerr << "# do double prediction on same input" << endl << argv[0] << " D <command set 0> <command set 1>" << endl;
-  cerr << "# do column 0 input to cut by horizontal and do prediction on their statics" << endl << argv[0] << " E <number> <command>" << endl;
   cerr << "# do each of all column input prediction parallel, take output column 0." << endl << argv[0] << " H <command>" << endl;
   cerr << "# do each of all column input prediction parallel, take output column 0 as a prediction value, pred avg * input avg output." << endl << argv[0] << " @ <command>" << endl;
 #endif

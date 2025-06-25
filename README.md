@@ -39,6 +39,8 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     p G
     # take walk condition each on input stream
     p w <range>
+    # take column 0 horizontal cut output to each column
+    p E <number>
     # take opposite type output string each on input stream
     p F <bit number>
     
@@ -81,8 +83,6 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
      *** multi process call part ***
     # do double prediction on same input
     p D <command set 0> <command set 1>
-    # do column 0 input to cut by horizontal and do prediction on their statics
-    p E <command>
     # do each of all column input prediction parallel, take output column 0 each.
     p H <command>
     # do each of all column input prediction parallel, take output column 0 as a prediction value, prediction average * input stream average output.
@@ -237,4 +237,5 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
 2025/06/23 code clean, flush.
 2025/06/25 merge latest ddpmopt result. also need to implant readme.md into lieonn.hh.
 2025/06/25 readme.md moved into implant lieonn.hh as a comment. add usage into p2.cc.
+2025/06/25 fix usage also 'e' command crash, update lieonn.hh comment.
 
