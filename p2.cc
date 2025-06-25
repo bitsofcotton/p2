@@ -143,6 +143,8 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'm': case 'M': {
+    // N.B. also [complex(rand,rand)/abs(...), ...] series works better.
+    //      with IDFT/DFT, this is the analogy of output index shuffling.
 #if !defined(_OLDCPP_)
     std::random_device r;
     std::default_random_engine er(r());
