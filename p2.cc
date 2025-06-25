@@ -57,10 +57,10 @@ int main(int argc, const char* argv[]) {
 #  error Cannot handle PERSISTENT option
 # endif
 #endif
-  assert(1 < argc);
   std::cout << std::setprecision(30);
   std::string s;
   int   t(0);
+  if(argc < 2) goto usage;
   switch(argv[1][0]) {
   case 'r': case 'R': {
 #if !defined(_OLDCPP_)
@@ -145,6 +145,7 @@ int main(int argc, const char* argv[]) {
   } case 'm': case 'M': {
     // N.B. also [complex(rand,rand)/abs(...), ...] series works better.
     //      with IDFT/DFT, this is the analogy of output index shuffling.
+    // N.B. M command select large one of the matrix size on PRN generation.
 #if !defined(_OLDCPP_)
     std::random_device r;
     std::default_random_engine er(r());
@@ -195,7 +196,7 @@ int main(int argc, const char* argv[]) {
             break;
           }
 #endif
-          default: assert(0 && "no such command");
+          default: goto usage;
         }
         if(i < std::atoi(argv[2]) - 1)
           std::cout << ", ";
@@ -367,7 +368,7 @@ int main(int argc, const char* argv[]) {
         }
       }
       break;
-    } default: assert(0 && "no such command.");
+    } default: goto usage;
     }
     break;
   } case 'x': {
@@ -443,6 +444,7 @@ int main(int argc, const char* argv[]) {
   }
   } case 'H': case '@': {
     vector<int> sock;
+    num_t M(int(0));
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
       int idx(0), bidx(0);
@@ -472,6 +474,7 @@ int main(int argc, const char* argv[]) {
       }
       vector<num_t> dd;
       dd.resize(min(int(sock.size()), cnt), num_t(int(0)));
+      num_t D(int(0));
       for(int i = 0; i < min(int(sock.size()), cnt); i ++) {
         for( ; idx < s.size() && s[idx] != ','; idx ++) ;
         string ss(s.substr(bidx, (++ idx) - bidx) );
@@ -481,23 +484,28 @@ int main(int argc, const char* argv[]) {
         if(argv[1][0] == '@') {
           stringstream ins(ss);
           ins >> dd[i];
+          D += dd[i];
         }
+      }
+      if(argv[1][0] == '@') {
+        std::cout << M * D / num_t(cnt) / num_t(cnt);
+        M = num_t(int(0));
       }
       for(int i = 0; i < min(int(sock.size()), cnt); i ++) {
         char buf[2];
         buf[1] = 0;
-        if(argv[1][0] == 'H') 
+        if(argv[1][0] == 'H') {
           while(read(sock[i], buf, 1) && buf[0] != '\n')
             std::cout << buf[0];
-        else {
+          if(i < sock.size() - 1) std::cout << ", " << std::flush;
+        } else {
           string sbuf;
           while(read(sock[i], buf, 1) && buf[0] != '\n') sbuf += string(buf);
           stringstream ins(sbuf);
           num_t d(int(0));
           ins >> d;
-          std::cout << (dd[i] * d);
+          M += d;
         }
-        if(i < sock.size() - 1) std::cout << ", " << std::flush;
       }
       std::cout << std::endl << std::flush;
     }
@@ -699,14 +707,75 @@ int main(int argc, const char* argv[]) {
         std::cout << (f >>= tt) << std::endl;
 #endif
         break;
-      } default:
-        assert(0 && "no such command.");
+      } case 'I': {
+        if(b.size() < in.size()) b.resize(in.size(), num_t(int(0)));
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << (b[i] * in[i]) << ", ";
+        const int i(in.size() - 1);
+        std::cout << (b[i] * in[i]) << endl;
+        for(int i = 0; i < in.size(); i ++)
+          if(argv[1][1] == '+') b[i] += in[i]; else b[i] = in[i];
+        break;
+      } default: goto usage;
       }
       std::cout << std::flush;
-      if((argv[1][0] != 's' && argv[1][0] != 'w') || !b.size()) b = in;
+      if((argv[1][0] != 's' && argv[1][0] != 'w' && argv[1][0] != 'I') ||
+        !b.size()) b = in;
       t ++;
     }
   } }
   return 0;
+ usage:
+  cerr << "Usage:" << endl;
+  cerr << " *** reformation part (if the original series is hard enough) ***" << endl;
+  cerr << "# take delta     on input stream" << endl << argv[0] << " d" << endl;
+  cerr << "# take summation on input stream" << endl << argv[0] << " s" << endl;
+  cerr << "# take skip      on input stream" << endl << argv[0] << " k <interval>" << endl;
+  cerr << "# take skip head on input stream" << endl << argv[0] << " S <margin>" << endl;
+  cerr << "# take reverse   on input stream" << endl << argv[0] << " v" << endl;
+  cerr << "# pick {0,1} str on input stream" << endl << argv[0] << " x" << endl;
+  cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X" << endl;
+  cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
+  cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
+  cerr << "# take picked column      on input stream" << endl << argv[0] << " l <col0index> ..." << endl;
+  cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
+  cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
+  cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
+  cerr << "# take absolute each      on input stream" << endl << argv[0] << " a" << endl;
+  cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
+  cerr << "# take sum columns each line on input stream" << endl << argv[0] << " G" << endl;
+  cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
+  cerr << "# take opposite type output string each on input stream" << endl << argv[0] << " F <bit number>" << endl;
+  cerr << endl << " *** PRNG part ***" << endl;
+  cerr << "# make [-1,1]   PRNG stream" << endl << argv[0] << " [rR]  <proto>" << endl;
+  cerr << "# make {-1,0,1} PRNG stream" << endl << argv[0] << " [rR]b <proto>" << endl;
+  cerr << "# make {-1,1}   PRNG stream" << endl << argv[0] << " [rR]B <proto>" << endl;
+  cerr << "# blend [-1,1]  PRNG stream" << endl << argv[0] << " m<proto> <number of output columns>" << endl;
+  cerr << "# flip or not   PRNG stream" << endl << argv[0] << " M<proto> <number of output columns>" << endl;
+  cerr << endl << " *** predictor part ***" << endl;
+#if defined(_ONEBINARY_)
+  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>" << endl;
+  cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
+#endif
+  cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <arg>" << endl;
+  cerr << "# jammer to the jammer output (+ for short fixed range target)" << endl << argv[0] << " j+?" << endl;
+  cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
+  cerr << "# trivial id. prediction (plain for flip last, + for return to average)" << endl << argv[0] << " I+" << endl;
+  cerr << endl << " *** vector operation part ***" << endl;
+  cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
+  cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
+  cerr << "# input vector stream to pgm graphics output" << endl << argv[0] << " P" << endl;
+  cerr << "# input vector stream to harden PRNG part" << endl << argv[0] << " e" << endl;
+#if defined(_FORK_)
+  cerr << endl << " *** multi process call part ***" << endl;
+  cerr << "# do double prediction on same input" << endl << argv[0] << " D <command set 0> <command set 1>" << endl;
+  cerr << "# do column 0 input to cut by horizontal and do prediction on their statics" << endl << argv[0] << " E <number> <command>" << endl;
+  cerr << "# do each of all column input prediction parallel, take output column 0." << endl << argv[0] << " H <command>" << endl;
+  cerr << "# do each of all column input prediction parallel, take output column 0 as a prediction value, pred avg * input avg output." << endl << argv[0] << " @ <command>" << endl;
+#endif
+  cerr << endl << " *** other part ***" << endl;
+  cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
+  cerr << "# show output statistics it's arg<|x - 1/2|<{1-arg,infty} (+ for infty)" << endl << argv[0] << " T+ <arg>" << endl;
+  return - 1;
 }
 

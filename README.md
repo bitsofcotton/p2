@@ -3,58 +3,103 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
 
 # Usage
     cr.py ([Rm]|[HD]?) ...
-    p2(-32)? [rRfhzSdsiltakGQcCjPTmMoEveZxXwFLHD] ...
-    # predictor formatter with many of the scrapped commands.
-    # N.B. p2 only depends on c++ concerned bootstrap with this repository.
-    #      this excludes CPU float glitches because we can use *unique*
-    #      CPU integer only either we can exclude SIMD operations for debug
-    #      easily with compiler options. persistent option only uses
-    #      size_t for float and ssize_t for index but with int for stdc++ libs.
     
-    p2(-32)? [cC] <line>? < data.txt
-    # patternizable jammer predictor.
-    # 0 < line : number of back lines the predictor uses.
-    # line == 0 to use whole input stream to predict next step.
+     *** reformation part ***
+    # take delta     on input stream
+    p d
+    # take summation on input stream
+    p s
+    # take skip      on input stream
+    p k <interval>
+    # take skip head on input stream
+    p S <margin>
+    # take reverse   on input stream
+    p v
+    # pick {0,1} str on input stream
+    p x
+    # take reform [-1,1] on input stream
+    p X
+    # take reform [-1,1] on input stream without offset
+    p Z
+    # take inverse   on input stream
+    p i
+    # take picked column      on input stream
+    p l <col0index> ...
+    # take duplicate toeplitz on input stream
+    p z <column number>
+    # take multiply each      on input stream
+    p t <ratio>
+    # take offset   each      on input stream
+    p o <offset>
+    # take absolute each      on input stream
+    p a
+    # take sign     each      on input stream
+    p b
+    # take sum columns each line on input stream
+    p G
+    # take walk condition each on input stream
+    p w <range>
+    # take opposite type output string each on input stream
+    p F <bit number>
     
-    p2 j+? <param> | ((p2 l 2 0 2 | p2 Q |)) ...
-    # This often make worse high entropy feeding in result (jammer to jammer).
+     *** PRNG part ***
+    # make [-1,1]   PRNG stream
+    p [rR]  <proto>
+    # make {-1,0,1} PRNG stream
+    p [rR]b <proto>
+    # make {-1,1}   PRNG stream
+    p [rR]B <proto>
+    # blend [-1,1]  PRNG stream
+    p m<proto> <number of output columns>
+    # flip or not   PRNG stream
+    p M<proto> <number of output columns>
     
-    p2(-32)? [mM][0-6] <num> < data.txt
-    # mix PRNG into input stream.
+     *** predictor part ***
+    # predict with Riemann measureable condition (c for difference output)
+    p 0c? <arg>
+    # predict with untangle combination condition (c for difference output)
+    p 1c? <arg>
+    # feed patternizable jammer input entropy (C for difference output)
+    p [cC] <arg>
+    # jammer to the jammer output (+ for short fixed range target)
+    p j+?
+    # jam out input column 0 by input column 1+
+    p Q
+    # trivial id. prediction (plain for flip last, + for return to average)
+    p I+
     
-    p2 [rR][bB] | p2 l ... | p2 t 8 | p2 f ... | p2 e ... | p2 h ...
-    # pseudo-harden PRNGs, more number of chain works.
+     *** vector operation part ***
+    # input serial stream to vector stream
+    p f <dimension>
+    # input vector stream to serial stream
+    p h
+    # input vector stream to pgm graphics output
+    p P
+    # input vector stream to harden PRNG part
+    p e
     
-    p2 l 0 | tee 0 | <predictor> | ...
-    catgr 3 < 0 | p2 h ... p2 f ... | p2 e | cr.py m
-    # listen residue with rand_correct.mid.
+     *** multi process call part ***
+    # do double prediction on same input
+    p D <command set 0> <command set 1>
+    # do column 0 input to cut by horizontal and do prediction on their statics
+    p E <command>
+    # do each of all column input prediction parallel, take output column 0 each.
+    p H <command>
+    # do each of all column input prediction parallel, take output column 0 as a prediction value, prediction average * input stream average output.
+    p @ <command>
     
-    p2 F <bits>
-    # convert between SimpleFloat and double.
+     *** other part ***
+    # multiple file load into same line columns
+    p L <file0> ...
+    # show output statistics whether arg<|x - 1/2|*2<{1-arg,infty} (+ for infty)
+    p T+ <arg>
+
     # N.B. there's many much of the combibnations, if we upload them on
     #      this README.md they'd slip from somehow in our experience some years
     #      ago. so we absent intentionally blank them.
 
 # Description:
-If we don't have better prediction with p0, p1, we categorize series of input and predict with them by p2 c.
-
-Either, some of the predictors fighting with jammers, for non usual input streams however, even this predictor can have the jammer to us.
-
-# Touching input.
-If original series is hard enough, the inverse walk condition nor delta inverse inverse walk condition might works.
-This might because of same as p0 condition readme.md.
-In p1, they might because of high frequency or low frequency continuous part causes some of the original calculation structure continuous condition hard.
-
-# Concat PRNG
-Bitwise xor causes original matrix addition.
-This causes maximum of matrix size will be selected.
-Smaller matrixes effects some of the result, but if the distribution
-isn't harmful and has non small orthogonal parts norm,
-they shouldn't harms.
-
-# Bothside walk
-We need bothside walk condition when a_-1 is being attacked condition.
-Even so, if the attacker attacks both a_-1 and reverse(a_-1), half ot the prediction fails in best effort, but whole of the case, one of the function estimation remains, so in whole in long range, it's ok in feeding one by one sliding window meaning.
+Predictor formatter and some of the toolset fighting with jammers for non usual input streams however, even this predictor can have the jammer to us.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -191,5 +236,5 @@ Even so, if the attacker attacks both a_-1 and reverse(a_-1), half ot the predic
 2025/06/22 change T command output to better reasonable one, PERSISTENT improve.
 2025/06/23 code clean, flush.
 2025/06/25 merge latest ddpmopt result. also need to implant readme.md into lieonn.hh.
-2025/06/25 readme.md moved into implant lieonn.hh as a comment.
+2025/06/25 readme.md moved into implant lieonn.hh as a comment. add usage into p2.cc.
 
