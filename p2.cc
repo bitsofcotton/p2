@@ -251,8 +251,10 @@ int main(int argc, const char* argv[]) {
           continue;
         }
         if(A.rows() <= t2) {
-          for(int i = 0; i <= loop; i ++) std::cout <<
-            (b = A * b / num_t(int(std::atoi(argv[2])))) << std::flush;
+          for(int i = 0; i <= loop; i ++) {
+            b = A * b;
+            std::cout << b / sqrt(b.dot(b)) << std::flush;
+          }
           loop = loop0;
           t2 = 0;
         } else A.row(t2 ++) = b;
