@@ -410,6 +410,7 @@ int main(int argc, const char* argv[]) {
       std::cout << sect << std::endl << std::flush;
     }
     break;
+#if !defined(_OLDCPP_)
   } case 'L': {
     std::vector<std::ifstream> f;
     f.reserve(argc - 1);
@@ -435,6 +436,7 @@ int main(int argc, const char* argv[]) {
     }
     for(int i = 0; i < f.size(); i ++) f[i].close();
     break;
+#endif
 #if defined(_FORK_)
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
@@ -697,6 +699,7 @@ int main(int argc, const char* argv[]) {
           std::cout << sgn<num_t>(in[i]) << ", ";
         std::cout << sgn<num_t>(in[in.size() - 1]) << std::endl;
         break;
+#if !defined(_OLDCPP_)
       } case 'F': {
 #if defined(_FLOAT_BITS_) || defined(_PERSISTENT_)
         for(int i = 0; i < in.size() - 1; i ++)
@@ -711,6 +714,7 @@ int main(int argc, const char* argv[]) {
         std::cout << (f >>= tt) << std::endl;
 #endif
         break;
+#endif
       } case 'I': {
         if(b.size() < in.size()) b.resize(in.size(), num_t(int(0)));
         for(int i = 0; i < in.size() - 1; i ++)
