@@ -674,14 +674,14 @@ int main(int argc, const char* argv[]) {
         }
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << abs((abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
+          std::cout << ((abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
             num_t(num_t(int(0)) <= in[i] &&
               (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
                 bf[i] : ++ bf[i]) / num_t(++ bg[i])) -
                   num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
                     bg[i] << ", ";
         const int i(in.size() - 1);
-        std::cout << abs((abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
+        std::cout << ((abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
           num_t(num_t(int(0)) <= in[i] &&
             (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
               bf[i] : ++ bf[i]) / num_t(++ bg[i])) -
