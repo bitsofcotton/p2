@@ -232,6 +232,43 @@ int main(int argc, const char* argv[]) {
       std::cout << (M = p012next<num_t>(p.next(d)) ) << std::endl << std::flush;
     }
     break;
+  } case 'A': {
+    int& length(t);
+    if(2 < argc) length = std::atoi(argv[2]);
+    idFeeder<SimpleVector<num_t> > p(length);
+    SimpleVector<num_t> d;
+    vector<SimpleVector<num_t> > M;
+    int ctr(0);
+    while(std::getline(std::cin, s, '\n')) {
+      int cnt(1);
+      for(int i = 0; i < s.size(); i ++)
+        if(s[i] == ',') cnt ++;
+      d.resize(cnt);
+      int i, j;
+      for(i = 0, j = 0; i < s.size(); i ++) {
+        std::stringstream ins(s.substr(i, s.size() - i));
+        ins >> d[j ++];
+        for( ; s[i] != ',' && i < s.size(); i ++) ;
+      }
+      for(int j = 0; j < M.size(); j ++)
+        for(int i = 0; i < d.size(); i ++)
+          // XXX: "Ac" command somehow offseted not expected range on our
+          //       computer, don't know why.
+          std::cout << (i < M[j].size() ? (argv[1][1] == 'c' ?
+            d[i] - M[j][i] : d[i] * M[j][i]) : num_t(int(0)) )<<
+              ", " << std::flush;
+      p.next(offsetHalf<num_t>(d));
+      if(max(p.res.size(), int(14)) <= ++ ctr)
+        M = unOffsetHalf<num_t>(
+          pAbsentMajority<num_t, pgoshigoshi<num_t, predvp<num_t, 0>,
+            predvq<num_t, 0> >, predv<num_t, pgoshigoshi<num_t, predvp<num_t, 0>,
+              predvq<num_t, 0> >, 11> >(p.res.entity, string("")));
+      if(max(p.res.size(), int(14)) <= ctr - 1)
+        for(int j = 0; j < M.size(); j ++)
+          for(int i = 0; i < M[j].size(); i ++)
+            std::cout << M[j][i] << ", " << std::flush;
+      std::cout << std::endl;
+    }
   } case 'e': {
     string a3(3 < argc ? argv[3] : "0");
     std::stringstream ss(a3);
@@ -677,14 +714,14 @@ int main(int argc, const char* argv[]) {
           std::cout << ((abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
             num_t(num_t(int(0)) <= in[i] &&
               (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-                bf[i] : ++ bf[i]) / num_t(++ bg[i])) -
+                ++ bf[i] : bf[i]) / num_t(++ bg[i])) -
                   num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
                     bg[i] << ", ";
         const int i(in.size() - 1);
         std::cout << ((abs(in[i]) < abs(tt) ? num_t(bf[i]) / num_t(bg[i]) :
           num_t(num_t(int(0)) <= in[i] &&
             (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-              bf[i] : ++ bf[i]) / num_t(++ bg[i])) -
+              ++ bf[i] : bf[i]) / num_t(++ bg[i])) -
                 num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
                   bg[i] << endl;
         break;

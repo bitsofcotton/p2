@@ -239,4 +239,5 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
 2025/06/25 readme.md moved into implant lieonn.hh as a comment. add usage into p2.cc.
 2025/06/25 fix usage also 'e' command crash, update lieonn.hh comment.
 2025/06/28 refactor and fix around lieonn, re-compat with gcc2953.
+2025/06/29-30 merge latest ddpmopt change, also add Ac? command also T command IMPORTANT change.
 
