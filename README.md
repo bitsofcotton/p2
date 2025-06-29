@@ -69,6 +69,8 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     p Q
     # trivial id. prediction (plain for flip last, + for return to average)
     p I+
+    # ddpmopt compatible prediction
+    p Ac?
     
      *** vector operation part ***
     # input serial stream to vector stream

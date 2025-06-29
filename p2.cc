@@ -808,6 +808,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# jammer to the jammer output (+ for short fixed range target)" << endl << argv[0] << " j+?" << endl;
   cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
   cerr << "# trivial id. prediction (plain for flip last, + for return to average)" << endl << argv[0] << " I+" << endl;
+  cerr << "# ddpmopt compatible prediction" << endl << argv[0] << " Ac?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
