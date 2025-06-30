@@ -91,7 +91,7 @@ elif(sys.argv[1][0] == 'H'):
 elif(sys.argv[1][0] == 'D'):
   p = []
   for a in sys.argv[2:]:
-    p.append(subprocess.Popen(["sh", "-c", a], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+    p.append(subprocess.Popen(["sh", "-c", a], stdin = subprocess.PIPE, stdout = subprocess.PIPE))
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     for pp in p:
       pp.stdin.write(line.encode("utf-8"))
