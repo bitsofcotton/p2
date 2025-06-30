@@ -242,7 +242,6 @@ int main(int argc, const char* argv[]) {
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
     vector<SimpleVector<num_t> > M;
-    vector<SimpleVector<num_t> > bM;
     int ctr(0);
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
@@ -257,24 +256,19 @@ int main(int argc, const char* argv[]) {
       }
       for(int i = 0; i < d.size(); i ++)
         for(int j = 0; j < M.size(); j ++)
-          std::cout << (i < M[j].size() ? (argv[1][1] == 'c' ||
-            argv[1][1] == 'C' ? d[i] - M[j][i] : d[i] * M[j][i]) :
+          std::cout << (i < M[j].size() ? (argv[1][1] == 'c' ?
+            d[i] - M[j][i] : d[i] * M[j][i]) :
               num_t(int(0)) ) << ", " << std::flush;
-      if(argv[1][1] == 'C' && bM.size())
-        for(int j = 0; j < bM.size(); j ++)
-          for(int i = 0; i < bM[j].size(); i ++)
-            std::cout << d[i] + bM[j][i] << ", " << std::flush;
       p.next(offsetHalf<num_t>(d));
-      bM = move(M);
-      if(max(p.res.size(), int(14)) <= ++ ctr)
-        M = unOffsetHalf<num_t>(
+      if(max(p.res.size(), int(14)) <= ++ ctr && p.full)
+        M = unOffsetHalf<num_t>(pGatherExp<num_t,
           pAbsentMajority<num_t, pFeedLargeMarkov<num_t, pgoshigoshi<num_t,
             predvp<num_t, 0>, predvq<num_t, 0> >, 25, 0>, predv<num_t,
               pFeedLargeMarkov<num_t, pgoshigoshi<num_t, predvp<num_t, 0>,
-                predvq<num_t, 0> >, 25, 0>, 1> >(p.res.entity, string("")));
-      if(argv[1][1] != 'C')
-        for(int j = 0; j < M.size(); j ++)
-          for(int i = 0; i < M[j].size(); i ++)
+                predvq<num_t, 0> >, 25, 0>, 1> > >(p.res.entity, string("")));
+      if(M.size())
+        for(int i = 0; i < M[0].size(); i ++)
+          for(int j = 0; j < M.size(); j ++)
             std::cout << M[j][i] << ", " << std::flush;
       std::cout << std::endl;
     }
@@ -817,7 +811,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# jammer to the jammer output (+ for short fixed range target)" << endl << argv[0] << " j+?" << endl;
   cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
   cerr << "# trivial id. prediction (plain for flip last, + for return to average)" << endl << argv[0] << " I+" << endl;
-  cerr << "# ddpmopt compatible prediction (c for difference output)" << endl << argv[0] << " A[cC]?" << endl;
+  cerr << "# ddpmopt compatible prediction (c for difference output)" << endl << argv[0] << " Ac?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -832,7 +826,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<{1-arg,infty} (+ for infty)" << endl << argv[0] << " T+ <arg>" << endl;
   cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z 2 | " << argv[0] << " S 1 | " << argv[0] << " AC | " << argv[0] << " S 27 | " << argv[0] << " G | " << argv[0] << " 0c -2 | " << argv[0] << " S 2 | " << argv[0] << " a | " << argv[0] << " T" << endl;
+  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z 2 | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg> | " << argv[0] << " S <arg>" << endl;
   return - 1;
 }
 
