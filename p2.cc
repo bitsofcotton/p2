@@ -261,6 +261,7 @@ int main(int argc, const char* argv[]) {
               num_t(int(0)) ) << ", " << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(max(p.res.size(), int(14)) <= ++ ctr && p.full)
+        // N.B. we should use this but the result isn't:
         M = unOffsetHalf<num_t>(pGatherExp<num_t,
           pAbsentMajority<num_t, pFeedLargeMarkov<num_t, pgoshigoshi<num_t,
             predvp<num_t, 0>, predvq<num_t, 0> >, 25, 0>, predv<num_t,
@@ -713,20 +714,14 @@ int main(int argc, const char* argv[]) {
           bg.resize(in.size(), 0);
         }
         assert(bf.size() == in.size());
-        for(int i = 0; i < in.size() - 1; i ++)
+        for(int i = 0; i < in.size(); i ++)
           std::cout << ((abs(in[i]) < tt ? num_t(bf[i]) / num_t(max(int(1), bg[i])) :
             (num_t(num_t(int(0)) <= in[i] &&
               (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
                 ++ bf[i] : bf[i]) / num_t(++ bg[i])) ) -
                   num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
                     bg[i] << ", ";
-        const int i(in.size() - 1);
-        std::cout << ((abs(in[i]) < tt ? num_t(bf[i]) / num_t(max(int(1), bg[i])) :
-          (num_t(num_t(int(0)) <= in[i] &&
-            (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-              ++ bf[i] : bf[i]) / num_t(++ bg[i])) ) -
-                num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
-                  bg[i] << endl;
+        std::cout << t << endl;
         break;
       } case 'w': {
         for(int i = 0; i < in.size() - 1; i ++)
