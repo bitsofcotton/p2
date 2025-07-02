@@ -256,17 +256,28 @@ int main(int argc, const char* argv[]) {
       }
       for(int i = 0; i < d.size(); i ++)
         for(int j = 0; j < M.size(); j ++)
-          std::cout << (i < M[j].size() ? (argv[1][1] == 'c' ?
-            d[i] - M[j][i] : d[i] * M[j][i]) :
-              num_t(int(0)) ) << ", " << std::flush;
+           std::cout << (i < M[j].size() ? (argv[1][1] == 'c' ?
+             d[i] - M[j][i] : d[i] * M[j][i]) : num_t(int(0)) )
+               << ", " << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(max(p.res.size(), int(14)) <= ++ ctr && p.full)
         // N.B. we should use this but the result isn't:
-        M = unOffsetHalf<num_t>(pGatherExp<num_t,
-          pAbsentMajority<num_t, pFeedLargeMarkov<num_t, pgoshigoshi<num_t,
-            predvp<num_t, 0>, predvq<num_t, 0> >, 25, 0>, predv<num_t,
-              pFeedLargeMarkov<num_t, pgoshigoshi<num_t, predvp<num_t, 0>,
-                predvq<num_t, 0> >, 25, 0>, 1> > >(p.res.entity, string("")));
+#if defined(_PRNG_RECUR_)
+        M = unOffsetHalf<num_t>(pMajority<num_t, predv<num_t,
+          pAbsentMajority<num_t, predv<num_t, pFeedLargeMarkov<num_t,
+            pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
+              _PRNG_RECUR_>, predv<num_t, pFeedLargeMarkov<num_t,
+                pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
+                  _PRNG_RECUR_>, _P_RECUR_>, - _PRNG_RECUR_> >
+#else
+        M = unOffsetHalf<num_t>(pMajority<num_t, predv<num_t,
+          pAbsentMajority<num_t, predv<num_t, pFeedLargeMarkov<num_t,
+            pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
+              0>, predv<num_t, pFeedLargeMarkov<num_t,
+                pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
+                  1>, _P_RECUR_>, 0> >
+#endif
+                  (p.res.entity, string("")));
       if(M.size())
         for(int i = 0; i < M[0].size(); i ++)
           for(int j = 0; j < M.size(); j ++)
@@ -721,7 +732,7 @@ int main(int argc, const char* argv[]) {
                 ++ bf[i] : bf[i]) / num_t(++ bg[i])) ) -
                   num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
                     bg[i] << ", ";
-        std::cout << t << endl;
+        std::cout << (t + 1) << endl;
         break;
       } case 'w': {
         for(int i = 0; i < in.size() - 1; i ++)
