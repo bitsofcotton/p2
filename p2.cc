@@ -259,13 +259,8 @@ int main(int argc, const char* argv[]) {
           d[i] - M[i] : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(max(p.res.size(), int(51)) <= ++ ctr && p.full)
-        //M = unOffsetHalf<num_t>(pSectional<num_t, pFeedLebesgue<num_t,
         M = unOffsetHalf<num_t>(
-          pAbsentMajority<num_t, predv<num_t, pFeedLargeMarkov<num_t,
-            pgoshigoshi<num_t, 0>, 0>, 0>, predv<num_t,
-              pFeedLargeMarkov<num_t, pgoshigoshi<num_t, 0>, 0>, 1>,
-        //        _P_RECUR_>, 2>, 4>(p.res.entity, string("")));
-                _P_RECUR_>(p.res.entity, string("")));
+          pSectional<num_t, _P_SEC_, 0>(p.res.entity, string("")) );
       if(M.size())
         for(int j = 0; j < M.size(); j ++)
           std::cout << M[j] << ", " << std::flush;
