@@ -241,7 +241,7 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) length = std::atoi(argv[2]);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
-    vector<SimpleVector<num_t> > M;
+    SimpleVector<num_t> M;
     int ctr(0);
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
@@ -255,33 +255,20 @@ int main(int argc, const char* argv[]) {
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
       for(int i = 0; i < d.size(); i ++)
-        for(int j = 0; j < M.size(); j ++)
-           std::cout << (i < M[j].size() ? (argv[1][1] == 'c' ?
-             d[i] - M[j][i] : d[i] * M[j][i]) : num_t(int(0)) )
-               << ", " << std::flush;
+        std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
+          d[i] - M[i] : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(max(p.res.size(), int(14)) <= ++ ctr && p.full)
-        // N.B. we should use this but the result isn't:
-#if defined(_PRNG_RECUR_)
-        M = unOffsetHalf<num_t>(pMajority<num_t, predv<num_t,
+      if(max(p.res.size(), int(51)) <= ++ ctr && p.full)
+        //M = unOffsetHalf<num_t>(pSectional<num_t, pFeedLebesgue<num_t,
+        M = unOffsetHalf<num_t>(
           pAbsentMajority<num_t, predv<num_t, pFeedLargeMarkov<num_t,
-            pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
-              _PRNG_RECUR_>, predv<num_t, pFeedLargeMarkov<num_t,
-                pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
-                  _PRNG_RECUR_>, _P_RECUR_>, - _PRNG_RECUR_> >
-#else
-        M = unOffsetHalf<num_t>(pMajority<num_t, predv<num_t,
-          pAbsentMajority<num_t, predv<num_t, pFeedLargeMarkov<num_t,
-            pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
-              0>, predv<num_t, pFeedLargeMarkov<num_t,
-                pgoshigoshi<num_t, predvp<num_t, 0>, predvq<num_t, 0> >, 0>,
-                  1>, _P_RECUR_>, 0> >
-#endif
-                  (p.res.entity, string("")));
+            pgoshigoshi<num_t, 0>, 0>, 0>, predv<num_t,
+              pFeedLargeMarkov<num_t, pgoshigoshi<num_t, 0>, 0>, 1>,
+        //        _P_RECUR_>, 2>, 4>(p.res.entity, string("")));
+                _P_RECUR_>(p.res.entity, string("")));
       if(M.size())
-        for(int i = 0; i < M[0].size(); i ++)
-          for(int j = 0; j < M.size(); j ++)
-            std::cout << M[j][i] << ", " << std::flush;
+        for(int j = 0; j < M.size(); j ++)
+          std::cout << M[j] << ", " << std::flush;
       std::cout << std::endl;
     }
   } case 'e': {
@@ -348,6 +335,19 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'P': {
+    if(argv[1][1] == '-') {
+      for(int i = 2; i < argc; i ++) {
+        std::vector<SimpleMatrix<num_t> > bitimg;
+        if(! loadp2or3<num_t>(bitimg, argv[i])) continue;
+        for(int ii = 0; ii < bitimg.size(); ii ++)
+          for(int jj = 0; jj < bitimg[ii].rows(); jj ++)
+            for(int kk = 0; kk < bitimg[ii].cols(); kk ++)
+              std::cout << (bitimg[ii](jj, kk) < num_t(int(1)) / num_t(int(2)) ?
+                - num_t(int(1)) : num_t(int(1)) ) << ", ";
+        std::cout << std::endl << std::flush;
+      }
+      break;
+    }
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ss(s);
       SimpleVector<num_t> w;
@@ -441,7 +441,10 @@ int main(int argc, const char* argv[]) {
     int tt(0);
     ss >> tt;
     std::vector<idFeeder<num_t> > f;
-    f.resize(tt, idFeeder<num_t>(tt * tt));
+    if(argv[1][1] == '+')
+      f.resize(tt, idFeeder<num_t>(0));
+    else
+      f.resize(tt, idFeeder<num_t>(tt * tt));
     num_t tt_width(num_t(int(2)) / num_t(int(tt)));
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
@@ -450,16 +453,35 @@ int main(int argc, const char* argv[]) {
         if(tt_width * num_t(int(i)) - num_t(int(1)) <= in &&
            in < tt_width * num_t(int(i + 1)) - num_t(int(1)) )
           f[i].next(in);
-        else f[i].next(f[i].res[f[i].res.size() - 1]);
-      for(int i = 0; i < tt - 1; i ++) {
+        else if(argv[1][1] != '+') f[i].next(f[i].res[f[i].res.size() - 1]);
+      if(argv[1][1] == '+') {
+        if(! ((t ++) % abs(tt * tt)) ) {
+          int Mtot(0);
+          for(int i = 0; i < f.size(); i ++)
+            Mtot = max(Mtot, int(f[i].res.size()));
+          for(int i = 0; i < f.size(); i ++) {
+            for(int j = 1; j < f[i].res.size(); j ++)
+              f[i].res[0] += f[i].res[j];
+            std::cout << (f[i].res.size() ?
+              (argv[1][2] != '+' ? f[i].res[0] / num_t(int(f[i].res.size())) :
+                f[i].res[0] * num_t(int(f[i].res.size())) / num_t(Mtot * Mtot) )
+                  : num_t(int(0)) ) << ", ";
+          }
+          std::cout << Mtot << std::endl << std::flush;
+          f.resize(0);
+          f.resize(abs(tt), idFeeder<num_t>(0));
+        }
+      } else {
+        for(int i = 0; i < tt - 1; i ++) {
+          num_t sect(int(0));
+          for(int j = 0; j < f[i].res.size(); j ++) sect += f[i].res[j];
+          std::cout << sect << ", ";
+        }
+        const int i(tt - 1);
         num_t sect(int(0));
         for(int j = 0; j < f[i].res.size(); j ++) sect += f[i].res[j];
-        std::cout << sect << ", ";
+        std::cout << sect << std::endl << std::flush;
       }
-      const int i(tt - 1);
-      num_t sect(int(0));
-      for(int j = 0; j < f[i].res.size(); j ++) sect += f[i].res[j];
-      std::cout << sect << std::endl << std::flush;
     }
     break;
 #if !defined(_OLDCPP_)
@@ -638,6 +660,7 @@ int main(int argc, const char* argv[]) {
     break;
 #endif
   } default: {
+    num_t bb(int(0));
     std::vector<num_t> b;
     std::vector<int> bf;
     std::vector<int> bg;
@@ -697,8 +720,10 @@ int main(int argc, const char* argv[]) {
         break;
       case 'l':
         for(int i = 2; i < argc - 1; i ++)
-          std::cout << in[std::atoi(argv[i])] << ", ";
-        std::cout << in[std::atoi(argv[argc - 1])] << std::endl;
+          std::cout << (std::atoi(argv[i]) < in.size() ?
+            in[std::atoi(argv[i])] : num_t(int(0)) ) << ", ";
+        std::cout << (std::atoi(argv[argc - 1]) < in.size() ?
+          in[std::atoi(argv[argc - 1])] : num_t(int(0)) ) << std::endl;
         break;
       case 't': case 'a': {
         for(int i = 0; i < in.size() - 1; i ++)
@@ -726,10 +751,10 @@ int main(int argc, const char* argv[]) {
         }
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size(); i ++)
-          std::cout << ((abs(in[i]) < tt ? num_t(bf[i]) / num_t(max(int(1), bg[i])) :
-            (num_t(num_t(int(0)) <= in[i] &&
+          std::cout << ((abs(in[i]) < tt ?
+            num_t(bf[i]) / num_t(max(int(1), bg[i])) : num_t(tt <= in[i] &&
               (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-                ++ bf[i] : bf[i]) / num_t(++ bg[i])) ) -
+                ++ bf[i] : bf[i]) / num_t(++ bg[i])) -
                   num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
                     bg[i] << ", ";
         std::cout << (t + 1) << endl;
@@ -773,8 +798,8 @@ int main(int argc, const char* argv[]) {
       } default: goto usage;
       }
       std::cout << std::flush;
-      if((argv[1][0] != 's' && argv[1][0] != 'w' && argv[1][0] != 'I') ||
-        !b.size()) b = in;
+      if((argv[1][0] != 's' && argv[1][0] != 'w' && argv[1][0] != 'I' &&
+        argv[1][0] != '*') || ! b.size()) b = in;
       t ++;
     }
   } }
@@ -799,7 +824,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
   cerr << "# take sum columns each line on input stream" << endl << argv[0] << " G" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
-  cerr << "# take column 0 horizontal cut output to each column" << endl << argv[0] << " E <number>" << endl;
+  cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E <number>+?+?" << endl;
   cerr << "# take column 0 to harden PRNG part vector output" << endl << argv[0] << " e" << endl;
   cerr << "# take opposite type output string each on input stream" << endl << argv[0] << " F <bit number>" << endl;
   cerr << endl << " *** PRNG part ***" << endl;
@@ -821,7 +846,7 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
-  cerr << "# input vector stream to pgm graphics output" << endl << argv[0] << " P" << endl;
+  cerr << "# input vector stream to pgm graphics output or its reverse" << endl << argv[0] << " P-?" << endl;
 #if defined(_FORK_)
   cerr << endl << " *** multi process call part ***" << endl;
   cerr << "# do double prediction on same input" << endl << argv[0] << " D <command set 0> <command set 1>" << endl;
@@ -832,7 +857,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<{1-arg,infty} (+ for infty)" << endl << argv[0] << " T+ <arg>" << endl;
   cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z 2 | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg> | " << argv[0] << " S <arg>" << endl;
+  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " E+ 2 | " << argv[0] << " l 0 1 | " << argv[0] << " Ac <arg> | " << argv[0] << " l 0 1 | " << argv[0] << " G | " << argv[0] << " t 8" << endl;
   return - 1;
 }
 
