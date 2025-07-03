@@ -241,7 +241,7 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) length = std::atoi(argv[2]);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
-    SimpleVector<num_t> M;
+    vector<SimpleVector<num_t> > M;
     int ctr(0);
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
@@ -254,16 +254,22 @@ int main(int argc, const char* argv[]) {
         ins >> d[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      for(int i = 0; i < d.size(); i ++)
-        std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
-          d[i] - M[i] : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
-      p.next(offsetHalf<num_t>(d));
-      if(max(p.res.size(), int(51)) <= ++ ctr && p.full)
-        M = unOffsetHalf<num_t>(
-          pSectional<num_t, _P_SEC_, 0>(p.res.entity, string("")) );
       if(M.size())
-        for(int j = 0; j < M.size(); j ++)
-          std::cout << M[j] << ", " << std::flush;
+        for(int i = 0; i < d.size(); i ++)
+          for(int j = 0; j < M[0].size(); j ++)
+            std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
+              d[i] - M[i][j] : d[i] * M[i][j]) : num_t(int(0)) )
+                << ", " << std::flush;
+      else
+        for(int i = 0; i < d.size(); i ++) std::cout << num_t(int(0)) << ", ";
+      p.next(offsetHalf<num_t>(d));
+      if(p.full)
+        M = unOffsetHalf<num_t>(pCandidates<num_t, 0>(p.res.entity,
+          string("")) );
+      if(M.size())
+        for(int i = 0; i < M[0].size(); i ++)
+          for(int j = 0; j < M.size(); j ++)
+            std::cout << M[j][i] << ", " << std::flush;
       std::cout << std::endl;
     }
   } case 'e': {

@@ -22,7 +22,6 @@ LDFLAGS+=	-lc++
 # lieonn.hh flags
 CXXFLAGS+=	-D_ARCFOUR_
 #CXXFLAGS+=     -D_PINVARIANT_SYMMETRIC_LINEAR_
-#CXXFLAGS+=	-D_P_SEC_=2
 
 # p2.cc flags
 CXXFLAGS+=	-D_GETENTROPY_
