@@ -811,11 +811,25 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < in.size(); i ++)
           if(argv[1][1] == '+') b[i] += in[i]; else b[i] = in[i];
         break;
+      } case '*': {
+        if(b.size()) {
+          for(int i = 0; i < in.size() - 1; i ++)
+#if defined(_FLOAT_BITS_) || defined(_PERSISTENT_)
+            std::cout << (absfloor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << ", ";
+          const int i(in.size() - 1);
+          std::cout << (absfloor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << std::endl;
+#else
+            std::cout << (floor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << ", ";
+          const int i(in.size() - 1);
+          std::cout << (floor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << std::endl;
+#endif
+        }
+        break;
       } default: goto usage;
       }
       std::cout << std::flush;
-      if((argv[1][0] != 's' && argv[1][0] != 'w' && argv[1][0] != 'I' &&
-        argv[1][0] != '*') || ! b.size()) b = in;
+      if((argv[1][0] != 's' && argv[1][0] != 'w' && argv[1][0] != 'I')
+        || ! b.size()) b = in;
       t ++;
     }
   } }
