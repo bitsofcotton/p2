@@ -215,7 +215,7 @@ int main(int argc, const char* argv[]) {
       ins >> d;
       std::cout << (M *= d) << ", " << std::flush;
       std::cout <<
-        (M = pSlipGulf0short<num_t>(in.next(d), pslip, t ++) ) <<
+        (M = pSlipGulf0short<num_t>(d, pslip, t ++) ) <<
           ", " << d << std::endl << std::flush;
     }
     break;

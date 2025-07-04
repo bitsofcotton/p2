@@ -9,7 +9,7 @@ CXXFLAGS+=	-I..
 CXXFLAGS+=	-D_LIBCPP_ENABLE_ASSERTIONS
 #MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
-#CXXFLAGS+=	-pg
+CXXFLAGS+=	-pg
 #CXXFLAGS+=	-O2 -g3
 CXXFLAGS+=	-O2 -mtune=native -gfull
 #CXXFLAGS+=	-Ofast -mtune=native -gfull
