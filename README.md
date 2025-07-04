@@ -244,4 +244,5 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
 2025/06/29-30 merge latest ddpmopt change, also add Ac? command also T command IMPORTANT change.
 2025/07/01 merge latest ddpmopt change causes various bug fixes.
 2025/07/02-03 merge latest ddpmopt causes new prediction algorithm debug ok.
+2025/07/04 merge latest ddpmopt debug ok.
 
