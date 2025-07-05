@@ -241,8 +241,8 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) length = std::atoi(argv[2]);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
+    SimpleVector<num_t> b;
     SimpleVector<num_t> M;
-    int ctr(0);
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
       for(int i = 0; i < s.size(); i ++)
@@ -254,31 +254,15 @@ int main(int argc, const char* argv[]) {
         ins >> d[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      if(argv[1][1] == '+' || argv[1][1] == 'C') {
-        num_t d0(int(0));
-        num_t M0(int(0));
-        for(int i = 0; i < d.size(); i ++) d0 += d[i];
-        if(M.size()) for(int i = 0; i < M.size(); i ++)
-          M0 += M[i];
-        std::cout << (argv[1][1] == '+' ? d0 * M0 : d0 - M0) << ", ";
-      } else {
-        if(M.size())
-          for(int i = 0; i < d.size(); i ++)
-            std::cout << (i < M.size() ? (argv[1][1] == 'c' ? d[i] - M[i] :
-              d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
-        else
-          for(int i = 0; i < d.size(); i ++) std::cout << num_t(int(0)) << ", ";
-      }
+      for(int i = 0; i < d.size(); i ++)
+        std::cout << (i < b.size() ? (argv[1][1] == 'c' ? d[i] - M[i] - b[i] :
+          d[i] * (M[i] + b[i]) ) : num_t(int(0)) ) << ", " << std::flush;
+      if(M.size()) b = d - M;
       p.next(offsetHalf<num_t>(d));
-      if(p.full) M = pAbsentMajority<num_t, 0>(p.res.entity, string(""));
-        // M = unOffsetHalf<num_t>(pMeasureable<num_t, 0>(p.res.entity, string("")) );
-      if(argv[1][1] == '+' || argv[1][1] == 'C') {
-        num_t M0(int(0));
-        for(int i = 0; i < M.size(); i ++) M0 += M[i];
-        std::cout << M0;
-      } else if(M.size())
-        for(int j = 0; j < M.size(); j ++)
-          std::cout << M[j] << ", ";
+      if(p.full)
+        M = unOffsetHalf<num_t>(pMeasureable<num_t, 0>(p.res.entity, string("")) );
+      for(int j = 0; j < d.size(); j ++)
+        std::cout << (j < M.size() ? M[j] : num_t(int(0)) ) << ", ";
       std::cout << std::endl << std::flush;
     }
   } case 'e': {
