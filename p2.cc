@@ -206,10 +206,10 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'j': {
-    pslip_t<num_t> pslip(argv[1][1] == '+' ? 7 : 0);
     num_t d(t);
     num_t M(d);
-    idFeeder<num_t> in(argv[1][1] == '+' ? 7 : 0);
+    pslip_t<num_t> pslip;
+    idFeeder<num_t> in(0);
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
       ins >> d;
@@ -254,20 +254,32 @@ int main(int argc, const char* argv[]) {
         ins >> d[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      if(M.size())
-        for(int i = 0; i < d.size(); i ++)
-          std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
-            d[i] - M[i] : d[i] * M[i]) : num_t(int(0)) )
-              << ", " << std::flush;
-      else
-        for(int i = 0; i < d.size(); i ++) std::cout << num_t(int(0)) << ", ";
+      if(argv[1][1] == '+' || argv[1][1] == 'C') {
+        num_t d0(int(0));
+        num_t M0(int(0));
+        for(int i = 0; i < d.size(); i ++) d0 += d[i];
+        if(M.size()) for(int i = 0; i < M.size(); i ++)
+          M0 += M[i];
+        std::cout << (argv[1][1] == '+' ? d0 * M0 : d0 - M0) << ", ";
+      } else {
+        if(M.size())
+          for(int i = 0; i < d.size(); i ++)
+            std::cout << (i < M.size() ? (argv[1][1] == 'c' ? d[i] - M[i] :
+              d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
+        else
+          for(int i = 0; i < d.size(); i ++) std::cout << num_t(int(0)) << ", ";
+      }
       p.next(offsetHalf<num_t>(d));
-      if(p.full) M = unOffsetHalf<num_t>(pMeasureable<num_t, 0>(p.res.entity,
-        string("")) );
-      if(M.size())
+      if(p.full) M = pAbsentMajority<num_t, 0>(p.res.entity, string(""));
+        // M = unOffsetHalf<num_t>(pMeasureable<num_t, 0>(p.res.entity, string("")) );
+      if(argv[1][1] == '+' || argv[1][1] == 'C') {
+        num_t M0(int(0));
+        for(int i = 0; i < M.size(); i ++) M0 += M[i];
+        std::cout << M0;
+      } else if(M.size())
         for(int j = 0; j < M.size(); j ++)
-          std::cout << M[j] << ", " << std::flush;
-      std::cout << std::endl;
+          std::cout << M[j] << ", ";
+      std::cout << std::endl << std::flush;
     }
   } case 'e': {
     string a3(3 < argc ? argv[3] : "0");
@@ -846,7 +858,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X" << endl;
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
-  cerr << "# take picked column      on input stream (H for first half of whole)" << endl << argv[0] << " lH? <col0index> ..." << endl;
+  cerr << "# take picked column      on input stream (H for first half)" << endl << argv[0] << " lH? <col0index> ..." << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -869,7 +881,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
 #endif
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
-  cerr << "# jammer to the jammer output (+ for short fixed range target)" << endl << argv[0] << " j+?" << endl;
+  cerr << "# jammer to the jammer output" << endl << argv[0] << " j" << endl;
   cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
   cerr << "# trivial id. prediction (plain for flip last, + for return to average)" << endl << argv[0] << " I+?" << endl;
   cerr << "# ddpmopt compatible prediction (c for difference output)" << endl << argv[0] << " Ac?" << endl;
