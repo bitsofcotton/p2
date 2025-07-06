@@ -107,7 +107,7 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
 
-# Real close
+# Leave
 2023/02/28
 2023/03/09 bug fix after close #1.
 2023/03/13 valid only short range bug fix after close #2.

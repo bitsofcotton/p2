@@ -233,7 +233,9 @@ int main(int argc, const char* argv[]) {
       std::stringstream ins(s);
       ins >> d;
       std::cout << (argv[1][0] == 'C' ? d - M : d * M) << ", " << std::flush;
-      std::cout << (M = p012next<num_t>(p.next(d), basedim ? (basedim == 1 ? 0 : basedim) : int(sqrt(num_t(ctr ++))) ) ) << std::endl << std::flush;
+      std::cout << (M = p012next<num_t>(p.next(d), basedim || length ?
+        (basedim == 1 ? 0 : basedim) : int(sqrt(num_t(ctr ++))) ) ) <<
+          std::endl << std::flush;
     }
     break;
   } case 'A': {
@@ -241,12 +243,10 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) length = std::atoi(argv[2]);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
-    SimpleVector<num_t> b;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
-      for(int i = 0; i < s.size(); i ++)
-        if(s[i] == ',') cnt ++;
+      for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
       d.resize(cnt);
       int i, j;
       for(i = 0, j = 0; i < s.size(); i ++) {
@@ -255,14 +255,13 @@ int main(int argc, const char* argv[]) {
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (i < b.size() ? (argv[1][1] == 'c' ? d[i] - M[i] - b[i] :
-          d[i] * (M[i] + b[i]) ) : num_t(int(0)) ) << ", " << std::flush;
-      if(M.size()) b = d - M;
+        std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
+         (abs(M[i]) == num_t(int(0)) ? M[i] : sgn<num_t>(d[i]) * (d[i] - M[i])) 
+            : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(p.full)
-        M = unOffsetHalf<num_t>(pMeasureable<num_t, 0>(p.res.entity, string("")) );
-      for(int j = 0; j < d.size(); j ++)
-        std::cout << (j < M.size() ? M[j] : num_t(int(0)) ) << ", ";
+      M = ! p.full ? d.O() :
+        unOffsetHalf<num_t>(pPolish<num_t, 0>(p.res.entity, string("")) );
+      for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
   } case 'e': {
@@ -868,7 +867,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# jammer to the jammer output" << endl << argv[0] << " j" << endl;
   cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
   cerr << "# trivial id. prediction (plain for flip last, + for return to average)" << endl << argv[0] << " I+?" << endl;
-  cerr << "# ddpmopt compatible prediction (c for difference output)" << endl << argv[0] << " Ac?" << endl;
+  cerr << "# ddpmopt compatible prediction (c for aligned difference output)" << endl << argv[0] << " Ac?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
