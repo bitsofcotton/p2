@@ -1,8 +1,10 @@
 # p2
-A predictor formatter for p0, p1 either p0, p1 integrator compete with patternizable jammer.
+Predictor formatter and some of the toolset fighting with jammers for non usual input streams however, even this predictor can have the jammer to us.
 
 # Usage
-    cr.py ([Rm]|[HD]?) ...
+    python3 cr.py ([Rm]|[HD]?) ...
+    
+    make p
     
      *** reformation part ***
     # take delta     on input stream
@@ -39,8 +41,10 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     p G
     # take walk condition each on input stream
     p w <range>
-    # take column 0 horizontal cut output to each column
-    p E <number>
+    # take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)
+    p E+?+? <number>
+    # take column 0 to harden PRNG part vector output
+    p e
     # take opposite type output string each on input stream
     p F <bit number>
     
@@ -63,8 +67,8 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     p 1c? <arg>
     # feed patternizable jammer input entropy (C for difference output)
     p [cC] <arg>
-    # jammer to the jammer output (+ for short fixed range target)
-    p j+?
+    # jammer to the jammer output
+    p j
     # jam out input column 0 by input column 1+
     p Q
     # trivial id. prediction (plain for flip last, + for return to average)
@@ -77,15 +81,13 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
     p f <dimension>
     # input vector stream to serial stream
     p h
-    # input vector stream to pgm graphics output
-    p P
-    # input vector stream to harden PRNG part
-    p e
+    # input vector stream to pgm graphics output or its reverse
+    p P-?
     
      *** multi process call part ***
     # do double prediction on same input
     p D <command set 0> <command set 1>
-    # do each of all column input prediction parallel, take output column 0 each.
+    # do each of all column input prediction parallel, take output column 0.
     p H <command>
     # do each of all column input prediction parallel, take output column 0 as a prediction value, prediction average * input stream average output.
     p @ <command>
@@ -93,15 +95,12 @@ A predictor formatter for p0, p1 either p0, p1 integrator compete with patterniz
      *** other part ***
     # multiple file load into same line columns
     p L <file0> ...
-    # show output statistics whether arg<|x - 1/2|*2<{1-arg,infty} (+ for infty)
+    # show output statistics whether arg<|x - 1/2|<1-arg (+ for arg<x)
     p T+ <arg>
 
     # N.B. there's many much of the combibnations, if we upload them on
     #      this README.md they'd slip from somehow in our experience some years
     #      ago. so we absent intentionally blank them.
-
-# Description:
-Predictor formatter and some of the toolset fighting with jammers for non usual input streams however, even this predictor can have the jammer to us.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
