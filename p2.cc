@@ -256,9 +256,9 @@ int main(int argc, const char* argv[]) {
       }
       for(int i = 0; i < d.size(); i ++)
         std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
-         (abs(M[i]) == num_t(int(0)) ? M[i] : sgn<num_t>(d[i]) * (d[i] - M[i])) 
+         (abs(M[i]) == num_t(int(0)) ? M[i] : sgn<num_t>(d[i]) * (d[i] - M[i]))
             : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
-      p.next(offsetHalf<num_t>(d));
+      p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full ? d.O() :
         unOffsetHalf<num_t>(pPolish<num_t, 0>(p.res.entity, string("")) );
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
@@ -753,7 +753,7 @@ int main(int argc, const char* argv[]) {
         break;
       case 'G': {
         for(int i = 1; i < in.size(); i ++) in[0] += in[i];
-        std::cout << (in[0] /= num_t(int(in.size())) ) << std::endl;
+        std::cout << (in[0] /= num_t(int(in.size()))) << std::endl;
         break;
       } case 'T': {
         if(bf.size() < in.size()) {
@@ -882,7 +882,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<1-arg (+ for arg<x)" << endl << argv[0] << " T+? <arg>" << endl;
   cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z 2 | " << argv[0] << " Ac <arg>" << endl;
+  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg>" << endl;
   return - 1;
 }
 
