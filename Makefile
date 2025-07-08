@@ -48,4 +48,6 @@ pp32:
 	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=64 -D_PERSISTENT_ -o pp32 p2.cc
 pp64:
 	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=128 -D_PERSISTENT_ -o pp64 p2.cc
+pmp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_ONEBINARY_ -o pmp p2.cc
 

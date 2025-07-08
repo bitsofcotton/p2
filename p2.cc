@@ -10,6 +10,9 @@
 #include <algorithm>
 #include <assert.h>
 #include <stdint.h>
+#if defined(_OPENMP)
+#include <omp.h>
+#endif
 #if defined(_GETENTROPY_)
 #include <unistd.h>
 #endif
@@ -256,13 +259,19 @@ int main(int argc, const char* argv[]) {
       }
       for(int i = 0; i < d.size(); i ++)
         std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
-         (abs(M[i]) == num_t(int(0)) ? M[i] : sgn<num_t>(d[i]) * (d[i] - M[i]))
-            : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
+          (abs(M[i]) <= num_t(int(0)) && argv[1][2] != '+' ? M[i] :
+            sgn<num_t>(d[i]) * (d[i] - M[i]))
+              : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
-      M = ! p.full ? d.O() :
-        unOffsetHalf<num_t>(pPolish<num_t, 0>(p.res.entity, string("")) );
+      int last(0);
+      if(p.full) {
+        std::pair<SimpleVector<num_t>, int> MM(
+          pPersistentP<num_t, 0>(p.res.entity, -1, string("")) );
+        M    = unOffsetHalf<num_t>(move(MM.first));
+        last = move(MM.second);
+      } else M = d.O();
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
-      std::cout << std::endl << std::flush;
+      std::cout << last << std::endl << std::flush;
     }
   } case 'e': {
     string a3(3 < argc ? argv[3] : "0");
@@ -426,6 +435,11 @@ int main(int argc, const char* argv[]) {
         if(s[i] == '0') std::cout << (- num_t(1)) << std::endl;
         else if(s[i] == '1') std::cout << num_t(1) << std::endl;
       }
+    break;
+  } case 'u': {
+    t = 2 < argc ? std::atoi(argv[2]) : 1;
+    while(std::getline(std::cin, s, '\n'))
+      for(int j = 0; j < t; j ++) std::cout << s << std::endl;
     break;
   } case 'E': {
     num_t in(int(0));
@@ -712,8 +726,8 @@ int main(int argc, const char* argv[]) {
       case 's':
         if(in.size() != b.size()) break;
         for(int i = 0; i < b.size() - 1; i ++)
-          std::cout << (b[i] += in[i]) << ", ";
-        std::cout << (b[b.size() - 1] += in[in.size() - 1]) << std::endl;
+          std::cout << (in[i] += b[i]) << ", ";
+        std::cout << (in[in.size() - 1] += b[b.size() - 1]) << std::endl;
         break;
       case 'i':
         for(int i = 0; i < in.size() - 1; i ++)
@@ -751,11 +765,11 @@ int main(int argc, const char* argv[]) {
         if(t % std::atoi(argv[2])) break;
         std::cout << s << std::endl;
         break;
-      case 'G': {
+      case 'G':
         for(int i = 1; i < in.size(); i ++) in[0] += in[i];
         std::cout << (in[0] /= num_t(int(in.size()))) << std::endl;
         break;
-      } case 'T': {
+      case 'T': {
         if(bf.size() < in.size()) {
           bf.resize(in.size(), 0);
           bg.resize(in.size(), 0);
@@ -804,27 +818,12 @@ int main(int argc, const char* argv[]) {
         const int i(in.size() - 1);
         std::cout << (b[i] * in[i]) << endl;
         for(int i = 0; i < in.size(); i ++)
-          if(argv[1][1] == '+') b[i] += in[i]; else b[i] = in[i];
-        break;
-      } case '*': {
-        if(b.size()) {
-          for(int i = 0; i < in.size() - 1; i ++)
-#if defined(_FLOAT_BITS_) || defined(_PERSISTENT_)
-            std::cout << (absfloor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << ", ";
-          const int i(in.size() - 1);
-          std::cout << (absfloor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << std::endl;
-#else
-            std::cout << (floor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << ", ";
-          const int i(in.size() - 1);
-          std::cout << (floor(b[i] + sgn<num_t>(b[i]) / num_t(int(2))) - in[i]) << std::endl;
-#endif
-        }
+          in[i] += b[i];
         break;
       } default: goto usage;
       }
       std::cout << std::flush;
-      if((argv[1][0] != 's' && argv[1][0] != 'w' && argv[1][0] != 'I')
-        || ! b.size()) b = in;
+      if(argv[1][0] != 'w' || ! b.size()) b = in;
       t ++;
     }
   } }
@@ -866,7 +865,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
   cerr << "# jammer to the jammer output" << endl << argv[0] << " j" << endl;
   cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
-  cerr << "# trivial id. prediction (plain for flip last, + for return to average)" << endl << argv[0] << " I+?" << endl;
+  cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
   cerr << "# ddpmopt compatible prediction (c for aligned difference output)" << endl << argv[0] << " Ac?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
