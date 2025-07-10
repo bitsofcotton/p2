@@ -7,8 +7,8 @@ CXXFLAGS+=	-std=c++11
 #CXXFLAGS+=	-std=gnu++98
 CXXFLAGS+=	-I..
 CXXFLAGS+=	-D_LIBCPP_ENABLE_ASSERTIONS
-#MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
-MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
+MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
+#MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
 #CXXFLAGS+=	-pg
 #CXXFLAGS+=	-O2 -g3
 CXXFLAGS+=	-O2 -mtune=native -gfull
@@ -22,7 +22,6 @@ LDFLAGS+=	-lc++
 # lieonn.hh flags
 CXXFLAGS+=	-D_ARCFOUR_
 #CXXFLAGS+=	-D_PINVARIANT_SYMMETRIC_LINEAR_
-#CXXFLAGS+=	-D_P_SHIFT_
 
 # p2.cc flags
 CXXFLAGS+=	-D_GETENTROPY_

@@ -257,11 +257,20 @@ int main(int argc, const char* argv[]) {
         ins >> d[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      for(int i = 0; i < d.size(); i ++)
-        std::cout << (i < M.size() ? (argv[1][1] == 'c' ?
-          (abs(M[i]) <= num_t(int(0)) && argv[1][2] != '+' ? M[i] :
-            sgn<num_t>(d[i]) * (d[i] - M[i]))
-              : d[i] * M[i]) : num_t(int(0)) ) << ", " << std::flush;
+      if(argv[1][1] == 'c') {
+        num_t work(int(0));
+        int cnt(0);
+        for(int i = 0; i < d.size(); i ++)
+          if(abs(d[i]) != num_t(int(0)) &&
+            i < M.size() && abs(M[i]) != num_t(int(0)) ) {
+            work += sgn<num_t>(d[i]) * (d[i] - M[i]);
+            cnt ++;
+          }
+        std::cout << (cnt ? work /= num_t(cnt) : - num_t(int(2)) ) << ", "
+          << cnt << ", " << std::flush;
+      } else
+        for(int i = 0; i < d.size(); i ++)
+          std::cout << (i < M.size() ? d[i] * M[i] : num_t(int(0)) ) << ", ";
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       int last(0);
       if(p.full) {
@@ -881,7 +890,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<1-arg (+ for arg<x)" << endl << argv[0] << " T+? <arg>" << endl;
   cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg>" << endl;
+  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | (" << argv[0] << " j | " << argv[0] << " l 2 0 2 | " << argv[0] << " Q | )? " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg>" << endl;
   return - 1;
 }
 
