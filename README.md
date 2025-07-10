@@ -1,5 +1,5 @@
 # p2
-Predictor formatter and some of the toolset fighting with jammers for non usual input streams however, even this predictor can have the jammer to us.
+Predictor formatter and some of the toolset for non usual input streams however, even this predictor can have the jammer to us.
 
 # Usage
     python3 cr.py ([Rm]|[HD]?) ...
@@ -67,10 +67,6 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
     p 1c? <arg>
     # feed patternizable jammer input entropy (C for difference output)
     p [cC] <arg>
-    # jammer to the jammer output
-    p j
-    # jam out input column 0 by input column 1+
-    p Q
     # trivial return to the average id. prediction
     p I
     # ddpmopt compatible prediction (c for aligned difference output)

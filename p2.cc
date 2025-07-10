@@ -208,20 +208,6 @@ int main(int argc, const char* argv[]) {
       }
     }
     break;
-  } case 'j': {
-    num_t d(t);
-    num_t M(d);
-    pslip_t<num_t> pslip;
-    idFeeder<num_t> in(0);
-    while(std::getline(std::cin, s, '\n')) {
-      std::stringstream ins(s);
-      ins >> d;
-      std::cout << (M *= d) << ", " << std::flush;
-      std::cout <<
-        (M = pSlipGulf0short<num_t>(d, pslip, t ++) ) <<
-          ", " << d << std::endl << std::flush;
-    }
-    break;
   } case 'c': case 'C': {
     int& length(t);
     int  basedim(0);
@@ -236,9 +222,10 @@ int main(int argc, const char* argv[]) {
       std::stringstream ins(s);
       ins >> d;
       std::cout << (argv[1][0] == 'C' ? d - M : d * M) << ", " << std::flush;
-      std::cout << (M = p012next<num_t>(p.next(d), basedim || length ?
-        (basedim == 1 ? 0 : basedim) : int(sqrt(num_t(ctr ++))) ) ) <<
-          std::endl << std::flush;
+      std::cout << (M = unOffsetHalf<num_t>(p012next<num_t>(p.next(
+        offsetHalf<num_t>(d)), basedim || length ?
+          (basedim == 1 ? 0 : basedim) : int(sqrt(num_t(ctr ++))) )) ) <<
+            std::endl << std::flush;
     }
     break;
   } case 'A': {
@@ -707,20 +694,6 @@ int main(int argc, const char* argv[]) {
         ins >> in[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      if(argv[1][0] == 'Q') {
-        const num_t& d(in[0]);
-        vector<num_t> M;
-        M.reserve(in.size() - 1);
-        for(int i = 1; i < in.size(); i ++)
-          M.emplace_back(d == num_t(int(0)) ? d : in[i] / d);
-        if(M.size() == b.size()) {
-          const pair<num_t, num_t> res(pSubesube<num_t>(d, make_pair(M, b), t ++));
-          std::cout << res.first << ", " << res.second << std::endl << std::flush;
-        } else
-          std::cout << num_t(int(0)) << ", " << num_t(int(0)) << std::endl << std::flush;
-        b = move(M);
-        continue;
-      }
       switch(argv[1][0]) {
       case 'S':
         if(t < std::atoi(argv[2])) break;
@@ -872,8 +845,6 @@ int main(int argc, const char* argv[]) {
   cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
 #endif
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
-  cerr << "# jammer to the jammer output" << endl << argv[0] << " j" << endl;
-  cerr << "# jam out input column 0 by input column 1+" << endl << argv[0] << " Q" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
   cerr << "# ddpmopt compatible prediction (c for aligned difference output)" << endl << argv[0] << " Ac?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
@@ -890,7 +861,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<1-arg (+ for arg<x)" << endl << argv[0] << " T+? <arg>" << endl;
   cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | (" << argv[0] << " j | " << argv[0] << " l 2 0 2 | " << argv[0] << " Q | )? " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg>" << endl;
+  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg>" << endl;
   return - 1;
 }
 
