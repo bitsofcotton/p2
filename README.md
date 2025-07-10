@@ -25,8 +25,8 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
     p Z
     # take inverse   on input stream
     p i
-    # take picked column      on input stream
-    p l <col0index> ...
+    # take picked column      on input stream (H for first half)
+    p lH? <col0index> ...
     # take duplicate toeplitz on input stream
     p z <column number>
     # take multiply each      on input stream
@@ -71,9 +71,9 @@ Predictor formatter and some of the toolset fighting with jammers for non usual 
     p j
     # jam out input column 0 by input column 1+
     p Q
-    # trivial id. prediction (plain for flip last, + for return to average)
-    p I+
-    # ddpmopt compatible prediction
+    # trivial return to the average id. prediction
+    p I
+    # ddpmopt compatible prediction (c for aligned difference output)
     p Ac?
     
      *** vector operation part ***
