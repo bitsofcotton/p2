@@ -244,30 +244,26 @@ int main(int argc, const char* argv[]) {
         ins >> d[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      if(argv[1][1] == 'c') {
-        num_t work(int(0));
-        int cnt(0);
-        for(int i = 0; i < d.size(); i ++)
-          if(abs(d[i]) != num_t(int(0)) &&
-            i < M.size() && abs(M[i]) != num_t(int(0)) ) {
-            work += sgn<num_t>(d[i]) * (d[i] - M[i]);
-            cnt ++;
-          }
-        std::cout << (cnt ? work /= num_t(cnt) : - num_t(int(2)) ) << ", "
-          << cnt << ", " << std::flush;
-      } else
-        for(int i = 0; i < d.size(); i ++)
-          std::cout << (i < M.size() ? d[i] * M[i] : num_t(int(0)) ) << ", ";
+      cnt = 0;
+      num_t work(cnt);
+      for(int i = 0; i < d.size(); i ++)
+        if(abs(d[i]) != num_t(int(0)) &&
+          i < M.size() && abs(M[i]) != num_t(int(0)) ) {
+          work += sgn<num_t>(d[i]) * (d[i] - M[i]);
+          cnt ++;
+        }
+      std::cout << (cnt ? work /= num_t(cnt) : num_t(int(1)) ) << ", "
+        << cnt << ", " << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
-      int last(0);
+      cnt = 0;
       if(p.full) {
         std::pair<SimpleVector<num_t>, int> MM(
-          pPersistentP<num_t, 0>(p.res.entity, -1, string("")) );
-        M    = unOffsetHalf<num_t>(move(MM.first));
-        last = move(MM.second);
+          pPersistentP<num_t, 0>(p.res.entity, string("")) );
+        M   = unOffsetHalf<num_t>(move(MM.first));
+        cnt = move(MM.second);
       } else M = d.O();
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
-      std::cout << last << std::endl << std::flush;
+      std::cout << cnt << std::endl << std::flush;
     }
   } case 'e': {
     string a3(3 < argc ? argv[3] : "0");
@@ -846,7 +842,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction (c for aligned difference output)" << endl << argv[0] << " Ac?" << endl;
+  cerr << "# ddpmopt compatible prediction average" << endl << argv[0] << " A" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -861,7 +857,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<1-arg (+ for arg<x)" << endl << argv[0] << " T+? <arg>" << endl;
   cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " Ac <arg>" << endl;
+  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " A <arg>" << endl;
   return - 1;
 }
 

@@ -69,8 +69,8 @@ Predictor formatter and some of the toolset for non usual input streams however,
     p [cC] <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt compatible prediction (c for aligned difference output)
-    p Ac?
+    # ddpmopt compatible prediction average
+    p A
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -242,4 +242,5 @@ Predictor formatter and some of the toolset for non usual input streams however,
 2025/07/04 merge latest ddpmopt debug ok.
 2025/07/06 brush up lieonn. bug fixes. revertByProgramInvariant important fix.
 2025/07/10 merge latest ddpmopt result.
+2025/07/13 merge latest ddpmopt result also Ac? command and output change.
 
