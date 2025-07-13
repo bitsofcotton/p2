@@ -255,7 +255,7 @@ int main(int argc, const char* argv[]) {
       std::cout << (cnt ? work /= num_t(cnt) : num_t(int(1)) ) << ", "
         << cnt << ", " << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
-      M = ! p.full ? d.O() :
+      M = ! p.full || p.res.size() <= 1 ? d.O() :
         unOffsetHalf<num_t>(pTail<num_t, 0>(p.res.entity, p.res.size(),
           3, -1, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
