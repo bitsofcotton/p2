@@ -255,15 +255,11 @@ int main(int argc, const char* argv[]) {
       std::cout << (cnt ? work /= num_t(cnt) : num_t(int(1)) ) << ", "
         << cnt << ", " << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
-      cnt = 0;
-      if(p.full) {
-        std::pair<SimpleVector<num_t>, int> MM(
-          pPersistentP<num_t, 0>(p.res.entity, string("")) );
-        M   = unOffsetHalf<num_t>(move(MM.first));
-        cnt = move(MM.second);
-      } else M = d.O();
+      M = ! p.full ? d.O() :
+        unOffsetHalf<num_t>(pTail<num_t, 0>(p.res.entity, p.res.size(),
+          3, -1, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
-      std::cout << cnt << std::endl << std::flush;
+      std::cout << std::endl << std::flush;
     }
   } case 'e': {
     string a3(3 < argc ? argv[3] : "0");
