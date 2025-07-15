@@ -4,6 +4,7 @@ import io
 import struct
 import hashlib
 import subprocess
+import random
 
 if(len(sys.argv) < 2):
   print("not much arguments")
@@ -72,6 +73,35 @@ elif(sys.argv[1][0] == 'm'):
       track[w].append(Message('note_off', note=f, time=(120 * int(abs(numpy.arctan(abs(numpy.tan(float(bw[w])))) * 3) + 1)) ))
     bw = []
   mid.save('rand_correct.mid')
+  # XXX: don't know why this cannot jam out same ddpmopt algorithm.
+elif(sys.argv[1][0] == 'J'):
+  b = []
+  for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
+    b.append(line[:- 1].split(",")[0])
+    if(abs(int(sys.argv[3]) * int(sys.argv[4])) <= len(b)):
+      p = subprocess.Popen([sys.argv[2], "A", str(abs(int(sys.argv[3]))), "3"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+      for t in range(0, abs(int(sys.argv[4]))):
+        p.stdin.write((",".join(b[t * abs(int(sys.argv[3])): (t + 1) * abs(int(sys.argv[3]))]) + "\n").encode("utf-8"))
+        p.stdin.flush()
+        M = p.stdout.readline().decode("utf-8").split(",")[0]
+      p.stdin.close()
+      if(float(M) < 1.):
+        if(int(sys.argv[3]) < 0):
+          for t in range(0, abs(int(sys.argv[3]))):
+            b[- t - 1] = str(- float(b[- t - 1]))
+        else: b[- 1] = str(- float(b[- 1]))
+      if(int(sys.argv[4]) < 0):
+        if(int(sys.argv[3]) < 0):
+          for t in range(0, abs(int(sys.argv[3]))):
+            b[- t - 1] = str(random.uniform(- 1, 1) * float(b[- t - 1]))
+        else: b[- 1] = str(random.uniform(- 1, 1) * float(b[- 1]))
+      if(int(sys.argv[3]) < 0):
+        for t in range(0, abs(int(sys.argv[3]))): print(b[t - abs(int(sys.argv[3]))])
+        b = b[abs(int(sys.argv[3])):]
+      else:
+        print(b[- 1])
+        b = b[1:]
+      sys.stdout.flush()
   # XXX: following are duplicate for non unistd systems.
 elif(sys.argv[1][0] == 'H'):
   p = []
