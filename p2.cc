@@ -230,7 +230,9 @@ int main(int argc, const char* argv[]) {
     break;
   } case 'A': {
     int& length(t);
+    int  bit(3);
     if(2 < argc) length = std::atoi(argv[2]);
+    if(3 < argc) bit    = std::atoi(argv[3]);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -244,20 +246,19 @@ int main(int argc, const char* argv[]) {
         ins >> d[j ++];
         for( ; s[i] != ',' && i < s.size(); i ++) ;
       }
-      cnt = 0;
-      num_t work(cnt);
+      num_t work(cnt = int(0));
       for(int i = 0; i < d.size(); i ++)
         if(abs(d[i]) != num_t(int(0)) &&
           i < M.size() && abs(M[i]) != num_t(int(0)) ) {
           work += sgn<num_t>(d[i]) * (d[i] - M[i]);
           cnt ++;
         }
-      std::cout << (cnt ? work /= num_t(cnt) : num_t(int(1)) ) << ", "
-        << cnt << ", " << std::flush;
+      std::cout << (cnt ? work /= num_t(cnt) : num_t(int(1)) )
+        << ", " << cnt << ", " << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
         unOffsetHalf<num_t>(pTail<num_t, 0>(p.res.entity, p.res.size(),
-          3, -1, string("") ));
+          bit, -1, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
@@ -838,7 +839,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction average" << endl << argv[0] << " A" << endl;
+  cerr << "# ddpmopt compatible prediction average" << endl << argv[0] << " A <markov> <bits>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;

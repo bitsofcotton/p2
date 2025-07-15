@@ -70,7 +70,7 @@ Predictor formatter and some of the toolset for non usual input streams however,
     # trivial return to the average id. prediction
     p I
     # ddpmopt compatible prediction average
-    p A
+    p A <markov> <bits>
     
      *** vector operation part ***
     # input serial stream to vector stream
