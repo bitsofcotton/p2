@@ -76,6 +76,7 @@ elif(sys.argv[1][0] == 'm'):
   # XXX: don't know why this cannot jam out same ddpmopt algorithm.
 elif(sys.argv[1][0] == 'J'):
   b = []
+  w = 0.
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     b.append(line[:- 1].split(",")[0])
     if(abs(int(sys.argv[3]) * int(sys.argv[4])) <= len(b)):
@@ -90,11 +91,13 @@ elif(sys.argv[1][0] == 'J'):
           for t in range(0, abs(int(sys.argv[3]))):
             b[- t - 1] = str(- float(b[- t - 1]))
         else: b[- 1] = str(- float(b[- 1]))
-      if(int(sys.argv[4]) < 0):
-        if(int(sys.argv[3]) < 0):
-          for t in range(0, abs(int(sys.argv[3]))):
-            b[- t - 1] = str(random.uniform(- 1, 1) * float(b[- t - 1]))
-        else: b[- 1] = str(random.uniform(- 1, 1) * float(b[- 1]))
+      w += random.uniform(-1, 1)
+      if(float(sys.argv[5]) <= w):
+        if(int(sys.argv[4]) < 0):
+          if(int(sys.argv[3]) < 0):
+            for t in range(0, abs(int(sys.argv[3]))):
+              b[- t - 1] = str(random.uniform(- 1, 1) * float(b[- t - 1]))
+          else: b[- 1] = str(random.uniform(- 1, 1) * float(b[- 1]))
       if(int(sys.argv[3]) < 0):
         for t in range(0, abs(int(sys.argv[3]))): print(b[t - abs(int(sys.argv[3]))])
         b = b[abs(int(sys.argv[3])):]
