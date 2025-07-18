@@ -231,8 +231,10 @@ int main(int argc, const char* argv[]) {
   } case 'A': {
     int& length(t);
     int  bit(3);
+    int  loop(- 11);
     if(2 < argc) length = std::atoi(argv[2]);
     if(3 < argc) bit    = std::atoi(argv[3]);
+    if(4 < argc) loop   = std::atoi(argv[4]);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -257,8 +259,8 @@ int main(int argc, const char* argv[]) {
         << ", " << cnt << ", " << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
-        unOffsetHalf<num_t>(pTail<num_t, 0>(p.res.entity, p.res.size(),
-          bit, -1, string("") ));
+        unOffsetHalf<num_t>(pPRandomMajority<num_t, 0>(p.res.entity,
+          p.res.size(), bit, loop, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }

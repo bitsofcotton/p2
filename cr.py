@@ -98,6 +98,7 @@ elif(sys.argv[1][0] == 'J'):
             for t in range(0, abs(int(sys.argv[3]))):
               b[- t - 1] = str(random.uniform(- 1, 1) * float(b[- t - 1]))
           else: b[- 1] = str(random.uniform(- 1, 1) * float(b[- 1]))
+        w = 0.
       if(int(sys.argv[3]) < 0):
         for t in range(0, abs(int(sys.argv[3]))): print(b[t - abs(int(sys.argv[3]))])
         b = b[abs(int(sys.argv[3])):]
