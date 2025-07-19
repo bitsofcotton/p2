@@ -244,4 +244,5 @@ Predictor formatter and some of the toolset for non usual input streams however,
 2025/07/10 merge latest ddpmopt result.
 2025/07/13 merge latest ddpmopt result also Ac? command and output change.
 2025/07/14-16 merge latest ddpmopt result, also add cr.py J command but doesn't works expected to p2 A command.
+2025/07/17-19 merge latest ddpmopt result, Ac? command output change.
 
