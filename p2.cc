@@ -229,13 +229,11 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int& length(t);
-    int  bit(3);
-    int  loop(- 11);
-    if(2 < argc) length = std::atoi(argv[2]);
-    if(3 < argc) bit    = std::atoi(argv[3]);
-    if(4 < argc) loop   = std::atoi(argv[4]);
-    idFeeder<SimpleVector<num_t> > p(abs(length));
+    int bit(3);
+    int length(18);
+    if(2 < argc) bit    = std::atoi(argv[2]);
+    if(3 < argc) length = std::atoi(argv[3]);
+    idFeeder<SimpleVector<num_t> > p(length = abs(length));
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -259,7 +257,7 @@ int main(int argc, const char* argv[]) {
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
         unOffsetHalf<num_t>(pPRandomMajority<num_t, 0>(p.res.entity,
-          p.res.size(), bit, loop, string("") ));
+          - p.res.size(), bit, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
@@ -840,7 +838,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction (c for signbit adjusted difference output)" << endl << argv[0] << " Ac? <markov> <bits>" << endl;
+  cerr << "# ddpmopt compatible prediction (c for signbit adjusted difference output)" << endl << argv[0] << " Ac? <bits> <markov>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -854,8 +852,6 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's arg<|x - 1/2|<1-arg (+ for arg<x)" << endl << argv[0] << " T+? <arg>" << endl;
-  cerr << endl << " *** typical commands ***" << endl;
-  cerr << "(\"" << argv[0] << " rB\" | \"cat | " << argv[0] << " X\" | \"cat | " << argv[0] << " d | " << argv[0] << " S 1 | " << argv[0] << " Z\") | " << argv[0] << " l 0 | " << argv[0] << " b | " << argv[0] << " z <arg> | " << argv[0] << " k <arg> | " << argv[0] << " S 1 | " << argv[0] << " A <arg>" << endl;
   return - 1;
 }
 
