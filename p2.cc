@@ -229,6 +229,7 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
+    // N.B. input accuracy bit# / 2.
     int bit(3);
     int length(18);
     if(2 < argc) bit    = std::atoi(argv[2]);
@@ -256,7 +257,7 @@ int main(int argc, const char* argv[]) {
             sgn<num_t>(d[i]) * (d[i] - M[i]) : num_t(int(1)) ) ) << ", ";
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
-        unOffsetHalf<num_t>(pPRandomMajority<num_t, 0>(p.res.entity,
+        unOffsetHalf<num_t>(pPersistentQ<num_t, 0>(p.res.entity,
           - p.res.size(), bit, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
