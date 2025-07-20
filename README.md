@@ -2,7 +2,7 @@
 Predictor formatter and some of the toolset for non usual input streams however, even this predictor can have the jammer to us.
 
 # Usage
-    python3 cr.py ([Rm]|[HD]?) ...
+    python3 cr.py ([JRm]|[HD]?) ...
     
     make p
     
@@ -69,8 +69,8 @@ Predictor formatter and some of the toolset for non usual input streams however,
     p [cC] <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt compatible prediction average
-    p A <markov> <bits>
+    # ddpmopt compatible prediction (c for sign bit adjusted difference output)
+    p Ac? <bits> <markov>?
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -93,10 +93,10 @@ Predictor formatter and some of the toolset for non usual input streams however,
     p L <file0> ...
     # show output statistics whether arg<|x - 1/2|<1-arg (+ for arg<x)
     p T+ <arg>
-
-    # N.B. there's many much of the combibnations, if we upload them on
-    #      this README.md they'd slip from somehow in our experience some years
-    #      ago. so we absent intentionally blank them.
+    
+    # to hear some residue
+    p r | p l 0 | tee 0 | p A ... | p l 0 | p s > 1
+    catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -245,4 +245,5 @@ Predictor formatter and some of the toolset for non usual input streams however,
 2025/07/13 merge latest ddpmopt result also Ac? command and output change.
 2025/07/14-16 merge latest ddpmopt result, also add cr.py J command but doesn't works expected to p2 A command.
 2025/07/17-19 merge latest ddpmopt result, Ac? command output change.
+2025/07/20 merge latest ddpmopt result, update readme.
 
