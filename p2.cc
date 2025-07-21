@@ -256,8 +256,8 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
-        unOffsetHalf<num_t>(pPersistentQ<num_t, 0>(p.res.entity,
-          - p.res.size(), bit, string("") ));
+        unOffsetHalf<num_t>(pOff<num_t, 0>(p.res.entity, - p.res.size(), bit,
+          string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }

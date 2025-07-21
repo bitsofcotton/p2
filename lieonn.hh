@@ -4886,12 +4886,18 @@ template <typename T, int nprogress> SimpleVector<T> pPersistentQ(const vector<S
   return offsetHalf<T>(res);
 }
 
-// N.B. repeat possible output whole range.
+template <typename T, int nprogress> SimpleVector<T> pOff(const vector<SimpleVector<T> >& in, const int& tail, const int& b, const string& strloop) {
+  const T off(pow(T(int(2)), - T(b)) );
+  return unOffsetHalf<T>(pPersistentQ<T, nprogress>(offsetHalf<T>(in, off),
+      tail, b, strloop), off);
+}
+
+// N.B. repeat possible output whole range. also offset before/after predict.
 template <typename T, int nprogress> vector<SimpleVector<T> > pRepeat(const vector<SimpleVector<T> >& in, const int& tail, const int& b, const string& strloop) {
   vector<SimpleVector<T> > res;
   res.reserve(in.size() / tail);
   for(int i = 1; i <= in.size() / tail; i ++)
-    res.emplace_back(pPersistentQ<T, nprogress>(skipX<SimpleVector<T> >(in, i),
+    res.emplace_back(pOff<T, nprogress>(skipX<SimpleVector<T> >(in, i),
       tail, b, string(" ") + to_string(i - 1) + string("/") +
         to_string(in.size() / tail) + strloop));
   return res;
@@ -4978,8 +4984,9 @@ template <typename T, int nprogress> SimpleVector<T> predv4(vector<SimpleVector<
 //      only depends on the tanglement number based accuracy reason on
 //      calculation surface.
 // N.B. layers:
-//       | function           | layer# | [wsp1] | data amount* | time*(***) |
-//       +--------------------+--------+--------+-----------------+------------+
+//       | function           | layer# | [wsp1] | data amount* | time*(***)   |
+//       +--------------------+--------+--------+--------------+--------------+
+//       | pOff               | -1     | w      |              |
 //       | pPersistentQ       | *      | w      |              | O(sqrt(G))
 //       | pPRandomMajority   | 0      | w      |              | 2^bits
 //       | pGuarantee         | 1      | w      | bits         |
