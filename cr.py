@@ -76,35 +76,20 @@ elif(sys.argv[1][0] == 'm'):
   # XXX: don't know why this cannot jam out same ddpmopt algorithm.
 elif(sys.argv[1][0] == 'J'):
   b = []
-  w = 0.
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
     b.append(line[:- 1].split(",")[0])
-    if(abs(int(sys.argv[3]) * int(sys.argv[4])) <= len(b)):
-      p = subprocess.Popen([sys.argv[2], "A", str(abs(int(sys.argv[3]))), "3"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-      for t in range(0, abs(int(sys.argv[4]))):
-        p.stdin.write((",".join(b[t * abs(int(sys.argv[3])): (t + 1) * abs(int(sys.argv[3]))]) + "\n").encode("utf-8"))
+    if(int(sys.argv[4]) + 1 < len(b)):
+      p = subprocess.Popen([sys.argv[2], "A", str(int(sys.argv[3])), str(abs(int(sys.argv[4])))], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+      for d in b:
+        p.stdin.write((d + "\n").encode("utf-8"))
         p.stdin.flush()
         M = p.stdout.readline().decode("utf-8").split(",")[0]
       p.stdin.close()
-      if(float(M) < 1.):
-        if(int(sys.argv[3]) < 0):
-          for t in range(0, abs(int(sys.argv[3]))):
-            b[- t - 1] = str(- float(b[- t - 1]))
-        else: b[- 1] = str(- float(b[- 1]))
-      w += random.uniform(-1, 1)
-      if(float(sys.argv[5]) <= w):
-        if(int(sys.argv[4]) < 0):
-          if(int(sys.argv[3]) < 0):
-            for t in range(0, abs(int(sys.argv[3]))):
-              b[- t - 1] = str(random.uniform(- 1, 1) * float(b[- t - 1]))
-          else: b[- 1] = str(random.uniform(- 1, 1) * float(b[- 1]))
-        w = 0.
-      if(int(sys.argv[3]) < 0):
-        for t in range(0, abs(int(sys.argv[3]))): print(b[t - abs(int(sys.argv[3]))])
-        b = b[abs(int(sys.argv[3])):]
-      else:
-        print(b[- 1])
-        b = b[1:]
+      if(0. < float(M)): b[- 1] = str(- float(b[- 1]))
+      if(int(sys.argv[4]) < 0):
+        b[- 1] = str(float(b[- 1]) * random.uniform(- 1, 1))
+      print(b[- 1])
+      b = b[1:]
       sys.stdout.flush()
   # XXX: following are duplicate for non unistd systems.
 elif(sys.argv[1][0] == 'H'):
