@@ -252,8 +252,12 @@ int main(int argc, const char* argv[]) {
         M.O();
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? d[i] * M[i] :
-          sgn<num_t>(d[i]) * M[i]) << ", ";
+        // N.B. non simple output to jam out jammers.
+        std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : (argv[1][1] == 'c' ?
+          ( (M[i] - d[i]) / (M[i] * d[i] < num_t(int(0)) ? min(abs(d[i]),
+            num_t(int(1)) - abs(d[i])) : num_t(int(1)) ) ) :
+              ( (M[i] - d[i]) / (M[i] * d[i] < num_t(int(0)) ? min(abs(M[i]),
+                num_t(int(1)) - abs(M[i])) : num_t(int(1)) ) ) ) ) << ", ";
       std::cout << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
