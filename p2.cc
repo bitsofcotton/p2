@@ -253,9 +253,7 @@ int main(int argc, const char* argv[]) {
       }
       for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? d[i] * M[i] :
-          sgn<num_t>(d[i]) * M[i] + (argv[1][1] == 'C' ?
-            pow(num_t(int(2)), - num_t(abs(bit)) / num_t(int(2)) ) :
-              num_t(int(0)) ) ) << ", ";
+          sgn<num_t>(d[i]) * M[i]) << ", ";
       std::cout << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
@@ -841,7 +839,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction (c for signbit adjusted prediction result, C for error tolerance)" << endl << argv[0] << " A[cC]? <bits> <markov>?" << endl;
+  cerr << "# ddpmopt compatible prediction (c for signbit adjusted prediction result)" << endl << argv[0] << " Ac? <bits> <markov>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;

@@ -3089,12 +3089,6 @@ template <typename T> static inline SimpleVector<T> clipBin(const SimpleVector<T
   return res;;
 }
 
-template <typename T> static inline vector<SimpleVector<T> > clipBin(const vector<SimpleVector<T> >& in) {
-  vector<SimpleVector<T> > res(in);
-  for(int i = 0; i < res.size(); i ++) res[i] = clipBin<T>(res[i]);
-  return res;
-}
-
 template <typename T> static inline T cutBin(const T& in) {
   static const T zero(int(0));
   static const T one(int(1));
@@ -4802,11 +4796,10 @@ template <typename T, int nprogress> SimpleVector<T> pPersistentP(const vector<S
 // N.B. to guarantee lim S f == S lim f also ||S input|| is in [0,1[-register.
 template <typename T, int nprogress> SimpleVector<T> pGuarantee(const vector<SimpleVector<T> >& in, const int& b, const int& loop, const string& strloop) {
   assert(0 < b);
-  // N.B. clipBin can clip useful information.
-  return unOffsetHalf<T>(clipBin<T>(unOffsetHalf<T>(bitsG<T, true>(
-    pPersistentP<T, nprogress>(bitsG<T, true>(clipBin<T>(offsetHalf<T>(
-      delta<SimpleVector<T> >(in)) ), b), loop, strloop), - b)) +
-        in[in.size() - 1]));
+  return unOffsetHalf<T>(unOffsetHalf<T>(bitsG<T, true>(
+    pPersistentP<T, nprogress>(bitsG<T, true>(offsetHalf<T>(
+      delta<SimpleVector<T> >(in)), b), loop, strloop), - b)) +
+        in[in.size() - 1]);
 }
 
 // N.B. we only need some tails.
@@ -5673,8 +5666,7 @@ template <typename T> SimpleMatrix<T> filter(const SimpleMatrix<T>& data, const 
   case CLIP:
     result.resize(data.rows(), data.cols());
     for(int i = 0; i < result.rows(); i ++)
-      for(int j = 0; j < result.cols(); j ++)
-        result(i, j) = clipBin<T>(data(i, j));
+      result.row(i) = clipBin<T>(data.row(i));
     break;
   default:
     assert(0 && "unknown command in filter (should not be reached.)");
