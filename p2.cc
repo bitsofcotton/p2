@@ -234,6 +234,7 @@ int main(int argc, const char* argv[]) {
     int length(18);
     if(2 < argc) bit    = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
+    //idFeeder<SimpleVector<num_t> > p(3 * (length = abs(length)));
     idFeeder<SimpleVector<num_t> > p(length = abs(length));
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -252,12 +253,14 @@ int main(int argc, const char* argv[]) {
         M.O();
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : M[i] - d[i]) << ", ";
+        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] :
+          sgn<num_t>(M[i] * d[i]) * abs(M[i] - d[i]) ) << ", ";
       std::cout << std::flush;
       p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
-        unOffsetHalf<num_t>(pOff<num_t, 0>(p.res.entity, - p.res.size(), bit,
-          string("") ));
+        // unOffsetHalf<num_t>(pRiemann<num_t, 0>(p.res.entity,
+        unOffsetHalf<num_t>(pPersistentQ<num_t, 0>(p.res.entity,
+          - length, bit, string("") ));
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
@@ -793,15 +796,6 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < in.size(); i ++)
           in[i] += b[i];
         break;
-      } case 'B': {
-        // N.B. configurable temperature often have 1 with Ac result.
-        if(2 <= in.size()) {
-          if(argv[1][1] == '+')  {
-            if(! (in[1] <= - tt)) std::cout << in[0] << std::endl;
-          } else std::cout << (in[1] <= - tt ? in[0] * (in[1] + in[0] + tt) :
-              num_t(int(0)) ) << std::endl;
-        }
-        break;
       } default: goto usage;
       }
       std::cout << std::flush;
@@ -859,7 +853,6 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
-  cerr << "# thresh and bet with offset, col0 for original, col1 for offsetted prediction (+ for unpredictable place raw input result)" << endl << argv[0] << " B+?" << endl;
   cerr << "# show output statistics it's 0<|x - 1/2|<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   return - 1;
 }

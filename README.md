@@ -91,8 +91,6 @@ Predictor formatter and some of the toolset for non usual input streams however,
      *** other part ***
     # multiple file load into same line columns
     p L <file0> ...
-    # thresh and bet with offset, col0 for original, col1 for offsetted prediction (+ for unpredictable place raw input result)
-    p B+?
     # show output statistics whether 0<|x-1/2|<1 (+ for 0<x)
     p T+
     
