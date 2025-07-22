@@ -91,8 +91,8 @@ Predictor formatter and some of the toolset for non usual input streams however,
      *** other part ***
     # multiple file load into same line columns
     p L <file0> ...
-    # show output statistics whether arg<|x - 1/2|<1-arg (+ for arg<x)
-    p T+ <arg>
+    # show output statistics whether 0<=|x-1/2|<1 (+ for 0<=x)
+    p T+
     
     # to hear some residue
     p r | p l 0 | tee 0 | p A ... | p l 0 | p s > 1

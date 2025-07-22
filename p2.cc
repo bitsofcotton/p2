@@ -750,12 +750,10 @@ int main(int argc, const char* argv[]) {
         }
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size(); i ++)
-          std::cout << ((abs(in[i]) < tt ?
-            num_t(bf[i]) / num_t(max(int(1), bg[i])) : num_t(tt <= in[i] &&
-              (in[i] < num_t(int(1)) - tt || argv[1][1] == '+') ?
-                ++ bf[i] : bf[i]) / num_t(++ bg[i])) -
-                  num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
-                    bg[i] << ", ";
+          std::cout << (num_t(num_t(int(0)) <= in[i] &&
+            (in[i] < num_t(int(1)) || argv[1][1] == '+') ? ++ bf[i] : bf[i]) /
+              num_t(++ bg[i]) - num_t(int(1)) / num_t(int(2))) * 
+                num_t(int(2)) << ", " << bg[i] << ", ";
         std::cout << (t + 1) << endl;
         break;
       } case 'w': {
@@ -793,6 +791,12 @@ int main(int argc, const char* argv[]) {
         std::cout << (b[i] * in[i]) << endl;
         for(int i = 0; i < in.size(); i ++)
           in[i] += b[i];
+        break;
+      } case 'B': {
+        // XXX: we need to exclude this method from somehow.
+        if(2 <= in.size())
+          std::cout << (in[1] <= - tt ? in[0] * (in[1] + in[0] + tt) :
+            num_t(int(0)) ) << std::endl;
         break;
       } default: goto usage;
       }
@@ -851,7 +855,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
-  cerr << "# show output statistics it's arg<|x - 1/2|<1-arg (+ for arg<x)" << endl << argv[0] << " T+? <arg>" << endl;
+  cerr << "# show output statistics it's 0<=|x - 1/2|<1 (+ for 0<=x)" << endl << argv[0] << " T+?" << endl;
   return - 1;
 }
 
