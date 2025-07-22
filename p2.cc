@@ -750,10 +750,11 @@ int main(int argc, const char* argv[]) {
         }
         assert(bf.size() == in.size());
         for(int i = 0; i < in.size(); i ++)
-          std::cout << (num_t(num_t(int(0)) <= in[i] &&
+          std::cout << (num_t(num_t(int(0)) < in[i] &&
             (in[i] < num_t(int(1)) || argv[1][1] == '+') ? ++ bf[i] : bf[i]) /
-              num_t(++ bg[i]) - num_t(int(1)) / num_t(int(2))) * 
-                num_t(int(2)) << ", " << bg[i] << ", ";
+              num_t(max(int(1), in[i] == num_t(int(0)) ? bg[i] : ++ bg[i])) -
+                num_t(int(1)) / num_t(int(2))) * num_t(int(2)) << ", " <<
+                  bg[i] << ", ";
         std::cout << (t + 1) << endl;
         break;
       } case 'w': {
@@ -793,10 +794,13 @@ int main(int argc, const char* argv[]) {
           in[i] += b[i];
         break;
       } case 'B': {
-        // XXX: we need to exclude this method from somehow.
-        if(2 <= in.size())
-          std::cout << (in[1] <= - tt ? in[0] * (in[1] + in[0] + tt) :
-            num_t(int(0)) ) << std::endl;
+        // N.B. configurable temperature often have 1 with Ac result.
+        if(2 <= in.size()) {
+          if(argv[1][1] == '+')  {
+            if(! (in[1] <= - tt)) std::cout << in[0] << std::endl;
+          } else std::cout << (in[1] <= - tt ? in[0] * (in[1] + in[0] + tt) :
+              num_t(int(0)) ) << std::endl;
+        }
         break;
       } default: goto usage;
       }
@@ -855,7 +859,8 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
-  cerr << "# show output statistics it's 0<=|x - 1/2|<1 (+ for 0<=x)" << endl << argv[0] << " T+?" << endl;
+  cerr << "# thresh and bet with offset, col0 for original, col1 for offsetted prediction (+ for unpredictable place raw input result)" << endl << argv[0] << " B+?" << endl;
+  cerr << "# show output statistics it's 0<|x - 1/2|<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   return - 1;
 }
 
