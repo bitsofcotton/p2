@@ -208,7 +208,7 @@ int main(int argc, const char* argv[]) {
       }
     }
     break;
-  } case 'c': case 'C': {
+  } case 'c': {
     int& length(t);
     int  basedim(0);
     if(2 < argc) length  = std::atoi(argv[2]);
@@ -221,7 +221,7 @@ int main(int argc, const char* argv[]) {
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
       ins >> d;
-      std::cout << (argv[1][0] == 'C' ? d - M : d * M) << ", " << std::flush;
+      std::cout << (argv[1][1] == '\0' ? d * M : M - d) << ", " << std::flush;
       std::cout << (M = unOffsetHalf<num_t>(p012next<num_t>(p.next(
         offsetHalf<num_t>(d)), basedim || length ?
           (basedim == 1 ? 0 : basedim) : int(sqrt(num_t(ctr ++))) )) ) <<
@@ -229,13 +229,13 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    // N.B. input accuracy bit# / 2.
-    int bit(3);
-    int length(18);
-    if(2 < argc) bit    = std::atoi(argv[2]);
+    int  b(3);
+    int& length(t);
+    if(2 < argc) b = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
-    //idFeeder<SimpleVector<num_t> > p(3 * (length = abs(length)));
-    idFeeder<SimpleVector<num_t> > p(length = abs(length));
+    else length = 19;
+    assert(0 < length);
+    idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -253,14 +253,12 @@ int main(int argc, const char* argv[]) {
         M.O();
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] :
-          sgn<num_t>(M[i] * d[i]) * abs(M[i] - d[i]) ) << ", ";
+        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : M[i] - d[i]) << ", ";
       std::cout << std::flush;
-      p.next(clipBin<num_t>(offsetHalf<num_t>(d)));
+      p.next(offsetHalf<num_t>(d));
       M = ! p.full || p.res.size() <= 1 ? d.O() :
-        // unOffsetHalf<num_t>(pRiemann<num_t, 0>(p.res.entity,
-        unOffsetHalf<num_t>(pPersistentQ<num_t, 0>(p.res.entity,
-          - length, bit, string("") ));
+        unOffsetHalf<num_t>(pPersistentQ<num_t, 0>(p.res.entity, true, b,
+          string("") ) );
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
@@ -835,12 +833,12 @@ int main(int argc, const char* argv[]) {
   cerr << "# flip or not   PRNG stream" << endl << argv[0] << " M<proto> <number of output columns>" << endl;
   cerr << endl << " *** predictor part ***" << endl;
 #if defined(_ONEBINARY_)
-  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>" << endl;
-  cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
+  cerr << "# predict with Riemann measureable condition (c for signbit aligned difference output)" << endl << argv[0] << " 0c? <arg>" << endl;
+  cerr << "# predict with untangle combination condition (c for signbit aligned difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
 #endif
-  cerr << "# feed patternizable jammer input entropy (C for difference output)" << endl << argv[0] << " [cC] <state> <n-markov>" << endl;
+  cerr << "# feed patternizable jammer input entropy, signbit aligned difference output" << endl << argv[0] << " c <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output)" << endl << argv[0] << " A.? <bits>? <markov>?" << endl;
+  cerr << "# ddpmopt compatible prediction, signbit aligned difference output" << endl << argv[0] << " A <markov>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
