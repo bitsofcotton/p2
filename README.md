@@ -65,12 +65,12 @@ Predictor formatter and some of the toolset for non usual input streams however,
     p 0c? <arg>
     # predict with untangle combination condition (c for difference output)
     p 1c? <arg>
-    # feed patternizable jammer input entropy (C for difference output)
-    p [cC] <arg>
+    # feed patternizable jammer input entropy (. for difference output)
+    p c.? <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt compatible prediction (. for difference output)
-    p A.? <bits>? <markov>?
+    # ddpmopt compatible prediction (. for signbit aligned difference output, d for single layer output)
+    p A[d.]? <bits>? <markov>?
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -246,4 +246,5 @@ Predictor formatter and some of the toolset for non usual input streams however,
 2025/07/14-16 merge latest ddpmopt result, also add cr.py J command but doesn't works expected to p2 A command.
 2025/07/17-19 merge latest ddpmopt result, Ac? command output change.
 2025/07/20 merge latest ddpmopt result, update readme.
+2025/07/24 merge latest ddpmopt result, some command change, update readme.
 
