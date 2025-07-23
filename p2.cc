@@ -231,11 +231,13 @@ int main(int argc, const char* argv[]) {
   } case 'A': {
     int  b(3);
     int& length(t);
+    int  r(0);
     if(2 < argc) b = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
+    if(4 < argc) r = std::atoi(argv[4]);
     else length = 19;
-    assert(0 < length);
-    idFeeder<SimpleVector<num_t> > p(length);
+    assert(0 < length && 0 <= r);
+    idFeeder<SimpleVector<num_t> > p(r ? pow(2, r + 1) * length : 0);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -256,9 +258,8 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : M[i] - d[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      M = ! p.full || p.res.size() <= 1 ? d.O() :
-        unOffsetHalf<num_t>(pPersistentQ<num_t, 0>(p.res.entity, true, b,
-          string("") ) );
+      M = ! p.full || p.res.size() < 3 ? d.O() : unOffsetHalf<num_t>(
+        pCorrector<num_t, 0>(p.res.entity, b, - length, string("") ) );
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
@@ -833,12 +834,12 @@ int main(int argc, const char* argv[]) {
   cerr << "# flip or not   PRNG stream" << endl << argv[0] << " M<proto> <number of output columns>" << endl;
   cerr << endl << " *** predictor part ***" << endl;
 #if defined(_ONEBINARY_)
-  cerr << "# predict with Riemann measureable condition (c for signbit aligned difference output)" << endl << argv[0] << " 0c? <arg>" << endl;
-  cerr << "# predict with untangle combination condition (c for signbit aligned difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
+  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>" << endl;
+  cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
 #endif
-  cerr << "# feed patternizable jammer input entropy, signbit aligned difference output" << endl << argv[0] << " c <state> <n-markov>" << endl;
+  cerr << "# feed patternizable jammer input entropy, difference output" << endl << argv[0] << " c <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction, signbit aligned difference output" << endl << argv[0] << " A <markov>?" << endl;
+  cerr << "# ddpmopt compatible prediction, difference output" << endl << argv[0] << " A <bits>? <markov>? <states>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
