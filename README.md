@@ -69,8 +69,8 @@ Predictor formatter and some of the toolset for non usual input streams however,
     p c.? <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt compatible prediction (. for signbit aligned difference output, d for single layer output)
-    p A[d.]? <bits>? <markov>?
+    # ddpmopt compatible prediction (. for signbit aligned difference output, states <= -0 for single layer output)
+    p A.? <states>?
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -247,4 +247,5 @@ Predictor formatter and some of the toolset for non usual input streams however,
 2025/07/17-19 merge latest ddpmopt result, Ac? command output change.
 2025/07/20 merge latest ddpmopt result, update readme.
 2025/07/24 merge latest ddpmopt result, some command change, update readme.
+2025/07/25 merge latest ddpmopt result, A.? command param change.
 
