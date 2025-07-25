@@ -229,11 +229,10 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int length(20 * 4);
+    int length(13 + 3 + 4 + 1);
     if(2 < argc) length = std::atoi(argv[2]);
+    assert(0 <= length);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
-    const bool shallow((2 < argc && argv[2][0] == '-') || length < 0);
-    length = abs(length);
     idFeeder<SimpleVector<num_t> > p(length);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -255,9 +254,8 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : (argv[1][1] == 'd' ? M[i] * d[i] : sgn<num_t>(d[i]) * (M[i] - d[i]))) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(shallow ?
-        clipBin<num_t>(pPersistentQ<num_t, 0>(p.res.entity, string(""))) :
-          pCorrector<num_t, 0>(p.res.entity, string("") ) );
+      M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(
+        clipBin<num_t>(pPersistentQ<num_t, 0>(p.res.entity, string(""))) );
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
