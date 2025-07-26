@@ -231,9 +231,9 @@ int main(int argc, const char* argv[]) {
   } case 'A': {
     int length(13 + 3 + 4 + 1);
     if(2 < argc) length = std::atoi(argv[2]);
-    assert(0 <= length);
+    const int levi((2 < argc && argv[2][0] == '-') || length < 0);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length);
+    idFeeder<SimpleVector<num_t> > p(length = abs(length));
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -255,7 +255,11 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
       M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(
-        clipBin<num_t>(pPersistentQ<num_t, 0>(p.res.entity, string(""))) );
+        levi ?
+          //pPersistentQ<num_t, - 1>(p.res.entity, string("")) :
+          //pPersistentQ<num_t,   1>(p.res.entity, string(""))) );
+          pGuarantee<num_t, - 1>(p.res.entity, string("")) :
+          pGuarantee<num_t,   1>(p.res.entity, string("")) );
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
@@ -835,7 +839,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction (. for signbit aligned difference output, states <= -0 for single layer output)" << endl << argv[0] << " A[d.]? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for signbit aligned difference output, states <= -0 to make hypothesis levi stream)" << endl << argv[0] << " A.? <states>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
