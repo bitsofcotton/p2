@@ -1,5 +1,5 @@
 # p2
-Predictor formatter and some of the toolset for non usual input streams however, even this predictor can have the jammer to us.
+Predictor formatter and some of the toolset for non usual input streams.
 
 # Usage
     python3 cr.py ([JRm]|[HD]?) ...
@@ -69,7 +69,7 @@ Predictor formatter and some of the toolset for non usual input streams however,
     p c.? <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt compatible prediction (. for signbit aligned difference output, states <= -0 for single layer output)
+    # ddpmopt compatible prediction (. for difference output, states <= -0 to make hypothesis levi stream)
     p A.? <states>?
     
      *** vector operation part ***
@@ -91,12 +91,15 @@ Predictor formatter and some of the toolset for non usual input streams however,
      *** other part ***
     # multiple file load into same line columns
     p L <file0> ...
-    # show output statistics whether 0<|x-1/2|<1 (+ for 0<x)
+    # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
     # to hear some residue
     p r | p l 0 | tee 0 | p A ... | p l 0 | p s > 1
     catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
+    
+    # once we code and upload here also someone observed our code as a optimization, the jammer intension can affects us also this causes the universal invariant we made hypothesis slips.
+    # we embryonic believing such a condition, so we close with them except for large update around logics to backup here.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -248,4 +251,6 @@ Predictor formatter and some of the toolset for non usual input streams however,
 2025/07/20 merge latest ddpmopt result, update readme.
 2025/07/24 merge latest ddpmopt result, some command change, update readme.
 2025/07/25 merge latest ddpmopt result, A.? command param change.
+2025/07/26-27 merge latest ddpmopt result, readme update, SHOULD CLOSE.
+2025/07/28 merge latest ddpmopt result. some usage update, some bug fixes.
 

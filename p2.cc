@@ -221,7 +221,7 @@ int main(int argc, const char* argv[]) {
     while(std::getline(std::cin, s, '\n')) {
       std::stringstream ins(s);
       ins >> d;
-      std::cout << (argv[1][1] == '\0' ? d * M : M - d) << ", " << std::flush;
+      std::cout << (argv[1][1] == '\0' ? d * M : d - M) << ", " << std::flush;
       std::cout << (M = unOffsetHalf<num_t>(p012next<num_t>(p.next(
         offsetHalf<num_t>(d)), basedim || length ?
           (basedim == 1 ? 0 : basedim) : int(sqrt(num_t(ctr ++))) )) ) <<
@@ -251,18 +251,16 @@ int main(int argc, const char* argv[]) {
         M.O();
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : (argv[1][1] == 'd' ? M[i] * d[i] : sgn<num_t>(d[i]) * (M[i] - d[i]))) << ", ";
+        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(
-        levi ?
-          //pPersistentQ<num_t, - 1>(p.res.entity, string("")) :
-          //pPersistentQ<num_t,   1>(p.res.entity, string(""))) );
-          pGuarantee<num_t, - 1>(p.res.entity, string("")) :
-          pGuarantee<num_t,   1>(p.res.entity, string("")) );
+      M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(levi ?
+        pGuarantee<num_t, - 1>(p.res.entity, string("")) :
+        pGuarantee<num_t,   1>(p.res.entity, string("")) );
       for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
       std::cout << std::endl << std::flush;
     }
+    break;
   } case 'e': {
     string a3(3 < argc ? argv[3] : "0");
     std::stringstream ss(a3);
@@ -334,8 +332,8 @@ int main(int argc, const char* argv[]) {
         for(int ii = 0; ii < bitimg.size(); ii ++)
           for(int jj = 0; jj < bitimg[ii].rows(); jj ++)
             for(int kk = 0; kk < bitimg[ii].cols(); kk ++)
-              std::cout << (bitimg[ii](jj, kk) < num_t(int(1)) / num_t(int(2)) ?
-                - num_t(int(1)) : num_t(int(1)) ) << ", ";
+              std::cout << (bitimg[ii](jj, kk) - num_t(int(1)) / num_t(int(2)))
+                << ", ";
         std::cout << std::endl << std::flush;
       }
       break;
@@ -344,7 +342,8 @@ int main(int argc, const char* argv[]) {
       std::stringstream ss(s);
       SimpleVector<num_t> w;
       ss >> w;
-      const int sq(sqrt(num_t(w.size())));
+      const int sq0(sqrt(num_t(w.size())));
+      const int sq((sq0 + 1) * (sq0 + 1) == w.size() ? sq0 + 1 : sq0);
       vector<SimpleMatrix<num_t> > p;
       p.emplace_back(SimpleMatrix<num_t>(sq, sq));
       for(int i = 0; i < p[0].rows(); i ++)
@@ -795,6 +794,24 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < in.size(); i ++)
           in[i] += b[i];
         break;
+      } case 'O': {
+        if(argv[1][1] == '+') {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << (in[i] - in[i + in.size() / 2]) << ", ";
+          std::cout << (in[in.size() / 2 - 1] -
+            in[(in.size() / 2) * 2 - 1]) << std::endl;
+        } else {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << (in[i] - in[i + in.size() / 2] < num_t(int(0)) ? - in[i] : in[i]) << ", ";
+          std::cout << (in[in.size() / 2 - 1] -
+            in[(in.size() / 2) * 2 - 1] < num_t(int(0)) ? - in[in.size() / 2
+              - 1] : in[in.size() / 2 - 1]) << std::endl;
+        }
+        break;
+      } case 'V': {
+        for(int i = 0; i < in.size(); i ++)
+          std::cout << in[i] << std::endl;
+        break;
       } default: goto usage;
       }
       std::cout << std::flush;
@@ -816,6 +833,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half)" << endl << argv[0] << " lH? <col0index> ..." << endl;
+  cerr << "# take affter math on input stream first half to last half" << endl << argv[0] << " O" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -839,7 +857,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
-  cerr << "# ddpmopt compatible prediction (. for signbit aligned difference output, states <= -0 to make hypothesis levi stream)" << endl << argv[0] << " A.? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for difference output, states <= -0 to make hypothesis levi stream)" << endl << argv[0] << " A.? <states>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -852,7 +870,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
-  cerr << "# show output statistics it's 0<|x - 1/2|<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
+  cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   return - 1;
 }
 
