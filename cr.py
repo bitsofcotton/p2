@@ -73,24 +73,18 @@ elif(sys.argv[1][0] == 'm'):
       track[w].append(Message('note_off', note=f, time=(120 * int(abs(numpy.arctan(abs(numpy.tan(float(bw[w])))) * 3) + 1)) ))
     bw = []
   mid.save('rand_correct.mid')
-  # XXX: don't know why this cannot jam out same ddpmopt algorithm.
+  # XXX: don't know why this cannot jam out our stream.
 elif(sys.argv[1][0] == 'J'):
-  b = []
+  s = 1.
+  S = 0.
   for line in io.open(sys.stdin.fileno(), 'r', buffering = 1, encoding = 'utf-8', closefd = False):
-    b.append(line[:- 1].split(",")[0])
-    if(int(sys.argv[4]) + 1 < len(b)):
-      p = subprocess.Popen([sys.argv[2], "A", str(int(sys.argv[3])), str(abs(int(sys.argv[4])))], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-      for d in b:
-        p.stdin.write((d + "\n").encode("utf-8"))
-        p.stdin.flush()
-        M = p.stdout.readline().decode("utf-8").split(",")[0]
-      p.stdin.close()
-      if(0. < float(M)): b[- 1] = str(- float(b[- 1]))
-      if(int(sys.argv[4]) < 0):
-        b[- 1] = str(float(b[- 1]) * random.uniform(- 1, 1))
-      print(b[- 1])
-      b = b[1:]
-      sys.stdout.flush()
+    l  = line[:- 1].split(",")
+    S += float(l[1]) * s
+    if(abs(S) > float(sys.argv[2])):
+      s = - s
+      S = 0
+    if(float(l[0]) * float(l[1]) * s < 0): print(float(l[0]))
+    else: print(- float(l[0]))
   # XXX: following are duplicate for non unistd systems.
 elif(sys.argv[1][0] == 'H'):
   p = []

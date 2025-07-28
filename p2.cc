@@ -230,7 +230,8 @@ int main(int argc, const char* argv[]) {
     break;
   } case 'A': {
     int length(13 + 3 + 4 + 1);
-    if(2 < argc) length = std::atoi(argv[2]);
+    if(2 < argc && ! (argv[2][0] == '-' && argv[2][1] == '\0'))
+      length = std::atoi(argv[2]);
     const int levi((2 < argc && argv[2][0] == '-') || length < 0);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
     idFeeder<SimpleVector<num_t> > p(length = abs(length));
@@ -712,7 +713,11 @@ int main(int argc, const char* argv[]) {
           num_t(int(0)) : num_t(int(1)) / in[in.size() - 1]) << std::endl;
         break;
       case 'l':
-        if(argv[1][1] == 'H') {
+        if(argv[1][1] == 'c') {
+          for(int i = 0; i < in.size() - 2; i ++)
+            std::cout << in[i] << ", ";
+          std::cout << in[in.size() - 2] << std::endl;
+        } else if(argv[1][1] == 'H') {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << in[i] << ", ";
           const int i(in.size() / 2 - 1);
@@ -741,8 +746,15 @@ int main(int argc, const char* argv[]) {
         std::cout << s << std::endl;
         break;
       case 'G':
-        for(int i = 1; i < in.size(); i ++) in[0] += in[i];
-        std::cout << (in[0] /= num_t(int(in.size()))) << std::endl;
+        if(argv[1][1] == '+') {
+          const int width(sqrt(num_t(in.size())));
+          for(int i = width; i < in.size(); i ++) in[i % width] += in[i];
+          for(int i = 0; i < width; i ++) std::cout << in[i] << ", ";
+          std::cout << std::endl;
+        } else {
+          for(int i = 1; i < in.size(); i ++) in[0] += in[i];
+          std::cout << (in[0] /= num_t(int(in.size()))) << std::endl;
+        }
         break;
       case 'T': {
         if(bf.size() < in.size()) {
@@ -832,7 +844,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X" << endl;
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
-  cerr << "# take picked column      on input stream (H for first half)" << endl << argv[0] << " lH? <col0index> ..." << endl;
+  cerr << "# take picked column      on input stream (H for first half, c for chop)" << endl << argv[0] << " l[cH]? <col0index> ..." << endl;
   cerr << "# take affter math on input stream first half to last half" << endl << argv[0] << " O" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
