@@ -233,7 +233,7 @@ int main(int argc, const char* argv[]) {
     if(2 < argc && ! (argv[2][0] == '-' && argv[2][1] == '\0'))
       length = std::atoi(argv[2]);
     const int levi((2 < argc && argv[2][0] == '-') || length < 0);
-    cerr << "continue with: " << argv[0] << " " << (levi ? "-" : "") << abs(length) << endl;
+    cerr << "continue with: " << argv[0] << " " << argv[1] << (levi ? " -" : " ") << abs(length) << endl;
     idFeeder<SimpleVector<num_t> > p(length = abs(length));
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -257,7 +257,9 @@ int main(int argc, const char* argv[]) {
       p.next(offsetHalf<num_t>(d));
       M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(levi ?
         pGuarantee<num_t, - 1>(p.res.entity, string("")) :
-        pGuarantee<num_t,   1>(p.res.entity, string("")) );
+        pGuarantee<num_t,   1>(p.res.entity, string("")) ) +
+          // XXX: don't know why but the result is offsetted...
+          d.O(num_t(int(1)));
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
