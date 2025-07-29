@@ -233,7 +233,7 @@ int main(int argc, const char* argv[]) {
     if(2 < argc && ! (argv[2][0] == '-' && argv[2][1] == '\0'))
       length = std::atoi(argv[2]);
     const int levi((2 < argc && argv[2][0] == '-') || length < 0);
-    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
+    cerr << "continue with: " << argv[0] << " " << (levi ? "-" : "") << abs(length) << endl;
     idFeeder<SimpleVector<num_t> > p(length = abs(length));
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -258,8 +258,8 @@ int main(int argc, const char* argv[]) {
       M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(levi ?
         pGuarantee<num_t, - 1>(p.res.entity, string("")) :
         pGuarantee<num_t,   1>(p.res.entity, string("")) );
-      for(int j = 0; j < d.size(); j ++) std::cout << M[j] << ", ";
-      std::cout << std::endl << std::flush;
+      for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
+      std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
     break;
   } case 'e': {
@@ -507,14 +507,35 @@ int main(int argc, const char* argv[]) {
     }
     bool loop(f.size() != 0);
     while(loop) {
+      std::vector<num_t> sbuf;
       for(int i = 0; i < f.size(); i ++) {
         if(! std::getline(f[i], s)) {
           loop = false;
           break;
         }
-        std::cout << s << (i == f.size() - 1 ? "" : ",");
+        if(argv[1][1] == '\0') std::cout << s << (i == f.size() - 1 ? "" : ",");
+        else {
+          int cnt(1);
+          for(int i = 0; i < s.size(); i ++)
+            if(s[i] == ',') cnt ++;
+          std::vector<num_t> in;
+          in.resize(cnt);
+          int i, j;
+          for(i = 0, j = 0; i < s.size(); i ++) {
+            std::stringstream ins(s.substr(i, s.size() - i));
+            ins >> in[j ++];
+            for( ; s[i] != ',' && i < s.size(); i ++) ;
+          }
+          if(! sbuf.size()) sbuf = move(in);
+          else for(int i = 0; i < in.size(); i ++) sbuf[i] += in[i];
+        }
       }
-      std::cout << std::endl << std::flush;
+      if(argv[1][1] == '\0')
+        std::cout << std::endl << std::flush;
+      else {
+        for(int i = 0; i < sbuf.size() - 1; i ++) std::cout << sbuf[i] << ", ";
+        std::cout << sbuf[sbuf.size() - 1] << std::endl << std::flush;
+      }
     }
     for(int i = 0; i < f.size(); i ++) f[i].close();
     break;
@@ -717,6 +738,10 @@ int main(int argc, const char* argv[]) {
           for(int i = 0; i < in.size() - 2; i ++)
             std::cout << in[i] << ", ";
           std::cout << in[in.size() - 2] << std::endl;
+        } else if(argv[1][1] == 'G') {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << in[in.size() / 2 + i] << ", ";
+          std::cout << in[in.size() - 1] << std::endl;
         } else if(argv[1][1] == 'H') {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << in[i] << ", ";
@@ -814,10 +839,9 @@ int main(int argc, const char* argv[]) {
             in[(in.size() / 2) * 2 - 1]) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << (in[i] - in[i + in.size() / 2] < num_t(int(0)) ? - in[i] : in[i]) << ", ";
-          std::cout << (in[in.size() / 2 - 1] -
-            in[(in.size() / 2) * 2 - 1] < num_t(int(0)) ? - in[in.size() / 2
-              - 1] : in[in.size() / 2 - 1]) << std::endl;
+            std::cout << ((in[i] - in[i + in.size() / 2]) * in[i]) << ", ";
+          std::cout << ((in[in.size() / 2 - 1] -
+            in[(in.size() / 2) * 2 - 1]) * in[in.size() / 2 - 1]) << std::endl;
         }
         break;
       } case 'V': {
@@ -844,7 +868,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X" << endl;
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
-  cerr << "# take picked column      on input stream (H for first half, c for chop)" << endl << argv[0] << " l[cH]? <col0index> ..." << endl;
+  cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
   cerr << "# take affter math on input stream first half to last half" << endl << argv[0] << " O" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
