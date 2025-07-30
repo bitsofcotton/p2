@@ -255,11 +255,10 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
+      // XXX: don't know why but the result is offsetted...
       M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(levi ?
         pGuarantee<num_t, - 1>(p.res.entity, string("")) :
-        pGuarantee<num_t,   1>(p.res.entity, string("")) ) +
-          // XXX: don't know why but the result is offsetted...
-          d.O(num_t(int(1)));
+        pGuarantee<num_t,   1>(p.res.entity, string("")) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -500,7 +499,7 @@ int main(int argc, const char* argv[]) {
     f.reserve(argc - 1);
     for(int i = 2; i < argc; i ++) {
       f.emplace_back(std::ifstream(argv[i]));
-      if(! f[i - 2].is_open()) {
+      if(! f[f.size() - 1].is_open()) {
         std::cerr << "Could not open " << argv[i] << std::endl;
         for(int j = 0; j < f.size() - 1; j ++) f[j].close();
         f.resize(0);
@@ -695,6 +694,7 @@ int main(int argc, const char* argv[]) {
     std::vector<num_t> b;
     std::vector<int> bf;
     std::vector<int> bg;
+    idFeeder<std::vector<num_t> > bbb;
     string a2(2 < argc ? argv[2] : "");
     std::stringstream ss(a2);
     num_t tt(int(0));
@@ -825,32 +825,74 @@ int main(int argc, const char* argv[]) {
         break;
 #endif
       } case 'I': {
-        if(b.size() < in.size()) b.resize(in.size(), num_t(int(0)));
-        for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << (b[i] * in[i]) << ", ";
-        const int i(in.size() - 1);
-        std::cout << (b[i] * in[i]) << endl;
-        for(int i = 0; i < in.size(); i ++)
-          in[i] += b[i];
-        break;
-      } case 'O': {
-        if(argv[1][1] == '+') {
-          for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << (in[i] - in[i + in.size() / 2]) << ", ";
-          std::cout << (in[in.size() / 2 - 1] -
-            in[(in.size() / 2) * 2 - 1]) << std::endl;
+        if(std::atoi(argv[2]) == 0) {
+          if(b.size() < in.size()) b.resize(in.size(), num_t(int(0)));
+          for(int i = 0; i < in.size() - 1; i ++)
+            std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << ", ";
+          const int i(in.size() - 1);
+          std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << endl;
+          for(int i = 0; i < in.size(); i ++)
+            in[i] += b[i];
         } else {
-          for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << ((in[i] - in[i + in.size() / 2]) * in[i]) << ", ";
-          std::cout << ((in[in.size() / 2 - 1] -
-            in[(in.size() / 2) * 2 - 1]) * in[in.size() / 2 - 1]) << std::endl;
+          if(bbb.res.size() != std::atoi(argv[2]))
+            bbb = idFeeder<std::vector<num_t> >(std::atoi(argv[2]));
+          if(bbb.full) {
+            b = bbb.res[0];
+            for(int j = 1; j < bbb.res.size(); j ++) 
+              for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+            for(int i = 0; i < in.size() - 1; i ++)
+              std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << ", ";
+            const int i(in.size() - 1);
+            std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << std::endl;
+          } else {
+            for(int i = 0; i < in.size() - 1; i ++)
+              std::cout << num_t(int(0)) << ", ";
+            std::cout << num_t(int(0)) << std::endl;
+          }
+          bbb.next(in);
         }
         break;
-      } case 'V': {
+      } case 'O': {
+        const int len(2 < argc ? std::atoi(argv[2]) : 1);
+        if(! t) bbb = idFeeder<std::vector<num_t> >(len);
+        bbb.next(in);
+        if(bbb.full) {
+          b = bbb.res[0];
+          for(int j = 1; j < bbb.res.size(); j ++)
+            for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+          for(int i = 0; i < b.size() / 2 - 1; i ++)
+            std::cout << ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
+              (b[i] - b[i + b.size() / 2]) ) << ", ";
+          const int i(b.size() / 2 - 1);
+          std::cout << ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
+            (b[b.size() / 2 - 1] -
+              b[(b.size() / 2) * 2 - 1]) ) << std::endl;
+        } else {
+          for(int i = 0; i < in.size() - 1; i ++)
+            std::cout << num_t(int(0)) << ", ";
+          std::cout << num_t(int(0)) << std::endl;
+        }
+        break;
+      } case 'J': {
+        if(in.size() != b.size()) break;
+        if(bf.size() != in.size()) bf.resize(in.size() / 2, int(1));
+        for(int i = 0; i < in.size() / 2; i ++)
+          if(tt < abs(b[i + in.size() / 2] + in[i + in.size() / 2]) ) {
+            bf[i] = - bf[i];
+            b[i + in.size() / 2]  = num_t(int(0));
+          }
+        for(int i = 0; i < in.size() / 2 - 1; i ++)
+          std::cout << (sgn<num_t>(in[i] * in[i + in.size() / 2] * num_t(bf[i]))
+            * in[i]) << ", ";
+        const int i(in.size() / 2 - 1);
+        std::cout << (sgn<num_t>(in[i] * in[i + in.size() / 2] * num_t(bf[i]))
+          * in[i]) << std::endl;
+        break;
+      } case 'V':
         for(int i = 0; i < in.size(); i ++)
           std::cout << in[i] << std::endl;
         break;
-      } default: goto usage;
+      default: goto usage;
       }
       std::cout << std::flush;
       if(argv[1][0] != 'w' || ! b.size()) b = in;
@@ -871,13 +913,13 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take affter math on input stream first half to last half" << endl << argv[0] << " O" << endl;
+  cerr << "# take affter math on input stream first half to last half" << endl << argv[0] << " O\+?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
   cerr << "# take absolute each      on input stream" << endl << argv[0] << " a" << endl;
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
-  cerr << "# take sum columns each line on input stream" << endl << argv[0] << " G" << endl;
+  cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G+?" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
   cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E <number>+?+?" << endl;
   cerr << "# take column 0 to harden PRNG part vector output" << endl << argv[0] << " e" << endl;
@@ -894,7 +936,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
-  cerr << "# trivial return to the average id. prediction" << endl << argv[0] << " I" << endl;
+  cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
   cerr << "# ddpmopt compatible prediction (. for difference output, states <= -0 to make hypothesis levi stream)" << endl << argv[0] << " A.? <states>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -909,6 +951,13 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
+  cerr << endl << " *** typical commands ***" << endl;
+  cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ic 1 | " << argv[0] << " Ic 4 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(10)) << " | " << argv[0] << " Ac - | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | " << argv[0] << " Ac | " << argv[0] << " t " << num_t(int(40)) << " | " << argv[0] << " lH | " << argv[0] << " lH | " << argv[0] << " o ... > 1" << endl;
+  cerr << "# bet with such a whole." << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O 4 > 2" << endl;
+  cerr << "# from somehow, such a jammed stream is vulnearable to negate of Riemann measureable condition." << endl;
+  cerr << argv[0] << " L 0 2 | " << argv[0] << " J " << num_t(int(4)) << " | " << argv[0] << " H \'" << argv[0] << " 0 3 | " << argv[0] << " l 0\' | " << argv[0] << " G | " << argv[0] << " S 51" << endl;
   return - 1;
 }
 
