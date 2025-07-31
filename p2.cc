@@ -228,8 +228,8 @@ int main(int argc, const char* argv[]) {
             std::endl << std::flush;
     }
     break;
-  } case 'A': {
-    int length(13 + 3 + 4 + 1);
+  } case 'A': case 'K': {
+    int length(argv[1][0] == 'K' ? 82 : 21);
     if(2 < argc && ! (argv[2][0] == '-' && argv[2][1] == '\0'))
       length = std::atoi(argv[2]);
     const int levi((2 < argc && argv[2][0] == '-') || length < 0);
@@ -255,10 +255,20 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      // XXX: don't know why but the result is offsetted...
-      M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(levi ?
-        pGuarantee<num_t, - 1>(p.res.entity, string("")) :
-        pGuarantee<num_t,   1>(p.res.entity, string("")) );
+      if(argv[1][0] == 'K') {
+        if(! p.full || p.res.size() <= 3) M = d.O();
+        else {
+          // XXX: don't know why but the result needs very wide range.
+          // M = pSaturatedInvariant<num_t, 1>(p.res.entity, string(""));
+          vector<SimpleVector<num_t> > res(
+            // pComplementStream<num_t, 1>(p.res.entity, 1, string("")) );
+            pJamout<num_t, 1>(p.res.entity, 1, string("")) );
+          M = res[res.size() - 1];
+        }
+      } else M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(
+        // XXX: don't know why but the result is offsetted...
+        (levi ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
+                pGuarantee<num_t,   1>(p.res.entity, string("")) ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -887,6 +897,8 @@ int main(int argc, const char* argv[]) {
         const int i(in.size() / 2 - 1);
         std::cout << (sgn<num_t>(in[i] * in[i + in.size() / 2] * num_t(bf[i]))
           * in[i]) << std::endl;
+        for(int i = 0; i < in.size() / 2; i ++)
+          in[i + in.size() / 2] += b[i + in.size() / 2];
         break;
       } case 'V':
         for(int i = 0; i < in.size(); i ++)
@@ -953,7 +965,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** typical commands ***" << endl;
   cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ic 1 | " << argv[0] << " Ic 4 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(10)) << " | " << argv[0] << " Ac - | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | " << argv[0] << " Ac | " << argv[0] << " t " << num_t(int(40)) << " | " << argv[0] << " lH | " << argv[0] << " lH | " << argv[0] << " o ... > 1" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ic 1 | " << argv[0] << " Ic 3 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(8)) << " | " << argv[0] << " Ac - | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | " << argv[0] << " Ac | " << argv[0] << " t " << num_t(int(32)) << " | " << argv[0] << " lH | " << argv[0] << " lH | " << argv[0] << " > 1" << endl;
   cerr << "# bet with such a whole." << endl;
   cerr << argv[0] << " L 0 1 | " << argv[0] << " O 4 > 2" << endl;
   cerr << "# from somehow, such a jammed stream is vulnearable to negate of Riemann measureable condition." << endl;
