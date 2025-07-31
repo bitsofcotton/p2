@@ -229,10 +229,12 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': case 'K': {
-    int length(argv[1][0] == 'K' ? 82 : 21);
+    int length(argv[1][0] == 'K' ? 81 : 21);
     if(2 < argc && ! (argv[2][0] == '-' && argv[2][1] == '\0'))
       length = std::atoi(argv[2]);
     const int levi((2 < argc && argv[2][0] == '-') || length < 0);
+    if(argv[1][0] == 'K' && levi && argv[2][1] == '\0')
+      length = 67;
     cerr << "continue with: " << argv[0] << " " << argv[1] << (levi ? " -" : " ") << abs(length) << endl;
     idFeeder<SimpleVector<num_t> > p(length = abs(length));
     SimpleVector<num_t> d;
@@ -257,16 +259,11 @@ int main(int argc, const char* argv[]) {
       p.next(offsetHalf<num_t>(d));
       if(argv[1][0] == 'K') {
         if(! p.full || p.res.size() <= 3) M = d.O();
-        else {
-          // XXX: don't know why but the result needs very wide range.
-          // M = pSaturatedInvariant<num_t, 1>(p.res.entity, string(""));
-          vector<SimpleVector<num_t> > res(
-            // pComplementStream<num_t, 1>(p.res.entity, 1, string("")) );
-            pJamout<num_t, 1>(p.res.entity, 1, string("")) );
-          M = res[res.size() - 1];
-        }
+        else
+          M = levi ?
+            pComplementStream<num_t, 1>(p.res.entity, 1, string(""))[0] :
+              pSaturatedInvariant<num_t, 1>(p.res.entity, string(""));
       } else M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(
-        // XXX: don't know why but the result is offsetted...
         (levi ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
                 pGuarantee<num_t,   1>(p.res.entity, string("")) ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
@@ -965,11 +962,11 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** typical commands ***" << endl;
   cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ic 1 | " << argv[0] << " Ic 3 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(8)) << " | " << argv[0] << " Ac - | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | " << argv[0] << " Ac | " << argv[0] << " t " << num_t(int(32)) << " | " << argv[0] << " lH | " << argv[0] << " lH | " << argv[0] << " > 1" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ic 1 | " << argv[0] << " Ic 3 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(8)) << " | " << argv[0] << " Ac - | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | " << argv[0] << " Ac | " << argv[0] << " t " << num_t(int(32)) << " | " << argv[0] << " lH | " << argv[0] << " lH > 1" << endl;
   cerr << "# bet with such a whole." << endl;
   cerr << argv[0] << " L 0 1 | " << argv[0] << " O 4 > 2" << endl;
   cerr << "# from somehow, such a jammed stream is vulnearable to negate of Riemann measureable condition." << endl;
-  cerr << argv[0] << " L 0 2 | " << argv[0] << " J " << num_t(int(4)) << " | " << argv[0] << " H \'" << argv[0] << " 0 3 | " << argv[0] << " l 0\' | " << argv[0] << " G | " << argv[0] << " S 51" << endl;
+  cerr << argv[0] << " L 0 2 | " << argv[0] << " J " << num_t(int(4)) << " | " << argv[0] << " 0 3 | " << argv[0] << "  lH | " << argv[0] << " G | " << argv[0] << " S 51" << endl;
   return - 1;
 }
 

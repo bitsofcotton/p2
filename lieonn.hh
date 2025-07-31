@@ -4822,8 +4822,23 @@ template <typename T, int nprogress> vector<SimpleVector<T> > pSubtractInvariant
     pass.emplace_back(offsetHalf<T>((unOffsetHalf<T>(in[i + 1]) - 
       unOffsetHalf<T>(in[i]) ) / T(int(2))));
   vector<SimpleVector<T> > res(pSubtractInvariant3<T, nprogress>(pass, strloop));
-  for(int i = 0; i < res.size(); i ++) res[i] = res[i] * T(int(2)) +
-    in[i - res.size() + in.size()];
+  vector<T> stat;
+  stat.reserve(res.size() * res[0].size());
+  for(int i = 0; i < res.size(); i ++) {
+    res[i] = unOffsetHalf<T>(res[i] * T(int(2)) +
+      in[i - res.size() + in.size()]);
+    for(int j = 0; j < res[i].size(); j ++) stat.emplace_back(res[i][j]);
+  }
+  sort(stat.begin(), stat.end());
+  // XXX: don't know why, but from somehow always offsetted randomly.
+  const T off(T(int(4 * 4)) < abs(stat[stat.size() / 2]) ?
+    sgn<T>(stat[stat.size() / 2]) * exp(absfloor(
+      log(abs(stat[stat.size() / 2])) / log(T(int(4 * 4))))) : T(int(0)));
+  for(int i = 0; i < res.size(); i ++) {
+    for(int j = 0; j < res[i].size(); j ++)
+      res[i][j] -= off;
+    res[i] = offsetHalf<T>(res[i]);
+  }
   return res;
 }
 
@@ -4862,7 +4877,8 @@ template <typename T, int nprogress> vector<SimpleVector<T> > pJamout(const vect
   sign.O(T(int(1)));
   vector<SimpleVector<T> > lres(pComplementStream<T, nprogress>(in,
     // N.B. wlen == (13 + 3 + 4 + 1) * 3 + 3 + 1
-    in.size() - 67 - 11, strloop));
+    //      10 is reverse calculation whole length 81 = 3^2 * 3^2 case.
+    in.size() - 67 - 10, strloop));
   vector<SimpleVector<T> > res;
   res.reserve(n);
   for(int i = 0; i < lres.size(); i ++) {
@@ -4912,8 +4928,7 @@ template <typename T, int nprogress> SimpleVector<T> pSaturatedInvariant(const v
 
 // N.B. repeat possible output whole range. also offset before/after predict.
 template <typename T, int nprogress> vector<SimpleVector<T> > pRepeat(const vector<SimpleVector<T> >& in, const string& strloop) {
-  // heuristic
-  const int cand(max(int(1), int(in.size() / 60) ));
+  const int cand(max(int(1), int(in.size() / 81) ));
   vector<SimpleVector<T> > res;
   res.reserve(cand);
   for(int i = 1; i <= cand; i ++)
