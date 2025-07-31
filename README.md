@@ -69,8 +69,10 @@ Predictor formatter and some of the toolset for non usual input streams.
     p c.? <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt compatible prediction (. for difference output, states <= -0 to make hypothesis levi stream)
+    # ddpmopt partial prediction (. for difference output, states <= -0 to make hypothesis levi stream)
     p A.? <states>?
+    # ddpmopt chain (. for difference output, states <= -0 for partial chain)
+    p K.? <states>?
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -99,7 +101,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
     
     # once we code and upload here also someone observed our code as a optimization, the jammer intension can affects us also this causes the universal invariant we made hypothesis slips.
-    # we embryonic believing such a condition, so we close with them except for large update around logics to backup here.
+    # we strongly believing such a condition or totally our computer is infected from deep inside low layers, so we close with this repository except for large update around logics to backup here or some small fixes.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -253,4 +255,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/07/25 merge latest ddpmopt result, A.? command param change.
 2025/07/26-27 merge latest ddpmopt result, readme update, SHOULD CLOSE.
 2025/07/28 merge latest ddpmopt result. some usage update, some bug fixes.
+2025/08/01 add upper layers works might be well. update readme.
 
