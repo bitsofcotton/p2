@@ -230,12 +230,16 @@ int main(int argc, const char* argv[]) {
     break;
   } case 'A': {
     int length(46);
-    int skip(12);
-    if(2 < argc) length = std::atoi(argv[2]);
-    if(3 < argc) skip   = std::atoi(argv[3]);
-    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << " " << skip << endl;
+    int skip0(12);
+    if(2 < argc) skip0  = std::atoi(argv[2]);
+    if(3 < argc) length = std::atoi(argv[3]);
+    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
+    const int skip(abs(skip0));
     idFeeder<SimpleVector<num_t> > p(length = length * skip);
     idFeeder<SimpleVector<num_t> > MM(skip);
+    idFeeder<SimpleVector<num_t> > hd(skip * 3 + 1);
+    idFeeder<SimpleVector<num_t> > hM(skip * 3 + skip);
+    idFeeder<SimpleVector<num_t> > hh(skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -252,6 +256,37 @@ int main(int argc, const char* argv[]) {
         M.resize(d.size());
         M.O();
       }
+      if(0 < skip0) {
+        if(MM.full) {
+          hd.next(d);
+          hM.next(MM.res[MM.res.size() - 1]);
+        }
+        if(hM.full) {
+          SimpleMatrix<num_t> mh(3, d.size());
+          SimpleVector<num_t> work(d.size());
+          mh.O();
+          for(int i = 0; i < 3; i ++) {
+            work.O();
+            for(int j = 0; j < skip; j ++) {
+              mh.row(i) += hM.res[i * skip + j];
+              work      += hd.res[i * skip + j];
+            }
+            for(int j = 0; j < work.size(); j ++) mh(i, j) *= work[j];
+          }
+          mh /= num_t(skip * skip);
+          work.O();
+          for(int i = 0; i < work.size(); i ++)
+            work[i] = p0maxNext<num_t>(mh.col(i));
+          hh.next(work);
+        }
+        if(hh.full) {
+          M.O();
+          for(int i = 0; i < skip; i ++)
+            for(int j = 0; j < M.size(); j ++)
+              M[j] += hh.res[i][j] * MM.res[i][j];
+          M /= num_t(skip);
+        } else for(int i = 0; i < M.size(); i ++) M[i] = num_t(int(0));
+      }
       for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
@@ -261,7 +296,13 @@ int main(int argc, const char* argv[]) {
         vector<SimpleVector<num_t> > lres(pSubtractInvariant4<num_t, 1>(
           skipX<SimpleVector<num_t> >(p.res.entity, skip), string("")) );
         MM.next(lres[lres.size() - 1]);
-        if(MM.full) M = MM.res[0];
+        if(MM.full) {
+          M = MM.res[0];
+          if(0 < skip0) {
+            for(int i = 1; i < MM.res.size(); i ++) M += MM.res[i];
+            M /= num_t(skip);
+          }
+        }
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -682,13 +723,17 @@ int main(int argc, const char* argv[]) {
 #if defined(_ONEBINARY_)
   } case '0': {
     int& length(t);
+    int  step(1);
     if(2 < argc) length = std::atoi(argv[2]);
+    if(3 < argc) step   = std::atoi(argv[3]);
     const bool chain(argv[1][1] == 'c');
     #include "../p0/p0.cc"
     break;
   } case '1': {
     int& stat(t);
+    int  step(1);
     if(2 < argc) stat = std::atoi(argv[2]);
+    if(3 < argc) step = std::atoi(argv[3]);
     const bool chain(argv[1][1] == 'c');
     #include "../p1/pp3.cc"
     break;
@@ -938,12 +983,12 @@ int main(int argc, const char* argv[]) {
   cerr << "# flip or not   PRNG stream" << endl << argv[0] << " M<proto> <number of output columns>" << endl;
   cerr << endl << " *** predictor part ***" << endl;
 #if defined(_ONEBINARY_)
-  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>" << endl;
-  cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg>" << endl;
+  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>? <step>?" << endl;
+  cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg> <step>?" << endl;
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output, states <= -0 to make hypothesis levi stream)" << endl << argv[0] << " A.? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for difference output, skip < 0 for raw prediction)" << endl << argv[0] << " A.? <skip>? <states>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -959,9 +1004,9 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** typical commands ***" << endl;
   cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ac <markov> <skip>| " << argv[0] << " lH > 1" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " lH > 1" << endl;
   cerr << "# we bet range prediction was correct" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip> | " << argv[0] << " s | " << argv[0] << " k <skip> | " << argv[0] << " d | " << argv[0] << " 0 3 > 2" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip/2> | " << argv[0] << " s | " << argv[0] << " k <skip/4> | " << argv[0] << " d | " << argv[0] << " 0 3 2 > 2" << endl;
   return - 1;
 }
 
