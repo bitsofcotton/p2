@@ -228,16 +228,14 @@ int main(int argc, const char* argv[]) {
             std::endl << std::flush;
     }
     break;
-  } case 'A': case 'K': {
-    int length(argv[1][0] == 'K' ? 80 : 21);
-    if(2 < argc && ! (argv[2][0] == '-' && argv[2][1] == '\0'))
-      length = std::atoi(argv[2]);
-    const int levi((2 < argc && argv[2][0] == '-') || length < 0);
-    if(argv[1][0] == 'K' && levi && argv[2][1] == '\0')
-      length = 58;
-    const bool kcm(argv[1][0] == 'K' && levi);
-    cerr << "continue with: " << argv[0] << " " << argv[1] << (levi ? " -" : " ") << abs(length) << endl;
-    idFeeder<SimpleVector<num_t> > p(length = abs(length));
+  } case 'A': {
+    int length(46);
+    int skip(12);
+    if(2 < argc) length = std::atoi(argv[2]);
+    if(3 < argc) skip   = std::atoi(argv[3]);
+    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << " " << skip << endl;
+    idFeeder<SimpleVector<num_t> > p(length = length * skip);
+    idFeeder<SimpleVector<num_t> > MM(skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -254,31 +252,19 @@ int main(int argc, const char* argv[]) {
         M.resize(d.size());
         M.O();
       }
-      if(kcm) {
-        for(int i = 0; i < d.size(); i ++) std::cout << d[i] << ", ";
-        for(int i = 0; i < d.size() - 1; i ++)
-          std::cout << (d[i] * sgn<num_t>(M[i])) << ", ";
-        const int i(d.size() - 1);
-        std::cout << (d[i] * sgn<num_t>(M[i])) << std::endl;
-      } else for(int i = 0; i < d.size(); i ++)
+      for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(argv[1][0] == 'K') {
-        if(! p.full || p.res.size() <= 3) M = d.O();
-        else if(levi) {
-          vector<SimpleVector<num_t> > lres(pComplementStream<num_t, 1>(
-            p.res.entity, string("")) );
-          M = lres[lres.size() - 1];
-        } else M = unOffsetHalf<num_t>(pSaturatedInvariant<num_t, 1>(
-          p.res.entity, string("")) );
-      } else M = ! p.full || p.res.size() <= 3 ? d.O() : unOffsetHalf<num_t>(
-        (levi ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
-                pGuarantee<num_t,   1>(p.res.entity, string("")) ) );
-      if(! kcm) {
-        for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
-        std::cout << M[M.size() - 1] << std::endl << std::flush;
+      if(! p.full || p.res.size() <= 3 * skip) M = d.O();
+      else {
+        vector<SimpleVector<num_t> > lres(pSubtractInvariant4<num_t, 1>(
+          skipX<SimpleVector<num_t> >(p.res.entity, skip), string("")) );
+        MM.next(lres[lres.size() - 1]);
+        if(MM.full) M = MM.res[0];
       }
+      for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
+      std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
     break;
   } case 'e': {
@@ -973,14 +959,9 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** typical commands ***" << endl;
   cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ic 1 | " << argv[0] << " Ic 3 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(8)) << " | " << argv[0] << " Ac - | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | " << argv[0] << " Ac | " << argv[0] << " t " << num_t(int(32)) << " | " << argv[0] << " lH | " << argv[0] << " lH > 1" << endl;
-  cerr << "# bet with such a whole." << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O 4 > 2" << endl;
-  cerr << argv[0] << " S 1 < 0 > 00" << endl;
-  cerr << "# from somehow, such a jammed stream is vulnearable to negate of Riemann measureable condition." << endl;
-  cerr << argv[0] << " L 00 2 | " << argv[0] << " J " << num_t(int(4)) << " | " << argv[0] << " 0 3 | " << argv[0] << "  lH | " << argv[0] << " G | " << argv[0] << " S 51" << endl;
-  cerr << endl << " *** simply check with (still something buggy) ***" << endl;
-  cerr << "cat ... | " << argv[0] << " K - | " << argv[0] << " J " << num_t(int(1)) / num_t(int(40)) << " | " << argv[0] << " 0 3 | " << argv[0] << " lH" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ac <markov> <skip>| " << argv[0] << " lH > 1" << endl;
+  cerr << "# we bet range prediction was correct" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip> | " << argv[0] << " s | " << argv[0] << " k <skip> | " << argv[0] << " d | " << argv[0] << " 0 3 > 2" << endl;
   return - 1;
 }
 
