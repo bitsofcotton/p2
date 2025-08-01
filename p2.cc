@@ -230,16 +230,17 @@ int main(int argc, const char* argv[]) {
     break;
   } case 'A': {
     int length(46);
-    int skip0(12);
+    int skip0(6);
+    const int lplen(3);
     if(2 < argc) skip0  = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
     const int skip(abs(skip0));
-    idFeeder<SimpleVector<num_t> > p(length = length * skip);
-    idFeeder<SimpleVector<num_t> > MM(skip);
-    idFeeder<SimpleVector<num_t> > hd(skip * 3 + 1);
-    idFeeder<SimpleVector<num_t> > hM(skip * 3 + skip);
-    idFeeder<SimpleVector<num_t> > hh(skip);
+    idFeeder<SimpleVector<num_t> > p(length * skip * 2);
+    idFeeder<SimpleVector<num_t> > MM(skip * 2);
+    idFeeder<SimpleVector<num_t> > hd(skip * lplen * 2);
+    idFeeder<SimpleVector<num_t> > hM(skip * lplen * 2);
+    idFeeder<SimpleVector<num_t> > hh(skip * 2);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -256,54 +257,15 @@ int main(int argc, const char* argv[]) {
         M.resize(d.size());
         M.O();
       }
-      if(0 < skip0) {
-        if(MM.full) {
-          hd.next(d);
-          hM.next(MM.res[MM.res.size() - 1]);
-        }
-        if(hM.full) {
-          SimpleMatrix<num_t> mh(3, d.size());
-          SimpleVector<num_t> work(d.size());
-          mh.O();
-          for(int i = 0; i < 3; i ++) {
-            work.O();
-            for(int j = 0; j < skip; j ++) {
-              mh.row(i) += hM.res[i * skip + j];
-              work      += hd.res[i * skip + j];
-            }
-            for(int j = 0; j < work.size(); j ++) mh(i, j) *= work[j];
-          }
-          mh /= num_t(skip * skip);
-          work.O();
-          for(int i = 0; i < work.size(); i ++)
-            work[i] = p0maxNext<num_t>(mh.col(i));
-          hh.next(work);
-        }
-        if(hh.full) {
-          M.O();
-          for(int i = 0; i < skip; i ++)
-            for(int j = 0; j < M.size(); j ++)
-              M[j] += hh.res[i][j] * MM.res[i][j];
-          M /= num_t(skip);
-        } else for(int i = 0; i < M.size(); i ++) M[i] = num_t(int(0));
-      }
       for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= 3 * skip) M = d.O();
-      else {
-        vector<SimpleVector<num_t> > lres(pSubtractInvariant4<num_t, 1>(
-          skipX<SimpleVector<num_t> >(p.res.entity, skip), string("")) );
-        MM.next(lres[lres.size() - 1]);
-        if(MM.full) {
-          M = MM.res[0];
-          if(0 < skip0) {
-            for(int i = 1; i < MM.res.size(); i ++) M += MM.res[i];
-            M /= num_t(skip);
-          }
-        }
-      }
+      M = (! p.full || p.res.size() <= 3 * skip) ? M = d.O() :
+        (skip0 < 0 ? pSubtractInvariant4<num_t, 1>(skipX<SimpleVector<num_t> >(
+          p.res.entity, skip * 2), string("")) :
+            pComplementStreamSub<num_t, 1>(p.res.entity, skip, lplen, MM,
+              hd, hM, hh, string("")) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -1006,7 +968,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
   cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " lH > 1" << endl;
   cerr << "# we bet range prediction was correct" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip/2> | " << argv[0] << " s | " << argv[0] << " k <skip/4> | " << argv[0] << " d | " << argv[0] << " 0 3 2 > 2" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip> | " << argv[0] << " s | " << argv[0] << " k <skip> | " << argv[0] << " d | " << argv[0] << " 0 3 2 > 2" << endl;
   return - 1;
 }
 

@@ -256,4 +256,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/07/26-27 merge latest ddpmopt result, readme update, SHOULD CLOSE.
 2025/07/28 merge latest ddpmopt result. some usage update, some bug fixes.
 2025/08/01 add upper layers works might be well. update readme.
+2025/08/02 re-enable step option on cmd 0, 1, Ac?.
 
