@@ -236,11 +236,7 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
     const int skip(abs(skip0));
-    idFeeder<SimpleVector<num_t> > p(length * skip * 2);
-    idFeeder<SimpleVector<num_t> > MM(skip * 2);
-    idFeeder<SimpleVector<num_t> > hd(skip * lplen * 2);
-    idFeeder<SimpleVector<num_t> > hM(skip * lplen * 2);
-    idFeeder<SimpleVector<num_t> > hh(skip * 2);
+    idFeeder<SimpleVector<num_t> > p(length * skip + skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -263,9 +259,48 @@ int main(int argc, const char* argv[]) {
       p.next(offsetHalf<num_t>(d));
       M = (! p.full || p.res.size() <= 3 * skip) ? M = d.O() :
         (skip0 < 0 ? pSubtractInvariant4<num_t, 1>(skipX<SimpleVector<num_t> >(
-          p.res.entity, skip * 2), string("")) :
-            pComplementStreamSub<num_t, 1>(p.res.entity, skip, lplen, MM,
-              hd, hM, hh, string("")) );
+          p.res.entity, skip), string("")) :
+            pComplementStream<num_t, 1>(p.res, string("") ) );
+      for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
+      std::cout << M[M.size() - 1] << std::endl << std::flush;
+    }
+    break;
+  } case 'q': {
+    int len(4);
+    if(2 < argc) len = std::atoi(argv[2]);
+    idFeeder<SimpleVector<num_t> > p(len);
+    SimpleVector<num_t> d;
+    SimpleVector<num_t> M;
+    while(std::getline(std::cin, s, '\n')) {
+      int cnt(1);
+      for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
+      d.resize(cnt);
+      int i, j;
+      for(i = 0, j = 0; i < s.size(); i ++) {
+        std::stringstream ins(s.substr(i, s.size() - i));
+        ins >> d[j ++];
+        for( ; s[i] != ',' && i < s.size(); i ++) ;
+      }
+      if(M.size() < d.size()) {
+        M.resize(d.size());
+        M.O();
+      }
+      for(int i = 0; i < d.size(); i ++)
+        std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
+      std::cout << std::flush;
+      p.next(d);
+      if(p.full) {
+        const SimpleVector<num_t> ms(minsq<num_t>(p.res.size()));
+        for(int i = 0; i < p.res[0].size(); i ++) {
+          idFeeder<num_t> f(ms.size());
+          for(int j = 0; j < ms.size(); j ++) f.next(p.res[j][i]);
+          assert(f.full);
+          M[i]  = num_t(int(0));
+          for(int j = 0; j < ms.size(); j ++) M[i] += f.res[j];
+          M[i] /= num_t(ms.size());
+          M[i] += ms.dot(f.res);
+        }
+      }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -951,6 +986,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
   cerr << "# ddpmopt compatible prediction (. for difference output, skip < 0 for raw prediction)" << endl << argv[0] << " A.? <skip>? <states>?" << endl;
+  cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -969,6 +1005,8 @@ int main(int argc, const char* argv[]) {
   cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " lH > 1" << endl;
   cerr << "# we bet range prediction was correct" << endl;
   cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip> | " << argv[0] << " s | " << argv[0] << " k <skip> | " << argv[0] << " d | " << argv[0] << " 0 3 2 > 2" << endl;
+  cerr << endl << " *** test suite ***" << endl;
+  cerr << "cat ... | " << argv[0] << " q <skip*skip> | " << argv[0] << " A <skip> <markov>" << endl;
   return - 1;
 }
 
