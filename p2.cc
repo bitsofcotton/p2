@@ -236,7 +236,7 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
     const int skip(abs(skip0));
-    idFeeder<SimpleVector<num_t> > p(length * skip + skip);
+    idFeeder<SimpleVector<num_t> > p(((skip0 < 0 ? 0 : skip + 2) + length) * skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -257,10 +257,17 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      M = (! p.full || p.res.size() <= 3 * skip) ? M = d.O() :
-        (skip0 < 0 ? pSubtractInvariant4<num_t, 1>(skipX<SimpleVector<num_t> >(
-          p.res.entity, skip), string("")) :
-            pComplementStream<num_t, 1>(p.res, string("") ) );
+      if(! p.full || p.res.size() <= 3 * skip) M = d.O();
+      else if(skip0 < 0)
+        M = pSubtractInvariant4<num_t, 1>(
+          skipX<SimpleVector<num_t> >(p.res.entity, skip), 1,
+            string(""))[0];
+      else {
+        //vector<SimpleVector<num_t> > work(pComplementStream<num_t, 1>(
+        //  p.res, length, skip, string("") ) );
+        //M = move(work[work.size() - 1]);
+        M = pGainCont<num_t, 1>(p.res, string("") );
+      }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -985,7 +992,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output, skip < 0 for raw prediction)" << endl << argv[0] << " A.? <skip>? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for difference output, skip < 0 for partial)" << endl << argv[0] << " A.? <skip>? <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1000,13 +1007,9 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** typical commands ***" << endl;
-  cerr << "# subtract maximum linear dimension of trivial invariants." << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " m0 ... | tee 0 | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " lH > 1" << endl;
-  cerr << "# we bet range prediction was correct" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip> | " << argv[0] << " s | " << argv[0] << " k <skip> | " << argv[0] << " d | " << argv[0] << " 0 3 2 > 2" << endl;
-  cerr << endl << " *** test suite ***" << endl;
-  cerr << "cat ... | " << argv[0] << " q <skip*skip> | " << argv[0] << " A <skip> <markov>" << endl;
+  cerr << endl << " *** sectional test ***" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <sectional>" << endl;
   return - 1;
 }
 

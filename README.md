@@ -69,10 +69,10 @@ Predictor formatter and some of the toolset for non usual input streams.
     p c.? <arg>
     # trivial return to the average id. prediction
     p I
-    # ddpmopt partial prediction (. for difference output, states <= -0 to make hypothesis levi stream)
-    p A.? <states>?
-    # ddpmopt chain (. for difference output, states <= -0 for partial chain)
-    p K.? <states>?
+    # ddpmopt partial prediction (. for difference output, skip <= -0 for partial)
+    p A.? <skip>? <states>?
+    # minimum quare left hand side prediction (. for difference output)"
+    p q.? <len>?
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -96,12 +96,16 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
+     *** sectional test ***
+    cat ... | tee 0 |  p Ac <skip> <markov> | p lH > 1
+    p L 0 1 | p O <sectional>
+    
     # to hear some residue
     p r | p l 0 | tee 0 | p A ... | p l 0 | p s > 1
     catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
     
     # once we code and upload here also someone observed our code as a optimization, the jammer intension can affects us also this causes the universal invariant we made hypothesis slips.
-    # we strongly believing such a condition or totally our computer is infected from deep inside low layers, so we close with this repository except for large update around logics to backup here or some small fixes.
+    # we are strongly believing such a condition or totally our computer is infected from deep inside low layers, so we close with this repository except for large update around logics to backup here or some small fixes.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -257,4 +261,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/07/28 merge latest ddpmopt result. some usage update, some bug fixes.
 2025/08/01 add upper layers works might be well. update readme.
 2025/08/02 re-enable step option on cmd 0, 1, Ac?.
+2025/08/03 sectional improvement, readme fix.
 
