@@ -905,21 +905,35 @@ int main(int argc, const char* argv[]) {
           bbb.next(in);
         }
         break;
-      } case 'O': {
+      } case 'O': case 'Q': {
         const int len(2 < argc ? std::atoi(argv[2]) : 1);
         if(! t) bbb = idFeeder<std::vector<num_t> >(len);
         bbb.next(in);
         if(bbb.full) {
           b = bbb.res[0];
-          for(int j = 1; j < bbb.res.size(); j ++)
+          vector<num_t> M;
+          for(int j = 1; j < bbb.res.size(); j ++) {
+            if(j == bbb.res.size() - 1) M = b;
             for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+          }
           for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
-              (b[i] - b[i + b.size() / 2]) ) << ", ";
+            std::cout << (argv[1][0] == 'O' ?
+              ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
+                (b[i] - b[i + b.size() / 2]) ) :
+                  (num_t(int(1)) / num_t(int(bbb.res.size() * (bbb.res.size() +
+                    2))) < abs(M[i] - M[i + M.size() / 2]) ?
+                      in[i] * (in[i] - in[i + in.size() / 2]) /
+                        abs(M[i] - M[i + M.size() / 2]) : num_t(int(0)) ))
+                          << ", ";
           const int i(b.size() / 2 - 1);
-          std::cout << ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
-            (b[b.size() / 2 - 1] -
-              b[(b.size() / 2) * 2 - 1]) ) << std::endl;
+          std::cout << (argv[1][0] == 'O' ?
+            ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
+              (b[i] - b[i + b.size() / 2]) ) :
+                (num_t(int(1)) / num_t(int(bbb.res.size() * (bbb.res.size() +
+                  2))) < abs(M[i] - M[i + M.size() / 2]) ?
+                    in[i] * (in[i] - in[i + in.size() / 2]) /
+                      abs(M[i] - M[i + M.size() / 2]) : num_t(int(0)) ))
+                        << std::endl;
         } else {
           for(int i = 0; i < in.size() - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1008,8 +1022,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " 0c <skip> | " << argv[0] << " lH > 1" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip>" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " lH | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " lH | " << argv[0] << " 0c <skip> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(4)) << "  > 1" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " [OQ] <skip>" << endl;
   return - 1;
 }
 
