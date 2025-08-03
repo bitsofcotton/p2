@@ -236,7 +236,8 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
     const int skip(abs(skip0));
-    idFeeder<SimpleVector<num_t> > p(((skip0 < 0 ? 0 : skip + 2) + length) * skip);
+    idFeeder<SimpleVector<num_t> > p((length + skip + 2) * (skip0 < 0 ? 1 : skip) * skip);
+    idFeeder<SimpleVector<num_t> > q(skip0 < 0 ? 1 : skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -257,16 +258,15 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? M[i] * d[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= 3 * skip) M = d.O();
-      else if(skip0 < 0)
-        M = pSubtractInvariant4<num_t, 1>(
-          skipX<SimpleVector<num_t> >(p.res.entity, skip), 1,
-            string(""))[0];
+      if(! p.full || p.res.size() <= 3 * skip * (skip0 < 0 ? 1 : skip))
+        M = d.O();
       else {
-        //vector<SimpleVector<num_t> > work(pComplementStream<num_t, 1>(
-        //  p.res, length, skip, string("") ) );
-        //M = move(work[work.size() - 1]);
-        M = pGainCont<num_t, 1>(p.res, string("") );
+        vector<SimpleVector<num_t> > work(
+          skipX<SimpleVector<num_t> >(p.res.entity, skip0 < 0 ? 1 : skip));
+        SimpleVector<SimpleVector<num_t> > w;
+        w.entity = move(work);
+        q.next(pGainCont<num_t, 1>(w, string("") ));
+        if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -1008,8 +1008,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <sectional>" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " 0c <skip> | " << argv[0] << " lH > 1" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip>" << endl;
   return - 1;
 }
 
