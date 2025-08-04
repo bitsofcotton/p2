@@ -711,6 +711,47 @@ int main(int argc, const char* argv[]) {
     // N.B. child will auto exit when stdin close.
     for(int i = 0; i < sock.size(); i ++) close(sock[i]);
     break;
+  } case 'K': {
+    int step(4);
+    if(2 < argc) step = std::atoi(argv[2]);
+    vector<int> sock;
+    sock.reserve(step);
+    for(int i = 0; i < step; i ++) {
+      int sp[2];
+      if(socketpair(AF_UNIX, SOCK_STREAM, PF_UNSPEC, sp) == - 1) return - 1;
+      IOSYNC(sp[0]);
+      IOSYNC(sp[1]);
+      int pidf;
+      if((pidf = fork()) == - 1) return - 1;
+      if(pidf == 0) {
+        // N.B. child process.
+        close(sp[0]);
+        dup2(sp[1], 0);
+        dup2(sp[1], 1);
+        char* myargv[4];
+        myargv[0] = "sh";
+        myargv[1] = "-c";
+        myargv[2] = const_cast<char*>(argv[3]);
+        myargv[3] = 0;
+        execve("/bin/sh", myargv, environ);
+        assert(0 && "SHOULD NOT BE REACHED");
+      }
+      close(sp[1]);
+      sock.emplace_back(sp[0]);
+    }
+    while(std::getline(std::cin, s, '\n')) {
+      s += string("\n");
+      write(sock[(t ++) % step], s.c_str(), s.size());
+      if(step <= t) {
+        char buf[1];
+        while(read(sock[t % step], buf, 1) && buf[0] != '\n')
+          std::cout << buf[0];
+        std::cout << std::endl << std::flush;
+      }
+    }
+    // N.B. child will auto exit when stdin close.
+    for(int i = 0; i < sock.size(); i ++) close(sock[i]);
+    break;
 #undef IOSYNC
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # if !defined(_FLOAT_BITS_)
@@ -916,24 +957,19 @@ int main(int argc, const char* argv[]) {
             if(j == bbb.res.size() - 1) M = b;
             for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
           }
+          vector<num_t> Mbet;
+          Mbet.reserve(in.size() / 2);
+          if(argv[1][0] == 'O') for(int i = 0; i < in.size() / 2; i ++)
+            Mbet.emplace_back(b[i] - b[i + b.size() / 2]);
+          else for(int i = 0; i < in.size() / 2; i ++)
+            Mbet.emplace_back((in[i] - in[i + in.size() / 2]) *
+              num_t(bbb.res.size()) + M[i + M.size() / 2]);
           for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << (argv[1][0] == 'O' ?
-              ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
-                (b[i] - b[i + b.size() / 2]) ) :
-                  (num_t(int(1)) / num_t(int(bbb.res.size() * (bbb.res.size() +
-                    2))) < abs(M[i] - M[i + M.size() / 2]) ?
-                      in[i] * (in[i] - in[i + in.size() / 2]) /
-                        abs(M[i] - M[i + M.size() / 2]) : num_t(int(0)) ))
-                          << ", ";
+            std::cout << (Mbet[i] * (argv[1][1] == '+' ? num_t(int(1)) :
+              (argv[1][0] == 'O' ? b[i] : in[i]) ) ) << ", ";
           const int i(b.size() / 2 - 1);
-          std::cout << (argv[1][0] == 'O' ?
-            ((argv[1][1] == '+' ? num_t(int(1)) : b[i]) *
-              (b[i] - b[i + b.size() / 2]) ) :
-                (num_t(int(1)) / num_t(int(bbb.res.size() * (bbb.res.size() +
-                  2))) < abs(M[i] - M[i + M.size() / 2]) ?
-                    in[i] * (in[i] - in[i + in.size() / 2]) /
-                      abs(M[i] - M[i + M.size() / 2]) : num_t(int(0)) ))
-                        << std::endl;
+          std::cout << (Mbet[i] * (argv[1][1] == '+' ? num_t(int(1)) :
+            (argv[1][0] == 'O' ? b[i] : in[i]) ) ) << std::endl;
         } else {
           for(int i = 0; i < in.size() - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -982,7 +1018,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take affter math on input stream first half to last half" << endl << argv[0] << " O\+?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " [OQ]\+?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -1014,7 +1050,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# input vector stream to pgm graphics output or its reverse" << endl << argv[0] << " P-?" << endl;
 #if defined(_FORK_)
   cerr << endl << " *** multi process call part ***" << endl;
-  cerr << "# do double prediction on same input" << endl << argv[0] << " D <command set 0> <command set 1>" << endl;
+  cerr << "# do double prediction on same input" << endl << argv[0] << " D <command0> <command1>" << endl;
+  cerr << "# do step prediction on same input" << endl << argv[0] << " K <step> <command>" << endl;
   cerr << "# do each of all column input prediction parallel, take output column 0." << endl << argv[0] << " H <command>" << endl;
   cerr << "# do each of all column input prediction parallel, take output column 0 as a prediction value, pred avg * input avg output." << endl << argv[0] << " @ <command>" << endl;
 #endif

@@ -2,7 +2,7 @@
 Predictor formatter and some of the toolset for non usual input streams.
 
 # Usage
-    python3 cr.py ([JRm]|[HD]?) ...
+    python3 cr.py ([RmI]|[HD]?) ...
     
     make p
     
@@ -67,8 +67,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p 1c? <arg>
     # feed patternizable jammer input entropy (. for difference output)
     p c.? <arg>
-    # trivial return to the average id. prediction
-    p I
+    # trivial return to the average id. prediction (c for difference output)
+    p Ic?
     # ddpmopt partial prediction (. for difference output, skip <= -0 for partial)
     p A.? <skip>? <states>?
     # minimum quare left hand side prediction (. for difference output)"
@@ -84,7 +84,9 @@ Predictor formatter and some of the toolset for non usual input streams.
     
      *** multi process call part ***
     # do double prediction on same input
-    p D <command set 0> <command set 1>
+    p D <command0> <command1>
+    # do step prediction on same input
+    p K <step> <command>
     # do each of all column input prediction parallel, take output column 0.
     p H <command>
     # do each of all column input prediction parallel, take output column 0 as a prediction value, prediction average * input stream average output.
@@ -97,11 +99,11 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** sectional test ***
-    cat ... | tee 0 |  p Ac <skip> <markov> | p lH > 1
-    p L 0 1 | p O <sectional>
+    cat ... | tee 0 |  p Ac <skip> <markov> | p t .5 | p lH | p Ac -<skip> <markov> | p t .5 | p lH | p 0c <skip> | p lH | p t 4 > 1
+    p L 0 1 | p [OQ] <skip>
     
     # to hear some residue
-    p r | p l 0 | tee 0 | p A ... | p l 0 | p s > 1
+    p r | p l 0 | tee 0 | ... | p l 0 | p s > 1
     catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
     
     # once we code and upload here also someone observed our code as a optimization, the jammer intension can affects us also this causes the universal invariant we made hypothesis slips.
@@ -262,4 +264,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/01 add upper layers works might be well. update readme.
 2025/08/02 re-enable step option on cmd 0, 1, Ac?.
 2025/08/03 sectional improvement, readme fix.
+2025/08/04 prediction invert option on cr.py I cmd, p Q cmd change, ok for our machine but might be infected totally because of graphics prediction result.
 
