@@ -76,13 +76,13 @@ elif(sys.argv[1][0] == 'm'):
   # N.B. for
   #  "p P- ... | tee 0 | p Ac 4 | tee 01 | p t .5 | p lH | p Ac -4 | tee 02 | p t .5 | p lH | p 0c 4 | p t 4 | tee 03 | p lH > 1"
   #  generated input stream, call with
-  #  "python cr.py I 0 01 02 03  | p V | p X | p f ... | p P
+  #  "python cr.py I 4 0 01 02 03  | p V | p X | p f ... | p P
   #  however, this isn't predict well but the p [OQ] command says it's good.
   #  cf. p L 0 1 | p [OQ] 4 > 2
 elif(sys.argv[1][0] == 'I'):
   f = []
   for t in range(0, 4):
-    f.append(open(sys.argv[t + 1], "r"))
+    f.append(open(sys.argv[t + 3], "r"))
   d = []
   M = []
   while(True):
@@ -97,13 +97,13 @@ elif(sys.argv[1][0] == 'I'):
       M[- 1][idx]  = float(M[- 1][idx])
       M[- 1][idx] += float(w0[idx]) * 2.
       M[- 1][idx] += float(w1[idx])
-    d = d[- 3:]
-    M = M[- 4:]
-    if(4 <= len(M) and len(M[0]) != 0):
+    d = d[- int(sys.argv[2]) + 1:]
+    M = M[- int(sys.argv[2]):]
+    if(int(sys.argv[2]) <= len(M)):
       work = []
       for idx in range(0, len(d[0])):
-        work.append(M[3][len(d[0]) + 1 + idx] * 4.)
-        for t in range(0, 3):
+        work.append(M[- 1][len(d[0]) + 1 + idx] * 4.)
+        for t in range(0, len(M) - 1):
           work[idx] += d[t][idx] - M[t][len(d[0]) + 1 + idx]
         work[idx] = str(work[idx])
       print(",".join(work))

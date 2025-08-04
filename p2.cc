@@ -145,7 +145,7 @@ int main(int argc, const char* argv[]) {
       std::cout << std::endl << std::flush;
     }
     break;
-  } case 'm': case 'M': {
+  } case 'm': case 'M': case 'n': case 'N': {
     // N.B. also [complex(rand,rand)/abs(...), ...] series works better.
     //      with IDFT/DFT, this is the analogy of output index shuffling.
     // N.B. M command select large one of the matrix size on PRN generation.
@@ -161,48 +161,55 @@ int main(int argc, const char* argv[]) {
     const char& sw(argv[1][1]);
     num_t d(t);
     while(std::getline(std::cin, s, '\n')) {
-      std::stringstream ins(s);
-      ins >> d;
       for(int i = 0; i < std::atoi(argv[2]); i ++) {
-        // N.B. rand < 0x2001 case isn't handled.
-        switch(sw) {
-          case '0':
+        for(int ii = 0, idx = 0; ii < s.size(); ii ++) {
+          std::stringstream ins(s.substr(idx, s.size() - idx));
+          ins >> d;
+          for( ; idx < s.size() && s[idx] != ','; idx ++) ;
+          idx ++;
+          // N.B. rand < 0x2001 case isn't handled.
+          switch(sw) {
+            case '0':
 #if defined(_ARCFOUR_)
-            std::cout << (argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
+             std::cout << (argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
 #else
-            std::cout << (argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
+             std::cout << (argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
 #endif
-            break;
+             break;
 #if !defined(_OLDCPP_)
-          case '1':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(er) & 1 ? 1 : - 1) * d : (fl(ud(er) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
-            break;
-          case '2':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(mt) & 1 ? 1 : - 1) * d : (fl(ud(mt) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
-            break;
-          case '3':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl24) & 1 ? 1 : - 1) * d : (fl(ud(rl24) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
-            break;
-          case '4':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(rl48) & 1 ? 1 : - 1) * d : (fl(ud(rl48) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
-            break;
-          case '5':
-            std::cout << (argv[1][0] == 'M' ? num_t(ud(kb) & 1 ? 1 : - 1) * d : (fl(ud(kb) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
-            break;
+            case '1':
+              std::cout << (argv[1][0] == 'M' ? num_t(ud(er) & 1 ? 1 : - 1) * d : (fl(ud(er) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
+              break;
+            case '2':
+              std::cout << (argv[1][0] == 'M' ? num_t(ud(mt) & 1 ? 1 : - 1) * d : (fl(ud(mt) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
+              break;
+            case '3':
+              std::cout << (argv[1][0] == 'M' ? num_t(ud(rl24) & 1 ? 1 : - 1) * d : (fl(ud(rl24) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
+              break;
+            case '4':
+              std::cout << (argv[1][0] == 'M' ? num_t(ud(rl48) & 1 ? 1 : - 1) * d : (fl(ud(rl48) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
+              break;
+            case '5':
+              std::cout << (argv[1][0] == 'M' ? num_t(ud(kb) & 1 ? 1 : - 1) * d : (fl(ud(kb) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
+              break;
 #endif
 #if defined(_GETENTROPY_)
-          case '6': {
-            uint8_t rnd[4];
-            for(int i = 0; i < 1600000 / 4; i ++)
-              getentropy(rnd, sizeof rnd);
-            std::cout << (argv[1][0] == 'M' ? num_t((uint32_t&)(*rnd) & 1 ? 1 : - 1) * d : (fl(((uint32_t&)(*rnd) % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
-            break;
-          }
+            case '6': {
+              uint8_t rnd[4];
+              for(int i = 0; i < 1600000 / 4; i ++)
+                getentropy(rnd, sizeof rnd);
+              std::cout << (argv[1][0] == 'M' ? num_t((uint32_t&)(*rnd) & 1 ? 1 : - 1) * d : (fl(((uint32_t&)(*rnd) % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
+              break;
+            }
 #endif
-          default: goto usage;
-        }
-        if(i < std::atoi(argv[2]) - 1)
+            default: goto usage;
+          }
+          if(s.size() <= idx) break;
           std::cout << ", ";
+        }
+        if(i < std::atoi(argv[2]) - 1 &&
+          (argv[1][0] == 'm' || argv[1][0] == 'M') )
+            std::cout << ", ";
         else
           std::cout << std::endl << std::flush;
       }
@@ -237,7 +244,7 @@ int main(int argc, const char* argv[]) {
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
     const int skip(abs(skip0));
     idFeeder<SimpleVector<num_t> > p((length + skip + 2) * (skip0 < 0 ? 1 : skip) * skip);
-    idFeeder<SimpleVector<num_t> > q(skip0 < 0 ? 1 : skip);
+    idFeeder<SimpleVector<num_t> > q(skip0 < 0 ? skip : skip * skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -260,13 +267,13 @@ int main(int argc, const char* argv[]) {
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3 * skip * (skip0 < 0 ? 1 : skip))
         M = d.O();
-      else {
-        vector<SimpleVector<num_t> > work(
-          skipX<SimpleVector<num_t> >(p.res.entity, skip0 < 0 ? 1 : skip));
-        SimpleVector<SimpleVector<num_t> > w;
-        w.entity = move(work);
-        q.next(pGainCont<num_t, 1>(w, string("") ));
-        if(q.full) M = q.res[0];
+      else
+        q.next(pGainCont<num_t, 1>(skipX<SimpleVector<num_t> >(p.res.entity,
+          skip0 < 0 ? 1 : skip), string("") ));
+      if(q.full) {
+        M  = q.res[0];
+        for(int i = 1; i < skip; i ++) M += q.res[i];
+        M /= num_t(q.res.size());
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -375,7 +382,7 @@ int main(int argc, const char* argv[]) {
         b[i] = b[i + 1];
     }
     break;
-  } case 'P': {
+  } case 'P': case 'Y': {
     if(argv[1][1] == '-') {
       for(int i = 2; i < argc; i ++) {
         std::vector<SimpleMatrix<num_t> > bitimg;
@@ -393,13 +400,21 @@ int main(int argc, const char* argv[]) {
       std::stringstream ss(s);
       SimpleVector<num_t> w;
       ss >> w;
-      const int sq0(sqrt(num_t(w.size())));
-      const int sq((sq0 + 1) * (sq0 + 1) == w.size() ? sq0 + 1 : sq0);
+      const int sq0(sqrt(num_t(argv[1][0] == 'Y' ? w.size() / 3 : w.size())));
+      const int sq((sq0 + 1) * (sq0 + 1) == (argv[1][0] == 'Y' ? w.size() / 3 :
+        w.size()) ? sq0 + 1 : sq0);
       vector<SimpleMatrix<num_t> > p;
       p.emplace_back(SimpleMatrix<num_t>(sq, sq));
-      for(int i = 0; i < p[0].rows(); i ++)
-        p[0].row(i) = binMargin<num_t>(offsetHalf<num_t>(w.subVector(i * p[0].cols(), p[0].cols())));
-      if(! savep2or3<num_t>((std::string("rand_pgm-") + to_string(t ++) + std::string(".pgm")).c_str(), p) ) {
+      if(argv[1][0] == 'Y') {
+        p.emplace_back(SimpleMatrix<num_t>(sq, sq));
+        p.emplace_back(SimpleMatrix<num_t>(sq, sq));
+      }
+      for(int j = 0; j < p.size(); j ++)
+        for(int i = 0; i < p[0].rows(); i ++)
+          p[j].row(i) = binMargin<num_t>(offsetHalf<num_t>(w.subVector(
+            j * p[0].cols() * p[0].rows() + i * p[0].cols(), p[0].cols())));
+      if(! savep2or3<num_t>((std::string("rand_pgm-") + to_string(t ++) +
+        std::string(argv[1][0] == 'Y' ? ".ppm" : ".pgm")).c_str(), p) ) {
         std::cerr << "failed to save." << std::endl;
         // if saveing file failed, safe to exit.
         break;
@@ -946,32 +961,22 @@ int main(int argc, const char* argv[]) {
           bbb.next(in);
         }
         break;
-      } case 'O': case 'Q': {
+      } case 'O': {
         const int len(2 < argc ? std::atoi(argv[2]) : 1);
-        if(! t) bbb = idFeeder<std::vector<num_t> >(len);
+        if(! t) bbb = idFeeder<std::vector<num_t> >(len * 2);
         bbb.next(in);
         if(bbb.full) {
           b = bbb.res[0];
-          vector<num_t> M;
-          for(int j = 1; j < bbb.res.size(); j ++) {
-            if(j == bbb.res.size() - 1) M = b;
-            for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
-          }
-          vector<num_t> Mbet;
-          Mbet.reserve(in.size() / 2);
-          if(argv[1][0] == 'O') for(int i = 0; i < in.size() / 2; i ++)
-            Mbet.emplace_back(b[i] - b[i + b.size() / 2]);
-          else for(int i = 0; i < in.size() / 2; i ++)
-            Mbet.emplace_back((in[i] - in[i + in.size() / 2]) *
-              num_t(bbb.res.size()) + M[i + M.size() / 2]);
+          for(int j = 1; j < len; j ++)
+            for(int k = 0; k < b.size() / 2; k ++) b[k] += bbb.res[j][k];
           for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << (Mbet[i] * (argv[1][1] == '+' ? num_t(int(1)) :
-              (argv[1][0] == 'O' ? b[i] : in[i]) ) ) << ", ";
+            std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+              num_t(int(1)) : b[i]) ) << ", ";
           const int i(b.size() / 2 - 1);
-          std::cout << (Mbet[i] * (argv[1][1] == '+' ? num_t(int(1)) :
-            (argv[1][0] == 'O' ? b[i] : in[i]) ) ) << std::endl;
+          std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+            num_t(int(1)) : b[i]) ) << std::endl;
         } else {
-          for(int i = 0; i < in.size() - 1; i ++)
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
           std::cout << num_t(int(0)) << std::endl;
         }
@@ -997,7 +1002,13 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < in.size(); i ++)
           std::cout << in[i] << std::endl;
         break;
-      default: goto usage;
+      case 'C': {
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << unOffsetHalf<num_t>(clipBin<num_t>(offsetHalf<num_t>(in[i]))) << ", ";
+        const int i(in.size() - 1);
+        std::cout << unOffsetHalf<num_t>(clipBin<num_t>(offsetHalf<num_t>(in[i]))) << std::endl;
+        break;
+      } default: goto usage;
       }
       std::cout << std::flush;
       if(argv[1][0] != 'w' || ! b.size()) b = in;
@@ -1018,7 +1029,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " [OQ]\+?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O\+?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -1033,8 +1044,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# make [-1,1]   PRNG stream" << endl << argv[0] << " [rR]  <proto>" << endl;
   cerr << "# make {-1,0,1} PRNG stream" << endl << argv[0] << " [rR]b <proto>" << endl;
   cerr << "# make {-1,1}   PRNG stream" << endl << argv[0] << " [rR]B <proto>" << endl;
-  cerr << "# blend [-1,1]  PRNG stream" << endl << argv[0] << " m<proto> <number of output columns>" << endl;
-  cerr << "# flip or not   PRNG stream" << endl << argv[0] << " M<proto> <number of output columns>" << endl;
+  cerr << "# blend [-1,1]  PRNG stream" << endl << argv[0] << " [mn]<proto> <number of output columns>" << endl;
+  cerr << "# flip or not   PRNG stream" << endl << argv[0] << " [MN]<proto> <number of output columns>" << endl;
   cerr << endl << " *** predictor part ***" << endl;
 #if defined(_ONEBINARY_)
   cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>? <step>?" << endl;
@@ -1047,7 +1058,7 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
-  cerr << "# input vector stream to pgm graphics output or its reverse" << endl << argv[0] << " P-?" << endl;
+  cerr << "# input vector stream to pgm graphics output or its reverse" << endl << argv[0] << " [PY]-?" << endl;
 #if defined(_FORK_)
   cerr << endl << " *** multi process call part ***" << endl;
   cerr << "# do double prediction on same input" << endl << argv[0] << " D <command0> <command1>" << endl;
@@ -1059,8 +1070,12 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " lH | " << argv[0] << " Ac -<skip> <markov> | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " lH | " << argv[0] << " 0c <skip> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(4)) << "  > 1" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " [OQ] <skip>" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " [OQ] ..." << endl;
+  cerr << endl << " *** graphics test ***" << endl;
+  cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
+  cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O+ <skip> | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " P" << endl;
   return - 1;
 }
 
