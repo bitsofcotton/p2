@@ -236,12 +236,13 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int skip(2);
-    int length(_P_MLEN_ * 2 + 3 + 1);
-    if(2 < argc) skip   = std::atoi(argv[2]);
+    int length(46);
+    int skip(6);
+    const int lplen(3);
+    if(2 < argc) skip  = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length ? (length + 1) * skip : 0);
+    idFeeder<SimpleVector<num_t> > p((length + skip + 3) * skip);
     idFeeder<SimpleVector<num_t> > q(skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -263,11 +264,9 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= (3 * 2 + 3 + 1) * skip) M = d.O();
-      else q.next(pComplementStream<num_t, 1>(p.res, length ? length :
-        p.res.size() / skip - 1, skip, string("") ));
-      // XXX: we cannot integrate this result before to predict
-      //      however O command result after to predict.
+      if(! p.full || p.res.size() <= 3 * skip)
+        M = d.O();
+      else q.next(pComplementStream<num_t, 1>(p.res, length, skip, string("") ));
       if(q.full) M = q.res[0];
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -275,8 +274,11 @@ int main(int argc, const char* argv[]) {
     break;
   } case 'q': {
     int len(4);
-    if(2 < argc) len = std::atoi(argv[2]);
+    int step(1);
+    if(2 < argc) len  = std::atoi(argv[2]);
+    if(3 < argc) step = std::atoi(argv[3]);
     idFeeder<SimpleVector<num_t> > p(len);
+    idFeeder<SimpleVector<num_t> > q(step);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -308,6 +310,9 @@ int main(int argc, const char* argv[]) {
           M[i] /= num_t(ms.size());
           M[i] += ms.dot(f.res);
         }
+        q.next(M);
+        if(q.full) M = q.res[0];
+        else M.O();
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -799,6 +804,7 @@ int main(int argc, const char* argv[]) {
     std::vector<int> bg;
     idFeeder<std::vector<num_t> > bbb;
     string a2(2 < argc ? argv[2] : "");
+    const int a02(std::atoi(2 < argc ? argv[2] : "0"));
     std::stringstream ss(a2);
     num_t tt(int(0));
     ss >> tt;
@@ -826,10 +832,24 @@ int main(int argc, const char* argv[]) {
         std::cout << (in[in.size() - 1] - b[b.size() - 1]) << std::endl;
         break;
       case 's':
-        if(in.size() != b.size()) break;
-        for(int i = 0; i < b.size() - 1; i ++)
-          std::cout << (in[i] += b[i]) << ", ";
-        std::cout << (in[in.size() - 1] += b[b.size() - 1]) << std::endl;
+        if(a02) {
+          if(bbb.res.size() != a02 && a02 != 0)
+            bbb = idFeeder<std::vector<num_t> >(a02);
+          bbb.next(in);
+          if(bbb.full) {
+            std::vector<num_t> sum(bbb.res[0]);
+            for(int i = 1; i < bbb.res.size(); i ++)
+              for(int j = 0; j < sum.size(); j ++) sum[j] += bbb.res[i][j];
+            for(int i = 0; i < sum.size() - 1; i ++)
+              std::cout << sum[i] << ", ";
+            std::cout << sum[sum.size() - 1] << std::endl;
+          }
+        } else {
+          if(in.size() != b.size()) break;
+          for(int i = 0; i < b.size() - 1; i ++)
+            std::cout << (in[i] += b[i]) << ", ";
+          std::cout << (in[in.size() - 1] += b[b.size() - 1]) << std::endl;
+        }
         break;
       case 'i':
         for(int i = 0; i < in.size() - 1; i ++)
@@ -956,7 +976,7 @@ int main(int argc, const char* argv[]) {
         }
         break;
       } case 'O': {
-        const int len(2 < argc ? std::atoi(argv[2]) : 2);
+        const int len(2 < argc ? std::atoi(argv[2]) : 1);
         if(! t) bbb = idFeeder<std::vector<num_t> >(len * 2);
         bbb.next(in);
         if(bbb.full) {
@@ -1014,7 +1034,7 @@ int main(int argc, const char* argv[]) {
   cerr << "Usage:" << endl;
   cerr << " *** reformation part (if the original series is hard enough) ***" << endl;
   cerr << "# take delta     on input stream" << endl << argv[0] << " d" << endl;
-  cerr << "# take summation on input stream" << endl << argv[0] << " s" << endl;
+  cerr << "# take summation on input stream" << endl << argv[0] << " s <len>?" << endl;
   cerr << "# take skip      on input stream" << endl << argv[0] << " k <interval>" << endl;
   cerr << "# take skip head on input stream" << endl << argv[0] << " S <margin>" << endl;
   cerr << "# take reverse   on input stream" << endl << argv[0] << " v" << endl;
@@ -1048,7 +1068,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
   cerr << "# ddpmopt compatible prediction (. for difference output)" << endl << argv[0] << " A.? <skip>? <states>?" << endl;
-  cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>?" << endl;
+  cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -1064,8 +1084,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O <skip>" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " s ... | " << argv[0] << " k ... | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O ..." << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
   cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
