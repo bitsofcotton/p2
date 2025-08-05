@@ -236,9 +236,8 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int length(46);
     int skip(2);
-    const int lplen(3);
+    int length(_P_MLEN_ * 2 + 3 + 1);
     if(2 < argc) skip   = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip << " " << length << endl;
@@ -267,6 +266,8 @@ int main(int argc, const char* argv[]) {
       if(! p.full || p.res.size() <= (3 * 2 + 3 + 1) * skip) M = d.O();
       else q.next(pComplementStream<num_t, 1>(p.res, length ? length :
         p.res.size() / skip - 1, skip, string("") ));
+      // XXX: we cannot integrate this result before to predict
+      //      however O command result after to predict.
       if(q.full) M = q.res[0];
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -955,13 +956,13 @@ int main(int argc, const char* argv[]) {
         }
         break;
       } case 'O': {
-        const int len(2 < argc ? std::atoi(argv[2]) : 1);
+        const int len(2 < argc ? std::atoi(argv[2]) : 2);
         if(! t) bbb = idFeeder<std::vector<num_t> >(len * 2);
         bbb.next(in);
         if(bbb.full) {
           b = bbb.res[0];
           for(int j = 1; j < len; j ++)
-            for(int k = 0; k < b.size() / 2; k ++) b[k] += bbb.res[j][k];
+            for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
           for(int i = 0; i < b.size() / 2 - 1; i ++)
             std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
               num_t(int(1)) : b[i]) ) << ", ";
