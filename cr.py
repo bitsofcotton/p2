@@ -73,40 +73,6 @@ elif(sys.argv[1][0] == 'm'):
       track[w].append(Message('note_off', note=f, time=(120 * int(abs(numpy.arctan(abs(numpy.tan(float(bw[w])))) * 3) + 1)) ))
     bw = []
   mid.save('rand_correct.mid')
-  # N.B. for
-  #  "p P- ... | tee 0 | p Ac 4 | tee 01 | p t .5 | p lH | p Ac -4 | tee 02 | p t .5 | p lH | p 0c 4 | p t 4 | tee 03 | p lH > 1"
-  #  generated input stream, call with
-  #  "python cr.py I 4 0 01 02 03  | p V | p X | p f ... | p P
-  #  however, this isn't predict well but the p [OQ] command says it's good.
-  #  cf. p L 0 1 | p [OQ] 4 > 2
-elif(sys.argv[1][0] == 'I'):
-  f = []
-  for t in range(0, 4):
-    f.append(open(sys.argv[t + 3], "r"))
-  d = []
-  M = []
-  while(True):
-    d.append(f[0].readline()[:- 1].split(",")[:- 1])
-    M.append(f[1].readline()[:- 1].split(",")[:- 1])
-    w0 = f[2].readline()[:- 1].split(",")[:- 1]
-    w1 = f[3].readline()[:- 1].split(",")[:- 1]
-    if(len(d) == 0): break
-    for idx in range(0, len(d[- 1])):
-      d[- 1][idx]  = float(d[- 1][idx])
-    for idx in range(0, len(w0)):
-      M[- 1][idx]  = float(M[- 1][idx])
-      M[- 1][idx] += float(w0[idx]) * 2.
-      M[- 1][idx] += float(w1[idx])
-    d = d[- int(sys.argv[2]) + 1:]
-    M = M[- int(sys.argv[2]):]
-    if(int(sys.argv[2]) <= len(M)):
-      work = []
-      for idx in range(0, len(d[0])):
-        work.append(M[- 1][len(d[0]) + 1 + idx] * 4.)
-        for t in range(0, len(M) - 1):
-          work[idx] += d[t][idx] - M[t][len(d[0]) + 1 + idx]
-        work[idx] = str(work[idx])
-      print(",".join(work))
   # XXX: following are duplicate for non unistd systems.
 elif(sys.argv[1][0] == 'H'):
   p = []

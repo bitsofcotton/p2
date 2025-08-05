@@ -238,11 +238,10 @@ int main(int argc, const char* argv[]) {
   } case 'A': {
     int length(46);
     int skip(6);
-    const int lplen(3);
     if(2 < argc) skip  = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p((length + skip + 3) * skip);
+    idFeeder<SimpleVector<num_t> > p((length + 1) * skip);
     idFeeder<SimpleVector<num_t> > q(skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -264,8 +263,7 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= 3 * skip)
-        M = d.O();
+      if(! p.full || p.res.size() <= 3 * skip) M = d.O();
       else q.next(pComplementStream<num_t, 1>(p.res, length, skip, string("") ));
       if(q.full) M = q.res[0];
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
@@ -1084,7 +1082,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " s ... | " << argv[0] << " k ... | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " s ... | " << argv[0] << " k ... | " << argv[0] << " t ... | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
   cerr << argv[0] << " L 0 1 | " << argv[0] << " O ..." << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;

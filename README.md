@@ -2,7 +2,7 @@
 Predictor formatter and some of the toolset for non usual input streams.
 
 # Usage
-    python3 cr.py ([RmI]|[HD]?) ...
+    python3 cr.py ([Rm]|[HD]?) ...
     
     make p
     
@@ -99,7 +99,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** sectional test ***
-    cat ... | tee 0 |  p s ... | p k ... | p Ac ... | p lH > 1
+    cat ... | tee 0 |  p s ... | p k ... | p t ... | p Ac ... | p lH > 1
     p L 0 1 | p O ...
     
     # to hear some residue
