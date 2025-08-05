@@ -243,7 +243,7 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip0 << " " << length << endl;
     const int skip(abs(skip0));
-    idFeeder<SimpleVector<num_t> > p((length + skip + 2) * (skip0 < 0 ? 1 : skip) * skip);
+    idFeeder<SimpleVector<num_t> > p((length + skip + 3) * (skip0 < 0 ? 1 : skip) * skip);
     idFeeder<SimpleVector<num_t> > q(skip0 < 0 ? skip : skip * skip);
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
@@ -267,9 +267,12 @@ int main(int argc, const char* argv[]) {
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3 * skip * (skip0 < 0 ? 1 : skip))
         M = d.O();
-      else
-        q.next(pGainCont<num_t, 1>(skipX<SimpleVector<num_t> >(p.res.entity,
-          skip0 < 0 ? 1 : skip), string("") ));
+      else {
+        SimpleVector<SimpleVector<num_t> > w;
+        w.entity = skipX<SimpleVector<num_t> >(p.res.entity,
+          skip0 < 0 ? 1 : skip);
+        q.next(pGainCont<num_t, 1>(w, string("") ));
+      }
       if(q.full) {
         M  = q.res[0];
         for(int i = 1; i < skip; i ++) M += q.res[i];
