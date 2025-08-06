@@ -235,16 +235,18 @@ int main(int argc, const char* argv[]) {
             std::endl << std::flush;
     }
     break;
-  } case 'A': {
+  } case 'A': case 'W': {
     int length(46);
     int skip(6);
     if(2 < argc) skip  = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p((length + 1) * skip);
+    idFeeder<SimpleVector<num_t> > p(length ? (length + 1) * skip : 0);
     idFeeder<SimpleVector<num_t> > q(skip);
+    SimpleVector<num_t> b;
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
+    SimpleVector<num_t> bM;
     while(std::getline(std::cin, s, '\n')) {
       int cnt(1);
       for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
@@ -259,13 +261,25 @@ int main(int argc, const char* argv[]) {
         M.resize(d.size());
         M.O();
       }
+      if(argv[1][0] == 'W' && bM.size()) M -= bM;
       for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
-      p.next(offsetHalf<num_t>(d));
+      if(argv[1][0] == 'W') {
+        if(b.size()) p.next(offsetHalf<num_t>(b += d));
+        else b = d;
+      } p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3 * skip) M = d.O();
       else q.next(pComplementStream<num_t, 1>(p.res, length, skip, string("") ));
-      if(q.full) M = q.res[0];
+      bM = M;
+      if(q.full) {
+        M = q.res[0];
+        if(argv[1][1] == '\0') {
+          for(int i = 1; i < q.res.size(); i ++) M += q.res[i];
+          M /= num_t(q.res.size());
+        }
+      }
+      if(argv[1][1] != '\0' && argv[1][2] == '-') M = - M;
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -982,11 +996,13 @@ int main(int argc, const char* argv[]) {
           for(int j = 1; j < len; j ++)
             for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
           for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : b[i]) ) << ", ";
+            std::cout << (argv[1][1] == '-' ? b[i + b.size() / 2] :
+              ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+                num_t(int(1)) : b[i]) ) ) << ", ";
           const int i(b.size() / 2 - 1);
-          std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-            num_t(int(1)) : b[i]) ) << std::endl;
+          std::cout << (argv[1][1] == '-' ? b[i + b.size() / 2] :
+            ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+              num_t(int(1)) : b[i]) ) ) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1041,7 +1057,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O\+?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[\+-]?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -1065,7 +1081,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output)" << endl << argv[0] << " A.? <skip>? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for difference output)" << endl << argv[0] << " [AW].? <skip>? <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1081,9 +1097,12 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " s ... | " << argv[0] << " k ... | " << argv[0] << " t ... | " << argv[0] << " Ac <skip> <markov> | " << argv[0] << " lH > 1" << endl;
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O ..." << endl;
+  cerr << endl << " *** sectional test for p binary ***" << endl;
+  cerr << "cat ... | p l 0 | tee 00 | p Ac 4 | p lH | tee 0+ | p t .5 | p Ac 2 | p lH | p t 2 > 1+" << endl;
+  cerr << "cat 00 | p t -1 | p Ac- 4 | p lH | tee 0- | p t .5 | p Ac 2 | p lH | p t 2 > 1-" << endl;
+  cerr << "p L 0+ 1+ | p O- 2 > 2+; p L 0- 1- | p O- 2 | p t -1> 2-" << endl;
+  cerr << "p L 2- 2+ 00 | p V | p s | p S 2 | p k 3 | p d > 3" << endl;
+  cerr << "p L 00 3 | p O 2 | p k 4 | p 0 1" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
   cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
