@@ -1097,12 +1097,12 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** sectional test for p binary ***" << endl;
-  cerr << "cat ... | p l 0 | tee 00 | p Ac 4 | p lH | tee 0+ | p t .5 | p Ac 2 | p lH | p t 2 > 1+" << endl;
-  cerr << "cat 00 | p t -1 | p Ac- 4 | p lH | tee 0- | p t .5 | p Ac 2 | p lH | p t 2 > 1-" << endl;
-  cerr << "p L 0+ 1+ | p O- 2 > 2+; p L 0- 1- | p O- 2 | p t -1> 2-" << endl;
-  cerr << "p L 2- 2+ 00 | p V | p s | p S 2 | p k 3 | p d > 3" << endl;
-  cerr << "p L 00 3 | p O 2 | p k 4 | p 0 1" << endl;
+  cerr << endl << " *** sectional test ***" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << "cat 0 | " << argv[0] << " t " << - num_t(int(1)) << " | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
+  cerr << argv[0] << " L 0+ 1+ | " << argv[0] << " s 2 > 2+; " << argv[0] << " L 0- 1- | " << argv[0] << " s 2 | " << argv[0] << " t " << - num_t(int(1)) << " > 2-" << endl;
+  cerr << argv[0] << " L 2- 2+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 3" << endl;
+  cerr << argv[0] << " s 2 < 0 > 00 | " << argv[0] << " L 00 3 | " << argv[0] << " O 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
   cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
