@@ -1055,7 +1055,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[+-]?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O+?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -1098,14 +1098,16 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** sectional test ***" << endl;
   cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
   cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- <skip*2> | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << "# " << argv[0] << " L 1- 1+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s <skip> > 11" << endl;
   cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 1 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s <skip> > 11" << endl;
   cerr << argv[0] << " s <skip> < 0 > 00 " << endl;
   cerr << argv[0] << " L 00 11 | " << argv[0] << " O <skip>" << endl;
   cerr << endl << " *** graphics test ***" << endl;
-  cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
-  cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O+ <skip> | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " P" << endl;
+  cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
+  cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O+ <skip> | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
+  cerr << endl << " *** to hear some residue ***" << endl;
+  cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor-tobe-loopback>" << endl;
+  cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | python3 cr.py m" << endl;
   return - 1;
 }
 

@@ -28,7 +28,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # take picked column      on input stream (H for first half, G for last half, c for chop)
     p l[cHG]? <col0index> ...
     # take difference after math on input stream first half to last half
-    p O[+-]?
+    p O+?
     # take duplicate toeplitz on input stream
     p z <column number>
     # take multiply each      on input stream
@@ -101,23 +101,22 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** sectional test ***
-    cat ... | p l 0 | tee 0 | p Ac 4 | p lH | tee 0+ | p t 0.5 | p Ac 4 | p lH | p t 2 > 1+
-    p t -1 < 0 | p Ac- 4 | p lH | tee 0- | p t 0.5 | p Ac 4 | p lH | p t 2 > 1-
-    # p L 1- 1+ | p V | p s | p S 1 | p k 2 | p d | p t 0.5 | p s 2 > 11
-    p L 1+ 1- | p O+ 1 | p s 2 > 11
-    p s 2 < 0 > 00
-    p L 00 11 | p O 2
+    cat ... | p l 0 | tee 0 | p Ac <skip*2> | p lH | tee 0+ | p t 0.5 | p Ac <skip*2> | p lH | p t 2 > 1+
+    p t -1 < 0 | p Ac- <skip*2> | p lH | tee 0- | p t 0.5 | p Ac <skip*2> | p lH | p t 2 > 1-
+    p L 1+ 1- | p O+ 1 | p t 0.5 | p s <skip> > 11
+    p s <skip> < 0 > 00 
+    p L 00 11 | p O <skip>
     
      *** graphics test ***
-    yes 0.5 | p f ... | head -n 1 | p P && mv rand_pgm-0.pgm dummy.pgm
-    p P- ... dummy.pgm | p n0 <skip> | tee 0 | <difference-predictor> > 1
-    p L 0 1 | p O+ <skip> | p V | p X | p f ... | p P
+    yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
+    p P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1
+    p L 0 1 | p O+ <skip> | p V | p X | p f ... | p [PY]
     
-    # to hear some residue
-    p r | p l 0 | tee 0 | ... | p l 0 | p s > 1
-    catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
-    
-    # we're trying to avoid jammers' intensions, however once jammers retargets our predictor, this predictor either slips as worse.
+     *** to hear some residue ***
+    p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
+    catgr 3 < 0 | p e 3 | p h | p t ... | p f 3 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | python3 cr.py m
+
+    # our jammer don't work on this, can be caused by sectional one.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -277,4 +276,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/04 prediction invert option on cr.py I cmd, p Q cmd change, ok for our machine but might be infected totally because of graphics prediction result.
 2025/08/05-06 add s cmd option, Ac cmd simplify, q cmd next n step, simplify source code.
 2025/08/07 sectionally ok.
+2025/08/08 some fixes ok.
 
