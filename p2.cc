@@ -268,7 +268,7 @@ int main(int argc, const char* argv[]) {
       if(argv[1][0] == 'W') {
         if(b.size()) p.next(offsetHalf<num_t>(b += d));
         else b = d;
-      } p.next(offsetHalf<num_t>(d));
+      } else p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3 * skip) M = d.O();
       else q.next(pComplementStream<num_t, 1>(p.res, length, skip, string("") ));
       bM = M;
@@ -1099,10 +1099,10 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
   cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << "cat 0 | " << argv[0] << " t " << - num_t(int(1)) << " | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << argv[0] << " L 0+ 1+ | " << argv[0] << " s 2 > 2+; " << argv[0] << " L 0- 1- | " << argv[0] << " s 2 | " << argv[0] << " t " << - num_t(int(1)) << " > 2-" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
+  cerr << argv[0] << " s 2 < 1+ > 2+; " << argv[0] << " s 2 < 1- | " << argv[0] << " t " << - num_t(int(1)) << " > 2-" << endl;
   cerr << argv[0] << " L 2- 2+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 3" << endl;
-  cerr << argv[0] << " s 2 < 0 > 00 | " << argv[0] << " L 00 3 | " << argv[0] << " O 2" << endl;
+  cerr << argv[0] << " s 2 < 0 > 00; " << argv[0] << " L 00 3 | " << argv[0] << " O 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
   cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 

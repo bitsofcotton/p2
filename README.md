@@ -25,8 +25,10 @@ Predictor formatter and some of the toolset for non usual input streams.
     p Z
     # take inverse   on input stream
     p i
-    # take picked column      on input stream (H for first half)
-    p lH? <col0index> ...
+    # take picked column      on input stream (H for first half, G for last half, c for chop)
+    p l[cHG]? <col0index> ...
+    # take difference after math on input stream first half to last half
+    p O[+-]?
     # take duplicate toeplitz on input stream
     p z <column number>
     # take multiply each      on input stream
@@ -37,8 +39,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p a
     # take sign     each      on input stream
     p b
-    # take sum columns each line on input stream
-    p G
+    # take sum columns each line on input stream (+ or output sqrt columns)
+    p G+?
     # take walk condition each on input stream
     p w <range>
     # take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)
@@ -56,9 +58,9 @@ Predictor formatter and some of the toolset for non usual input streams.
     # make {-1,1}   PRNG stream
     p [rR]B <proto>
     # blend [-1,1]  PRNG stream
-    p m<proto> <number of output columns>
+    p [mn]<proto> <number of output columns>
     # flip or not   PRNG stream
-    p M<proto> <number of output columns>
+    p [MN]<proto> <number of output columns>
     
      *** predictor part ***
     # predict with Riemann measureable condition (c for difference output)
@@ -70,7 +72,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # trivial return to the average id. prediction (c for difference output)
     p Ic?
     # ddpmopt partial prediction (. for difference output)
-    p A.? <skip>? <states>?
+    p [AW].? <skip>? <states>?
     # minimum quare left hand side prediction (. for difference output)"
     p q.? <len>? <step>?
     
@@ -80,7 +82,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # input vector stream to serial stream
     p h
     # input vector stream to pgm graphics output or its reverse
-    p P-?
+    p [PY]-?
     
      *** multi process call part ***
     # do double prediction on same input
@@ -99,15 +101,22 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** sectional test ***
-    cat ... | tee 0 |  p s ... | p k ... | p t ... | p Ac ... | p lH > 1
-    p L 0 1 | p O ...
+    cat ... | p l 0 | tee 0 | p Ac 4 | p lH | tee 0+ | p t 0.5 | p Ac 2 | p lH | p t
+    p t -1 < 0 | p Ac- 4 | p lH | tee 0- | p t 0.5 | p Ac 2 | p lH | p t 2 > 1-
+    p s 2 < 1+ > 2+; p s 2 < 1- | p t -1 > 2-
+    p L 2- 2+ | p V | p s | p S 1 | p k 2 | p d | p t 0.5 > 3
+    p s 2 < 0 > 00; p L 00 3 | p O 2
+    
+     *** graphics test ***
+    yes 0.5 | p f ... | head -n 1 | p P && mv rand_pgm-0.pgm dummy.pgm
+    p P- ... dummy.pgm | p n0 <skip> | tee 0 | <difference-predictor> > 1
+    p L 0 1 | p O+ <skip> | p V | p X | p f ... | p P
     
     # to hear some residue
     p r | p l 0 | tee 0 | ... | p l 0 | p s > 1
     catgr 3 < 0 | p e 3 | p h | p t 1e3 | p f 3 | grep -v nan | grep -v "\[ 0,  0,  0\]" | uniq | python3 cr.py m
     
-    # once we code and upload here also someone observed our code as a optimization, the jammer intension can affects us also this causes the universal invariant we made hypothesis slips if we don't make any of the input stream something hypothesis grips.
-    # so we're trying to make hypothesis it's sectional one also they worked well for now but might not after this upload.
+    # we're trying to avoid jammers' intensions, however once jammers retargets our predictor, this predictor either slips as worse.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -266,4 +275,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/03 sectional improvement, readme fix.
 2025/08/04 prediction invert option on cr.py I cmd, p Q cmd change, ok for our machine but might be infected totally because of graphics prediction result.
 2025/08/05-06 add s cmd option, Ac cmd simplify, q cmd next n step, simplify source code.
+2025/08/07 sectionally ok.
 
