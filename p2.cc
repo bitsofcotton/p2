@@ -838,7 +838,7 @@ int main(int argc, const char* argv[]) {
         std::cout << s << std::endl;
         break;
       case 'd':
-        if(in.size() != b.size()) break;
+        if(in.size() != b.size()) b = in;
         for(int i = 0; i < b.size() - 1; i ++)
           std::cout << (in[i] - b[i]) << ", ";
         std::cout << (in[in.size() - 1] - b[b.size() - 1]) << std::endl;
@@ -1101,11 +1101,12 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << - num_t(int(2)) << " > 1-" << endl;
-  cerr << "# " << argv[0] << " L 1- 1+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s 2 > 11" << endl;
-  cerr << argv[0] << " L 1- 1+ | " << argv[0] << " G2 > 11" << endl;
-  cerr << argv[0] << " s 2 < 0 > 00; " << argv[0] << " L 00 11 | " << argv[0] << " O 2" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- <skip*2> | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << - num_t(int(2)) << " > 1-" << endl;
+  cerr << "# " << argv[0] << " L 1- 1+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s <skip> > 11" << endl;
+  cerr << argv[0] << " L 1- 1+ | " << argv[0] << " G2 | " << argv[0] << " s <skip> > 11" << endl;
+  cerr << argv[0] << " s <skip> < 0 > 00 " << endl;
+  cerr << argv[0] << " L 00 11 | " << argv[0] << " O <skip>" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
   cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
