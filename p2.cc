@@ -913,11 +913,6 @@ int main(int argc, const char* argv[]) {
           for(int i = width; i < in.size(); i ++) in[i % width] += in[i];
           for(int i = 0; i < width; i ++) std::cout << in[i] << ", ";
           std::cout << std::endl;
-        } else if(argv[1][1] == '2') {
-          for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << (in[i] + in[i + in.size() / 2]) / num_t(int(2)) << ", ";
-          const int i(in.size() / 2 - 1);
-          std::cout << (in[i] + in[i + in.size() / 2]) / num_t(int(2)) << std::endl;
         } else {
           for(int i = 1; i < in.size(); i ++) in[0] += in[i];
           std::cout << (in[0] /= num_t(int(in.size()))) << std::endl;
@@ -1060,13 +1055,13 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[\+-]?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[+-]?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
   cerr << "# take absolute each      on input stream" << endl << argv[0] << " a" << endl;
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
-  cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G[+2]?" << endl;
+  cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G+?" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
   cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E <number>+?+?" << endl;
   cerr << "# take column 0 to harden PRNG part vector output" << endl << argv[0] << " e" << endl;
@@ -1102,9 +1097,9 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
   cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- <skip*2> | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << - num_t(int(2)) << " > 1-" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- <skip*2> | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
   cerr << "# " << argv[0] << " L 1- 1+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s <skip> > 11" << endl;
-  cerr << argv[0] << " L 1- 1+ | " << argv[0] << " G2 | " << argv[0] << " s <skip> > 11" << endl;
+  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 1 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s <skip> > 11" << endl;
   cerr << argv[0] << " s <skip> < 0 > 00 " << endl;
   cerr << argv[0] << " L 00 11 | " << argv[0] << " O <skip>" << endl;
   cerr << endl << " *** graphics test ***" << endl;

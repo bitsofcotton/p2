@@ -4101,6 +4101,15 @@ template <typename T> static inline void apply(SimpleVector<T>& v, const SimpleV
   return;
 }
 
+template <typename T> static inline SimpleVector<T> freq(const SimpleVector<T>& mother, const SimpleVector<T>& in) {
+  const int size(mother.size());
+  assert(size == in.size());
+  SimpleMatrix<T> work(size, size);
+  for(int i = 0; i < size; i ++)
+    work.setCol(i, mWavelet<T>(size)[i] * mother);
+  return work.solve(in);
+}
+
 template <typename T> static inline SimpleVector<T> mimic(const SimpleVector<T>& dst, const SimpleVector<T>& src, const int& size, const T& intensity = T(1)) {
   const int size2(dst.size() / size);
   const int size3(src.size() / size);
@@ -4126,15 +4135,6 @@ template <typename T> static inline SimpleVector<T> emphasis(const SimpleVector<
                dd * (T(1) - intensity), dd, i);
   }
   return res;
-}
-
-template <typename T> static inline SimpleVector<T> freq(const SimpleVector<T>& mother, const SimpleVector<T>& in) {
-  const int size(mother.size());
-  assert(size == in.size());
-  SimpleMatrix<T> work(size, size);
-  for(int i = 0; i < size; i ++)
-    work.setCol(i, mWavelet<T>(size)[i] * mother);
-  return work.solve(in);
 }
 
 template <typename T> SimpleVector<T> enlarge(const SimpleVector<T>& in, const int& r) {
