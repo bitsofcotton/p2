@@ -913,6 +913,11 @@ int main(int argc, const char* argv[]) {
           for(int i = width; i < in.size(); i ++) in[i % width] += in[i];
           for(int i = 0; i < width; i ++) std::cout << in[i] << ", ";
           std::cout << std::endl;
+        } else if(argv[1][1] == '2') {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << (in[i] + in[i + in.size() / 2]) / num_t(int(2)) << ", ";
+          const int i(in.size() / 2 - 1);
+          std::cout << (in[i] + in[i + in.size() / 2]) / num_t(int(2)) << std::endl;
         } else {
           for(int i = 1; i < in.size(); i ++) in[0] += in[i];
           std::cout << (in[0] /= num_t(int(in.size()))) << std::endl;
@@ -996,13 +1001,11 @@ int main(int argc, const char* argv[]) {
           for(int j = 1; j < len; j ++)
             for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
           for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << (argv[1][1] == '-' ? b[i + b.size() / 2] :
-              ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-                num_t(int(1)) : b[i]) ) ) << ", ";
+            std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+              num_t(int(1)) : b[i]) ) << ", ";
           const int i(b.size() / 2 - 1);
-          std::cout << (argv[1][1] == '-' ? b[i + b.size() / 2] :
-            ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : b[i]) ) ) << std::endl;
+          std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+            num_t(int(1)) : b[i]) ) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1063,7 +1066,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
   cerr << "# take absolute each      on input stream" << endl << argv[0] << " a" << endl;
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
-  cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G+?" << endl;
+  cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G[+2]?" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
   cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E <number>+?+?" << endl;
   cerr << "# take column 0 to harden PRNG part vector output" << endl << argv[0] << " e" << endl;
@@ -1098,11 +1101,11 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 2 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << argv[0] << " s 2 < 1+ > 2+; " << argv[0] << " s 2 < 1- | " << argv[0] << " t " << - num_t(int(1)) << " > 2-" << endl;
-  cerr << argv[0] << " L 2- 2+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 3" << endl;
-  cerr << argv[0] << " s 2 < 0 > 00; " << argv[0] << " L 00 3 | " << argv[0] << " O 2" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << - num_t(int(2)) << " > 1-" << endl;
+  cerr << "# " << argv[0] << " L 1- 1+ | " << argv[0] << " V | " << argv[0] << " s | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s 2 > 11" << endl;
+  cerr << argv[0] << " L 1- 1+ | " << argv[0] << " G2 > 11" << endl;
+  cerr << argv[0] << " s 2 < 0 > 00; " << argv[0] << " L 00 11 | " << argv[0] << " O 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " P && mv rand_pgm-0.pgm dummy.pgm" << endl;
   cerr << argv[0] << " P- ... dummy.pgm | " << argv[0] << " n0 <skip> | tee 0 | <difference-predictor> > 1" << endl; 
