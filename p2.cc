@@ -267,7 +267,7 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       if(argv[1][0] == 'W') {
         if(b.size()) p.next(offsetHalf<num_t>(b += d));
-        else b = d;
+        else p.next(offsetHalf<num_t>(b = d));
       } else p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3 * skip) M = d.O();
       else q.next(pComplementStream<num_t, 1>(p.res, length, skip, string("") ));
@@ -481,7 +481,13 @@ int main(int argc, const char* argv[]) {
       SimpleVector<num_t> w;
       ss >> w;
       if(walk.size() != w.size()) { walk.resize(w.size()); walk.O(); }
+      vector<bool> absent;
+      absent.resize(w.size(), false);
       for(int i = 0; i < w.size(); i ++) {
+        if(w[i] < num_t(int(0))) {
+          absent[i] = true;
+          continue;
+        }
         w[i]  = abs(w[i]);
         w[i] -= absfloor(w[i]);
         walk[i] += int(w[i] * num_t(int(36))) % 6 - 3;
@@ -493,9 +499,9 @@ int main(int argc, const char* argv[]) {
         // velocity.
         track.emplace_back(0x7f);
       }
-      for(int i = 0; i < w.size(); i ++) {
+      for(int i = 0, ii = 0; i < w.size(); i ++) if(! absent[i]) {
         // delay 30
-        track.emplace_back(i ? 0x00 : 0x30);
+        track.emplace_back(ii ++ ? 0x00 : 0x30);
         // note off
         track.emplace_back(tbl0[walk[i]] + base);
         track.emplace_back(0x00);
@@ -1102,16 +1108,18 @@ int main(int argc, const char* argv[]) {
         if(bbb.full) {
           if(argv[1][1] == '-') {
             b = bbb.res[0];
-            vector<num_t> b2(bbb.res[1]);
+            vector<num_t> b2 = bbb.res[1];
             for(int j = 1; j < len - 1; j ++)
               for(int k = 0; k < b.size(); k ++) {
                 b[k]  += bbb.res[j][k];
                 b2[k] += bbb.res[j + 1][k];
               }
             for(int i = 0; i < b.size() / 2 - 1; i ++)
-              std::cout << ((b2[i + b.size() / 2] - b[i + b.size() / 2]) * (b2[i] - b[i])) << ",";
+              std::cout << ((b2[i] - b2[i + b2.size() / 2]) -
+                (b[i] - b[i + b.size() / 2]) * (b2[i] - b[i])) << ", ";
             const int i(b.size() / 2 - 1);
-            std::cout << ((b2[i + b.size() / 2] - b[i + b.size() / 2]) * (b2[i] - b[i])) << std::endl;
+            std::cout << ((b2[i] - b2[i + b2.size() / 2]) -
+              (b[i] - b[i + b.size() / 2]) * (b2[i] - b[i])) << std::endl;
           } else {
             b = bbb.res[0];
             for(int j = 1; j < len; j ++)
@@ -1177,7 +1185,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[+-]?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O+?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -1223,7 +1231,7 @@ int main(int argc, const char* argv[]) {
   cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
   cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 2 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 11" << endl;
   cerr << argv[0] << " s 2 < 0 > 00" << endl;
-  cerr << argv[0] << " L 00 11 | " << argv[0] << " O- 2 # delta prediction" << endl;
+  cerr << argv[0] << " L 00 11 | " << argv[0] << " O- 1 # delta prediction" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
