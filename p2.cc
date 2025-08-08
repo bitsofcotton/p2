@@ -1100,22 +1100,29 @@ int main(int argc, const char* argv[]) {
         if(! t) bbb = idFeeder<std::vector<num_t> >(argv[1][1] == '-' ? len + 1 : len);
         bbb.next(in);
         if(bbb.full) {
-          b = bbb.res[0];
-          for(int j = 1; j < len; j ++)
-            for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
-          vector<num_t> b2(b);
           if(argv[1][1] == '-') {
-            for(int k = 0; k < b.size(); k ++) {
-              b[k]  -= bbb.res[0][k];
-              b2[k] -= bbb.res[bbb.res.size() - 1][k];
-            }
-          }
-          for(int i = 0; i < b.size() / 2 - 1; i ++)
+            b = bbb.res[0];
+            vector<num_t> b2(bbb.res[1]);
+            for(int j = 1; j < len - 1; j ++)
+              for(int k = 0; k < b.size(); k ++) {
+                b[k]  += bbb.res[j][k];
+                b2[k] += bbb.res[j + 1][k];
+              }
+            for(int i = 0; i < b.size() / 2 - 1; i ++)
+              std::cout << ((b2[i + b.size() / 2] - b[i + b.size() / 2]) * (b2[i] - b[i])) << ",";
+            const int i(b.size() / 2 - 1);
+            std::cout << ((b2[i + b.size() / 2] - b[i + b.size() / 2]) * (b2[i] - b[i])) << std::endl;
+          } else {
+            b = bbb.res[0];
+            for(int j = 1; j < len; j ++)
+              for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+            for(int i = 0; i < b.size() / 2 - 1; i ++)
+              std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+                num_t(int(1)) : b[i]) ) << ", ";
+            const int i(b.size() / 2 - 1);
             std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : (argv[1][1] == '-' ? b[i] - b2[i] : b[i])) ) << ", ";
-          const int i(b.size() / 2 - 1);
-          std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-            num_t(int(1)) : (argv[1][1] == '-' ? b[i] - b2[i] : b[i])) ) << std::endl;
+              num_t(int(1)) : b[i]) ) << std::endl;
+          }
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1170,7 +1177,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O+?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[+-]?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
