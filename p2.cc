@@ -432,6 +432,98 @@ int main(int argc, const char* argv[]) {
       }
     }
     break;
+  } case 'Q': {
+    char buf;
+    // cf. thanks to https://github.com/yyagi8864/smfspec via google however
+    //     we should have SMFv1 datasheet as a reference.
+    std::cout << "MThd";
+    // block lengtn
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x06)), sizeof(char));
+    // SMFv1
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x01)), sizeof(char));
+    // track number
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x02)), sizeof(char));
+    // resolution
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x30)), sizeof(char));
+    std::cout << "MTrk";
+    // block length
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x0b)), sizeof(char));
+    // tempo
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0xff)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x51)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x03)), sizeof(char));
+    // 120
+    std::cout.write(const_cast<const char*>(&(buf = 0x07)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0xa1)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x20)), sizeof(char));
+    // end track
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0xff)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x2f)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout << "MTrk";
+    std::vector<char> track;
+    const char tbl0[] = {0, 2, 4, 5, 7, 9, 11};
+    const char  base(60);
+    SimpleVector<char> walk;
+    while(std::getline(std::cin, s, '\n')) {
+      std::stringstream ss(s);
+      SimpleVector<num_t> w;
+      ss >> w;
+      if(walk.size() != w.size()) { walk.resize(w.size()); walk.O(); }
+      for(int i = 0; i < w.size(); i ++) {
+        w[i]  = abs(w[i]);
+        w[i] -= absfloor(w[i]);
+        walk[i] += int(w[i] * num_t(int(36))) % 6 - 3;
+        walk[i] %= sizeof(tbl0) / sizeof(char);
+        // no delay track0 note on
+        track.emplace_back(0x00);
+        track.emplace_back(0x90);
+        track.emplace_back(tbl0[walk[i]] + base);
+        // velocity.
+        track.emplace_back(0x7f);
+      }
+      for(int i = 0; i < w.size(); i ++) {
+        // delay 30
+        track.emplace_back(i ? 0x00 : 0x30);
+        // note off
+        track.emplace_back(tbl0[walk[i]] + base);
+        track.emplace_back(0x00);
+      }
+    }
+    // block length
+    const int length(4 + track.size());
+    std::cout.write(const_cast<const char*>(&(buf = (length >> 24) & 0xff)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = (length >> 16) & 0xff)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = (length >>  8) & 0xff)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = length & 0xff)), sizeof(char));
+    // std::cout.write(const_cast<const char*>(&(buf = 0x18)), sizeof(char));
+    // program change
+    /*
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0xc0)), sizeof(char));
+    // cf. https://ja.wikipedia.org/wiki/General_MIDI
+    //std::cout.write(const_cast<const char*>(&(buf = 117)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x75)), sizeof(char));
+     */
+    for(int i = 0; i < track.size(); i ++)
+      std::cout.write(const_cast<const char*>(&track[i]), sizeof(char));
+    // end track
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0xff)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x2f)), sizeof(char));
+    std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
+    break;
   } case 'Z': case 'X': case 'v': {
     std::vector<std::string> buf;
     while(std::getline(std::cin, s, '\n')) buf.emplace_back(s);
@@ -495,11 +587,23 @@ int main(int argc, const char* argv[]) {
     } default: goto usage;
     }
     break;
-  } case 'x': {
+  } case 'x': case 'j': {
     while(std::getline(std::cin, s, '\n'))
       for(int i = 0; i < s.size(); i ++) {
-        if(s[i] == '0') std::cout << (- num_t(1)) << std::endl;
-        else if(s[i] == '1') std::cout << num_t(1) << std::endl;
+        if(argv[1][0] == 'x') {
+          if(s[i] == '0') std::cout << (- num_t(1)) << std::endl;
+          else if(s[i] == '1') std::cout << num_t(1) << std::endl;
+        } else {
+          if('0' <= s[i] && s[i] <= '9')
+            std::cout << (num_t(s[i] - '0') - num_t(int(15)) / num_t(int(2)))
+              << std::endl;
+          else if('a' <= s[i] && s[i] <= 'f')
+            std::cout << (num_t(s[i] - 'a' + 10) - num_t(int(15)) /
+              num_t(int(2)) ) << std::endl;
+          else if('A' <= s[i] && s[i] <= 'F')
+            std::cout << (num_t(s[i] - 'A' + 10) - num_t(int(15)) /
+              num_t(int(2)) ) << std::endl;
+        }
       }
     break;
   } case 'u': {
@@ -855,6 +959,10 @@ int main(int argc, const char* argv[]) {
             for(int i = 0; i < sum.size() - 1; i ++)
               std::cout << sum[i] << ", ";
             std::cout << sum[sum.size() - 1] << std::endl;
+          } else {
+            for(int i = 0; i < in.size() - 1; i ++)
+              std::cout << num_t(int(0)) << ",";
+            std::cout << num_t(int(0)) << std::endl;
           }
         } else {
           if(in.size() != b.size()) break;
@@ -989,18 +1097,25 @@ int main(int argc, const char* argv[]) {
         break;
       } case 'O': {
         const int len(2 < argc ? std::atoi(argv[2]) : 1);
-        if(! t) bbb = idFeeder<std::vector<num_t> >(len * 2);
+        if(! t) bbb = idFeeder<std::vector<num_t> >(argv[1][1] == '-' ? len + 1 : len);
         bbb.next(in);
         if(bbb.full) {
           b = bbb.res[0];
           for(int j = 1; j < len; j ++)
             for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+          vector<num_t> b2(b);
+          if(argv[1][1] == '-') {
+            for(int k = 0; k < b.size(); k ++) {
+              b[k]  -= bbb.res[0][k];
+              b2[k] -= bbb.res[bbb.res.size() - 1][k];
+            }
+          }
           for(int i = 0; i < b.size() / 2 - 1; i ++)
             std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : b[i]) ) << ", ";
+              num_t(int(1)) : (argv[1][1] == '-' ? b[i] - b2[i] : b[i])) ) << ", ";
           const int i(b.size() / 2 - 1);
           std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-            num_t(int(1)) : b[i]) ) << std::endl;
+            num_t(int(1)) : (argv[1][1] == '-' ? b[i] - b2[i] : b[i])) ) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1050,7 +1165,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take skip      on input stream" << endl << argv[0] << " k <interval>" << endl;
   cerr << "# take skip head on input stream" << endl << argv[0] << " S <margin>" << endl;
   cerr << "# take reverse   on input stream" << endl << argv[0] << " v" << endl;
-  cerr << "# pick {0,1} str on input stream" << endl << argv[0] << " x" << endl;
+  cerr << "# pick {0,1} or [0-9a-f] str on input stream" << endl << argv[0] << " [xj]" << endl;
   cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X" << endl;
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
@@ -1085,6 +1200,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
   cerr << "# input vector stream to pgm graphics output or its reverse" << endl << argv[0] << " [PY]-?" << endl;
+  cerr << "# input vector stream to midi output" << endl << argv[0] << " Q" << endl;
 #if defined(_FORK_)
   cerr << endl << " *** multi process call part ***" << endl;
   cerr << "# do double prediction on same input" << endl << argv[0] << " D <command0> <command1>" << endl;
@@ -1096,18 +1212,18 @@ int main(int argc, const char* argv[]) {
   cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- <skip*2> | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac <skip*2> | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 1 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " s <skip> > 11" << endl;
-  cerr << argv[0] << " s <skip> < 0 > 00 " << endl;
-  cerr << argv[0] << " L 00 11 | " << argv[0] << " O <skip>" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
+  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 2 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 11" << endl;
+  cerr << argv[0] << " s 2 < 0 > 00" << endl;
+  cerr << argv[0] << " L 00 11 | " << argv[0] << " O- 2 # delta prediction" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
   cerr << argv[0] << " L 0 1 | " << argv[0] << " O+ <skip> | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
   cerr << endl << " *** to hear some residue ***" << endl;
   cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor-tobe-loopback>" << endl;
-  cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | python3 cr.py m" << endl;
+  cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
   return - 1;
 }
 

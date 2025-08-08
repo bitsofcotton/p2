@@ -2,8 +2,6 @@
 Predictor formatter and some of the toolset for non usual input streams.
 
 # Usage
-    python3 cr.py ([Rm]|[HD]?) ...
-    
     make p
     
      *** reformation part ***
@@ -17,8 +15,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p S <margin>
     # take reverse   on input stream
     p v
-    # pick {0,1} str on input stream
-    p x
+    # pick {0,1} or [0-9a-f] str on input stream
+    p [xj]
     # take reform [-1,1] on input stream
     p X
     # take reform [-1,1] on input stream without offset
@@ -83,6 +81,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p h
     # input vector stream to pgm graphics output or its reverse
     p [PY]-?
+    # input vector stream to midi output
+    p Q
     
      *** multi process call part ***
     # do double prediction on same input
@@ -114,8 +114,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     
      *** to hear some residue ***
     p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
-    catgr 3 < 0 | p e 3 | p h | p t ... | p f 3 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | python3 cr.py m
-
+    catgr 3 < 0 | p e 3 | p h | p t ... | p f 3 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out.mid
+    
     # our jammer don't work on this, can be caused by sectional one.
 
 # Another Download Sites (Leave)
