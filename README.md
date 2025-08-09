@@ -101,11 +101,11 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** sectional test on delta stream ***
-    cat ... | p l 0 | p d | p t 0.5 | tee 0 | p Ac <skip*2> | p lH | tee 0+ | p t 0.5 | p Ac <skip*2> | p lH | p t 2 > 1+
-    p t -1 < 0 | p Ac- <skip*2> | p lH | tee 0- | p t 0.5 | p Ac <skip*2> | p lH | p t 2 > 1-
-    p L 1+ 1- | p O+ 1 | p t 0.5 | p s <skip> > 11
-    p s <skip> < 0 > 00 
-    p L 00 11 | p O <skip-1>
+    cat ... | p l 0 | tee 0 | p Ac <skip> | p lH | tee 0+ | p t 0.5 | p Ac <skip> | p lH | p t 2 > 1+
+    p t -1 < 0 | tee 0-- | p Ac- <skip> | p lH | tee 0- | p t 0.5 | p Ac <skip> | p lH | p t 2 > 1-
+    p L 0   1+ | p O <skip> > 1++
+    p L 0-- 1- | p O <skip> | p t -1 > 1--
+    p L 1++ 1-- | p O+
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
