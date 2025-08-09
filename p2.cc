@@ -1175,12 +1175,18 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** sectional test on delta stream***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | tee 0-- | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << argv[0] << " L 0   1+ | " << argv[0] << " O 4 > 1++" << endl;
-  cerr << argv[0] << " L 0-- 1- | " << argv[0] << " O 4 | " << argv[0] << " t " << - num_t(int(1)) << " > 1--" << endl;
-  cerr << argv[0] << " L 1++ 1-- | p O+" << endl;
+  cerr << endl << " *** sectional test (we need to configure range nor configure using delta stream) ***" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 00+ | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 00+ | tee 00- | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
+  cerr << argv[0] << " L 00+ 1+ | " << argv[0] << " O 4 > 1++" << endl;
+  cerr << argv[0] << " L 00- 1- | " << argv[0] << " O 4 | " << argv[0] << " t " << - num_t(int(1)) << " > 1--" << endl;
+  cerr << argv[0] << " L 1++ 1-- | p O+" << endl << endl;
+  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 1 > 11" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ 1 | " << argv[0] << " t -1 > 00" << endl;
+  cerr << argv[0] << " L 11 00 | " << argv[0] << " O+ 1 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " > 111" << endl;
+  cerr << argv[0] << " L 00+ 111 | " << argv[0] << " O 4" << endl << endl;
+  cerr << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " < 11 > 112" << endl;
+  cerr << argv[0] << " L 00+ 112 | " << argv[0] << " O 4" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
@@ -1188,6 +1194,11 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** to hear some residue ***" << endl;
   cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor-tobe-loopback>" << endl;
   cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
+  cerr << endl << " *** predictor notation ***" << endl;
+  cerr << "# Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks." << endl;
+  cerr << "# We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago." << endl;
+  cerr << "# So we close this repository with embryonic this one as to keep simple enough also graphics predictor on bitsofcotton/ddpmopt, text predictor bitsofcotton/puts_cc are so." << endl;
+  cerr << "# So the grip on ***SIMPLE*** predictor always slip case, we should have copied large internal states table to predict next one step as a inside the state table pivot, however this isn't import new entropy enough." << endl;
   return - 1;
 }
 

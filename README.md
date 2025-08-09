@@ -103,9 +103,17 @@ Predictor formatter and some of the toolset for non usual input streams.
      *** sectional test on delta stream ***
     cat ... | p l 0 | tee 0 | p Ac <skip> | p lH | tee 0+ | p t 0.5 | p Ac <skip> | p lH | p t 2 > 1+
     p t -1 < 0 | tee 0-- | p Ac- <skip> | p lH | tee 0- | p t 0.5 | p Ac <skip> | p lH | p t 2 > 1-
-    p L 0   1+ | p O <skip> > 1++
-    p L 0-- 1- | p O <skip> | p t -1 > 1--
+    p L 00+ 1+ | p O 4 > 1++
+    p L 00- 1- | p O 4 | p t -1 > 1--
     p L 1++ 1-- | p O+
+    
+    p L 1+ 1- | p O+ 1 > 11
+    p L 0+ 0- | p O+ 1 | p t -1 > 00
+    p L 11 00 | p O+ 1 | p t 0.25 > 111
+    p L 00+ 111 | p O 4
+    
+    p t 0.5 < 11 > 112
+    p L 00+ 112 | p O 4
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -116,7 +124,11 @@ Predictor formatter and some of the toolset for non usual input streams.
     p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
     catgr 3 < 0 | p e 3 | p h | p t ... | p f 3 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out.mid
     
-    # our jammer don't work on this, can be caused by sectional one.
+     *** predictor notation ***
+    # Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks.
+    # We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago.
+    # So we close this repository with embryonic this one as to keep simple enough also graphics predictor on bitsofcotton/ddpmopt, text predictor bitsofcotton/puts_cc are so.
+    # So the grip on ***SIMPLE*** predictor always slip case, we should have copied large internal states table to predict next one step as a inside the state table pivot, however this isn't import new entropy enough.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -277,4 +289,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/05-06 add s cmd option, Ac cmd simplify, q cmd next n step, simplify source code.
 2025/08/07 sectionally ok.
 2025/08/08 some fixes ok.
+2025/08/09 slip grip slip grip.
 
