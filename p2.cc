@@ -678,54 +678,19 @@ int main(int argc, const char* argv[]) {
       }
     }
     break;
-#if !defined(_OLDCPP_)
   } case 'L': {
-    std::vector<std::ifstream> f;
-    f.reserve(argc - 1);
-    for(int i = 2; i < argc; i ++) {
-      f.emplace_back(std::ifstream(argv[i]));
-      if(! f[f.size() - 1].is_open()) {
-        std::cerr << "Could not open " << argv[i] << std::endl;
-        for(int j = 0; j < f.size() - 1; j ++) f[j].close();
-        f.resize(0);
-        break;
-      }
+    std::ifstream left(argv[2]);
+    std::ifstream right(argv[3]);
+    bool loop(true);
+    while(1) {
+      if(! std::getline(left,  s)) break;
+      std::cout << s << ", ";
+      if(! std::getline(right, s)) break;
+      std::cout << s << std::endl << std::flush;
     }
-    bool loop(f.size() != 0);
-    while(loop) {
-      std::vector<num_t> sbuf;
-      for(int i = 0; i < f.size(); i ++) {
-        if(! std::getline(f[i], s)) {
-          loop = false;
-          break;
-        }
-        if(argv[1][1] == '\0') std::cout << s << (i == f.size() - 1 ? "" : ",");
-        else {
-          int cnt(1);
-          for(int i = 0; i < s.size(); i ++)
-            if(s[i] == ',') cnt ++;
-          std::vector<num_t> in;
-          in.resize(cnt);
-          int i, j;
-          for(i = 0, j = 0; i < s.size(); i ++) {
-            std::stringstream ins(s.substr(i, s.size() - i));
-            ins >> in[j ++];
-            for( ; s[i] != ',' && i < s.size(); i ++) ;
-          }
-          if(! sbuf.size()) sbuf = move(in);
-          else for(int i = 0; i < in.size(); i ++) sbuf[i] += in[i];
-        }
-      }
-      if(argv[1][1] == '\0')
-        std::cout << std::endl << std::flush;
-      else {
-        for(int i = 0; i < sbuf.size() - 1; i ++) std::cout << sbuf[i] << ", ";
-        std::cout << sbuf[sbuf.size() - 1] << std::endl << std::flush;
-      }
-    }
-    for(int i = 0; i < f.size(); i ++) f[i].close();
+    left.close();
+    right.close();
     break;
-#endif
 #if defined(_FORK_)
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
@@ -1106,31 +1071,15 @@ int main(int argc, const char* argv[]) {
         if(! t) bbb = idFeeder<std::vector<num_t> >(argv[1][1] == '-' ? len + 1 : len);
         bbb.next(in);
         if(bbb.full) {
-          if(argv[1][1] == '-') {
-            b = bbb.res[0];
-            vector<num_t> b2 = bbb.res[1];
-            for(int j = 1; j < len - 1; j ++)
-              for(int k = 0; k < b.size(); k ++) {
-                b[k]  += bbb.res[j][k];
-                b2[k] += bbb.res[j + 1][k];
-              }
-            for(int i = 0; i < b.size() / 2 - 1; i ++)
-              std::cout << ((b2[i] - b2[i + b2.size() / 2]) -
-                (b[i] - b[i + b.size() / 2]) * (b2[i] - b[i])) << ", ";
-            const int i(b.size() / 2 - 1);
-            std::cout << ((b2[i] - b2[i + b2.size() / 2]) -
-              (b[i] - b[i + b.size() / 2]) * (b2[i] - b[i])) << std::endl;
-          } else {
-            b = bbb.res[0];
-            for(int j = 1; j < len; j ++)
-              for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
-            for(int i = 0; i < b.size() / 2 - 1; i ++)
-              std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-                num_t(int(1)) : b[i]) ) << ", ";
-            const int i(b.size() / 2 - 1);
+          b = bbb.res[0];
+          for(int j = 1; j < len; j ++)
+            for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+          for(int i = 0; i < b.size() / 2 - 1; i ++)
             std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : b[i]) ) << std::endl;
-          }
+              num_t(int(1)) : b[i]) ) << ", ";
+          const int i(b.size() / 2 - 1);
+          std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+            num_t(int(1)) : b[i]) ) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1224,14 +1173,14 @@ int main(int argc, const char* argv[]) {
   cerr << "# do each of all column input prediction parallel, take output column 0 as a prediction value, pred avg * input avg output." << endl << argv[0] << " @ <command>" << endl;
 #endif
   cerr << endl << " *** other part ***" << endl;
-  cerr << "# multiple file load into same line columns" << endl << argv[0] << " L <file0> ..." << endl;
+  cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << endl << " *** sectional test on delta stream***" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
   cerr << argv[0] << " t " << - num_t(int(1)) << " < 0 | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
   cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 2 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 11" << endl;
   cerr << argv[0] << " s 2 < 0 > 00" << endl;
-  cerr << argv[0] << " L 00 11 | " << argv[0] << " O- 1 # delta prediction" << endl;
+  cerr << argv[0] << " L 00 11 | " << argv[0] << " O 1" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
