@@ -100,20 +100,10 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** sectional test on delta stream ***
-    cat ... | p l 0 | tee 0 | p Ac <skip> | p lH | tee 0+ | p t 0.5 | p Ac <skip> | p lH | p t 2 > 1+
-    p t -1 < 0 | tee 0-- | p Ac- <skip> | p lH | tee 0- | p t 0.5 | p Ac <skip> | p lH | p t 2 > 1-
-    p L 00+ 1+ | p O 4 > 1++
-    p L 00- 1- | p O 4 | p t -1 > 1--
-    p L 1++ 1-- | p O+
-    
-    p L 1+ 1- | p O+ 1 > 11
-    p L 0+ 0- | p O+ 1 | p t -1 > 00
-    p L 11 00 | p O+ 1 | p t 0.25 > 111
-    p L 00+ 111 | p O 4
-    
-    p t 0.5 < 11 > 112
-    p L 00+ 112 | p O 4
+     *** sectional test ***
+    cat ... | p l 0 | tee 0 | p Ac 4 | p lH | tee 0+ | p t 0.5 | p Ac 4 | p lH | p t 2 > 1+
+    p t -1 < 0+ | p t 0.5 | p Ac 4 | p lH | p t 2 > 1-
+    p / 0 0+ 1+ 1- | p O 4
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m

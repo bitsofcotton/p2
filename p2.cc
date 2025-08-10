@@ -45,6 +45,19 @@ static inline num_t fl(int x, int M) {
   return num_t(x) / num_t(M + 1);
 }
 
+template <typename T> static inline SimpleVector<T> s2sv(const string& s) {
+  int cnt(1);
+  for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
+  SimpleVector<T> d(cnt);
+  int i, j;
+  for(i = 0, j = 0; i < s.size(); i ++) {
+    std::stringstream ins(s.substr(i, s.size() - i));
+    ins >> d[j ++];
+    for( ; s[i] != ',' && i < s.size(); i ++) ;
+  }
+  return d;
+}
+
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
 #endif
@@ -244,19 +257,10 @@ int main(int argc, const char* argv[]) {
     idFeeder<SimpleVector<num_t> > p(length ? (length + 1) * skip : 0);
     idFeeder<SimpleVector<num_t> > q(skip);
     SimpleVector<num_t> b;
-    SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     SimpleVector<num_t> bM;
     while(std::getline(std::cin, s, '\n')) {
-      int cnt(1);
-      for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
-      d.resize(cnt);
-      int i, j;
-      for(i = 0, j = 0; i < s.size(); i ++) {
-        std::stringstream ins(s.substr(i, s.size() - i));
-        ins >> d[j ++];
-        for( ; s[i] != ',' && i < s.size(); i ++) ;
-      }
+      SimpleVector<num_t> d(s2sv<num_t>(s));
       if(M.size() < d.size()) {
         M.resize(d.size());
         M.O();
@@ -294,15 +298,7 @@ int main(int argc, const char* argv[]) {
     SimpleVector<num_t> d;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
-      int cnt(1);
-      for(int i = 0; i < s.size(); i ++) if(s[i] == ',') cnt ++;
-      d.resize(cnt);
-      int i, j;
-      for(i = 0, j = 0; i < s.size(); i ++) {
-        std::stringstream ins(s.substr(i, s.size() - i));
-        ins >> d[j ++];
-        for( ; s[i] != ',' && i < s.size(); i ++) ;
-      }
+      SimpleVector<num_t> d(s2sv<num_t>(s));
       if(M.size() < d.size()) {
         M.resize(d.size());
         M.O();
@@ -691,6 +687,30 @@ int main(int argc, const char* argv[]) {
     left.close();
     right.close();
     break;
+  } case '/': {
+    std::ifstream d0s(argv[2]);
+    std::ifstream dps(argv[3]);
+    std::ifstream Mps(argv[4]);
+    std::ifstream Mms(argv[5]);
+    bool loop(true);
+    while(1) {
+      if(! std::getline(dps, s)) break;
+      SimpleVector<num_t> dp(s2sv<num_t>(s));
+      if(! std::getline(Mps, s)) break;
+      SimpleVector<num_t> Mp(s2sv<num_t>(s));
+      if(! std::getline(Mms, s)) break;
+      SimpleVector<num_t> Mm(s2sv<num_t>(s));
+      Mp -= dp;
+      Mm += dp;
+      SimpleVector<num_t> tdot(Mp);
+      if(! std::getline(d0s,  s)) break;
+      std::cout << s << ", ";
+      for(int i = 0; i < tdot.size() - 1; i ++)
+        std::cout << abs(Mp[i] * Mm[i]) << ", ";
+      const int i(tdot.size() - 1);
+      std::cout << abs(Mp[i] * Mm[i]) << std::endl << std::flush;
+    }
+    break;
 #if defined(_FORK_)
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
@@ -886,27 +906,17 @@ int main(int argc, const char* argv[]) {
 #endif
   } default: {
     num_t bb(int(0));
-    std::vector<num_t> b;
+    SimpleVector<num_t> b;
     std::vector<int> bf;
     std::vector<int> bg;
-    idFeeder<std::vector<num_t> > bbb;
+    idFeeder<SimpleVector<num_t> > bbb;
     string a2(2 < argc ? argv[2] : "");
     const int a02(std::atoi(2 < argc ? argv[2] : "0"));
     std::stringstream ss(a2);
     num_t tt(int(0));
     ss >> tt;
     while(std::getline(std::cin, s, '\n')) {
-      int cnt(1);
-      for(int i = 0; i < s.size(); i ++)
-        if(s[i] == ',') cnt ++;
-      std::vector<num_t> in;
-      in.resize(cnt);
-      int i, j;
-      for(i = 0, j = 0; i < s.size(); i ++) {
-        std::stringstream ins(s.substr(i, s.size() - i));
-        ins >> in[j ++];
-        for( ; s[i] != ',' && i < s.size(); i ++) ;
-      }
+      SimpleVector<num_t> in(s2sv<num_t>(s));
       switch(argv[1][0]) {
       case 'S':
         if(t < std::atoi(argv[2])) break;
@@ -921,12 +931,12 @@ int main(int argc, const char* argv[]) {
       case 's':
         if(a02) {
           if(bbb.res.size() != a02 && a02 != 0)
-            bbb = idFeeder<std::vector<num_t> >(a02);
+            bbb = idFeeder<SimpleVector<num_t> >(a02);
           bbb.next(in);
           if(bbb.full) {
-            std::vector<num_t> sum(bbb.res[0]);
+            SimpleVector<num_t> sum(bbb.res[0]);
             for(int i = 1; i < bbb.res.size(); i ++)
-              for(int j = 0; j < sum.size(); j ++) sum[j] += bbb.res[i][j];
+              sum += bbb.res[i];
             for(int i = 0; i < sum.size() - 1; i ++)
               std::cout << sum[i] << ", ";
             std::cout << sum[sum.size() - 1] << std::endl;
@@ -1040,7 +1050,7 @@ int main(int argc, const char* argv[]) {
 #endif
       } case 'I': {
         if(std::atoi(argv[2]) == 0) {
-          if(b.size() < in.size()) b.resize(in.size(), num_t(int(0)));
+          if(b.size() < in.size()) b.entity.resize(in.size(), num_t(int(0)));
           for(int i = 0; i < in.size() - 1; i ++)
             std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << ", ";
           const int i(in.size() - 1);
@@ -1049,11 +1059,11 @@ int main(int argc, const char* argv[]) {
             in[i] += b[i];
         } else {
           if(bbb.res.size() != std::atoi(argv[2]))
-            bbb = idFeeder<std::vector<num_t> >(std::atoi(argv[2]));
+            bbb = idFeeder<SimpleVector<num_t> >(std::atoi(argv[2]));
           if(bbb.full) {
             b = bbb.res[0];
             for(int j = 1; j < bbb.res.size(); j ++) 
-              for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+              b += bbb.res[j];
             for(int i = 0; i < in.size() - 1; i ++)
               std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << ", ";
             const int i(in.size() - 1);
@@ -1068,18 +1078,20 @@ int main(int argc, const char* argv[]) {
         break;
       } case 'O': {
         const int len(2 < argc ? std::atoi(argv[2]) : 1);
-        if(! t) bbb = idFeeder<std::vector<num_t> >(argv[1][1] == '-' ? len + 1 : len);
+        if(! t) bbb = idFeeder<SimpleVector<num_t> >(argv[1][1] == '-' ? len + 1 : len);
         bbb.next(in);
         if(bbb.full) {
           b = bbb.res[0];
           for(int j = 1; j < len; j ++)
-            for(int k = 0; k < b.size(); k ++) b[k] += bbb.res[j][k];
+            b += bbb.res[j];
           for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : b[i]) ) << ", ";
+            std::cout << (b[i + b.size() / 2] == num_t(int(0)) ? num_t(int(0))
+              : (b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+                num_t(int(1)) : b[i]) ) << ", ";
           const int i(b.size() / 2 - 1);
-          std::cout << ((b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-            num_t(int(1)) : b[i]) ) << std::endl;
+          std::cout << (b[i + b.size() / 2] == num_t(int(0)) ? num_t(int(0))
+            : (b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
+              num_t(int(1)) : b[i]) ) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << num_t(int(0)) << ", ";
@@ -1175,18 +1187,10 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** sectional test (we need to configure range nor configure using delta stream) ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 00+ | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 00+ | tee 00- | " << argv[0] << " Ac- 4 | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << argv[0] << " L 00+ 1+ | " << argv[0] << " O 4 > 1++" << endl;
-  cerr << argv[0] << " L 00- 1- | " << argv[0] << " O 4 | " << argv[0] << " t " << - num_t(int(1)) << " > 1--" << endl;
-  cerr << argv[0] << " L 1++ 1-- | p O+" << endl << endl;
-  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ 1 > 11" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ 1 | " << argv[0] << " t -1 > 00" << endl;
-  cerr << argv[0] << " L 11 00 | " << argv[0] << " O+ 1 | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " > 111" << endl;
-  cerr << argv[0] << " L 00+ 111 | " << argv[0] << " O 4" << endl << endl;
-  cerr << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " < 11 > 112" << endl;
-  cerr << argv[0] << " L 00+ 112 | " << argv[0] << " O 4" << endl;
+  cerr << endl << " *** sectional test ***" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
+  cerr << argv[0] << " / 0 0+ 1+ 1- | " << argv[0] << " O 4" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
@@ -1198,7 +1202,6 @@ int main(int argc, const char* argv[]) {
   cerr << "# Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks." << endl;
   cerr << "# We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago." << endl;
   cerr << "# So we close this repository with embryonic this one as to keep simple enough also graphics predictor on bitsofcotton/ddpmopt, text predictor bitsofcotton/puts_cc are so." << endl;
-  cerr << "# So the grip on ***SIMPLE*** predictor always slip case, we should have copied large internal states table to predict next one step as a inside the state table pivot, however this isn't import new entropy enough." << endl;
   return - 1;
 }
 
