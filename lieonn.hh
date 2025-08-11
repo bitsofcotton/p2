@@ -4888,10 +4888,20 @@ template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVec
   return res;
 }
 
+// N.B. flip backward one step. from somehow, raw with only this can works
+//      better with some command set but not on same pipeline.
+template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVector<T> >&, const string&) > SimpleVector<T> pFlip(const SimpleVector<SimpleVector<T> >& in, const string& strloop) {
+  const SimpleVector<T> plast(p(in.subVector(0, in.size() - 1).entity, strloop));
+  const SimpleVector<T> pnext(p(in.subVector(1, in.size() - 1).entity, strloop));
+  SimpleVector<T> res(unOffsetHalf<T>(in[in.size() - 1]));
+  for(int i = 0; i < res.size(); i ++) res[i] *= plast[i] * pnext[i];
+  return res;
+}
+
 // N.B. repeat possible output whole range. also offset before/after predict.
 template <typename T, int nprogress> vector<SimpleVector<T> > pRepeat(const vector<SimpleVector<T> >& in, const string& strloop) {
   // to avoid pGuarantee calculation time exhaust.
-  const int length(_P_MLEN_ * 2);
+  const int length(_P_MLEN_);
   // minimum of pGuarantee input length * 2.
   const int cand(max(int(1), int(in.size() / 4)) );
   vector<SimpleVector<T> > res;
@@ -4899,7 +4909,8 @@ template <typename T, int nprogress> vector<SimpleVector<T> > pRepeat(const vect
   for(int i = 1; i <= cand; i ++) {
     SimpleVector<SimpleVector<T> > w;
     w.entity = skipX<SimpleVector<T> >(in, i);
-    res.emplace_back(pTwiceTwice<T, nprogress, pGuarantee<T, nprogress> >(
+    //res.emplace_back(pTwiceTwice<T, nprogress, pGuarantee<T, nprogress> >(
+    res.emplace_back(pFlip<T, nprogress, pGuarantee<T, nprogress> >(
       w.size() > length ? w.subVector(w.size() - length, length) : w,
         string(" ") + to_string(i - 1) + string("/") + to_string(cand) +
           strloop));
