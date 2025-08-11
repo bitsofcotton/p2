@@ -69,7 +69,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p c.? <arg>
     # trivial return to the average id. prediction (c for difference output)
     p Ic?
-    # ddpmopt partial prediction (. for difference output)
+    # ddpmopt partial prediction (. for difference output, W- for levi, A- for whole)
     p [AW].? <skip>? <states>?
     # minimum quare left hand side prediction (. for difference output)"
     p q.? <len>? <step>?
@@ -100,10 +100,14 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** sectional test ***
-    cat ... | p l 0 | tee 0 | p Ac 4 | p lH | tee 0+ | p t 0.5 | p Ac 4 | p lH | p t 2 > 1+
-    p t -1 < 0+ | p t 0.5 | p Ac 4 | p lH | p t 2 > 1-
-    p / 0 0+ 1+ 1- | p O 4
+     *** case test ***
+    cat ... | p l 0 | tee 00+ | p [AW]c | p lH | tee 0+ | p t 0.5 | p [AW]c | p lH | p t 2 > 1++
+    p t -1 < 0+ | p t 0.5 | p [AW]c | p lH | p t 2 > 1+-
+    p t -1 < 00+ | tee 00- | p [AW]c | p lH | tee 0- | p t 0.5 | p [AW]c | p lH | p t 2 > 1-+
+    p t -1 < 0- | p t 0.5 | p [AW]c | p lH | p t 2 > 1--
+    p / 00+ 0+ 1++ 1+- | p O > 2+
+    p / 00- 0- 1-+ 1-- | p O | p t -1 > 2-
+    p L 2+ 2- | p O+
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -117,8 +121,6 @@ Predictor formatter and some of the toolset for non usual input streams.
      *** predictor notation ***
     # Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks.
     # We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago.
-    # So we close this repository with embryonic this one as to keep simple enough also graphics predictor on bitsofcotton/ddpmopt, text predictor bitsofcotton/puts_cc are so.
-    # So the grip on ***SIMPLE*** predictor always slip case, we should have copied large internal states table to predict next one step as a inside the state table pivot, however this isn't import new entropy enough.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -280,4 +282,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/07 sectionally ok.
 2025/08/08 some fixes ok.
 2025/08/09 slip grip slip grip.
+2025/08/11 A, W cmd change,
 

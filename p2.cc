@@ -249,41 +249,29 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': case 'W': {
-    int length(46);
-    int skip(6);
-    if(2 < argc) skip  = std::atoi(argv[2]);
-    if(3 < argc) length = std::atoi(argv[3]);
-    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << skip << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length ? (length + 1) * skip : 0);
-    idFeeder<SimpleVector<num_t> > q(skip);
+    int length(argv[1][0] == 'A' ? 46 : 21);
+    if(2 < argc) length = std::atoi(argv[2]);
+    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
+    idFeeder<SimpleVector<num_t> > p(length ? abs(length) + 1 : 0);
     SimpleVector<num_t> b;
     SimpleVector<num_t> M;
-    SimpleVector<num_t> bM;
     while(std::getline(std::cin, s, '\n')) {
       SimpleVector<num_t> d(s2sv<num_t>(s));
       if(M.size() < d.size()) {
         M.resize(d.size());
         M.O();
       }
-      if(argv[1][0] == 'W' && bM.size()) M -= bM;
       for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
-      if(argv[1][0] == 'W') {
-        if(b.size()) p.next(offsetHalf<num_t>(b += d));
-        else p.next(offsetHalf<num_t>(b = d));
-      } else p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= 3 * skip) M = d.O();
-      else q.next(pComplementStream<num_t, 1>(p.res, length, skip, string("") ));
-      bM = M;
-      if(q.full) {
-        M = q.res[0];
-        if(argv[1][1] == '\0') {
-          for(int i = 1; i < q.res.size(); i ++) M += q.res[i];
-          M /= num_t(q.res.size());
-        }
-      }
-      if(argv[1][1] != '\0' && argv[1][2] == '-') M = - M;
+      p.next(offsetHalf<num_t>(d));
+      if(! p.full || p.res.size() <= 3) M = d.O();
+      else M = (argv[1][0] == 'A' ?
+        (length < 0 ? pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(
+          p.res, string("") ) :
+            pSubtractMaxInvariant<num_t, 1>(p.res.entity, string("") ) ) :
+        (length < 0 ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
+                      pGuarantee<num_t,   1>(p.res.entity, string("")) ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -1170,7 +1158,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output)" << endl << argv[0] << " [AW].? <skip>? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for difference output, W- for levi, A- for whole)" << endl << argv[0] << " [AW].? <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1187,10 +1175,14 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** sectional test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 0 | " << argv[0] << " Ac 4 | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " Ac 4 | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-" << endl;
-  cerr << argv[0] << " / 0 0+ 1+ 1- | " << argv[0] << " O 4" << endl;
+  cerr << endl << " *** case test ***" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | tee 00+ | " << argv[0] << " [AW]c | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1++" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+-" << endl;
+  cerr << argv[0] << " t -1 < 00+ | tee 00- | " << argv[0] << " [AW]c | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-+" << endl;
+  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1--" << endl;
+  cerr << argv[0] << " / 00+ 0+ 1++ 1+- | " << argv[0] << " O > 2+" << endl;
+  cerr << argv[0] << " / 00- 0- 1-+ 1-- | " << argv[0] << " O | " << argv[0] << " t " << - num_t(int(1)) << " > 2-" << endl;
+  cerr << argv[0] << " L 2+ 2- | " << argv[0] << " O+" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
@@ -1201,7 +1193,6 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** predictor notation ***" << endl;
   cerr << "# Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks." << endl;
   cerr << "# We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago." << endl;
-  cerr << "# So we close this repository with embryonic this one as to keep simple enough also graphics predictor on bitsofcotton/ddpmopt, text predictor bitsofcotton/puts_cc are so." << endl;
   return - 1;
 }
 
