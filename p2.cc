@@ -252,7 +252,7 @@ int main(int argc, const char* argv[]) {
     int length(argv[1][0] == 'A' ? 46 : 21);
     if(2 < argc) length = std::atoi(argv[2]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length ? abs(length) + 1 : 0);
+    idFeeder<SimpleVector<num_t> > p(length ? abs(length) : 0);
     SimpleVector<num_t> b;
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
@@ -268,9 +268,9 @@ int main(int argc, const char* argv[]) {
       if(! p.full || p.res.size() <= 3) M = d.O();
       else M = (argv[1][0] == 'A' ?
         (length < 0 ? pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(
-          p.res, string("") ) :
-            pSubtractMaxInvariant<num_t, 1>(p.res.entity, string("") ) ) :
-        (length < 0 ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
+          p.res, string("") ) : pSubtractMaxInvariant<num_t, 1>(
+            p.res.entity, string("") ) ) : unOffsetHalf<num_t>(
+         length < 0 ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
                       pGuarantee<num_t,   1>(p.res.entity, string("")) ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -675,30 +675,6 @@ int main(int argc, const char* argv[]) {
     left.close();
     right.close();
     break;
-  } case '/': {
-    std::ifstream d0s(argv[2]);
-    std::ifstream dps(argv[3]);
-    std::ifstream Mps(argv[4]);
-    std::ifstream Mms(argv[5]);
-    bool loop(true);
-    while(1) {
-      if(! std::getline(dps, s)) break;
-      SimpleVector<num_t> dp(s2sv<num_t>(s));
-      if(! std::getline(Mps, s)) break;
-      SimpleVector<num_t> Mp(s2sv<num_t>(s));
-      if(! std::getline(Mms, s)) break;
-      SimpleVector<num_t> Mm(s2sv<num_t>(s));
-      Mp -= dp;
-      Mm += dp;
-      SimpleVector<num_t> tdot(Mp);
-      if(! std::getline(d0s,  s)) break;
-      std::cout << s << ", ";
-      for(int i = 0; i < tdot.size() - 1; i ++)
-        std::cout << abs(Mp[i] * Mm[i]) << ", ";
-      const int i(tdot.size() - 1);
-      std::cout << abs(Mp[i] * Mm[i]) << std::endl << std::flush;
-    }
-    break;
 #if defined(_FORK_)
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
@@ -1066,7 +1042,7 @@ int main(int argc, const char* argv[]) {
         break;
       } case 'O': {
         const int len(2 < argc ? std::atoi(argv[2]) : 1);
-        if(! t) bbb = idFeeder<SimpleVector<num_t> >(argv[1][1] == '-' ? len + 1 : len);
+        if(! t) bbb = idFeeder<SimpleVector<num_t> >(len);
         bbb.next(in);
         if(bbb.full) {
           b = bbb.res[0];
@@ -1176,13 +1152,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** case test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | tee 00+ | " << argv[0] << " [AW]c | " << argv[0] << " lH | tee 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1++" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+-" << endl;
-  cerr << argv[0] << " t -1 < 00+ | tee 00- | " << argv[0] << " [AW]c | " << argv[0] << " lH | tee 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1-+" << endl;
-  cerr << argv[0] << " t " << - num_t(int(1)) << " < 0- | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " [AW]c | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1--" << endl;
-  cerr << argv[0] << " / 00+ 0+ 1++ 1+- | " << argv[0] << " O > 2+" << endl;
-  cerr << argv[0] << " / 00- 0- 1-+ 1-- | " << argv[0] << " O | " << argv[0] << " t " << - num_t(int(1)) << " > 2-" << endl;
-  cerr << argv[0] << " L 2+ 2- | " << argv[0] << " O+" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " Ac -42 | tee 00 | " << argv[0] << " qc 12 | " << argv[0] << " 0c 12 | " << argv[0] << " lH | " << argv[0] << " lH | " << argv[0] << " lH > 0" << endl;
+  cerr << argv[0] << " L 00 0 | " << argv[0] << " O" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
