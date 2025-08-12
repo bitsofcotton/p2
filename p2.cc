@@ -267,7 +267,7 @@ int main(int argc, const char* argv[]) {
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3) M = d.O();
       else M = (argv[1][0] == 'A' ?
-        (length < 0 ? pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(
+        (length < 0 ? pTwiceTwice<num_t, 1, pSubtractMaxInvariant<num_t, 1> >(
           p.res, string("") ) : pSubtractMaxInvariant<num_t, 1>(
             p.res.entity, string("") ) ) : unOffsetHalf<num_t>(
          length < 0 ? pGuarantee<num_t, - 1>(p.res.entity, string("")) :
@@ -1152,7 +1152,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** case test (testing) ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | tee 0+ | " << argv[0] << " Ac | " << argv[0] << " lH > 1+" << endl;
+  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " | tee 0+ | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " t " << num_t(int(2)) << " > 1+" << endl;
   cerr << argv[0] << " L 0+ 1+ | p O" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;

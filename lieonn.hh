@@ -4878,23 +4878,13 @@ template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVec
     pp[i] = (unOffsetHalf<T>(in[ i - pp.size() + in.size() ]) - pp[i]) / T(int(2));
     pm[i] = (unOffsetHalf<T>(inm[i - pm.size() + inm.size()]) - pm[i]) / T(int(2));
   }
-  const SimpleVector<T> ppp(ppl + p(offsetHalf<T>(  pp).entity, string(" -4") + strloop) * T(int(2)));
-  const SimpleVector<T> ppm(ppl - p(offsetHalf<T>(- pp).entity, string(" -3") + strloop) * T(int(2)));
-  const SimpleVector<T> pmp(pml + p(offsetHalf<T>(  pm).entity, string(" -2") + strloop) * T(int(2)));
-  const SimpleVector<T> pmm(pml - p(offsetHalf<T>(- pm).entity, string(" -1") + strloop) * T(int(2)));
+  const SimpleVector<T> ppb(p(offsetHalf<T>(  pp).entity, string(" -4") +
+    strloop) - p(offsetHalf<T>(- pp).entity, string(" -3") + strloop));
+  const SimpleVector<T> pmb(p(offsetHalf<T>(  pm).entity, string(" -2") +
+    strloop) - p(offsetHalf<T>(- pm).entity, string(" -1") + strloop));
   SimpleVector<T> res(in[0].size());
   for(int i = 0; i < res.size(); i ++)
-    res[i] = abs(ppp[i] * ppm[i]) - abs(pmp[i] * pmm[i]);
-  return res;
-}
-
-// N.B. flip backward one step. from somehow, raw with only this can works
-//      better with some command set but not on same pipeline.
-template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVector<T> >&, const string&) > SimpleVector<T> pFlip(const SimpleVector<SimpleVector<T> >& in, const string& strloop) {
-  const SimpleVector<T> plast(p(in.subVector(0, in.size() - 1).entity, strloop));
-  const SimpleVector<T> pnext(p(in.subVector(1, in.size() - 1).entity, strloop));
-  SimpleVector<T> res(unOffsetHalf<T>(in[in.size() - 1]));
-  for(int i = 0; i < res.size(); i ++) res[i] *= plast[i] * pnext[i];
+    res[i] = sgn<T>(ppb[i] * pmb[i]) < T(int(0)) ? ppb[i] - pmb[i] : T(int(0));
   return res;
 }
 
@@ -4909,8 +4899,7 @@ template <typename T, int nprogress> vector<SimpleVector<T> > pRepeat(const vect
   for(int i = 1; i <= cand; i ++) {
     SimpleVector<SimpleVector<T> > w;
     w.entity = skipX<SimpleVector<T> >(in, i);
-    //res.emplace_back(pTwiceTwice<T, nprogress, pGuarantee<T, nprogress> >(
-    res.emplace_back(pFlip<T, nprogress, pGuarantee<T, nprogress> >(
+    res.emplace_back(pTwiceTwice<T, nprogress, pGuarantee<T, nprogress> >(
       w.size() > length ? w.subVector(w.size() - length, length) : w,
         string(" ") + to_string(i - 1) + string("/") + to_string(cand) +
           strloop));
