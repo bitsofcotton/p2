@@ -100,14 +100,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** case test ***
-    cat ... | p l 0 | tee 00+ | p [AW]c | p lH | tee 0+ | p t 0.5 | p [AW]c | p lH | p t 2 > 1++
-    p t -1 < 0+ | p t 0.5 | p [AW]c | p lH | p t 2 > 1+-
-    p t -1 < 00+ | tee 00- | p [AW]c | p lH | tee 0- | p t 0.5 | p [AW]c | p lH | p t 2 > 1-+
-    p t -1 < 0- | p t 0.5 | p [AW]c | p lH | p t 2 > 1--
-    p / 00+ 0+ 1++ 1+- | p O > 2+
-    p / 00- 0- 1-+ 1-- | p O | p t -1 > 2-
-    p L 2+ 2- | p O+
+     *** test case ***
+    cat ... | p l 0 | python3 test.py 21 | p O 1
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -283,4 +277,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/08 some fixes ok.
 2025/08/09 slip grip slip grip.
 2025/08/11 A, W cmd change,
+2025/08/13 some tests causes test.py result.
 
