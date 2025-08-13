@@ -4850,129 +4850,19 @@ template <typename T, int nprogress> SimpleVector<T> pGuaranteeMax(const vector<
         - abs(_P_BIT_) )) + in[in.size() - 1];
 }
 
-// N.B. offset.
-template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVector<T> >&, const string&) > SimpleVector<T> pOffset(const vector<SimpleVector<T> >& in, const string& strloop) {
-  vector<SimpleVector<T> > ind;
-  ind.reserve(in.size() - 1);
-  T M(int(0));
-  for(int i = 1; i < in.size(); i ++) {
-    ind.emplace_back(unOffsetHalf<T>(in[i]) - unOffsetHalf<T>(in[i - 1]) +
-      unOffsetHalf<T>(in[in.size() - 2]) );
-    for(int j = 0; j < ind[i - 1].size(); j ++) M = max(M, abs(ind[i - 1][j]));
-  }
-  if(M <= T(int(0)) ) return ind[0].O();
-  for(int i = 0; i < ind.size(); i ++)
-    ind[i] = offsetHalf<T>(ind[i] /= M);
-#if defined(_OPENMP)
-  for(int i = 1; i <= in.size(); i ++) pnextcacher<T>(i, 1);
-  // N.B. comment out and use env OMP_MAX_ACTIVE_LEVELS=... to reduce
-  //      memory usage.
-  omp_set_max_active_levels(2);
-#endif
-  assert(ind[0].size() == ind[ind.size() - 1].size());
-  return unOffsetHalf<T>(p(ind, strloop)) * M;
-}
-
-// N.B. twice twice. we add measureable condition virtually on first prediction,
-//      we do prediction to differ on them often gets better results.
-//      since we get abs value on prediction,we do -(original stream) condition.
-template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVector<T> >&, const string&) > SimpleVector<T> pTwiceTwice(const SimpleVector<SimpleVector<T> >& in, const string& strloop) {
-  const int sz(in.size() / 2);
-  const SimpleVector<SimpleVector<T> > inm(offsetHalf<T>(- unOffsetHalf<T>(in)));
-  SimpleVector<SimpleVector<T> > pp(in.size() - sz + 1);
-  SimpleVector<SimpleVector<T> > pm(in.size() - sz + 1);
-#if defined(_OPENMP)
-  for(int i = 1; i < in.size(); i ++) pnextcacher<T>(i, 1);
-  // N.B. comment out and use env OMP_MAX_ACTIVE_LEVELS=... to reduce
-  //      memory usage.
-  omp_set_max_active_levels(2);
-#pragma omp parallel
-#pragma omp for schedule(static, 1)
-#endif
-  for(int i = 0; i <= in.size() - sz; i ++)
-    pp[i] = unOffsetHalf<T>(
-      p(in.subVector(i, sz).entity, string(" ") + to_string(i) +
-        string("/") + to_string(sz * 2 + 4) + strloop) );
-#if defined(_OPENMP)
-#pragma omp for schedule(static, 1)
-#endif
-  for(int i = 0; i <= in.size() - sz; i ++)
-    pm[i] = unOffsetHalf<T>(
-      p(inm.subVector(i, sz).entity, string(" ") + to_string(i + sz) +
-        string("/") + to_string(sz * 2 + 4) + strloop) );
-  // *** intentionally keep dead code ***
-#if 0
-  static SimpleVector<T> ppl, pml, ppp, ppm, pmp, pmm, pdp, pdm;
-  SimpleVector<T> res(in[0].size() * 3);
-  if(ppp.size()) for(int i = 0; i < in[0].size(); i ++) {
-    const T Pp(ppp[i] - ppm[i]); // - ppl[i] * T(int(2)));
-    const T Pm(pmm[i] - pmp[i]); // - pml[i] * T(int(2)));
-    res[i * 3 + 0] = (Pp + Pm) * (- pdm[i]) > T(int(0)) ? (Pp + Pm) * (- pdm[i] * T(int(2)) + unOffsetHalf<T>(in[in.size() - 1][i]) ) : T(int(0));
-    res[i * 3 + 1] = (Pp - Pm) * (- pdp[i]) > T(int(0)) ? (Pp - Pm) * (- pdp[i] * T(int(2)) + unOffsetHalf<T>(in[in.size() - 1][i]) ) : T(int(0));
-    res[i * 3 + 2] = res[i * 3 + 0] + res[i * 3 + 1];
-  } else res.O();
-  ppl = move(pp[pp.size() - 1]);
-  pml = move(pm[pm.size() - 1]);
-  pp.resize(pp.size() - 1);
-  pm.resize(pm.size() - 1);
-  SimpleVector<SimpleVector<T> > pddp(pm);
-  SimpleVector<SimpleVector<T> > pddm(pm);
-  for(int i = 0; i < pp.size(); i ++) {
-    pp[i] = (unOffsetHalf<T>(in[ i - pp.size() + in.size() ]) - pp[i]) / T(int(4));
-    pm[i] = (unOffsetHalf<T>(inm[i - pm.size() + inm.size()]) - pm[i]) / T(int(4));
-    pddp[i] = (pp[i] + pm[i]) / T(int(2));
-    pddm[i] = (pp[i] - pm[i]) / T(int(2));
-  }
-  ppp = p(offsetHalf<T>(  pp).entity, string(" -6") + strloop);
-  ppm = p(offsetHalf<T>(- pp).entity, string(" -5") + strloop);
-  pmp = p(offsetHalf<T>(  pm).entity, string(" -4") + strloop);
-  pmm = p(offsetHalf<T>(- pm).entity, string(" -3") + strloop);
-  pdp = p(offsetHalf<T>(pddp).entity, string(" -2") + strloop);
-  pdm = p(offsetHalf<T>(pddm).entity, string(" -1") + strloop);
-#else
-  const SimpleVector<T> ppl(move(pp[pp.size() - 1]));
-  const SimpleVector<T> pml(move(pm[pm.size() - 1]));
-  pp.resize(pp.size() - 1);
-  pm.resize(pm.size() - 1);
-  SimpleVector<SimpleVector<T> > pddp(pm);
-  SimpleVector<SimpleVector<T> > pddm(pm);
-  for(int i = 0; i < pp.size(); i ++) {
-    pp[i] = (unOffsetHalf<T>(in[ i - pp.size() + in.size() ]) - pp[i]) / T(int(4));
-    pm[i] = (unOffsetHalf<T>(inm[i - pm.size() + inm.size()]) - pm[i]) / T(int(4));
-    pddp[i] = (pp[i] + pm[i]) / T(int(2));
-    pddm[i] = (pp[i] - pm[i]) / T(int(2));
-  }
-  const SimpleVector<T> ppp(p(offsetHalf<T>(  pp).entity, string(" -6") + strloop));
-  const SimpleVector<T> ppm(p(offsetHalf<T>(- pp).entity, string(" -5") + strloop));
-  const SimpleVector<T> pmp(p(offsetHalf<T>(  pm).entity, string(" -4") + strloop));
-  const SimpleVector<T> pmm(p(offsetHalf<T>(- pm).entity, string(" -3") + strloop));
-  const SimpleVector<T> pdp(p(offsetHalf<T>(pddp).entity, string(" -2") + strloop));
-  const SimpleVector<T> pdm(p(offsetHalf<T>(pddm).entity, string(" -1") + strloop));
-  SimpleVector<T> res(in[0].size());
-  for(int i = 0; i < res.size(); i ++) {
-    const T Pp(ppp[i] - ppm[i]); // - ppl[i] * T(int(2)));
-    const T Pm(pmm[i] - pmp[i]); // - pml[i] * T(int(2)));
-    res[i]  = T(int(0));
-    if((Pp + Pm) * (- pdm[i]) > T(int(0))) res[i] += Pp + Pm;
-    if((Pp - Pm) * (- pdp[i]) > T(int(0))) res[i] += Pp - Pm;
-  }
-#endif
-  return res;
-}
-
 // N.B. repeat possible output whole range. also offset before/after predict.
 template <typename T, int nprogress> vector<SimpleVector<T> > pRepeat(const vector<SimpleVector<T> >& in, const string& strloop) {
   // to avoid pGuarantee calculation time exhaust.
-  // we need (_P_MLEN_ * 2 + 3 + 1) * 2 for pGuaranteeMax in normal use.
-  const int length(_P_MLEN_ * 2);
+  // we need (_P_MLEN_ * 2 + 3 + 1) for pGuaranteeMax in normal use.
+  const int length(_P_MLEN_);
   const int cand(max(int(1), int(in.size() / length)) );
   vector<SimpleVector<T> > res;
   res.reserve(cand);
   for(int i = 1; i <= cand; i ++) {
     SimpleVector<SimpleVector<T> > w;
     w.entity = skipX<SimpleVector<T> >(in, i);
-    res.emplace_back(pTwiceTwice<T, nprogress, pGuarantee<T, nprogress> >(
-      w.size() > length ? w.subVector(w.size() - length, length) : w,
+    res.emplace_back(pGuarantee<T, nprogress>(w.size() > length ?
+      w.subVector(w.size() - length, length).entity : w.entity,
         string(" ") + to_string(i - 1) + string("/") + to_string(cand) +
           strloop));
   }
