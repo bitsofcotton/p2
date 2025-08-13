@@ -69,8 +69,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p c.? <arg>
     # trivial return to the average id. prediction (c for difference output)
     p Ic?
-    # ddpmopt partial prediction (. for difference output, W- for levi, A- for whole)
-    p [AW].? <skip>? <states>?
+    # ddpmopt partial prediction (. for difference output, states < 0 for LoEM unstable case)
+    p A.? <states>?
     # minimum quare left hand side prediction (. for difference output)"
     p q.? <len>? <step>?
     
@@ -101,7 +101,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p l 0 | python3 test.py 21 | p O 1
+    cat ... | p t 0.5 | tee 0 | p d | p A ... | p lG > 0+"
+    p L 0 0+ | p W
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
