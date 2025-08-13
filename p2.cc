@@ -249,14 +249,13 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': case 'W': {
-    int step(1);
-    int length(argv[1][0] == 'A' ? 46 : 21);
-    if(2 < argc) step   = std::atoi(argv[2]);
-    if(3 < argc) length = std::atoi(argv[3]);
-    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << step << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length ? length * abs(step) : 0);
+    int length(argv[1][0] == 'A' ? _P_MLEN_ * 2 + 3 + 1 : _P_MLEN_);
+    if(2 < argc && argv[2][0] == '-' && argv[2][1] == '\0') length = - length;
+    else if(2 < argc) length = std::atoi(argv[2]);
+    const bool minus(length < 0 || (2 < argc && argv[2][0] == '-') );
+    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
+    idFeeder<SimpleVector<num_t> > p(length ? abs(length) : 0);
     SimpleVector<num_t> M;
-    idFeeder<SimpleVector<num_t> > MM(abs(step));
     while(std::getline(std::cin, s, '\n')) {
       SimpleVector<num_t> d(s2sv<num_t>(s));
       if(M.size() < d.size()) {
@@ -268,17 +267,16 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3) M = d.O();
-      else {
-        SimpleVector<SimpleVector<num_t> > q;
-        q.entity = skipX<SimpleVector<num_t> >(p.res.entity, abs(step));
-        MM.next(argv[1][0] == 'A' ?
-          (step < 0 ? pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(
-            q, string("") ) : pSubtractMaxInvariant<num_t, 1>(
-              q.entity, string("") ) ) : unOffsetHalf<num_t>(
-           step < 0 ? pGuarantee<num_t, - 1>(q.entity, string("")) :
-                        pGuarantee<num_t,   1>(q.entity, string("")) ) );
-        if(MM.full) M = MM.res[0];
-      }
+      else if(argv[1][0] == 'A') M = (minus ?
+        pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1> >(
+          p.res, string("") ) :
+            unOffsetHalf<num_t>(pGuaranteeMax<num_t, 1>(
+              p.res.entity, string(""))) );
+      else M = (minus ?
+        pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(
+          p.res, string("") ) :
+            unOffsetHalf<num_t>(pGuarantee<num_t, 1>(
+              p.res.entity, string("") ) ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -1141,7 +1139,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output, W- for levi, A- for whole)" << endl << argv[0] << " [AW].? <step>? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (. for difference output, states < 0 for 2-range offsetted but doesn't work well)" << endl << argv[0] << " [AW].? <states>? <step>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1158,9 +1156,9 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** secional test (there can exist jammer we can avoid some param configure AFTER we get the whole stream ***" << endl;
-  cerr << "cat ... | " << argv[0] << " l 0 | " << argv[0] << " [AW]c ... ... | " << argv[0] << " lH > 0+" << endl;
-  cerr << argv[0] << " L 0 0+ | p O ..." << endl;
+  cerr << endl << " *** test case (should be compatbile but not) ***" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " (W -21 | A -46) <step> | " << argv[0] << " lH > 0+" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " O <step>";
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
