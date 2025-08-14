@@ -269,13 +269,13 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3) M.O();
-      else M = unOffsetHalf<num_t>(length < 0 ? (argv[1][1] == 'd' ?
+      else M = length < 0 ? (argv[1][1] == 'd' ?
         pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1>, true>(p.res, string(""))
         : pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1>, false>(p.res,
           string("") ) ) : (argv[1][1] == 'd' ?
             pTwiceTwice<num_t, 1, pGuarantee<num_t, 1>, true>(p.res, string(""))
               : pTwiceTwice<num_t, 1, pGuarantee<num_t, 1>, false>(p.res,
-                string("") ) ) );
+                string("") ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }

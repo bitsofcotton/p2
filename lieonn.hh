@@ -4894,15 +4894,12 @@ template <typename T, int nprogress, SimpleVector<T> (*p)(const vector<SimpleVec
     if(ppp.size()) for(int i = 0; i < in[0].size(); i ++) {
       const T Pp(ppp[i] - ppm[i]); // - ppl[i] * T(int(2)));
       const T Pm(pmm[i] - pmp[i]); // - pml[i] * T(int(2)));
-      res[i * 2 + 0] = ( (Pp + Pm) * (- pdm[i]) > T(int(0)) ?
-          (Pp + Pm) * (- pdm[i] * T(int(2)) +
-            unOffsetHalf<T>(in[in.size() - 1][i]) ) : T(int(0)) ) +
-        ( (Pp - Pm) * (- pdp[i]) > T(int(0)) ?
-          (Pp - Pm) * (- pdp[i] * T(int(2)) +
-            unOffsetHalf<T>(in[in.size() - 1][i]) ) : T(int(0)) );
-      res[i * 2 + 1] = ( ((Pp + Pm) * (- pdm[i]) > T(int(0)) ?
-        (Pp + Pm) : T(int(0)) ) + ((Pp - Pm) * (- pdp[i]) > T(int(0)) ?
-          (Pp - Pm) : T(int(0)) ) ) * unOffsetHalf<T>(in[in.size() - 1][i]);
+      res[i * 2 + 0] = (Pp + Pm) * (- pdm[i]) *
+        (- pdm[i] * T(int(2)) + unOffsetHalf<T>(in[in.size() - 1][i]) );
+        - (Pp - Pm) * (- pdp[i]) *
+        (- pdp[i] * T(int(2)) + unOffsetHalf<T>(in[in.size() - 1][i]) );
+      res[i * 2 + 1] = ((Pp + Pm) * (- pdm[i]) + (Pp - Pm) * pdp[i])
+         * unOffsetHalf<T>(in[in.size() - 1][i]);
     } else res.O();
     ppl = move(pp[pp.size() - 1]);
     pml = move(pm[pm.size() - 1]);
