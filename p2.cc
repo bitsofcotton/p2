@@ -269,11 +269,8 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3) M.O();
-      else M = length < 0 ? unOffsetHalf<num_t>(
-        pGuaranteeMax<num_t, 1>(p.res, string("") ) :
-          pGuarantee<num_t, 1>(p.res, string("") ) );
-        // pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1> >(p.res, string("") ) :
-        //   pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(p.res, string("") );
+      else M = length < 0 ? pGuaranteeMax<num_t, 1>(p.res, string("")) :
+        pGuarantee<num_t, 1>(p.res, string(""));
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -1043,26 +1040,14 @@ int main(int argc, const char* argv[]) {
         }
         break;
       } case 'O': {
-        const int len(2 < argc ? std::atoi(argv[2]) : 1);
-        if(! t) bbb = idFeeder<SimpleVector<num_t> >(len);
-        bbb.next(in);
-        if(bbb.full) {
-          b = bbb.res[0];
-          for(int j = 1; j < len; j ++)
-            b += bbb.res[j];
-          for(int i = 0; i < b.size() / 2 - 1; i ++)
-            std::cout << (b[i + b.size() / 2] == num_t(int(0)) ? num_t(int(0))
-              : (b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-                num_t(int(1)) : b[i]) ) << ", ";
-          const int i(b.size() / 2 - 1);
-          std::cout << (b[i + b.size() / 2] == num_t(int(0)) ? num_t(int(0))
-            : (b[i] - b[i + b.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : b[i]) ) << std::endl;
-        } else {
-          for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << num_t(int(0)) << ", ";
-          std::cout << num_t(int(0)) << std::endl;
-        }
+        for(int i = 0; i < in.size() / 2 - 1; i ++)
+          std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
+            : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
+              num_t(int(1)) : in[i]) ) << ", ";
+        const int i(in.size() / 2 - 1);
+        std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
+          : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
+            num_t(int(1)) : in[i]) ) << std::endl;
         break;
       } case 'J': {
         if(in.size() != b.size()) { b = in; b.O(); }
@@ -1152,13 +1137,13 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** test ***" << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " Ac ... | ... > 0+.." << endl;
-  cerr << argv[0] << " L 0 0+.. | " << argv[0] << " O" << endl;
+  cerr << endl << " *** test case but does not work well now ***" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac | " << argv[0] << " lH > 0+" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s ... | " << argv[0] << " t ... | " << argv[0] << " O | tee 2 | " << argv[0] << " 0c 1 | " << argv[0] << " lH > 2+" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
-  cerr << argv[0] << " L 0 1 | " << argv[0] << " O+ <skip> | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
+  cerr << argv[0] << " L 0 1 | " << argv[0] << " O+ | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
   cerr << endl << " *** to hear some residue ***" << endl;
   cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor-tobe-loopback>" << endl;
   cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
