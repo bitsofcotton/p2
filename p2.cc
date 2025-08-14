@@ -249,13 +249,13 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int length(_P_MLEN_);
-    if(2 < argc && argv[2][0] == '-' && argv[2][1] == '\0') length = - length;
+    int length(_P_MLEN_ * 2);
+    if(2 < argc && argv[2][0] == '-' && argv[2][1] == '\0')
+      length = - _P_MLENM_ * 2;
     else if(2 < argc) length = std::atoi(argv[2]);
     const bool minus(length < 0 || (2 < argc && argv[2][0] == '-') );
-    if(! length && minus) length = - _P_MLEN_ * 2 - 3 - 1;
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length ? length : 0);
+    idFeeder<SimpleVector<num_t> > p(length ? abs(length) : 0);
     SimpleVector<num_t> M;
     while(std::getline(std::cin, s, '\n')) {
       SimpleVector<num_t> d(s2sv<num_t>(s));
@@ -263,14 +263,19 @@ int main(int argc, const char* argv[]) {
         M.resize(d.size());
         M.O();
       }
-      for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
+      if(argv[1][1] != 'd')
+        for(int i = 0; i < d.size(); i ++)
+          std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= 3) M = d.O();
-      else M = length < 0 ? unOffsetHalf<num_t>(pGuaranteeMax<num_t, 1>(
-        p.res.entity, string("") )) : unOffsetHalf<num_t>(pGuarantee<num_t, 1>(
-          p.res.entity, string("") ));
+      if(! p.full || p.res.size() <= 3) M.O();
+      else M = unOffsetHalf<num_t>(length < 0 ? (argv[1][1] == 'd' ?
+        pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1>, true>(p.res, string(""))
+        : pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1>, false>(p.res,
+          string("") ) ) : (argv[1][1] == 'd' ?
+            pTwiceTwice<num_t, 1, pGuarantee<num_t, 1>, true>(p.res, string(""))
+              : pTwiceTwice<num_t, 1, pGuarantee<num_t, 1>, false>(p.res,
+                string("") ) ) );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -909,7 +914,7 @@ int main(int argc, const char* argv[]) {
             std::cout << num_t(int(0)) << std::endl;
           }
         } else {
-          if(in.size() != b.size()) break;
+          if(in.size() != b.size()) { b = in; b.O(); }
           for(int i = 0; i < b.size() - 1; i ++)
             std::cout << (in[i] += b[i]) << ", ";
           std::cout << (in[in.size() - 1] += b[b.size() - 1]) << std::endl;
@@ -1062,7 +1067,7 @@ int main(int argc, const char* argv[]) {
         }
         break;
       } case 'J': {
-        if(in.size() != b.size()) break;
+        if(in.size() != b.size()) { b = in; b.O(); }
         if(bf.size() != in.size()) bf.resize(in.size() / 2, int(1));
         for(int i = 0; i < in.size() / 2; i ++)
           if(tt < abs(b[i + in.size() / 2] + in[i + in.size() / 2]) ) {
@@ -1079,8 +1084,7 @@ int main(int argc, const char* argv[]) {
           in[i + in.size() / 2] += b[i + in.size() / 2];
         break;
       } case 'V':
-        for(int i = 0; i < in.size(); i ++)
-          std::cout << in[i] << std::endl;
+        for(int i = 0; i < in.size(); i ++) std::cout << in[i] << std::endl;
         break;
       case 'C': {
         for(int i = 0; i < in.size() - 1; i ++)
@@ -1133,7 +1137,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A.? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction (d for debug output, . for prediction-stream difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A[d.]? <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1150,9 +1154,11 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** test ***" << endl;
-  cerr << "cat ... | " << argv[0] << " s | " << argv[0] << " X | " << argv[0] << " d | tee 0 | " << argv[0] << " s | " << argv[0] << " Ac ... | " << argv[0] << " d | " << argv[0] << " lH > 0+" << endl;
+  cerr << endl << " *** test should be equivalent ***" << endl;
+  cerr << "cat ... | " << argv[0] << " Ad ..." << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac ... | " << argv[0] << " lH > 0+" << endl;
   cerr << argv[0] << " L 0 0+ | " << argv[0] << " O" << endl;
+  cerr << "cat ... | " << argv[0] << " A ... | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
