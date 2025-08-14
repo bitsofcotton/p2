@@ -249,9 +249,9 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int length(_P_MLEN_ * 2);
+    int length(_P_MLEN_);
     if(2 < argc && argv[2][0] == '-' && argv[2][1] == '\0')
-      length = - _P_MLENM_ * 2;
+      length = - _P_MLENM_;
     else if(2 < argc) length = std::atoi(argv[2]);
     const bool minus(length < 0 || (2 < argc && argv[2][0] == '-') );
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
@@ -269,13 +269,11 @@ int main(int argc, const char* argv[]) {
       std::cout << std::flush;
       p.next(offsetHalf<num_t>(d));
       if(! p.full || p.res.size() <= 3) M.O();
-      else M = length < 0 ? (argv[1][1] == 'd' ?
-        pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1>, true>(p.res, string(""))
-        : pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1>, false>(p.res,
-          string("") ) ) : (argv[1][1] == 'd' ?
-            pTwiceTwice<num_t, 1, pGuarantee<num_t, 1>, true>(p.res, string(""))
-              : pTwiceTwice<num_t, 1, pGuarantee<num_t, 1>, false>(p.res,
-                string("") ) );
+      else M = length < 0 ? unOffsetHalf<num_t>(
+        pGuaranteeMax<num_t, 1>(p.res, string("") ) :
+          pGuarantee<num_t, 1>(p.res, string("") ) );
+        // pTwiceTwice<num_t, 1, pGuaranteeMax<num_t, 1> >(p.res, string("") ) :
+        //   pTwiceTwice<num_t, 1, pGuarantee<num_t, 1> >(p.res, string("") );
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -1154,11 +1152,9 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** test should be equivalent ***" << endl;
-  cerr << "cat ... | " << argv[0] << " Ad ..." << endl;
-  cerr << "cat ... | tee 0 | " << argv[0] << " Ac ... | " << argv[0] << " lH > 0+" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " O" << endl;
-  cerr << "cat ... | " << argv[0] << " A ... | " << argv[0] << " lH" << endl;
+  cerr << endl << " *** test ***" << endl;
+  cerr << "cat ... | tee 0 | " << argv[0] << " Ac ... | ... > 0+.." << endl;
+  cerr << argv[0] << " L 0 0+.. | " << argv[0] << " O" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
