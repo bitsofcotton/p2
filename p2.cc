@@ -249,10 +249,10 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
-    int length(_P_MLEN_);
+    int length(13 + 3 + 4 + 1);
     int step(1);
     if(2 < argc) step = std::atoi(argv[2]);
-    if(step < 0) length = - _P_MLEM_;
+    if(step < 0) length = - ((13 + 3 + 4 + 1) * 2 + 3 + 1);
     else if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << step << " " << length << endl;
     idFeeder<SimpleVector<num_t> > p(length ? abs(length * step) : 0);
