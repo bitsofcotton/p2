@@ -101,8 +101,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p i | p d | head -n ... | p Z | tee 0 | p Ac | p lH > 0+
-    p L 0 0+ | p s | p O | p Z | p i | p 0 1 | p lH
+    cat ... | p d | p d | p t 0.25 | tee 0 | p Ac 2 | p lH > 0+
+    p L 0 0+ | p s | p O | p 0 1 | p lH | 
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
