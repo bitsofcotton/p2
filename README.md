@@ -100,9 +100,9 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** test ***
-    cat ... | p s | p X | p d | tee 0 | p s | p Ac ... | p d | p lH > 0+
-    p L 0 0+ | p O
+     *** test case ***
+    cat ... | p X | p d | p t .5 | tee 0 | p Ac ... | p lH > 0+
+    p L 0 0+ | p s | p O | p 0 1 | p lH
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -280,4 +280,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/11 A, W cmd change,
 2025/08/13 some tests causes test.py result.
 2025/08/14 small tests conclude this.
+2025/08/15 test ok.
 
