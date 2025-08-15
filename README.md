@@ -70,7 +70,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # trivial return to the average id. prediction (c for difference output)
     p Ic?
     # ddpmopt partial prediction (. for difference output, states < 0 for LoEM unstable case)
-    p A.? <skip>? <states>?
+    p A.? <states>?
     # minimum quare left hand side prediction (. for difference output)
     p q.? <len>? <step>?
     
@@ -101,7 +101,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p u 2 | p d | p d | p t 0.25 | tee 0 | p Ac 2 | p lH > 0+
+    cat ... | p u 2 | p d | p d | p t 0.25 | tee 0 | p Ac | p lH > 0+
     p L 0 0+ | p s | p O | p 0 3 | p lH
  
      *** graphics test ***
