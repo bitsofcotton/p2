@@ -1020,10 +1020,11 @@ int main(int argc, const char* argv[]) {
       } case 'I': {
         if(std::atoi(argv[2]) == 0) {
           if(b.size() < in.size()) b.entity.resize(in.size(), num_t(int(0)));
+          SimpleVector<num_t> b2(b / num_t(max(int(1), t)));
           for(int i = 0; i < in.size() - 1; i ++)
-            std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << ", ";
+            std::cout << (argv[1][1] == 'c' ? in[i] - b2[i] : b2[i] * in[i]) << ", ";
           const int i(in.size() - 1);
-          std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << endl;
+          std::cout << (argv[1][1] == 'c' ? in[i] - b2[i] : b2[i] * in[i]) << endl;
           for(int i = 0; i < in.size(); i ++)
             in[i] += b[i];
         } else {
@@ -1033,6 +1034,7 @@ int main(int argc, const char* argv[]) {
             b = bbb.res[0];
             for(int j = 1; j < bbb.res.size(); j ++) 
               b += bbb.res[j];
+            b /= num_t(bbb.res.size());
             for(int i = 0; i < in.size() - 1; i ++)
               std::cout << (argv[1][1] == 'c' ? in[i] - b[i] : b[i] * in[i]) << ", ";
             const int i(in.size() - 1);
@@ -1143,8 +1145,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
-  cerr << "cat ... | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 0 | " << argv[0] << " Ac 2 | " << argv[0] << " lH > 0+" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " lH" << endl;
+  cerr << "cat ... | " << argv[0] << " u 2 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 0 | " << argv[0] << " Ac 2 | " << argv[0] << " lH > 0+" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 3 | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
