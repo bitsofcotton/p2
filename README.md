@@ -37,6 +37,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p a
     # take sign     each      on input stream
     p b
+    # take trivial complement stream on input stream
+    p W
     # take sum columns each line on input stream (+ or output sqrt columns)
     p G+?
     # take walk condition each on input stream
@@ -101,8 +103,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p u 2 | p d | p d | p t 0.25 | tee 0 | p Ac | p lH > 0+
-    p L 0 0+ | p s | p O | p 0 3 | p lH
+    cat ... | p W | p d | p d | p t 0.25 | tee 0 | p Ac | p lH > 0+
+    p L 0 0+ | p s | p O | p 0 1 | p S ... | p k 2 | p lH
  
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
