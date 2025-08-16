@@ -283,4 +283,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/13 some tests causes test.py result.
 2025/08/14 small tests conclude this.
 2025/08/15 test ok.
+2025/08/16 some of the bad studies into lieonn.hh comment, re-test ok.
 
