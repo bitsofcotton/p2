@@ -3898,7 +3898,7 @@ template <typename T, bool levi> vector<T> p01nextM(const SimpleVector<T>& in) {
               mwork(j, kk) = T(int(k & 1 ? 0 : 1));
         }
         mwork.row(mwork.rows() - 1).O();
-        work = mwork.transpose().QR().row(mwork.rows() - 1);
+        work = offsetHalf<T>(mwork.transpose().QR().row(mwork.rows() - 1));
       }
       toeplitz.row(i) = makeProgramInvariant<T>(work,
         T(i + 1) / T(toeplitz.rows() + 1) ).first;
@@ -4526,7 +4526,7 @@ template <typename T, int nprogress> vector<SimpleVector<T> > pRSshallow(const v
 #pragma omp parallel for schedule(static, 1)
 #endif
   for(int j = 1; j < p[0].size(); j ++) {
-    if(nprogress && ! (j % max(int(1), int(p[0].size() / nprogress))) )
+    if(1 < abs(nprogress) && ! (j % max(int(1), int(p[0].size() / nprogress))) )
       cerr << j << " / " << p[0].size() << strloop << endl;
     vector<T> pp(p01nextM<T, nprogress < 0>(intran[j]));
     assert(pp.size() == p0.size());
@@ -4818,12 +4818,13 @@ template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleV
     work[i] = offsetHalf<T>(work[i] /= T(int(4)) );
   vector<SimpleVector<T> > pp(unOffsetHalf<T>(p(work, string("+") + strloop)));
   for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
-  SimpleVector<T> res(pp[0]);
-  for(int i = 1; i < pp.size() - 1; i ++) res += pp[i];
-  SimpleVector<T> cor(res);
-  res += pp[pp.size() - 1];
+  vector<SimpleVector<T> > pm(pp);
+  for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
+  SimpleVector<T> cor((pp[pp.size() - 2] + pm[pm.size() - 2]) / T(int(2)));
+  SimpleVector<T> res((pp[pp.size() - 1] + pm[pm.size() - 1]) / T(int(2)));
   for(int i = 0; i < res.size(); i ++)
-    res[i] *= - sgn<T>(cor[i] * unOffsetHalf<T>(in[in.size() - 1][i]));
+    res[i] *= cor[i] * (unOffsetHalf<T>(in[in.size() - 1][i]) +
+      unOffsetHalf<T>(in[in.size() - 2][i]) ) / T(int(2));
   return res;
 }
 

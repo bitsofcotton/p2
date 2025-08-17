@@ -1040,14 +1040,21 @@ int main(int argc, const char* argv[]) {
         }
         break;
       } case 'O': {
-        for(int i = 0; i < in.size() / 2 - 1; i ++)
+        if(argv[1][1] == '*') {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << in[i + in.size() / 2] * in[i] << ", ";
+          const int i(in.size() / 2 - 1);
+          std::cout << in[i + in.size() / 2] * in[i] << std::endl;
+        } else {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
+              : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
+                num_t(int(1)) : in[i]) ) << ", ";
+          const int i(in.size() / 2 - 1);
           std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
             : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : in[i]) ) << ", ";
-        const int i(in.size() / 2 - 1);
-        std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
-          : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
-            num_t(int(1)) : in[i]) ) << std::endl;
+              num_t(int(1)) : in[i]) ) << std::endl;
+        }
         break;
       } case 'J': {
         if(bf.size() != in.size()) bf.resize(in.size() / 2, int(1));
@@ -1110,7 +1117,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
-  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O+?" << endl;
+  cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[+*]?" << endl;
   cerr << "# take duplicate toeplitz on input stream" << endl << argv[0] << " z <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
@@ -1154,11 +1161,10 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
   cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 0 | " << argv[0] << " Ac | " << argv[0] << " lH > 0+" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s > 1-" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " s > 1+" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | tee 1- | " << argv[0] << " s > 1+" << endl;
   cerr << argv[0] << " s < 0 | " << argv[0] << " s > 00" << endl;
   cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
-  cerr << argv[0] << " L 00 1+ 1- | " << argv[0] << " / | " << argv[0] << " 0 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " L 00 1+ | " << argv[0] << " L /dev/stdin 1- | " << argv[0] << " / | " << argv[0] << " 0 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
@@ -1168,7 +1174,7 @@ int main(int argc, const char* argv[]) {
   cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
   cerr << endl << " *** predictor notation ***" << endl;
   cerr << "# Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks." << endl;
-  cerr << "# We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago." << endl;
+  cerr << "# However, we cannot jam out our p-stream even with such a condition exists." << endl;
   return - 1;
 }
 

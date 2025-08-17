@@ -104,11 +104,10 @@ Predictor formatter and some of the toolset for non usual input streams.
     
      *** test case ***
     cat ... | p W | p d | p d | p t 0.25 | tee 0 | p Ac | p lH > 0+
-    p L 0 0+ | p s > 1-
-    p L 0 0+ | p s | p s > 1+
+    p L 0 0+ | p s | tee 1- | p s > 1+
     p s < 0 | p s > 00
     p L 0 0+ | p s | p s | p O | p 0 1 | p S 1 | p k 2 | p lH
-    p L 00 1+ 1- | p / | p 0 1 | p k 2 | p lH
+    p L 00 1+ | p L /dev/stdin 1- | p / | p 0 1 | p k 2 | p lH
  
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -121,7 +120,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     
      *** predictor notation ***
     # Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks.
-    # We are embryonic believing such a condition however as soon as we upload our code the predictor break we experience, this is more than 20 times or so since around a decade ago.
+    # However, we cannot jam out our p-stream even with such a condition exists.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -288,4 +287,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/14 small tests conclude this.
 2025/08/15 test ok.
 2025/08/16 some of the bad studies into lieonn.hh comment, re-test ok.
+2025/08/16 re[2]test ok we're in lucky because of grit.
 
