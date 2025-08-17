@@ -104,12 +104,11 @@ Predictor formatter and some of the toolset for non usual input streams.
     
      *** test case ***
     cat ... | p W | p d | p d | p t 0.25 | tee 0 | p Ac | p lH > 0+
-    p L 0 0+ | p s | p O+  > 1-
-    p L 0 0+ | p s | p s | p t -1 | p O+  > 1+
-    p L 1+ 1- | p O+ | p t 0.5 > 10
-    p L 0 0+ | p s | p s | p O | p 0 ... | p S 1 | p k 2 | p lH
+    p L 0 0+ | p s > 1-
+    p L 0 0+ | p s | p s > 1+
     p s < 0 | p s > 00
-    p L 00 10 | p O | p 0 ... | p k 2 | p lH
+    p L 0 0+ | p s | p s | p O | p 0 1 | p S 1 | p k 2 | p lH
+    p L 00 1+ 1- | p / | p 0 1 | p k 2 | p lH
  
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
