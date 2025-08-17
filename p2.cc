@@ -1083,6 +1083,12 @@ int main(int argc, const char* argv[]) {
           std::cout << in[i] << ", ";
         std::cout << in[in.size() - 1] << std::endl;
         break;
+      } case '/': {
+        for(int i = 0; i < in.size() / 3 - 1; i ++)
+          std::cout << (argv[1][1] == '+' ? num_t(int(1)) : in[i]) * ((in[i + in.size() / 3] + in[i + in.size() / 3 * 2]) / num_t(int(2)) - in[i]) << ", ";
+        const int i(in.size() / 3 - 1);
+        std::cout << (argv[1][1] == '+' ? num_t(int(1)) : in[i]) * ((in[i + in.size() / 3] + in[i + in.size() / 3 * 2]) / num_t(int(2)) - in[i]) << std::endl;
+        break;
       } default: goto usage;
       }
       std::cout << std::flush;
@@ -1148,12 +1154,11 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
   cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 0 | " << argv[0] << " Ac | " << argv[0] << " lH > 0+" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " O+  > 1-" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " t " << - num_t(int(1)) << " | " << argv[0] << " O+  > 1+" << endl;
-  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 10" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 ... | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s > 1-" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " s > 1+" << endl;
   cerr << argv[0] << " s < 0 | " << argv[0] << " s > 00" << endl;
-  cerr << argv[0] << " L 00 10 | " << argv[0] << " O | " << argv[0] << " 0 ... | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " L 00 1+ 1- | " << argv[0] << " / | " << argv[0] << " 0 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1" << endl; 
