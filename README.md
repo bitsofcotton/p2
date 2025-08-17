@@ -103,16 +103,15 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p W | p d | p d | p t 0.25 | tee 0 | p Ac | p lH > 0+
-    p L 0 0+ | p s | tee 1- | p s > 1+
-    p s < 0 | p s > 00
-    p L 0 0+ | p s | p s | p O | p 0 1 | p S 1 | p k 2 | p lH
-    p L 00 1+ | p L /dev/stdin 1- | p / | p 0 1 | p k 2 | p lH
+    cat ... | p W | p d | p d | p t 0.25 | tee 00 | p Ac | p lH | tee 0 | p s | tee 0- | p s > 1+
+    p s < 00 | p s > 00+
+    p L 00+ 0+ | p O | p 0 1 | p S 1 | p k 2 | p lH
+    p L 00+ 0+ | p L /dev/stdin 1- | p / | p 0 1 | p k 2 | p lH
  
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
-    p P- ... dummy.p[gp]m ... dummy.p[gp]m | tee 0 | <difference-predictor> > 1
-    p L 0 1 | p O+ <skip> | p V | p X | p f ... | p [PY]
+    p P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;
+    p L 2 2+ | p O* | p lc | p lc | p V | p X | p f ... | p [PY]
     
      *** to hear some residue ***
     p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
