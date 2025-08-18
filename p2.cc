@@ -256,20 +256,28 @@ int main(int argc, const char* argv[]) {
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
     idFeeder<SimpleVector<num_t> > p(length ? abs(length) : 0);
     SimpleVector<num_t> M;
+    SimpleVector<num_t> bM;
     while(std::getline(std::cin, s, '\n')) {
       SimpleVector<num_t> d(s2sv<num_t>(s));
       if(M.size() < d.size()) {
         M.resize(d.size());
         M.O();
+        bM = M;
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
+        std::cout << (argv[1][1] == '\0' ? d[i] * bM[i] : d[i] - bM[i]) << ", ";
       std::cout << std::flush;
-      p.next(offsetHalf<num_t>(d));
-      if(! p.full || p.res.size() <= 3) M.O();
-      else M = unOffsetHalf<num_t>(length < 0 ?
-        pGuaranteeMax<num_t, 1>(p.res, string("") ) :
-          pGuarantee<num_t, 1>(p.res, string("") ) );
+      if(! p.full || p.res.size() <= 3) {
+        p.next(offsetHalf<num_t>(d));
+        M.O();
+      } else {
+        p.res[p.res.size() - 1] = offsetHalf<num_t>(d);
+        p.next(offsetHalf<num_t>(offsetHalf<num_t>(d.O())));
+        bM = move(M);
+        M = unOffsetHalf<num_t>(length < 0 ?
+          pGuaranteeMax<num_t, 1>(p.res, string("") ) :
+            pGuarantee<num_t, 1>(p.res, string("") ) );
+      }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
     }
@@ -1142,7 +1150,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction (. for difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A.? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction with one step delay (. for difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A.? <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1161,9 +1169,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
   cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 00 | " << argv[0] << " Ac | " << argv[0] << " lH | tee 0 | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
-  cerr << argv[0] << " s < 00 | " << argv[0] << " s | " << argv[0] << " S 1 > 00+" << endl;
-  cerr << argv[0] << " L 00+ 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " S 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
-  cerr << argv[0] << " L 00+ 0+ | " << argv[0] << " L /dev/stdin 0- | " << argv[0] << " / | " << argv[0] << " 0 1 | " << argv[0] << " k 2 | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " s < 00 | " << argv[0] << " s > 00+" << endl;
+  cerr << argv[0] << " L 00+ 0+ | " << argv[0] << " L /dev/stdin 0- | " << "python3 test.py ... | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
