@@ -103,10 +103,9 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p W | p d | p d | p t 0.25 | tee 00 | p Ac | p lH | tee 0 | p s | tee 0- | p s > 1+
-    p s < 00 | p s | p S 1 > 00+
-    p L 00+ 0+ | p O | p 0 1 | p S 1 | p k 2 | p lH
-    p L 00+ 0+ | p L /dev/stdin 1- | p / | p 0 1 | p k 2 | p lH
+    cat ... | p W | p t .25 | tee 00 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 1+
+    p L 00 0+ | p O | p 0 1 | p S 1 | p k 2 | p lH
+    p L 00 0+ | p L /dev/stdin 0- | python3 test.py ... | p lH
  
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m

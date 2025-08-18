@@ -1168,9 +1168,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
-  cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 00 | " << argv[0] << " Ac | " << argv[0] << " lH | tee 0 | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
-  cerr << argv[0] << " s < 00 | " << argv[0] << " s > 00+" << endl;
-  cerr << argv[0] << " L 00+ 0+ | " << argv[0] << " L /dev/stdin 0- | " << "python3 test.py ... | " << argv[0] << " lH" << endl;
+  cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 00 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | tee 0 | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
+  cerr << argv[0] << " L 00 0+ | " << argv[0] << " L /dev/stdin 0- | " << "python3 test.py ... | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
@@ -1180,7 +1179,7 @@ int main(int argc, const char* argv[]) {
   cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
   cerr << endl << " *** predictor notation ***" << endl;
   cerr << "# Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks." << endl;
-  cerr << "# However, we cannot jam out our p-stream even with such a condition exists." << endl;
+  cerr << "# However, we cannot jam out our p-stream in long range even with such a condition exists." << endl;
   return - 1;
 }
 

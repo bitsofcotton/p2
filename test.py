@@ -14,16 +14,16 @@ for line in sys.stdin:
     buf = []
     bb  = b[- 2].split(",")
     bc  = b[- 3].split(",")
-    for t in range(0, int(len(bc) / 2)):
+    for t in range(0, int(len(bc) / 3)):
       buf.append(str(bc[t]))
-    for t in range(0, int(len(bb) / 2)):
-      buf.append(str(bb[t + int(len(bb) / 2)]))
+    for t in range(int(len(bb) / 3), len(bb)):
+      buf.append(str(bb[t]))
     p.stdin.write((",".join(buf) + "\n").encode("utf-8"))
     p.stdin.flush()
     p.stdout.readline()
     p.stdin.write((b[- 1] + "\n").encode("utf-8"))
     p.stdin.flush()
-    print(p.stdout.readline()[:- 1])
+    print(p.stdout.readline().decode("utf-8")[:- 1])
     p.stdin.close()
     b = b[- int(sys.argv[1]):]
   t += 1

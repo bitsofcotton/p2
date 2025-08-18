@@ -4807,12 +4807,13 @@ template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleV
   omp_set_max_active_levels(2);
 #endif
   SimpleVector<SimpleVector<T> > work;
-  work.entity.reserve(in.size() * 2 - 1);
+  work.entity.reserve(in.size() * 2);
   work.entity.emplace_back(in[0]);
   for(int i = 1; i < in.size(); i ++) {
     work.entity.emplace_back((in[i] + in[i - 1]) / T(int(2)));
     work.entity.emplace_back(in[i]);
   }
+  work.entity.emplace_back(SimpleVector<T>(in[0].size()).O(T(int(1)) / T(int(2)) ));
   work.entity = delta<SimpleVector<T> >(delta<SimpleVector<T> >(work.entity));
   for(int i = 0; i < work.size(); i ++)
     work[i] = offsetHalf<T>(work[i] /= T(int(4)) );
@@ -4820,11 +4821,20 @@ template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleV
   for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
   vector<SimpleVector<T> > pm(pp);
   for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
-  SimpleVector<T> cor((pp[pp.size() - 2] + pm[pm.size() - 2]) / T(int(2)));
+  SimpleMatrix<T> cor(3, pp[0].size());
+  for(int i = 0; i < cor.rows(); i ++) {
+    cor.row(i) = (pp[i - cor.rows() - 1 + pp.size()] +
+      pm[i - cor.rows() - 1 + pm.size()]) / T(int(2));
+    for(int j = 0; j < cor.cols(); j ++)
+      cor(i, j) *= i == cor.rows() - 1 ?
+        unOffsetHalf<T>(in[in.size() - 1][j]) :
+          unOffsetHalf<T>(in[i - cor.rows() + 1 + in.size()][j]);
+  }
   SimpleVector<T> res((pp[pp.size() - 1] + pm[pm.size() - 1]) / T(int(2)));
   for(int i = 0; i < res.size(); i ++)
-    res[i] *= cor[i] * (unOffsetHalf<T>(in[in.size() - 1][i]) +
-      unOffsetHalf<T>(in[in.size() - 2][i]) ) / T(int(2));
+    res[i] *= p0maxNext<T>(cor.col(i)) *
+      (unOffsetHalf<T>(in[in.size() - 1][i]) +
+        unOffsetHalf<T>(in[in.size() - 2][i]) ) / T(int(2));
   return res;
 }
 
