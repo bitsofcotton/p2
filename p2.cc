@@ -1107,14 +1107,14 @@ int main(int argc, const char* argv[]) {
               at[i].resize(in.size() / 3);
               at[i].O();
               for(int j = 0; j < in.size() / 3; j ++)
-                // d + b is harmful to confirm, we avoid them.
-                at[i][j] = bbb.res[i][j] * ((bbb.res[i][j + in.size() / 3] + bbb.res[i][j + in.size() / 3 * 2]) / num_t(int(2)) - bbb.res[i][j]);
+                at[i][j] = bbb.res[i][j] * (bbb.res[i][j + in.size() / 3] - bbb.res[i][j + in.size() / 3 * 2] - bbb.res[i][j]);
             }
             const int i(at.size() - 1);
             at[i].resize(in.size() / 3);
             at[i].O();
             for(int j = 0; j < in.size() / 3; j ++)
-              at[i][j] = bbb.res[i - 1][j] * ((bbb.res[i][j + in.size() / 3] + bbb.res[i][j + in.size() / 3 * 2]) / num_t(int(2)) - bbb.res[i][j]);
+              // d + b is harmful to confirm, we avoid them.
+              at[i][j] = bbb.res[i - 1][j] * (bbb.res[i][j + in.size() / 3] - bbb.res[i][j + in.size() / 3 * 2] - bbb.res[i - 1][j]);
             for(int j = 0; j < in.size() / 3 - 1; j ++) {
               idFeeder<num_t> f(at.size());
               for(int k = 0; k < at.size(); k ++) f.next(at[k][j]);
