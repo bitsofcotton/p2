@@ -1099,10 +1099,46 @@ int main(int argc, const char* argv[]) {
         std::cout << in[in.size() - 1] << std::endl;
         break;
       } case '/': {
-        for(int i = 0; i < in.size() / 3 - 1; i ++)
-          std::cout << (argv[1][1] == '+' ? num_t(int(1)) : in[i]) * ((in[i + in.size() / 3] + in[i + in.size() / 3 * 2]) / num_t(int(2)) - in[i]) << ", ";
-        const int i(in.size() / 3 - 1);
-        std::cout << (argv[1][1] == '+' ? num_t(int(1)) : in[i]) * ((in[i + in.size() / 3] + in[i + in.size() / 3 * 2]) / num_t(int(2)) - in[i]) << std::endl;
+        if(argv[1][1] == '0') {
+          if(bbb.res.size() != 3) bbb = idFeeder<SimpleVector<num_t> >(3);
+          if(bbb.full) {
+            SimpleVector<SimpleVector<num_t> > at(bbb.res.size());
+            for(int i = 0; i < at.size() - 1; i ++) {
+              at[i].resize(in.size() / 3);
+              at[i].O();
+              for(int j = 0; j < in.size() / 3; j ++)
+                // d + b is harmful to confirm, we avoid them.
+                at[i][j] = bbb.res[i][j] * ((bbb.res[i][j + in.size() / 3] + bbb.res[i][j + in.size() / 3 * 2]) / num_t(int(2)) - bbb.res[i][j]);
+            }
+            const int i(at.size() - 1);
+            at[i].resize(in.size() / 3);
+            at[i].O();
+            for(int j = 0; j < in.size() / 3; j ++)
+              at[i][j] = bbb.res[i - 1][j] * ((bbb.res[i][j + in.size() / 3] + bbb.res[i][j + in.size() / 3 * 2]) / num_t(int(2)) - bbb.res[i][j]);
+            for(int j = 0; j < in.size() / 3 - 1; j ++) {
+              idFeeder<num_t> f(at.size());
+              for(int k = 0; k < at.size(); k ++) f.next(at[k][j]);
+              assert(f.full);
+              // N.B. (d + b) / 2 - M0 + (d - b) / 2 - M1 - d.
+              std::cout << in[j] * (in[j + in.size() / 3] + in[j + in.size() / 3 * 2] - in[j]) * p0maxNext<num_t>(f.res) << ", ";
+            }
+            const int j(in.size() / 3 - 1);
+            idFeeder<num_t> f(at.size());
+            for(int k = 0; k < at.size(); k ++) f.next(at[k][j]);
+            assert(f.full);
+            std::cout << in[j] * (in[j + in.size() / 3] + in[j + in.size() / 3 * 2] - in[j]) * p0maxNext<num_t>(f.res) << std::endl;
+          } else {
+            for(int i = 0; i < in.size() / 3 - 1; i ++)
+              std::cout << num_t(int(0)) << ", ";
+            std::cout << num_t(int(0)) << std::endl;
+          }
+          bbb.next(in);
+        } else {
+          for(int i = 0; i < in.size() / 3 - 1; i ++)
+            std::cout << (argv[1][1] == '+' ? num_t(int(1)) : in[i]) * ((in[i + in.size() / 3] + in[i + in.size() / 3 * 2]) / num_t(int(2)) - in[i]) << ", ";
+          const int i(in.size() / 3 - 1);
+          std::cout << (argv[1][1] == '+' ? num_t(int(1)) : in[i]) * ((in[i + in.size() / 3] + in[i + in.size() / 3 * 2]) / num_t(int(2)) - in[i]) << std::endl;
+        }
         break;
       } default: goto usage;
       }
@@ -1169,7 +1205,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
   cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 00 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | tee 0 | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
-  cerr << argv[0] << " L 00 0+ | " << argv[0] << " L /dev/stdin 0- | " << "python3 test.py ... | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " L 00 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " lH | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << argv[0] << " L 00 0+ | " << argv[0] << " L /dev/stdin 0- | " << argv[0] << " /0 | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

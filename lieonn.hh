@@ -4799,6 +4799,13 @@ template <typename T, int nprogress> static inline SimpleVector<T> pGuaranteeMax
   return res[res.size() - 1];
 }
 
+#if ! defined(_P_MLEN_)
+// N.B. avoiding exhaust of the time usage but cut off the prediction
+//      internal states.
+#define _P_MLEN_ 21
+#endif
+
+// N.B. whole context markov feeding with resilience to prediction noise.
 template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleVector<SimpleVector<T> >&, const string&) > SimpleVector<T> pWholeContext(const vector<SimpleVector<T> >& in, const string& strloop) {
 #if defined(_OPENMP)
   for(int i = 1; i < in.size(); i ++) pnextcacher<T>(i, 1);
@@ -4817,7 +4824,9 @@ template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleV
   work.entity = delta<SimpleVector<T> >(delta<SimpleVector<T> >(work.entity));
   for(int i = 0; i < work.size(); i ++)
     work[i] = offsetHalf<T>(work[i] /= T(int(4)) );
-  vector<SimpleVector<T> > pp(unOffsetHalf<T>(p(work, string("+") + strloop)));
+  vector<SimpleVector<T> > pp(unOffsetHalf<T>(p(work.size() <= _P_MLEN_ ||
+    ! _P_MLEN_ ? work : work.subVector(work.size() - _P_MLEN_, _P_MLEN_),
+      string("+") + strloop)));
   for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
   vector<SimpleVector<T> > pm(pp);
   for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
@@ -4832,15 +4841,13 @@ template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleV
   }
   SimpleVector<T> res((pp[pp.size() - 1] + pm[pm.size() - 1]) / T(int(2)));
   for(int i = 0; i < res.size(); i ++)
-    res[i] *= p0maxNext<T>(cor.col(i)) *
-      (unOffsetHalf<T>(in[in.size() - 1][i]) +
-        unOffsetHalf<T>(in[in.size() - 2][i]) ) / T(int(2));
+    res[i] *= p0maxNext<T>(cor.col(i));
   return res;
 }
 
 // N.B. repeat possible output whole range. also offset before/after predict.
 template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleVector<SimpleVector<T> >&, const string&) > vector<SimpleVector<T> > pRepeat(const vector<SimpleVector<T> >& in, const string& strloop) {
-  const int cand(max(int(1), int(in.size() / 4) ));
+  const int cand(max(int(1), int(in.size() / 12) ));
   vector<SimpleVector<T> > res;
   res.reserve(cand);
   for(int i = 1; i <= cand; i ++)
