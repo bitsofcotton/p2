@@ -294,3 +294,4 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/16 re[2]test ok we're in lucky because of grit.
 2025/08/18-20 fix last, we're in still lucky.
 
+ 
