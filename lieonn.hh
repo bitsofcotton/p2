@@ -4832,7 +4832,7 @@ template <typename T, int nprogress, vector<SimpleVector<T> > (*p)(const SimpleV
   for(int i = 1; i < pp.size(); i ++) pp[i] += pp[i - 1];
   SimpleMatrix<T> cor(3, pp[0].size());
   for(int i = 0; i < cor.rows(); i ++) {
-    cor.row(i) = (pp[i - cor.rows() - 1 + pp.size()] +
+    cor.row(i) = (pp[i - cor.rows() - 1 + pp.size()] -
       pm[i - cor.rows() - 1 + pm.size()]) / T(int(2));
     for(int j = 0; j < cor.cols(); j ++)
       cor(i, j) *= i == cor.rows() - 1 ?

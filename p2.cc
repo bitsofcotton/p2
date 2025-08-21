@@ -1120,13 +1120,13 @@ int main(int argc, const char* argv[]) {
               for(int k = 0; k < at.size(); k ++) f.next(at[k][j]);
               assert(f.full);
               // N.B. (d + b) / 2 - M0 + (d - b) / 2 - M1 - d.
-              std::cout << in[j] * (in[j + in.size() / 3] + in[j + in.size() / 3 * 2] - in[j]) * p0maxNext<num_t>(f.res) << ", ";
+              std::cout << in[j] * ((b[j + in.size() / 3] + b[j + in.size() / 3 * 2]) / num_t(int(2)) - in[j]) * p0maxNext<num_t>(f.res) << ", ";
             }
             const int j(in.size() / 3 - 1);
             idFeeder<num_t> f(at.size());
             for(int k = 0; k < at.size(); k ++) f.next(at[k][j]);
             assert(f.full);
-            std::cout << in[j] * (in[j + in.size() / 3] + in[j + in.size() / 3 * 2] - in[j]) * p0maxNext<num_t>(f.res) << std::endl;
+            std::cout << in[j] * ((b[j + in.size() / 3] + b[j + in.size() / 3 * 2]) / num_t(int(2)) - in[j]) * p0maxNext<num_t>(f.res) << std::endl;
           } else {
             for(int i = 0; i < in.size() / 3 - 1; i ++)
               std::cout << num_t(int(0)) << ", ";
@@ -1204,9 +1204,15 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
-  cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 00 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | tee 0 | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
-  cerr << argv[0] << " L 00 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " lH | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
-  cerr << argv[0] << " L 00 0+ | " << argv[0] << " L /dev/stdin 0- | " << argv[0] << " /0 | " << argv[0] << " k 2" << endl;
+  cerr << "cat ... | " << argv[0] << " W | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
+  cerr << endl << " *** possible combinations (somehow switched universal invariants on our machine or infected) ***" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 2 | " << argv[0] << " lH | " << argv[0] << " S ... | " << argv[0] << " k 2" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " G | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 0+-" << endl;
+  cerr << argv[0] << " S 1 < 0 | " << argv[0] << " k 2 | " << argv[0] << " u 2 > 00" << endl;
+  cerr << argv[0] << " L 00 0+- | ..." << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " L /dev/stdin 0- | " << argv[0] << " /0 | " << argv[0] << " S ... | " <<  argv[0] << " k 2" << endl;
+  cerr << endl << " *** testing ***" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " 0 1 2 | ... | " << argv[0] << " O | ...";
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
@@ -1214,9 +1220,6 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** to hear some residue ***" << endl;
   cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor-tobe-loopback>" << endl;
   cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
-  cerr << endl << " *** predictor notation ***" << endl;
-  cerr << "# Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks." << endl;
-  cerr << "# However, we cannot jam out our p-stream in long range even with such a condition exists." << endl;
   return - 1;
 }
 
