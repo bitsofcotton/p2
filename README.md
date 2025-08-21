@@ -103,10 +103,16 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | p W | p t .25 | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 1+
-    p L 0 0+ | p O | p 0 1 | p S 1 | p k 2 | p lH
-    p L 0 0+ | p L /dev/stdin 0- | p /0 | p k 2
- 
+    cat ... (| p s | p Z) | p W | p t 0.25 | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
+    
+     *** possible combinations (somehow often switches universal invariants or our machine is infected) ***
+    p L 0 0+ | p O | p 0 1 2 | p lH | p S ... | p k 2
+    p L 0+ 0- | p G | p t 0.5 > 0+-
+    p S 1 < 0 | p k 2 | p u 2 > 00
+    p L 00 0+- | p O | ...
+    p L 0 0+ | p L /dev/stdin 0- | p /0 | p S ... | p k 2
+    p L 0 0+ | p 0c 1 2 | p lH | p lH | p O | p 0 1 2 | p lH | p S ... | p k 2
+    
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
     p P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;
