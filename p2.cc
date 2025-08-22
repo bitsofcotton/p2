@@ -268,15 +268,20 @@ int main(int argc, const char* argv[]) {
         std::cout << (argv[1][1] == '\0' ? d[i] * bM[i] : d[i] - bM[i]) << ", ";
       std::cout << std::flush;
       if(! p.full || p.res.size() <= 3) {
-        p.next(offsetHalf<num_t>(d));
+        p.next(d);
         M.O();
       } else {
-        p.res[p.res.size() - 1] = offsetHalf<num_t>(d);
-        p.next(offsetHalf<num_t>(offsetHalf<num_t>(d.O())));
+        p.res[p.res.size() - 1] = d;
+        SimpleVector<SimpleVector<num_t> > buf(p.next(d.O()));
+        num_t rM(int(0));
+        for(int i = 0; i < buf.size(); i ++)
+          for(int j = 0; j < buf[i].size(); j ++) rM = max(rM, abs(buf[i][j]));
+        for(int i = 0; i < buf.size(); i ++)
+          buf[i] = offsetHalf<num_t>(buf[i] / rM);
         bM = move(M);
         M = unOffsetHalf<num_t>(length < 0 ?
-          pGuaranteeMax<num_t, 1>(p.res, string("") ) :
-            pGuarantee<num_t, 1>(p.res, string("") ) );
+          pGuaranteeMax<num_t, 1>(buf, string("") ) :
+            pGuarantee<num_t, 1>(buf, string("") ) ) * rM;
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -1204,14 +1209,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** test case ***" << endl;
-  cerr << "cat ... (| " << argv[0] << " s | " << argv[0] << " Z) | " << argv[0] << " W | " << argv[0] << " t " << num_t(int(1)) / num_t(int(4)) << " | tee 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
-  cerr << endl << " *** possible combinations (somehow often switches universal invariants or our machine is infected) ***" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 2 | " << argv[0] << " lH | " << argv[0] << " S ... | " << argv[0] << " k 2" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " G | " << argv[0] << " t " << num_t(int(1)) / num_t(int(2)) << " > 0+-" << endl;
-  cerr << argv[0] << " S 1 < 0 | " << argv[0] << " k 2 | " << argv[0] << " u 2 > 00" << endl;
-  cerr << argv[0] << " L 00 0+- | " << argv[0] << " O | ..." << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " L /dev/stdin 0- | " << argv[0] << " /0 | " << argv[0] << " S ... | " <<  argv[0] << " k 2" << endl;
-  cerr << argv[0] << " L 0 0+ | " << argv[0] << " 0c 1 2 | " << argv[0] << " lH | " << argv[0] << " lH | " << argv[0] << " O | " << argv[0] << " 0 1 2 | " << argv[0] << " lH | " << argv[0] << " S ... | " << argv[0] << " k 2" << endl;
+  cerr << "cat ... | python3 test.py | tee 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
+  cerr << argv[0] << " L 0 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 [12] | " << argv[0] << " lH | " << argv[0] << " S [01] | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

@@ -103,15 +103,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... (| p s | p Z) | p W | p t 0.25 | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
-    
-     *** possible combinations (somehow often switches universal invariants or our machine is infected) ***
-    p L 0 0+ | p O | p 0 1 2 | p lH | p S ... | p k 2
-    p L 0+ 0- | p G | p t 0.5 > 0+-
-    p S 1 < 0 | p k 2 | p u 2 > 00
-    p L 00 0+- | p O | ...
-    p L 0 0+ | p L /dev/stdin 0- | p /0 | p S ... | p k 2
-    p L 0 0+ | p 0c 1 2 | p lH | p lH | p O | p 0 1 2 | p lH | p S ... | p k 2
+    cat ... | python3 test.py | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
+    p L 0 0+ | p O | p 0 1 [12] | p lH | p S [01] | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -121,10 +114,6 @@ Predictor formatter and some of the toolset for non usual input streams.
      *** to hear some residue ***
     p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
     catgr 3 < 0 | p e 3 | p h | p t ... | p f 3 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out.mid
-    
-     *** predictor notation ***
-    # Once we implement simple enough single predictor, they causes fixed LoEM applied code exists causes jammer intention justified causes the first hypothesis we believe as a universal invariant breaks.
-    # However, we cannot jam out our p-stream even with such a condition exists.
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -293,5 +282,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/16 some of the bad studies into lieonn.hh comment, re-test ok.
 2025/08/16 re[2]test ok we're in lucky because of grit.
 2025/08/18-20 fix last, we're in still lucky.
+2025/08/21-22 some test, we're still lucky.
 
- 
