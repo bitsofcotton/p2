@@ -38,7 +38,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # take sign     each      on input stream
     p b
     # take trivial complement stream on input stream
-    p W
+    p [Wy]
     # take sum columns each line on input stream (+ or output sqrt columns)
     p G+?
     # take walk condition each on input stream
@@ -103,7 +103,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** test case ***
-    cat ... | python3 test.py | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
+    cat ... | p [Wy] | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
     p L 0 0+ | p O | p 0 1 [12] | p lH | p S [01] | p k 2
     
      *** graphics test ***
