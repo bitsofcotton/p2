@@ -588,6 +588,22 @@ int main(int argc, const char* argv[]) {
     } default: goto usage;
     }
     break;
+  } case 'g': {
+    SimpleVector<num_t> cnt;
+    while(std::getline(std::cin, s, '\n')) {
+      SimpleVector<num_t> in(s2sv<num_t>(s));
+      if(! cnt.size()) { cnt.resize(in.size()); cnt.O(); }
+      for(int i = 0; i < in.size(); i ++)
+        cnt[i] += sgn<num_t>(in[i]);
+    }
+    std::vector<std::pair<num_t, int> > w;
+    w.reserve(cnt.size());
+    for(int i = 0; i < cnt.size(); i ++) w.emplace_back(make_pair(- cnt[i], i));
+    sort(w.begin(), w.end());
+    for(int i = 0; i < std::atoi(argv[2]); i ++)
+      std::cout << w[i].second << " ";
+    std::cout << std::endl << std::flush;
+    break;
   } case 'x': case 'j': {
     while(std::getline(std::cin, s, '\n'))
       for(int i = 0; i < s.size(); i ++) {
@@ -1120,7 +1136,7 @@ int main(int argc, const char* argv[]) {
   return 0;
  usage:
   cerr << "Usage:" << endl;
-  cerr << " *** reformation part (if the original series is hard enough) ***" << endl;
+  cerr << " *** reformation part ***" << endl;
   cerr << "# take delta     on input stream" << endl << argv[0] << " d" << endl;
   cerr << "# take summation on input stream" << endl << argv[0] << " s <len>?" << endl;
   cerr << "# take skip      on input stream" << endl << argv[0] << " k <interval>" << endl;
@@ -1140,9 +1156,10 @@ int main(int argc, const char* argv[]) {
   cerr << "# take trivial complement stream on input stream" << endl << argv[0] << " [Wy]" << endl;
   cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G+?" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
-  cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E <number>+?+?" << endl;
+  cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E+?+? <number>" << endl;
   cerr << "# take column 0 to harden PRNG part vector output" << endl << argv[0] << " e" << endl;
   cerr << "# take opposite type output string each on input stream" << endl << argv[0] << " F <bit number>" << endl;
+  cerr << "# cherry pick the column" << endl << argv[0] << " g <num>" << endl;
   cerr << endl << " *** PRNG part ***" << endl;
   cerr << "# make [-1,1]   PRNG stream" << endl << argv[0] << " [rR]  <proto>" << endl;
   cerr << "# make {-1,0,1} PRNG stream" << endl << argv[0] << " [rR]b <proto>" << endl;
@@ -1173,8 +1190,8 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** test case ***" << endl;
-  cerr << "cat ... | p [Wy] | tee 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
+  cerr << endl << " *** chain sample ***" << endl;
+  cerr << "cat ... | p [Wy] | tee 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " s | " << argv[0] << " s > 0+" << endl;
   cerr << argv[0] << " L 0 0+ | " << argv[0] << " O | " << argv[0] << " 0 1 [12] | " << argv[0] << " lH | " << argv[0] << " S [01] | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
