@@ -49,6 +49,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     p e
     # take opposite type output string each on input stream
     p F <bit number>
+    # cherry pick the column
+    p g <num>
     
      *** PRNG part ***
     # make [-1,1]   PRNG stream
@@ -102,9 +104,8 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** test case ***
+     *** chain payload sample (we should cook results after this) ***
     cat ... | p [Wy] | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
-    p L 0 0+ | p O | p 0 1 [12] | p lH | p S [01] | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -284,4 +285,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/18-20 fix last, we're in still lucky.
 2025/08/21-22 some test, we're still lucky.
 2025/08/23 add g cmd but this also slips now (not the first non small number of tests.).
+2025/08/25 we met infected or not condition. so the jammer retargets our machines' integrity, so we should leave here.
 
