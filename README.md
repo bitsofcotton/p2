@@ -74,7 +74,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # trivial return to the average id. prediction (c for difference output)
     p Ic?
     # ddpmopt partial prediction (. for difference output, states < 0 for LoEM unstable case)
-    p A.? <states>?
+    p A.? <step>? <states>?
     # minimum quare left hand side prediction (. for difference output)
     p q.? <len>? <step>?
     
@@ -105,7 +105,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** chain payload sample (we should cook results after this) ***
-    cat ... | p [Wy] | tee 0 | p d | p d | p Ac | p lH | p s | tee 0- | p s > 0+
+    cat ... | p [Wy] | ... | tee 0 | p d | ... | p Ac ... | p lH | p s | ... > 0+
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -286,4 +286,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/21-22 some test, we're still lucky.
 2025/08/23 add g cmd but this also slips now (not the first non small number of tests.).
 2025/08/25 we met infected or not condition. so the jammer retargets our machines' integrity, so we should leave here.
+2025/08/27 should work test.py, should break after this upload.
 

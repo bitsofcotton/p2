@@ -249,23 +249,24 @@ int main(int argc, const char* argv[]) {
     }
     break;
   } case 'A': {
+    int step(1);
     int length(13 + 3 + 4 + 1);
-    if(2 < argc && argv[2][0] == '-' && argv[2][1] == '\0') 
+    if(2 < argc) step = std::atoi(argv[2]);
+    if(2 < argc && (step < 0 || (argv[2][0] == '-' && argv[2][1] == '\0'))) 
       length = - ((13 + 3 + 4 + 1) * 2 + 3 + 1);
-    else if(2 < argc) length = std::atoi(argv[2]);
-    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << length << endl;
-    idFeeder<SimpleVector<num_t> > p(length ? abs(length) : 0);
+    if(3 < argc) length = std::atoi(argv[3]);
+    cerr << "continue with: " << argv[0] << " " << argv[1] << " " << step << " " << length << endl;
+    idFeeder<SimpleVector<num_t> > p(length ? abs(length * step) : 0);
+    idFeeder<SimpleVector<num_t> > q(abs(step));
     SimpleVector<num_t> M;
-    SimpleVector<num_t> bM;
     while(std::getline(std::cin, s, '\n')) {
       SimpleVector<num_t> d(s2sv<num_t>(s));
       if(M.size() < d.size()) {
         M.resize(d.size());
         M.O();
-        bM = M;
       }
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (argv[1][1] == '\0' ? d[i] * bM[i] : d[i] - bM[i]) << ", ";
+        std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
       if(! p.full || p.res.size() <= 3) {
         p.next(d);
@@ -278,10 +279,11 @@ int main(int argc, const char* argv[]) {
           for(int j = 0; j < buf[i].size(); j ++) rM = max(rM, abs(buf[i][j]));
         for(int i = 0; i < buf.size(); i ++)
           buf[i] = offsetHalf<num_t>(buf[i] / rM);
-        bM = move(M);
-        M = unOffsetHalf<num_t>(length < 0 ?
+        buf.entity = skipX<SimpleVector<num_t> >(buf.entity, abs(step));
+        q.next(unOffsetHalf<num_t>(length < 0 ?
           pGuaranteeMax<num_t, 1>(buf, string("") ) :
-            pGuarantee<num_t, 1>(buf, string("") ) ) * rM;
+            pGuarantee<num_t, 1>(buf, string("") ) ) * rM );
+        if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << std::endl << std::flush;
@@ -1173,7 +1175,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction with one step delay (. for difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A.? <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction with one step delay (. for difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A.? <step> <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
@@ -1191,7 +1193,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload sample (we should cook results after this) ***" << endl;
-  cerr << "cat ... | p [Wy] | tee 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " lH | " << argv[0] << " s | tee 0- | " << argv[0] << " s > 0+" << endl;
+  cerr << "cat ... | p [Wy] | ... | tee 0 | " << argv[0] << " d | ... | " << argv[0] << " Ac ... | " << argv[0] << " lH | " << argv[0] << " s | ...  > 0+" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

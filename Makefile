@@ -21,7 +21,7 @@ LDFLAGS+=	-lc++
 
 # lieonn.hh flags
 #CXXFLAGS+=	-D_P_BIT_=3
-#CXXFLAGS+=	-D_P_MLEN_=21
+CXXFLAGS+=	-D_P_MLEN_=0
 
 # p2.cc flags
 CXXFLAGS+=	-D_GETENTROPY_
