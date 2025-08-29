@@ -38,7 +38,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     # take sign     each      on input stream
     p b
     # take trivial complement stream on input stream
-    p [Wy]
+    p (W|y-?)
     # take sum columns each line on input stream (+ or output sqrt columns)
     p G+?
     # take walk condition each on input stream
@@ -73,7 +73,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p c.? <arg>
     # trivial return to the average id. prediction (c for difference output)
     p Ic?
-    # ddpmopt partial prediction (. for difference output, states < 0 for LoEM unstable case)
+    # ddpmopt partial prediction (. for difference output)
     p A.? <step>? <states>?
     # minimum quare left hand side prediction (. for difference output)
     p q.? <len>? <step>?
@@ -105,7 +105,7 @@ Predictor formatter and some of the toolset for non usual input streams.
     p T+
     
      *** chain payload sample (we should cook results after this) ***
-    cat ... | p [Wy] | ... | tee 0 | p d | ... | p Ac ... | p lH | p s | ... > 0+
+    cat ... | p (W|y-?) | ... | tee 0 | p d | ... | p Ac ... | p lH | p s | ... > 0+
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -289,4 +289,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/27 should work test.py, should break after this upload.
 2025/08/28-29 test python3 script series, we stop to upload here after this.
 2025/08/30 slept enough, return here to upload it's our rotten state head conclusion.
+2025/08/30 shrink source code not to be used.
 

@@ -280,9 +280,7 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < buf.size(); i ++)
           buf[i] = offsetHalf<num_t>(buf[i] / rM);
         buf.entity = skipX<SimpleVector<num_t> >(buf.entity, abs(step));
-        q.next(unOffsetHalf<num_t>(length < 0 ?
-          pGuaranteeMax<num_t, 1>(buf, string("") ) :
-            pGuarantee<num_t, 1>(buf, string("") ) ) * rM );
+        q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 1>(buf, string("") ) ) * rM);
         if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
@@ -1175,7 +1173,7 @@ int main(int argc, const char* argv[]) {
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
-  cerr << "# ddpmopt compatible prediction with one step delay (. for difference output, states < 0 for LoEM unstable case)" << endl << argv[0] << " A.? <step> <states>?" << endl;
+  cerr << "# ddpmopt compatible prediction with one step delay (. for difference output)" << endl << argv[0] << " A.? <step> <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
