@@ -1122,8 +1122,8 @@ int main(int argc, const char* argv[]) {
         std::cout << in[in.size() - 1] << std::endl;
         break;
       } case 'y': {
-        for(int i = 0; i < b.size() - 1; i ++) std::cout << b[i] << ", ";
-        std::cout << b[b.size() - 1] << std::endl;
+        for(int i = 0; i < b.size() - 1; i ++) std::cout << (argv[1][1] == '-' ? - b[i] : b[i]) << ", ";
+        std::cout << (argv[1][1] == '-' ? - b[b.size() - 1] : b[b.size() - 1]) << std::endl;
         for(int i = 0; i < in.size() - 1; i ++) std::cout << in[i] << ", ";
         std::cout << in[in.size() - 1] << std::endl;
         for(int i = 0; i < b.size(); i ++) in[i] = num_t(int(2)) * in[i] - b[i];
@@ -1155,7 +1155,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
   cerr << "# take absolute each      on input stream" << endl << argv[0] << " a" << endl;
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
-  cerr << "# take trivial complement stream on input stream" << endl << argv[0] << " [Wy]" << endl;
+  cerr << "# take trivial complement stream on input stream" << endl << argv[0] << " (W|y-?)" << endl;
   cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G+?" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
   cerr << "# take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)" << endl << argv[0] << " E+?+? <number>" << endl;
@@ -1193,7 +1193,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload sample (we should cook results after this) ***" << endl;
-  cerr << "cat ... | p [Wy] | ... | tee 0 | " << argv[0] << " d | ... | " << argv[0] << " Ac ... | " << argv[0] << " lH | " << argv[0] << " s | ...  > 0+" << endl;
+  cerr << "cat ... | p (W|y-?) | ... | tee 0 | " << argv[0] << " d | ... | " << argv[0] << " Ac ... | " << argv[0] << " lH | " << argv[0] << " s | ...  > 0+" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

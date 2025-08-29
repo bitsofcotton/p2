@@ -5,7 +5,10 @@ b = []
 for line in sys.stdin:
   b.append(line[:- 1].split(","))
   if(21 * 3 <= len(b)):
-    p = subprocess.Popen(["sh", "-c", "p s | p y"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+    if(1 < len(sys.argv) and sys.argv[1][0] == '-'):
+      p = subprocess.Popen(["sh", "-c", "p s | p y-"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+    else:
+      p = subprocess.Popen(["sh", "-c", "p s | p y"], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
     d = []
     for t in range(0, len(b)):
       p.stdin.write((",".join(b[t]) + "\n").encode("utf-8"))

@@ -288,4 +288,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/25 we met infected or not condition. so the jammer retargets our machines' integrity, so we should leave here.
 2025/08/27 should work test.py, should break after this upload.
 2025/08/28-29 test python3 script series, we stop to upload here after this.
+2025/08/30 slept enough, return here to upload it's our rotten state head conclusion.
 
