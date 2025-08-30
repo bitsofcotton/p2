@@ -1190,14 +1190,16 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** chain payload sample (we should cook results after this) ***" << endl;
-  cerr << "cat ... | p (W|y-?) | ... | tee 0 | " << argv[0] << " d | ... | " << argv[0] << " Ac ... | " << argv[0] << " lH | " << argv[0] << " s | ...  > 0+" << endl;
+  cerr << endl << " *** chain payload ***" << endl;
+  cerr << "cat ... | " << argv[0] << " y | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
+  cerr << "cat ... | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " t " << - num_t(int(1)) << " > 0-" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " s | " << argv[0] << " O+ | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
-  cerr << argv[0] << " L 2 2+ | " << argv[0] << " O* | " << argv[0] << " lc | " << argv[0] << " lc | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
+  cerr << argv[0] << " L ... | ... | " << argv[0] << " lc | " << argv[0] << " lc | " << argv[0] << " V | " << argv[0] << " X | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
   cerr << endl << " *** to hear some residue ***" << endl;
-  cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor-tobe-loopback>" << endl;
+  cerr << argv[0] << " r | " << argv[0] << " l 0 | tee 0 | <predictor> > /dev/null" << endl;
   cerr << "catgr 3 < 0 | " << argv[0] << " e 3 | " << argv[0] << " h | " << argv[0] << " t ... | " << argv[0] << " f 3 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
   return - 1;
 }

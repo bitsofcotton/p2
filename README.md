@@ -104,13 +104,15 @@ Predictor formatter and some of the toolset for non usual input streams.
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** chain payload sample (we should cook results after this) ***
-    cat ... | p (W|y-?) | ... | tee 0 | p d | ... | p Ac ... | p lH | p s | ... > 0+
+     *** chain payload ***
+    cat ... | p y | p d | p d | p Ac > 0+
+    cat ... | p y- | p d | p d | p Ac | p t -1 > 0-
+    p L 0+ 0- | p s | p O+ | p O | p S 1 | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
     p P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;
-    p L 2 2+ | p O* | p lc | p lc | p V | p X | p f ... | p [PY]
+    p L ... | ... | p lc | p lc | p V | p X | p f ... | p [PY]
     
      *** to hear some residue ***
     p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
