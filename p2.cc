@@ -1076,9 +1076,9 @@ int main(int argc, const char* argv[]) {
           std::cout << in[i + in.size() / 2] * in[i] << std::endl;
         } else if(argv[1][1] == '-') {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << (in[i] - b[i + in.size() / 2]) << ", ";
+            std::cout << (in[i] + b[i + in.size() / 2]) << ", ";
           const int i(in.size() / 2 - 1);
-          std::cout << (in[i] - b[i + in.size() / 2]) << std::endl;
+          std::cout << (in[i] + b[i + in.size() / 2]) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
