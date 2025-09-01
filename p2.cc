@@ -1074,6 +1074,11 @@ int main(int argc, const char* argv[]) {
             std::cout << in[i + in.size() / 2] * in[i] << ", ";
           const int i(in.size() / 2 - 1);
           std::cout << in[i + in.size() / 2] * in[i] << std::endl;
+        } else if(argv[1][1] == '-') {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << (in[i] - b[i + in.size() / 2]) << ", ";
+          const int i(in.size() / 2 - 1);
+          std::cout << (in[i] - b[i + in.size() / 2]) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
             std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
@@ -1194,6 +1199,8 @@ int main(int argc, const char* argv[]) {
   cerr << "cat ... | " << argv[0] << " y | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
   cerr << "cat ... | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " t " << - num_t(int(1)) << " > 0-" << endl;
   cerr << argv[0] << " L 0+ 0- | " << argv[0] << " s | " << argv[0] << " O+ | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << endl << " ** payload check ***" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " s | " << argv[0] << " O+ | " << argv[0] << " O- | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

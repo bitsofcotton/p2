@@ -1,5 +1,6 @@
 # p2
 Predictor formatter and some of the toolset for non usual input streams.
+Our sample payload uses imitated measureable condition twice.
 
 # Usage
     make p
@@ -108,6 +109,9 @@ Predictor formatter and some of the toolset for non usual input streams.
     cat ... | p y | p d | p d | p Ac > 0+
     cat ... | p y- | p d | p d | p Ac | p t -1 > 0-
     p L 0+ 0- | p s | p O+ | p O | p S 1 | p k 2
+    
+     *** payload check ***
+    p L 0+ 0- | p s | p O+ | p O- | p S 1 | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -292,4 +296,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/08/28-29 test python3 script series, we stop to upload here after this.
 2025/08/30 slept enough, return here to upload it's our rotten state head conclusion.
 2025/08/30 shrink source code not to be used.
+2025/09/01 merge latest lieonn, no logic change.
 
