@@ -1,4 +1,4 @@
-# p2
+# p2 (closed)
 Predictor formatter and some of the toolset for non usual input streams.
 Our sample payload uses imitated measureable condition twice.
 
@@ -297,4 +297,5 @@ Our sample payload uses imitated measureable condition twice.
 2025/08/30 slept enough, return here to upload it's our rotten state head conclusion.
 2025/08/30 shrink source code not to be used.
 2025/09/01 merge latest lieonn, no logic change.
+2025/09/05 merge latest lieonn.
 
