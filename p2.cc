@@ -1131,6 +1131,11 @@ int main(int argc, const char* argv[]) {
         std::cout << in[in.size() - 1] << std::endl;
         for(int i = 0; i < b.size(); i ++) in[i] = num_t(int(2)) * in[i] - b[i];
         break;
+      } case 'U': {
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << unOffsetHalf<num_t>(cutBin<num_t>(offsetHalf<num_t>(in[i] * num_t(int(2)) ))) << ", ";
+        std::cout << unOffsetHalf<num_t>(cutBin<num_t>(offsetHalf<num_t>(in[in.size() - 1] * num_t(int(2)) ))) << std::endl;
+        break;
       } default: goto usage;
       }
       std::cout << std::flush;

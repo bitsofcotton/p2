@@ -298,4 +298,5 @@ Our sample payload uses imitated measureable condition twice.
 2025/08/30 shrink source code not to be used.
 2025/09/01 merge latest lieonn, no logic change.
 2025/09/05 merge latest lieonn.
+2025/09/25 merge latest ddpmopt result causes bug fixes around pRS, p01next.
 
