@@ -272,8 +272,7 @@ int main(int argc, const char* argv[]) {
         p.next(d);
         M.O();
       } else {
-        p.res[p.res.size() - 1] = d;
-        SimpleVector<SimpleVector<num_t> > buf(p.next(d.O()));
+        SimpleVector<SimpleVector<num_t> > buf(p.next(d));
         num_t rM(int(0));
         for(int i = 0; i < buf.size(); i ++)
           for(int j = 0; j < buf[i].size(); j ++) rM = max(rM, abs(buf[i][j]));
@@ -396,8 +395,7 @@ int main(int argc, const char* argv[]) {
         for(int ii = 0; ii < bitimg.size(); ii ++)
           for(int jj = 0; jj < bitimg[ii].rows(); jj ++)
             for(int kk = 0; kk < bitimg[ii].cols(); kk ++)
-              std::cout << (bitimg[ii](jj, kk) - num_t(int(1)) / num_t(int(2)))
-                << ", ";
+              std::cout << unOffsetHalf<num_t>(bitimg[ii](jj, kk)) << ", ";
         std::cout << std::endl << std::flush;
       }
       break;
