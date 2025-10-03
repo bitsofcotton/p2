@@ -276,7 +276,7 @@ int main(int argc, const char* argv[]) {
           normalizeS<num_t>(p.next(d)));
         work.first.entity = skipX<SimpleVector<num_t> >(work.first.entity,
           abs(step));
-        q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 1>(offsetHalf<num_t>(
+        q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 0>(offsetHalf<num_t>(
           work.first), string("") ) ) * work.second);
         if(q.full) M = q.res[0];
       }
