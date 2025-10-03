@@ -272,14 +272,12 @@ int main(int argc, const char* argv[]) {
         p.next(d);
         M.O();
       } else {
-        SimpleVector<SimpleVector<num_t> > buf(p.next(d));
-        num_t rM(int(0));
-        for(int i = 0; i < buf.size(); i ++)
-          for(int j = 0; j < buf[i].size(); j ++) rM = max(rM, abs(buf[i][j]));
-        for(int i = 0; i < buf.size(); i ++)
-          buf[i] = offsetHalf<num_t>(buf[i] / rM);
-        buf.entity = skipX<SimpleVector<num_t> >(buf.entity, abs(step));
-        q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 1>(buf, string("") ) ) * rM);
+        std::pair<SimpleVector<SimpleVector<num_t> >, num_t> work(
+          normalizeS<num_t>(p.next(d)));
+        work.first.entity = skipX<SimpleVector<num_t> >(work.first.entity,
+          abs(step));
+        q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 1>(offsetHalf<num_t>(
+          work.first), string("") ) ) * work.second);
         if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
