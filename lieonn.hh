@@ -2399,13 +2399,13 @@ template <typename T> inline SimpleMatrix<T> SimpleMatrix<T>::QR() const {
   vector<int> residue;
   residue.reserve(Q.rows());
   for(int i = 0; i < Q.rows(); i ++) {
-    const SimpleVector<T> Atrowi(this->col(i));
-    const SimpleVector<T> work(Atrowi - Q.projectionPt(Atrowi));
+    SimpleVector<T> work(this->col(i));
+    work -= Q.projectionPt(work);
     const T n2(work.dot(work));
     if(n2 <= norm2 * epsilon())
       residue.emplace_back(i);
     else
-      Q.row(i) = work / sqrt(n2);
+      Q.row(i) = (work /= sqrt(n2));
   }
   return Q.fillP(residue);
 }
@@ -4655,7 +4655,7 @@ template <typename T, int nprogress> SimpleVector<T> pPolish(const vector<Simple
 #pragma omp section
 #endif
     {
-      resp =   pSectional<T, nprogress>(in,  string("+)") + strloop);
+      resp =   pSectional<T, nprogress>(in,  string("+") + strloop);
     }
 #if defined(_OPENMP)
 #pragma omp section
@@ -4664,7 +4664,7 @@ template <typename T, int nprogress> SimpleVector<T> pPolish(const vector<Simple
       vector<SimpleVector<T> > inm(in);
       for(int i = 0; i < inm.size(); i ++)
         inm[i] = offsetHalf<T>(- unOffsetHalf<T>(inm[i]));
-      resm = - pSectional<T, nprogress>(inm, string("-)") + strloop);
+      resm = - pSectional<T, nprogress>(inm, string("-") + strloop);
     }
 #if defined(_OPENMP)
   }
@@ -4732,8 +4732,9 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
         pair<SimpleVector<SimpleVector<T> >, T> wp(normalizeS<T>(
           workp.subVector(i, _P_MLEN_) ));
         pp.emplace_back(unOffsetHalf<T>(pGuarantee<T, nprogress>(offsetHalf<T>(
-          wp.first), string("+") + to_string(i) + string("/") +
-            to_string(workp.size() - _P_MLEN_ + 1) + strloop)) * wp.second);
+          wp.first), string("+, ") + to_string(i) + string("/") +
+            to_string(workp.size() - _P_MLEN_ + 1) + string(")") + strloop)) *
+              wp.second);
       }
     }
 #if defined(_OPENMP)
@@ -4758,8 +4759,9 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
         pair<SimpleVector<SimpleVector<T> >, T> wm(normalizeS<T>(
           workm.subVector(i, _P_MLEN_) ));
         pm.emplace_back(unOffsetHalf<T>(pGuarantee<T, nprogress>(offsetHalf<T>(
-          wm.first), string("+") + to_string(i) + string("/") +
-            to_string(workm.size() - _P_MLEN_ + 1) + strloop)) * wm.second);
+          wm.first), string("-, ") + to_string(i) + string("/") +
+            to_string(workm.size() - _P_MLEN_ + 1) + string(")") + strloop)) *
+              wm.second);
       }
     }
 #if defined(_OPENMP)

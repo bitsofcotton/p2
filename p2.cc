@@ -266,6 +266,7 @@ int main(int argc, const char* argv[]) {
       for(int i = 0; i < d.size(); i ++)
         std::cout << (argv[1][1] == '\0' ? d[i] * M[i] : d[i] - M[i]) << ", ";
       std::cout << std::flush;
+      SimpleVector<num_t> bM(M);
       if(! p.full || p.res.size() <= 3) {
         p.next(d);
         M.O();
@@ -278,8 +279,10 @@ int main(int argc, const char* argv[]) {
           work.first), string("") ) ) * work.second);
         if(q.full) M = q.res[0];
       }
-      for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
-      std::cout << M[M.size() - 1] << std::endl << std::flush;
+      for(int j = 0; j < M.size() - 1; j ++)
+        std::cout << (argv[1][1] == '\0' ? M[j] : bM[j]) << ", ";
+      std::cout << (argv[1][1] == '\0' ? M[M.size() - 1] : bM[bM.size() - 1])
+        << std::endl << std::flush;
     }
     break;
   } case 'q': {
@@ -1075,13 +1078,13 @@ int main(int argc, const char* argv[]) {
           std::cout << (in[i] + b[i + in.size() / 2]) << std::endl;
         } else {
           for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
-              : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
-                num_t(int(1)) : in[i]) ) << ", ";
+            //std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
+            std::cout << (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
+                num_t(int(1)) : in[i]) << ", ";
           const int i(in.size() / 2 - 1);
-          std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
-            : (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
-              num_t(int(1)) : in[i]) ) << std::endl;
+          // std::cout << (in[i + in.size() / 2] == num_t(int(0)) ? num_t(int(0))
+          std::cout << (in[i] - in[i + in.size() / 2]) * (argv[1][1] == '+' ?
+              num_t(int(1)) : in[i]) << std::endl;
         }
         break;
       } case 'J': {

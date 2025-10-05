@@ -300,4 +300,5 @@ Our sample payload uses imitated measureable condition twice.
 2025/09/05 merge latest lieonn.
 2025/09/25 merge latest ddpmopt result causes bug fixes around pRS, p01next.
 2025/10/03 revert some change on A cmd they doesn't need.
+2025/10/05 Ac command output change one delayed M value.
 
