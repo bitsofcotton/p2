@@ -106,13 +106,13 @@ Our sample payload uses imitated measureable condition twice.
     p T+
     
      *** chain payload ***
-    cat ... | p y | p d | p Ac > 0+
+    cat ... | p y  | p d | p Ac > 0+
     cat ... | p y- | p d | p Ac > 0-
-    cat ... | p t -1 | p y | p d | p Ac | p t -1 > 1+
+    cat ... | p t -1 | p y  | p d | p Ac | p t -1 > 1+
     cat ... | p t -1 | p y- | p d | p Ac | p t -1 > 1-
     p L 0+ 0- | p O+ > 00
     p L 1+ 1- | p O+ > 11
-    p L 00 11 | p O+ | p s | p O | p S 1 | p k 2
+    p L 00 11 | p O+ | p O | p S 1 | p k 2
 
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -303,4 +303,5 @@ Our sample payload uses imitated measureable condition twice.
 2025/10/03 revert some change on A cmd they doesn't need.
 2025/10/05 Ac command output change one delayed M value.
 2025/10/05 fix logic on chain.
+2025/10/06 fix logic on chain.
 
