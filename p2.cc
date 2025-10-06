@@ -879,8 +879,9 @@ int main(int argc, const char* argv[]) {
     int& length(t);
     int  step(1);
     if(2 < argc) length = std::atoi(argv[2]);
-    if(3 < argc) step   = std::atoi(argv[3]);
+    if(3 < argc) step   = abs(std::atoi(argv[3]));
     const bool chain(argv[1][1] == 'c');
+    if(argv[1][1] == 'd') step = - step;
     #include "../p0/p0.cc"
     break;
   } case '1': {
@@ -1161,7 +1162,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# flip or not   PRNG stream" << endl << argv[0] << " [MN]<proto> <number of output columns>" << endl;
   cerr << endl << " *** predictor part ***" << endl;
 #if defined(_ONEBINARY_)
-  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>? <step>?" << endl;
+  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0[cd]? <arg>? <step>?" << endl;
   cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg> <step>?" << endl;
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
@@ -1184,13 +1185,9 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload ***" << endl;
-  cerr << "cat ... | " << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
-  cerr << "cat ... | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
-  cerr << "cat ... | " << argv[0] << " t " << - num_t(int(1)) << " | " << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " t " << - num_t(int(1)) << " > 1+" << endl;
-  cerr << "cat ... | " << argv[0] << " t " << - num_t(int(1)) << " | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " t " << - num_t(int(1)) << " > 1-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ > 00" << endl;
-  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ > 11" << endl;
-  cerr << argv[0] << " L 00 11 | " << argv[0] << " O+ | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << "cat ... | " << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
+  cerr << "cat ... | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " 0d 3 | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
