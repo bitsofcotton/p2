@@ -880,7 +880,7 @@ int main(int argc, const char* argv[]) {
     int  step(1);
     if(2 < argc) length = std::atoi(argv[2]);
     if(3 < argc) step   = abs(std::atoi(argv[3]));
-    const bool chain(argv[1][1] == 'c');
+    const bool chain(argv[1][1] == 'c' || argv[1][1] == 'd');
     if(argv[1][1] == 'd') step = - step;
     #include "../p0/p0.cc"
     break;
