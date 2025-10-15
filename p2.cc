@@ -1187,7 +1187,7 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** chain payload ***" << endl;
   cerr << "cat ... | " << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
   cerr << "cat ... | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " 0d 3 | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " 0c 3 | " << argv[0] << " lH | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2 # 0c is linear for now" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
