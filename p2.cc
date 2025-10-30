@@ -559,6 +559,18 @@ int main(int argc, const char* argv[]) {
           m[j] = min(m[j], sbuf[i][j]);
         }
       }
+      if(argv[1][1] == '-') {
+        num_t MM(M[0]);
+        num_t mm(m[0]);
+        for(int i = 0; i < M.size(); i ++) {
+          MM = max(M[i], MM);
+          mm = min(m[i], mm);
+        }
+        for(int i = 0; i < M.size(); i ++) {
+          M[i] = MM;
+          m[i] = mm;
+        }
+      }
       if(argv[1][0] == 'Z') {
         for(int i = 0; i < M.size(); i ++)
           if((M[i] = max(abs(M[i]), abs(m[i]))) == num_t(int(0)))
@@ -1138,8 +1150,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# take skip head on input stream" << endl << argv[0] << " S <margin>" << endl;
   cerr << "# take reverse   on input stream" << endl << argv[0] << " v" << endl;
   cerr << "# pick {0,1} or [0-9a-f] str on input stream" << endl << argv[0] << " [xj]" << endl;
-  cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X" << endl;
-  cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z" << endl;
+  cerr << "# take reform [-1,1] on input stream" << endl << argv[0] << " X-?" << endl;
+  cerr << "# take reform [-1,1] on input stream without offset" << endl << argv[0] << " Z-?" << endl;
   cerr << "# take inverse   on input stream" << endl << argv[0] << " i" << endl;
   cerr << "# take picked column      on input stream (H for first half, G for last half, c for chop)" << endl << argv[0] << " l[cHG]? <col0index> ..." << endl;
   cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O[+*]?" << endl;
@@ -1188,7 +1200,8 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** chain payload ***" << endl;
   cerr << "cat ... | " << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
   cerr << "cat ... | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " 0c ... | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | tee 1+ | " << argv[0] << " lH | " << argv[0] << " 0c ... > 1-" << endl;
+  cerr << argv[0] << " L 1+ 1- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

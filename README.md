@@ -106,10 +106,11 @@ Our sample payload uses imitated measureable condition twice.
     p T+
     
      *** chain payload ***
-    cat ... | p y  | p d | p Ac > 0+
-    cat ... | p y- | p d | p Ac > 0-
-    p L 0+ 0- | p O+ | p s | p s | p O | p d | p d | p 0c ... | p s | p s | p O | p S 1 | p k 2
-
+    cat ... | p y  | p d | p d | p Ac > 0+
+    cat ... | p y- | p d | p d | p Ac > 0-
+    p L 0+ 0- | p O+ | tee 1+ | p lH | p 0c ... > 1-
+    p L 1+ 1- | p O+ | p s | p s | p O | p S 1 | p k 2
+    
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
     p P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;
