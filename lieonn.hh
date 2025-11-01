@@ -4888,17 +4888,13 @@ template <typename T, int nprogress> static inline SimpleVector<T> pGuarantee(co
 //      stream but the predictor isn't depend pseudo-things.
 //      also add whole context length markov feeding.
 #if defined(_SIMPLEALLOC_)
-template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > >& in0, const string& strloop) {
-  vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > in(in0);
+template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > >& in, const string& strloop) {
 #else
-template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T> >& in0, const string& strloop) {
-  vector<SimpleVector<T> > in(in0);
+template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T> >& in, const string& strloop) {
 #endif
 #if defined(_OPENMP) && ! defined(_P_PRNG_)
   for(int i = 1; i < _P_MLEN_; i ++) pnextcacher<T>(i, 1);
 #endif
-  for(int i = 1; i < in0.size(); i ++) in[i] += in[i - 1];
-  in = normalize<T>(in);
   const int realin(_P_MLEN_ ? min(int(in.size()), int(_P_MLEN_)) : int(in.size()) );
 #if defined(_SIMPLEALLOC_)
   vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > pp;
@@ -4925,7 +4921,7 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
       b = uo * T(int(2)) - b;
     }
     workp.entity.emplace_back(b);
-    workp.entity = delta<SimpleVector<T> >(delta<SimpleVector<T> >(workp.entity));
+    workp.entity = delta<SimpleVector<T> >(workp.entity);
     pair<SimpleVector<SimpleVector<T> >, T> wp(normalizeS<T>(workp));
     pp = unOffsetHalf<T>(pGuaranteeM<T, nprogress>(offsetHalf<T>(
       wp.first), string("+)") + strloop));
@@ -4943,7 +4939,7 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
       b = uo * T(int(2)) - b;
     }
     workm.entity.emplace_back(- b);
-    workm.entity = delta<SimpleVector<T> >(delta<SimpleVector<T> >(workm.entity));
+    workm.entity = delta<SimpleVector<T> >(workm.entity);
     pair<SimpleVector<SimpleVector<T> >, T> wm(normalizeS<T>(workm));
     pm = unOffsetHalf<T>(pGuaranteeM<T, nprogress>(offsetHalf<T>(
       wm.first), string("-)") + strloop));

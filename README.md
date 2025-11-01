@@ -109,12 +109,9 @@ Our sample payload uses imitated measureable condition twice.
     p y  < ... | p s > 00+
     p y- < ... | p s > 00-
     p L 00+ 00- | p Z- > 00+-
-    p lH < 00+- | p d | p d | p Ac > 0+
-    p lG < 00+- | p d | p d | p Ac > 0-
-    p L 0+ 0- | p O+ | tee 1+ | p lH | p 0c ... > 1-
-    p lG < 1- > 1--
-    p lG < 1+ | p L /dev/stdin 1-- | p O+ > 1++
-    p lH < 1- | p L /dev/stdin 1++ | p s | p s | p Ic 2 | p lH | p O | p S 1 | p k 2
+    p lH < 00+- | p Ac > 0+
+    p lG < 00+- | p Ac > 0-
+    p L 0+ 0- | p O+ | p lH | p Ic 2 | p O | p S 1 | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -309,5 +306,6 @@ Our sample payload uses imitated measureable condition twice.
 2025/10/16 fix 0d in p0.cc and merge them.
 2025/10/30 fix merge eliminate around 0d, update usage.
 2025/10/31 fix update usage.
+2025/11/01 fix update usage.
 2025/11/01 fix update usage.
 
