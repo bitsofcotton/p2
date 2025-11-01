@@ -108,12 +108,9 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     p T+
     
      *** chain payload ***
-    p y  < ... | p s > 00+
-    p y- < ... | p s > 00-
-    p L 00+ 00- | p Z- > 00+-
-    p lH < 00+- | p Ac > 0+
-    p lG < 00+- | p Ac > 0-
-    p L 0+ 0- | p O+ | p Ic 2 | p lH | p O | p S 1 | p k 2
+    p y  | p d | p d | p Ac | p 0c ... > 0+
+    p y- | p d | p d | p Ac | p 0c ... > 0-
+    p L 0+ 0- | p O+ | p s | p s | p O | p O | p S 1 | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
