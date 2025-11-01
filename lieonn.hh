@@ -4921,7 +4921,7 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
       b = uo * T(int(2)) - b;
     }
     workp.entity.emplace_back(b);
-    workp.entity = delta<SimpleVector<T> >(workp.entity);
+    workp.entity = delta<SimpleVector<T> >(delta<SimpleVector<T> >(workp.entity));
     pair<SimpleVector<SimpleVector<T> >, T> wp(normalizeS<T>(workp));
     pp = unOffsetHalf<T>(pGuaranteeM<T, nprogress>(offsetHalf<T>(
       wp.first), string("+)") + strloop));
@@ -4939,7 +4939,7 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
       b = uo * T(int(2)) - b;
     }
     workm.entity.emplace_back(- b);
-    workm.entity = delta<SimpleVector<T> >(workm.entity);
+    workm.entity = delta<SimpleVector<T> >(delta<SimpleVector<T> >(workm.entity));
     pair<SimpleVector<SimpleVector<T> >, T> wm(normalizeS<T>(workm));
     pm = unOffsetHalf<T>(pGuaranteeM<T, nprogress>(offsetHalf<T>(
       wm.first), string("-)") + strloop));
@@ -4967,8 +4967,6 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
     }
   }
   for(int i = 1; i < r.size(); i ++) r[i] += r[i - 1];
-  return (r[r.size() - 2] + r[r.size() - 1]) / T(int(2));
-/*
   for(int i = 1; i < r.size(); i ++) {
     r[0] += r[i];
     if(((i ^ r.size()) & 1) && i < r.size() - 1) {
@@ -4981,7 +4979,6 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
     }
   }
   return r[0];
-*/
 }
 
 // N.B. each pixel each bit prediction with PRNG blended stream.

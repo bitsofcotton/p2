@@ -2,6 +2,8 @@
 Predictor formatter and some of the toolset for non usual input streams.
 Our sample payload uses imitated measureable condition twice.
 
+N.B. our computation system is targetted, so fighting with numerical series gets strange results experiments by experiments on our machine, so we should exclude them by testing on factory-resetted EFIs with binary dumped one by one auditted binaries when we mobilize our machines which we have now. However, the machine also have some backdoor matters, so we need infection nor control clean chips.
+
 # Usage
     make p
     
@@ -111,7 +113,7 @@ Our sample payload uses imitated measureable condition twice.
     p L 00+ 00- | p Z- > 00+-
     p lH < 00+- | p Ac > 0+
     p lG < 00+- | p Ac > 0-
-    p L 0+ 0- | p O+ | p lH | p Ic 2 | p O | p S 1 | p k 2
+    p L 0+ 0- | p O+ | p Ic 2 | p lH | p O | p S 1 | p k 2
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m

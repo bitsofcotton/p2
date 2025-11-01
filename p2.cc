@@ -1201,10 +1201,9 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** chain payload ***" << endl;
   cerr << argv[0] << " y  | " << argv[0] << " s > 00+" << endl;
   cerr << argv[0] << " y- | " << argv[0] << " s > 00-" << endl;
-  cerr << argv[0] << " L 00+ 00- | " << argv[0] << " Z- > 00+-" << endl;
-  cerr << argv[0] << " lH < 00+- | " << argv[0] << " Ac > 0+" << endl;
-  cerr << argv[0] << " lG < 00+- | " << argv[0] << " Ac > 0-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " lH | " << argv[0] << " Ic 2 | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << argv[0] << " L 00+ 00- | " << argv[0] << " Z- | " << argv[0] << " lH | " << argv[0] << " Ac > 0+" << endl;
+  cerr << argv[0] << " L 00+ 00- | " << argv[0] << " Z- | " << argv[0] << " lG | " << argv[0] << " Ac > 0-" << endl;
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " Ic 2 | " << argv[0] << " lH | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
