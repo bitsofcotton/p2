@@ -4888,13 +4888,17 @@ template <typename T, int nprogress> static inline SimpleVector<T> pGuarantee(co
 //      stream but the predictor isn't depend pseudo-things.
 //      also add whole context length markov feeding.
 #if defined(_SIMPLEALLOC_)
-template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > >& in, const string& strloop) {
+template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > >& in0, const string& strloop) {
+  vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > in(in0);
 #else
-template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T> >& in, const string& strloop) {
+template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T> >& in0, const string& strloop) {
+  vector<SimpleVector<T> > in(in0);
 #endif
 #if defined(_OPENMP) && ! defined(_P_PRNG_)
   for(int i = 1; i < _P_MLEN_; i ++) pnextcacher<T>(i, 1);
 #endif
+  for(int i = 1; i < in0.size(); i ++) in[i] += in[i - 1];
+  in = normalize<T>(in);
   const int realin(_P_MLEN_ ? min(int(in.size()), int(_P_MLEN_)) : int(in.size()) );
 #if defined(_SIMPLEALLOC_)
   vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > pp;
@@ -4967,6 +4971,8 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
     }
   }
   for(int i = 1; i < r.size(); i ++) r[i] += r[i - 1];
+  return (r[r.size() - 2] + r[r.size() - 1]) / T(int(2));
+/*
   for(int i = 1; i < r.size(); i ++) {
     r[0] += r[i];
     if(((i ^ r.size()) & 1) && i < r.size() - 1) {
@@ -4979,6 +4985,7 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
     }
   }
   return r[0];
+*/
 }
 
 // N.B. each pixel each bit prediction with PRNG blended stream.

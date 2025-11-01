@@ -1198,8 +1198,11 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload ***" << endl;
-  cerr << "cat ... | " << argv[0] << " s | " << argv[0] << " Z- | " << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
-  cerr << "cat ... | " << argv[0] << " s | " << argv[0] << " Z- | " << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
+  cerr << argv[0] << " y  | " << argv[0] << " s > 00+" << endl;
+  cerr << argv[0] << " y- | " << argv[0] << " s > 00-" << endl;
+  cerr << argv[0] << " L 00+ 00- | " << argv[0] << " Z- > 00+-" << endl;
+  cerr << argv[0] << " lH < 00+- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
+  cerr << argv[0] << " lG < 00+- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
   cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | tee 1+ | " << argv[0] << " lH | " << argv[0] << " 0c ... > 1-" << endl;
   cerr << argv[00] << " lG < 1- > 1--" << endl;
   cerr << argv[0] << " lG < 1+ | " << argv[0] << " L /dev/stdin 1-- | " << argv[0] << " O+ > 1++" << endl;
