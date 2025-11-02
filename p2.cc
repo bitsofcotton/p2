@@ -59,7 +59,7 @@ template <typename T> static inline SimpleVector<T> s2sv(const string& s) {
 }
 
 #if !defined(_RESOL_)
-#define _RESOL_ 64
+#define _RESOL_ (int(1) << abs(_P_BIT_ * 2))
 #endif
 
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
