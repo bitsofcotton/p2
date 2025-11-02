@@ -307,4 +307,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/10/31 fix update usage.
 2025/11/01 fix update usage.
 2025/11/01 fix update usage.
+2025/11/03 check point.
 
