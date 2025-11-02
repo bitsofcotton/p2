@@ -58,6 +58,10 @@ template <typename T> static inline SimpleVector<T> s2sv(const string& s) {
   return d;
 }
 
+#if !defined(_RESOL_)
+#define _RESOL_ 64
+#endif
+
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
 #endif
@@ -182,13 +186,15 @@ int main(int argc, const char* argv[]) {
           idx ++;
           // N.B. rand < 0x2001 case isn't handled.
           switch(sw) {
-            case '0':
+            case '0': {
 #if defined(_ARCFOUR_)
-             std::cout << (argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
+             num_t rr(argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
 #else
-             std::cout << (argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
+             num_t rr(argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
 #endif
-             break;
+             if(abs(rr) < num_t(int(1)) / num_t(int(_RESOL_)) ) std::cerr << "!" << std::flush;
+             std::cout << rr;
+             break; }
 #if !defined(_OLDCPP_)
             case '1':
               std::cout << (argv[1][0] == 'M' ? num_t(ud(er) & 1 ? 1 : - 1) * d : (fl(ud(er) % 0x2001 - 0x1000, 0x1000) + d) / num_t(int(2)));
@@ -276,7 +282,7 @@ int main(int argc, const char* argv[]) {
         work.first.entity = skipX<SimpleVector<num_t> >(work.first.entity,
           abs(step));
         q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 0>(offsetHalf<num_t>(
-          work.first), string("") ) ) * work.second);
+          work.first), string("") ) ) * work.second / num_t(int(_RESOL_)));
         if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++)
@@ -1199,6 +1205,13 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload ***" << endl;
+  // N.B. a
+  //      a-p p
+  //      a-p-q p-r q r
+  //      (a-p)q pr
+  //      (aq-pq+pr)pr
+  //      (a|a-p|T' - p|a-p|T' + p|p|T'')pr
+  //      |p| << |a| case ok.
   cerr << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " 0c ... > 0+" << endl;
   cerr << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " 0c ... > 0-" << endl;
   cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
