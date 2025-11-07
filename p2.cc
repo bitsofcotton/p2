@@ -1199,17 +1199,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload ***" << endl;
-  // N.B. a
-  //      a-p p
-  //      a-p-q p-r q r
-  //      (a-p)q pr
-  //      (aq-pq+pr)pr
-  //      (a|a-p|T' - p|a-p|T' + p|p|T'')pr
-  //      |p| << |a| case ok, however, this isn't satisfied in summation
-  //                          condition even with 'W' chain.
-  cerr << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " 0c ... > 0+" << endl;
-  cerr << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " 0c ... > 0-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
+  cerr << argv[0] << " W  | " << argv[0] << " s | " << argv[0] << " Z- | " << argv[0] << " Ac 2 | " << argv[0] << " d | " << argv[0] << " O" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

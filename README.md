@@ -107,10 +107,8 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** chain payload but this isn't applied as reverse order ***
-    p y  | p d | p d | p Ac | p 0c ... > 0+
-    p y- | p d | p d | p Ac | p 0c ... > 0-
-    p L 0+ 0- | p O+ | p s | p s | p O | p O | p S 1 | p k 2
+     *** chain payload ***
+    p W | p s | p Z- | p Ac 2 | p d | p O
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -308,4 +306,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/01 fix update usage.
 2025/11/01 fix update usage.
 2025/11/03 check point.
+2025/11/08 persistent usage update.
 
