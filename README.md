@@ -1,4 +1,4 @@
-# p2 (closed)
+# p2 (persistent)
 Predictor formatter and some of the toolset for non usual input streams.
 Our sample payload uses imitated measureable condition twice.
 
@@ -107,7 +107,7 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** chain payload ***
+     *** chain payload but this isn't applied as reverse order ***
     p y  | p d | p d | p Ac | p 0c ... > 0+
     p y- | p d | p d | p Ac | p 0c ... > 0-
     p L 0+ 0- | p O+ | p s | p s | p O | p O | p S 1 | p k 2

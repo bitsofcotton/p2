@@ -58,10 +58,6 @@ template <typename T> static inline SimpleVector<T> s2sv(const string& s) {
   return d;
 }
 
-#if !defined(_RESOL_)
-#define _RESOL_ (int(1) << abs(_P_BIT_ * 2))
-#endif
-
 #if !defined(_OLDCPP_) && defined(_PERSISTENT_)
 # undef int
 #endif
@@ -188,12 +184,10 @@ int main(int argc, const char* argv[]) {
           switch(sw) {
             case '0': {
 #if defined(_ARCFOUR_)
-             num_t rr(argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
+             std::cout << (argv[1][0] == 'M' ? num_t(arc4random() & 1 ? 1 : - 1) * d : (fl(int(arc4random_uniform(0x2001)) - 0x1000, 0x1000) + d) / num_t(int(2)) );
 #else
-             num_t rr(argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
+             std::cout << (argv[1][0] == 'M' ? num_t(random() & 1 ? 1 : - 1) * d : (fl(int(random() % 0x2001) - 0x1000, 0x1000) + d) / num_t(int(2)));
 #endif
-             if(abs(rr) < num_t(int(1)) / num_t(int(_RESOL_)) ) std::cerr << "!" << std::flush;
-             std::cout << rr;
              break; }
 #if !defined(_OLDCPP_)
             case '1':
@@ -282,7 +276,7 @@ int main(int argc, const char* argv[]) {
         work.first.entity = skipX<SimpleVector<num_t> >(work.first.entity,
           abs(step));
         q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 0>(offsetHalf<num_t>(
-          work.first), string("") ) ) * work.second / num_t(int(_RESOL_)));
+          work.first), string("") ) ) * work.second);
         if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++)
@@ -1211,7 +1205,8 @@ int main(int argc, const char* argv[]) {
   //      (a-p)q pr
   //      (aq-pq+pr)pr
   //      (a|a-p|T' - p|a-p|T' + p|p|T'')pr
-  //      |p| << |a| case ok.
+  //      |p| << |a| case ok, however, this isn't satisfied in summation
+  //                          condition even with 'W' chain.
   cerr << argv[0] << " y  | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " 0c ... > 0+" << endl;
   cerr << argv[0] << " y- | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " 0c ... > 0-" << endl;
   cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " O | " << argv[0] << " S 1 | " << argv[0] << " k 2" << endl;
