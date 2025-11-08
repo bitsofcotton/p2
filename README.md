@@ -107,8 +107,10 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** chain payload ***
-    p W | p s | p Z- | p Ac 2 | p d | p O
+     *** chain payload (incomplete partial) ***
+    p d | python3 skip.py | tee 0 | p y | p d | p d | p Ac > 0+
+    p y- < 0 | p d | p d | p Ac > 0-
+    p L 0+ 0- | p O+ | p s | p s | python3 skip.py | p s | p O | p 0 1 | p lH 
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
