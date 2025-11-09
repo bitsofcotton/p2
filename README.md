@@ -40,6 +40,8 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     p a
     # take sign     each      on input stream
     p b
+    # take flip with 1 bit internal state on input stream
+    p B
     # take trivial complement stream on input stream
     p (W|y-?)
     # take sum columns each line on input stream (+ or output sqrt columns)
@@ -69,7 +71,7 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     
      *** predictor part ***
     # predict with Riemann measureable condition (c for difference output)
-    p 0[cd]? <arg>
+    p 0c? <arg>
     # predict with untangle combination condition (c for difference output)
     p 1c? <arg>
     # feed patternizable jammer input entropy (. for difference output)
@@ -108,9 +110,9 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     p T+
     
      *** chain payload (incomplete partial) ***
-    p d | python3 skip.py | tee 0 | p y | p d | p d | p Ac > 0+
+    p d | p B | tee 0 | p y | p d | p d | p Ac > 0+
     p y- < 0 | p d | p d | p Ac > 0-
-    p L 0+ 0- | p O+ | p s | p s | python3 skip.py | p s | p O | p 0 1 | p lH 
+    p L 0+ 0- | p O+ | p s | p s | python3 test.py
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -309,4 +311,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/01 fix update usage.
 2025/11/03 check point.
 2025/11/08 persistent usage update.
+2025/11/09 fix update usage, might be we got ok result.
 

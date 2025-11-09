@@ -4888,25 +4888,28 @@ template <typename T, int nprogress> static inline SimpleVector<T> pGuarantee(co
 //      stream but the predictor isn't depend pseudo-things.
 //      also add whole context length markov feeding.
 #if defined(_SIMPLEALLOC_)
-template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > >& in, const string& strloop) {
+template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > >& in0, const string& strloop) {
 #else
-template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T> >& in, const string& strloop) {
+template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector<SimpleVector<T> >& in0, const string& strloop) {
 #endif
 #if defined(_OPENMP) && ! defined(_P_PRNG_)
   for(int i = 1; i < _P_MLEN_; i ++) pnextcacher<T>(i, 1);
 #endif
-  const int realin(_P_MLEN_ ? min(int(in.size()), int(_P_MLEN_)) : int(in.size()) );
 #if defined(_SIMPLEALLOC_)
   vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > pp;
   vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > pm;
   vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > p;
   vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > q;
+  vector<SimpleVector<T>, SimpleAllocator<SimpleVector<T> > > in(delta<SimpleVector<T> >(in0));
 #else
   vector<SimpleVector<T> > pp;
   vector<SimpleVector<T> > pm;
   vector<SimpleVector<T> > p;
   vector<SimpleVector<T> > q;
+  vector<SimpleVector<T> > in(delta<SimpleVector<T> >(in0));
 #endif
+  for(int i = 0; i < in.size(); i += 2) in[i] = - in[i];
+  const int realin(_P_MLEN_ ? min(int(in.size()), int(_P_MLEN_)) : int(in.size()) );
   {
     SimpleVector<SimpleVector<T> > workp;
     workp.entity.reserve(realin * 2 + 1);
@@ -4954,17 +4957,13 @@ template <typename T, int nprogress> SimpleVector<T> pAppendMeasure(const vector
   }
   for(int i = 1; i < p.size(); i ++) p[i] += p[i - 1];
   for(int i = 1; i < p.size(); i ++) p[i] += p[i - 1];
-  for(int i = 1; i < q.size(); i ++) q[i] += q[i - 1];
-  for(int i = 1; i < q.size(); i ++) q[i] += q[i - 1];
-  SimpleVector<T> r(p[0].size());
-  r.O();
-  for(int j = 0; j < r.size(); j ++) {
-    idFeeder<T> buf(3);
-    for(int k = 0; k < 3; k ++)
-      buf.next(q[k - 3 + q.size()][j] - p[k - 3 - 1 + p.size()][j]);
-    assert(buf.full);
-    r[j] = p0maxNext<T>(buf.res) + p[p.size() - 1][j];
-  }
+  for(int i = 0; i < p.size(); i += 2) p[i] = - p[i];
+  for(int i = 0; i < q.size(); i += 2) q[i] = - q[i];
+  for(int i = 1; i < p.size(); i ++) p[i] += p[i - 1];
+  for(int i = 1; i < p.size(); i ++) q[i] += q[i - 1];
+  SimpleVector<T> r(p[p.size() - 1]);
+  for(int j = 0; j < r.size(); j ++)
+    r[j] *= p[p.size() - 2][j] * q[q.size() - 1][j];
   return r;
 }
 

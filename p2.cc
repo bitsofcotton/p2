@@ -1136,6 +1136,10 @@ int main(int argc, const char* argv[]) {
           std::cout << unOffsetHalf<num_t>(cutBin<num_t>(offsetHalf<num_t>(in[i] * num_t(int(2)) ))) << ", ";
         std::cout << unOffsetHalf<num_t>(cutBin<num_t>(offsetHalf<num_t>(in[in.size() - 1] * num_t(int(2)) ))) << std::endl;
         break;
+      } case 'B': {
+        for(int i = 0; i < in.size() - 1; i ++)
+          std::cout << (t & 1 ? - in[i] : in[i]) << ", ";
+        std::cout << (t & 1 ? - in[in.size() - 1] : in[in.size() - 1]) << std::endl;
       } default: goto usage;
       }
       std::cout << std::flush;
@@ -1163,6 +1167,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
   cerr << "# take absolute each      on input stream" << endl << argv[0] << " a" << endl;
   cerr << "# take sign     each      on input stream" << endl << argv[0] << " b" << endl;
+  cerr << "# take flip with 1 bit internal state on input stream" << endl << argv[0] << " B" << endl;
   cerr << "# take trivial complement stream on input stream" << endl << argv[0] << " (W|y-?)" << endl;
   cerr << "# take sum columns each line on input stream (+ for output sqrt columns)" << endl << argv[0] << " G+?" << endl;
   cerr << "# take walk condition each on input stream" << endl << argv[0] << " w <range>" << endl;
@@ -1178,7 +1183,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# flip or not   PRNG stream" << endl << argv[0] << " [MN]<proto> <number of output columns>" << endl;
   cerr << endl << " *** predictor part ***" << endl;
 #if defined(_ONEBINARY_)
-  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0[cd]? <arg>? <step>?" << endl;
+  cerr << "# predict with Riemann measureable condition (c for difference output)" << endl << argv[0] << " 0c? <arg>? <step>?" << endl;
   cerr << "# predict with untangle combination condition (c for difference output)" << endl << argv[0] << " 1c? <arg> <step>?" << endl;
 #endif
   cerr << "# feed patternizable jammer input entropy (. for difference output)" << endl << argv[0] << " c.? <state> <n-markov>" << endl;
@@ -1201,9 +1206,9 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload (incomplete partial) ***" << endl;
-  cerr << argv[0] << " d | python3 skip.py | tee 0 | " << argv[0] << " y | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
+  cerr << argv[0] << " d | " << argv[0] << " B | tee 0 | " << argv[0] << " y | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
   cerr << argv[0] << " y- < 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | python3 skip.py | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " lH";
+  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | python3 test.py" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
