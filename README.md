@@ -110,9 +110,8 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     p T+
     
      *** chain payload (incomplete partial) ***
-    p d | p B | tee 0 | p y | p d | p d | p Ac > 0+
-    p y- < 0 | p d | p d | p Ac > 0-
-    p L 0+ 0- | p O+ | p s | p s | python3 test.py
+    p d | p B | tee 0 | p d | p d | p Ac | p s | p s | p O
+    p d | p B | tee 0 | p d | p d | p Ac | p s | p s | python3 test.py | p lH
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -312,4 +311,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/03 check point.
 2025/11/08 persistent usage update.
 2025/11/09 fix update usage, might be we got ok result.
+2025/11/12 fix update usage, better result.
 

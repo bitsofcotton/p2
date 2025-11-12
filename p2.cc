@@ -250,7 +250,7 @@ int main(int argc, const char* argv[]) {
     break;
   } case 'A': {
     int step(1);
-    int length(_P_MLEN_);
+    int length(21);
     if(2 < argc) step = std::atoi(argv[2]);
     if(3 < argc) length = std::atoi(argv[3]);
     cerr << "continue with: " << argv[0] << " " << argv[1] << " " << step << " " << length << endl;
@@ -1140,6 +1140,7 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < in.size() - 1; i ++)
           std::cout << (t & 1 ? - in[i] : in[i]) << ", ";
         std::cout << (t & 1 ? - in[in.size() - 1] : in[in.size() - 1]) << std::endl;
+        break;
       } default: goto usage;
       }
       std::cout << std::flush;
@@ -1206,9 +1207,8 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload (incomplete partial) ***" << endl;
-  cerr << argv[0] << " d | " << argv[0] << " B | tee 0 | " << argv[0] << " y | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0+" << endl;
-  cerr << argv[0] << " y- < 0 | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac > 0-" << endl;
-  cerr << argv[0] << " L 0+ 0- | " << argv[0] << " O+ | " << argv[0] << " s | " << argv[0] << " s | python3 test.py" << endl;
+  cerr << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O" << endl;
+  cerr << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " s | " << argv[0] << " s | python3 test.py | " << argv[0] << " lH" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
