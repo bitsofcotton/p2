@@ -312,4 +312,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/08 persistent usage update.
 2025/11/09 fix update usage, might be we got ok result.
 2025/11/12 fix update usage, better result.
+2025/11/15 merge latest ddpmopt result.
 
