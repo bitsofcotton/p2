@@ -20,17 +20,15 @@ LDFLAGS+=	-lc++
 #LDFLAGS+=	-lestdc++
 
 # lieonn.hh flags
-#CXXFLAGS+=     -D_P_BIT_=3
-CXXFLAGS+=     -D_P_PRNG_=11
-CXXFLAGS+=     -D_ARCFOUR_
+CXXFLAGS+=	-D_P_PRNG_=11
+CXXFLAGS+=	-D_ARCFOUR_
+# N.B. sed -e s/static\ inline//g | sed -e s/inline//g
+#CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
 
 # p2.cc flags
 CXXFLAGS+=	-D_GETENTROPY_
 CXXFLAGS+=	-D_FORK_
 CXXFLAGS+=	-D_ARCFOUR_
-
-# N.B. sed -e s/static\ inline//g | sed -e s/inline//g
-#CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
 
 clean:
 	@rm -rf p2 p2-32 p pp

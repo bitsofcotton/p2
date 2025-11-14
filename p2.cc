@@ -273,12 +273,12 @@ int main(int argc, const char* argv[]) {
       } else {
         std::pair<SimpleVector<SimpleVector<num_t> >, num_t> work(
           normalizeS<num_t>(p.next(d)));
-        work.first.entity = skipX<SimpleVector<num_t> >(work.first.entity,
-          abs(step));
         q.next(unOffsetHalf<num_t>(pGuarantee<num_t, 0>(offsetHalf<num_t>(
-          work.first), string("") ) ) * work.second);
-        //q.next(unOffsetHalf<num_t>(pPRNG<num_t, 0>(offsetHalf<num_t>(
-        //  work.first).entity, string("") ) ) * work.second);
+          skipX<SimpleVector<num_t> >(work.first, abs(step) ) ),
+            string("") ) ) * work.second);
+        // q.next(unOffsetHalf<num_t>(pPRNG<num_t, 0>(offsetHalf<num_t>(
+        //  skipX<SimpleVector<num_t> >(work.first, abs(step) ) ),
+        //    10, string("") ) ) * work.second);
         if(q.full) M = q.res[0];
       }
       for(int j = 0; j < M.size() - 1; j ++)
