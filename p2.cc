@@ -292,7 +292,8 @@ int main(int argc, const char* argv[]) {
     while(std::getline(std::cin, s, '\n')) {
       b.next(s2sv<num_t>(s));
       if(! b.full) continue;
-      SimpleVector<SimpleVector<num_t> > p(unOffsetHalf<num_t>(pPRNG0<num_t, 0>(b.res, 10, string(""))));
+      SimpleVector<SimpleVector<num_t> > p(unOffsetHalf<num_t>(pPRNG0<num_t, 0>(offsetHalf<num_t>(b.res), 10, string(""))));
+      // SimpleVector<SimpleVector<num_t> > p(unOffsetHalf<num_t>(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 10, string(""))));
       for(int i = 0; i < p.size() - 1; i ++) {
         for(int j = 0; j < p[i].size(); j ++) {
           const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);
@@ -1209,6 +1210,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# trivial return to the average id. prediction (c for difference output)" << endl << argv[0] << " Ic? <len>" << endl;
   cerr << "# ddpmopt compatible prediction with one step delay (. for difference output)" << endl << argv[0] << " A.? <step> <states>?" << endl;
   cerr << "# minimum square left hand side prediction (. for difference output)" << endl << argv[0] << " q.? <len>? <step?>" << endl;
+  cerr << "# PRNG blended ddpmopt partial prediction (. for difference output) (buffered)" << endl << argv[0] << " p. <length>?" << endl;
   cerr << endl << " *** vector operation part ***" << endl;
   cerr << "# input serial stream to vector stream" << endl << argv[0] << " f <dimension>" << endl;
   cerr << "# input vector stream to serial stream" << endl << argv[0] << " h" << endl;
@@ -1224,8 +1226,8 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** chain payload (incomplete partial) ***" << endl;
-  cerr << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s | " << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s" << endl;
+  cerr << endl << " *** chain ***" << endl;
+  cerr << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s | " << argv[0] << " lH | " << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
