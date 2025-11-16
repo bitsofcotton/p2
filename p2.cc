@@ -291,34 +291,18 @@ int main(int argc, const char* argv[]) {
     idFeeder<SimpleVector<num_t> > b(length);
     while(std::getline(std::cin, s, '\n')) {
       b.next(s2sv<num_t>(s));
-      if(b.full) break;
-    }
-    std::pair<SimpleVector<SimpleVector<num_t> >, num_t> work(
-      normalizeS<num_t>(b.res));
-    work.first = delta<SimpleVector<num_t> >(work.first);
-    for(int i = 0; i < work.first.size(); i ++) work.first[i] /= num_t(int(2));
-    // XXX:
-    b.res = work.first;
-    for(int i = 0; i < work.first.size(); i += 2)
-      work.first[i] = - work.first[i];
-    SimpleVector<SimpleVector<num_t> > p(bitsG<num_t, true>(
-      pAppendMeasure0<num_t, 0, false>(bitsG<num_t, true>(offsetHalf<num_t>(
-        work.first), 10), 10, string("")), - 10));
-    for(int i = 0; i < p.size(); i ++)
-      p[i] = unOffsetHalf<num_t>(p[i] * work.second);
-    // XXX:
-    // for(int i = 1; i < p.size(); i ++) p[i] += p[i - 1];
-    // XXX: needs p s | python3 test.py | p lH after this.
-    // XXX: this should be equivalent to p s | p O | p 0 1 | p lH, but num test
-    //      says they're not.
-    for(int i = 0; i < p.size() - 1; i ++) {
-      for(int j = 0; j < p[i].size(); j ++) {
-        const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);
-        std::cout << (argv[1][1] == '\0' ? ref * p[i][j] : ref - p[i][j]) << ", ";
+      if(! b.full) continue;
+      SimpleVector<SimpleVector<num_t> > p(unOffsetHalf<num_t>(pPRNG0<num_t, 0>(b.res, 10, string(""))));
+      for(int i = 0; i < p.size() - 1; i ++) {
+        for(int j = 0; j < p[i].size(); j ++) {
+          const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);
+          std::cout << (argv[1][1] == '\0' ? ref * p[i][j] : ref - p[i][j]) << ", ";
+        }
+        for(int j = 0; j < p[i].size() - 1; j ++)
+          std::cout << (argv[1][1] == '\0' ? p[i + 1][j] : p[i][j]) << ", ";
+        std::cout << (argv[1][1] == '\0' ? p[i + 1][p[i].size() - 1] : p[i][p[i].size() - 1]) << std::endl;
       }
-      for(int j = 0; j < p[i].size() - 1; j ++)
-        std::cout << (argv[1][1] == '\0' ? p[i + 1][j] : p[i][j]) << ", ";
-      std::cout << (argv[1][1] == '\0' ? p[i + 1][p[i].size() - 1] : p[i][p[i].size() - 1]) << std::endl;
+      b = idFeeder<SimpleVector<num_t> >(length);
     }
     break;
   } case 'q': {
@@ -1241,8 +1225,7 @@ int main(int argc, const char* argv[]) {
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << endl << " *** chain payload (incomplete partial) ***" << endl;
-  cerr << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " d | " << argv[0] << " d | " << argv[0] << " Ac | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " lH" << endl;
-  cerr << argv[0] << " pc ... | " << argv[0] << " s | " << argv[0] << " O | " << argv[0] << " 0 1 | " << argv[0] << " lH" << endl;
+  cerr << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s | " << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;

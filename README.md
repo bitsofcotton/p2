@@ -82,6 +82,8 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     p A.? <step>? <states>?
     # minimum quare left hand side prediction (. for difference output)
     p q.? <len>? <step>?
+    # PRNG blended ddpmopt partial prediction (. for difference output) (buffered)
+    p p.? <length>
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -110,8 +112,7 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     p T+
     
      *** chain payload (incomplete partial) ***
-    p d | p B | tee 0 | p d | p d | p Ac | p s | p s | p O
-    p d | p B | tee 0 | p d | p d | p Ac | p s | p s | python3 test.py | p lH
+    p p ... | p d | p B | p s | p p ... | p d | p B | p s
     
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
@@ -313,4 +314,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/09 fix update usage, might be we got ok result.
 2025/11/12 fix update usage, better result.
 2025/11/15 merge latest ddpmopt result.
+2025/11/17 merge chain operations into simple ones with lieonn.hh impl.
 
