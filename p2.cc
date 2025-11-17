@@ -293,17 +293,10 @@ int main(int argc, const char* argv[]) {
       b.next(s2sv<num_t>(s));
       if(! b.full) continue;
       SimpleVector<SimpleVector<num_t> > p(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
-      SimpleVector<int> c(p[0].size());
-      c.O();
-      for(int i = 0; i < p.size() - 1; i ++)
-        for(int j = 0; j < p[i].size(); j ++)
-          if(p[i][j] < num_t(int(0)) ) c[j] --;
-          else if(num_t(int(0)) < p[i][j]) c[j] ++;
       for(int i = 0; i < p.size() - 1; i ++) {
         for(int j = 0; j < p[i].size(); j ++) {
           const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);
-          std::cout << (argv[1][1] == '\0' ? (c[j] < 0 ? - p[i][j] : p[i][j]) :
-            (c[j] < 0 ? ref + p[i][j] / ref : ref - p[i][j] / ref) ) << ", ";
+          std::cout << (argv[1][1] == '\0' ? p[i][j] : ref - p[i][j] / ref) << ", ";
         }
         for(int j = 0; j < p[i].size() - 1; j ++)
           std::cout << (argv[1][1] == '\0' ? p[i + 1][j] : p[i][j]) << ", ";
