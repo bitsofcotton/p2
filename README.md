@@ -111,9 +111,6 @@ N.B. our computation system is targetted, so fighting with numerical series gets
     # show output statistics whether 0<x<1 (+ for 0<x)
     p T+
     
-     *** chain ***
-    p p ... | p d | p B | p s | p lH | p p ... | p d | p B | p s
-    
      *** graphics test ***
     yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
     p P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;

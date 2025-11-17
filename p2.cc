@@ -292,12 +292,18 @@ int main(int argc, const char* argv[]) {
     while(std::getline(std::cin, s, '\n')) {
       b.next(s2sv<num_t>(s));
       if(! b.full) continue;
-      SimpleVector<SimpleVector<num_t> > p(unOffsetHalf<num_t>(pPRNG0<num_t, 0>(offsetHalf<num_t>(b.res), 10, string(""))));
-      // SimpleVector<SimpleVector<num_t> > p(unOffsetHalf<num_t>(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 10, string(""))));
+      SimpleVector<SimpleVector<num_t> > p(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
+      SimpleVector<int> c(p[0].size());
+      c.O();
+      for(int i = 0; i < p.size() - 1; i ++)
+        for(int j = 0; j < p[i].size(); j ++)
+          if(p[i][j] < num_t(int(0)) ) c[j] --;
+          else if(num_t(int(0)) < p[i][j]) c[j] ++;
       for(int i = 0; i < p.size() - 1; i ++) {
         for(int j = 0; j < p[i].size(); j ++) {
           const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);
-          std::cout << (argv[1][1] == '\0' ? ref * p[i][j] : ref - p[i][j]) << ", ";
+          std::cout << (argv[1][1] == '\0' ? (c[j] < 0 ? - p[i][j] : p[i][j]) :
+            (c[j] < 0 ? ref + p[i][j] / ref : ref - p[i][j] / ref) ) << ", ";
         }
         for(int j = 0; j < p[i].size() - 1; j ++)
           std::cout << (argv[1][1] == '\0' ? p[i + 1][j] : p[i][j]) << ", ";
@@ -1226,8 +1232,6 @@ int main(int argc, const char* argv[]) {
   cerr << endl << " *** other part ***" << endl;
   cerr << "# pair of files load into same line columns (use /dev/stdin if you need)" << endl << argv[0] << " L <left> <right>" << endl;
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
-  cerr << endl << " *** chain ***" << endl;
-  cerr << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s | " << argv[0] << " lH | " << argv[0] << " p ... | " << argv[0] << " d | " << argv[0] << " B | " << argv[0] << " s" << endl;
   cerr << endl << " *** graphics test ***" << endl;
   cerr << "yes " << num_t(int(1)) / num_t(int(2)) << " | " << argv[0] << " f ... | head -n 1 | " << argv[0] << " [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m" << endl;
   cerr << argv[0] << " P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;" << endl;
