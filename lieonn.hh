@@ -4686,7 +4686,7 @@ template <typename T, int nprogress> static inline SimpleVector<T> pAppendMeasur
 }
 
 #if !defined(_P_PRNG_)
-#define _P_PRNG_ 1
+#define _P_PRNG_ 11
 #endif
 
 // N.B. each pixel prediction with PRNG blended stream.
@@ -4759,6 +4759,8 @@ template <typename T, int nprogress> SimpleVector<SimpleVector<T> > pPRNG0(const
 // N.B. somehow, twice is better.
 template <typename T, int nprogress> static inline SimpleVector<SimpleVector<T> > pPRNG1(const SimpleVector<SimpleVector<T> >& in, const int& bits, const string& strloop) {
   SimpleVector<SimpleVector<T> > ind(delta<SimpleVector<T> >(in));
+  SimpleVector<T> dbase(in[in.size() - 1]);
+  for(int i = 0; i < ind.size(); i ++) ind[i] -= dbase;
   SimpleVector<SimpleVector<T> > p(
     pPRNG0<T, nprogress>(ind, bits, string("+") + strloop) );
   for(int i = 0; i < p.size(); i += 2) p[i] = - p[i];
@@ -4766,12 +4768,28 @@ template <typename T, int nprogress> static inline SimpleVector<SimpleVector<T> 
     offsetHalf<T>(p), bits, string("-") + strloop);
   p.resize(p.size() - 1);
   for(int i = 0; i < p.size(); i += 2) p[i] = - p[i];
-  for(int i = 0; i < p.size() - 1; i ++) {
-    p[i] += in[i - p.size() + in.size()];
+  for(int i = 0; i < p.size(); i ++) p[i] += dbase;
+  for(int i = 0; i < p.size() - 1; i ++)
     for(int j = 0; j < p[i].size(); j ++)
-      p[i][j] *= in[i - (p.size() - 1) + in.size()][j];
-  }
-  p[p.size() - 1] += in[in.size() - 1];
+      if((p[i][j] + in[i - p.size() + in.size()][j]) *
+        in[i - p.size() + in.size()][j] < T(int(0)) )
+        p[i][j]  = T(int(0));
+      else {
+        p[i][j] += in[i - p.size() + in.size()][j];
+        p[i][j] *= in[i - (p.size() - 1) + in.size()][j];
+      }
+#if 0
+  // N.B. we bet getting better with both difference and original prediction.
+  //      in fact we need these conditions but almost vanished always.
+  //      we should -resize -despeckle -equalize -average conditions after this.
+  const int i(p.size() - 1);
+  for(int j = 0; j < p[i].size(); j ++)
+    if((- abs(p[i][j]) * sgn<T>(in[i - p.size() + in.size()][j]) +
+      in[i - p.size() + in.size()][j]) *
+        in[i - p.size() + in.size()][j] < T(int(0)) )
+      p[i][j] = T(int(0));
+    else p[i][j] += in[i - p.size() + in.size()][j];
+#endif
   return p;
 }
 

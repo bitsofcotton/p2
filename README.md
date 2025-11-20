@@ -312,4 +312,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/12 fix update usage, better result.
 2025/11/15 merge latest ddpmopt result.
 2025/11/17 merge chain operations into simple ones with lieonn.hh impl.
+2025/11/21 offset to last delta prediction cause eliminate difference.
 
