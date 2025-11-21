@@ -292,12 +292,11 @@ int main(int argc, const char* argv[]) {
     while(std::getline(std::cin, s, '\n')) {
       b.next(s2sv<num_t>(s));
       if(! b.full) continue;
-      // SimpleVector<SimpleVector<num_t> > p(pPRNG0<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
       SimpleVector<SimpleVector<num_t> > p(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
       for(int i = 0; i < p.size() - 1; i ++) {
         for(int j = 0; j < p[i].size(); j ++) {
           const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);
-          std::cout << (argv[1][1] == '\0' ? p[i][j] : ref - (p[i][j] /= ref)) << ", ";
+          std::cout << (argv[1][1] == '\0' ? p[i][j] * ref : ref - p[i][j]) << ", ";
         }
         for(int j = 0; j < p[i].size() - 1; j ++)
           std::cout << (argv[1][1] == '\0' ? p[i + 1][j] : p[i][j]) << ", ";
