@@ -2,7 +2,7 @@
 Predictor formatter and some of the toolset for non usual input streams.
 Our sample payload uses imitated measureable condition twice.
 
-N.B. our computation system is targetted, so fighting with numerical series gets strange results experiments by experiments on our machine, so we should exclude them by testing on factory-resetted EFIs with binary dumped one by one auditted binaries when we mobilize our machines which we have now. However, the machine also have some backdoor matters, so we need infection nor control clean chips.
+N.B. we're testing this on factory-resetted EFIs, but to have enough reliable result, we should audit this with binary dumper they can be the one using SD-card SPI modes however the typical binary size ~ 200Ki octets == 1600 Ki bits. So grepping them needs 1600Ki / bitrate seconds, this is too huge without some of the preparations but we can diet better more them.
 
 # Usage
     make p
