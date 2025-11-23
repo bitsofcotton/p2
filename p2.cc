@@ -293,6 +293,13 @@ int main(int argc, const char* argv[]) {
       b.next(s2sv<num_t>(s));
       if(! b.full) continue;
       SimpleVector<SimpleVector<num_t> > p(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
+      if(argv[1][1] != '\0') {
+        for(int i = 0; i < b.res.size() - (p.size() - 1); i ++) {
+          for(int j = 0; j < b.res[i].size(); j ++) std::cout << b.res[i][j] << ", ";
+          for(int j = 0; j < b.res[i].size(); j ++) std::cout << num_t(int(0)) << ", ";
+          std::cout << num_t(int(0)) << std::endl;
+        }
+      }
       for(int i = 0; i < p.size() - 1; i ++) {
         for(int j = 0; j < p[i].size(); j ++) {
           const num_t& ref(b.res[i - (p.size() - 1) + b.res.size()][j]);

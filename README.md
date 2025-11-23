@@ -1,4 +1,4 @@
-# p2 (persistent)
+# p2 (embryonic)
 Predictor formatter and some of the toolset for non usual input streams.
 Our sample payload uses imitated measureable condition twice.
 
@@ -313,4 +313,5 @@ N.B. our computation system is targetted, so fighting with numerical series gets
 2025/11/15 merge latest ddpmopt result.
 2025/11/17 merge chain operations into simple ones with lieonn.hh impl.
 2025/11/21 offset to last delta prediction cause eliminate difference.
+2025/11/24 p pc cmd output change.
 
