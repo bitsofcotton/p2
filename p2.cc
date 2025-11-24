@@ -295,8 +295,15 @@ int main(int argc, const char* argv[]) {
       SimpleVector<SimpleVector<num_t> > p(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
       if(argv[1][1] != '\0') {
         for(int i = 0; i < b.res.size() - (p.size() - 1); i ++) {
-          for(int j = 0; j < b.res[i].size(); j ++) std::cout << b.res[i][j] << ", ";
-          for(int j = 0; j < b.res[i].size(); j ++) std::cout << num_t(int(0)) << ", ";
+          for(int j = 0; j < b.res[i].size(); j ++)
+            std::cout << b.res[i][j] << ", ";
+          // XXX: something buggy.
+          // for(int j = 0; j < b.res[i].size() - 1; j ++)
+          // XXX: don't know why but this results something ok with
+          //      after-retouching elimination last column.
+          //      also matches bare efi except for the whole sign.
+          for(int j = 0; j < b.res[i].size(); j ++)
+            std::cout << num_t(int(0)) << ", ";
           std::cout << num_t(int(0)) << std::endl;
         }
       }
