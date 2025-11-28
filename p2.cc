@@ -292,7 +292,7 @@ int main(int argc, const char* argv[]) {
     while(std::getline(std::cin, s, '\n')) {
       b.next(s2sv<num_t>(s));
       if(! b.full) continue;
-      SimpleVector<SimpleVector<num_t> > p(pPRNG1<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
+      SimpleVector<SimpleVector<num_t> > p(pPRNGM<num_t, 0>(offsetHalf<num_t>(b.res), 8, string("")));
       if(argv[1][1] != '\0') {
         for(int i = 0; i < b.res.size() - (p.size() - 1); i ++) {
           for(int j = 0; j < b.res[i].size(); j ++)
