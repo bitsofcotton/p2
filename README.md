@@ -314,4 +314,5 @@ N.B. we're testing this on factory-resetted EFIs, but to have enough reliable re
 2025/11/17 merge chain operations into simple ones with lieonn.hh impl.
 2025/11/21 offset to last delta prediction cause eliminate difference.
 2025/11/24 p pc cmd output change.
+2025/11/30 test going to break the univeral like invariant or not by public upload.
 
