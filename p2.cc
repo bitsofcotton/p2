@@ -739,14 +739,13 @@ int main(int argc, const char* argv[]) {
       if(f.full) {
         SimpleVector<num_t> j(f.res[0].size());
         j.O();
-        for(int i = 0; i < f.res.size(); i ++)
-          for(int k = 0; k < f.res[i].size(); k ++)
-            j[k] += f.res[i][k];
         for(int i = 0; i < f.res.size(); i ++) {
           int k(0);
           for( ; k < f.res[i].size() - 1; k ++)
             std::cout << (j[k] < num_t(int(0)) ? - f.res[i][k] : f.res[i][k]) << ", ";
           std::cout << (j[k] < num_t(int(0)) ? - f.res[i][k] : f.res[i][k]) << std::endl;
+          for(k = 0; k < f.res[i].size(); k ++)
+            j[k] += f.res[i][k];
         }
         f = idFeeder<SimpleVector<num_t> >(std::atoi(argv[2]));
       }

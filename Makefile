@@ -20,7 +20,7 @@ CXXFLAGS+=	-O0 -mtune=native -gfull
 LDFLAGS+=	-lestdc++
 
 # lieonn.hh flags
-CXXFLAGS+=	-D_P_PRNG_=3
+CXXFLAGS+=	-D_P_PRNG_=5
 CXXFLAGS+=	-D_ARCFOUR_
 # N.B. sed -e s/static\ inline//g | sed -e s/inline//g
 #CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
