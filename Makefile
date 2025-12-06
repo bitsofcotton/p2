@@ -13,14 +13,13 @@ MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
 #CXXFLAGS+=	-O0 -g3
 #CXXFLAGS+=	-O2 -mtune=native -gfull
 #CXXFLAGS+=	-Ofast -mtune=native -gfull
-#CXXFLAGS+=	-Oz -mtune=native -gfull
 CXXFLAGS+=	-O0 -mtune=native -gfull
 #CXXFLAGS+=	-Oz -mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -gfull -g0
 #LDFLAGS+=	-lc++
 LDFLAGS+=	-lestdc++
 
 # lieonn.hh flags
-CXXFLAGS+=	-D_P_PRNG_=5
+CXXFLAGS+=	-D_BURN_=5
 CXXFLAGS+=	-D_ARCFOUR_
 # N.B. sed -e s/static\ inline//g | sed -e s/inline//g
 #CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
