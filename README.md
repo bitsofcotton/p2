@@ -1,8 +1,5 @@
-# p2 (embryonic)
+# p2 (def. closed)
 Predictor formatter and some of the toolset for non usual input streams.
-Our sample payload uses imitated measureable condition twice.
-
-N.B. we're testing this on factory-resetted EFIs, but to have enough reliable result, we should audit this with binary dumper they can be the one using SD-card SPI modes however the typical binary size ~ 200Ki octets == 1600 Ki bits. So grepping them needs 1600Ki / bitrate seconds, this is too huge without some of the preparations but we can diet better more them.
 
 # Usage
     make p
@@ -316,4 +313,5 @@ N.B. we're testing this on factory-resetted EFIs, but to have enough reliable re
 2025/11/24 p pc cmd output change.
 2025/11/30 test going to break the univeral like invariant or not by public upload.
 2025/12/04 merge latest ddpmopt result.
+2025/12/10 update readme, merge latest lieonn.
 
