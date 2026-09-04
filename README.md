@@ -1,121 +1,71 @@
-# p2 (def. closed)
+# p2
 Predictor formatter and some of the toolset for non usual input streams.
 
 # Usage
-    make p
-    
+    make p2
      *** reformation part ***
     # take delta     on input stream
-    p d
+    p2 d
     # take summation on input stream
-    p s <len>?
+    p2 s
     # take skip      on input stream
-    p k <interval>
+    p2 k <interval>
     # take skip head on input stream
-    p S <margin>
+    p2 S <margin>
     # take reverse   on input stream
-    p v
+    p2 v
     # pick {0,1} or [0-9a-f] str on input stream
-    p [xj]
+    p2 [xj]
     # take reform [-1,1] on input stream
-    p X
+    p2 X-?
     # take reform [-1,1] on input stream without offset
-    p Z
+    p2 Z-?
     # take inverse   on input stream
-    p i
+    p2 i
     # take picked column      on input stream (H for first half, G for last half, c for chop)
-    p l[cHG]? <col0index> ...
-    # take difference after math on input stream first half to last half
-    p O+?
+    p2 l[cHG]? <col0index> ...
+    # take difference affter math on input stream first half to last half
+    p2 O[+*]?
     # take duplicate toeplitz on input stream
-    p z <column number>
+    p2 z <column number>
     # take multiply each      on input stream
-    p t <ratio>
+    p2 t <ratio>
     # take offset   each      on input stream
-    p o <offset>
-    # take absolute each      on input stream
-    p a
-    # take sign     each      on input stream
-    p b
-    # take flip with 1 bit internal state on input stream
-    p B
-    # take trivial complement stream on input stream
-    p (W|y-?)
-    # take sum columns each line on input stream (+ or output sqrt columns)
-    p G+?
-    # take walk condition each on input stream
-    p w <range>
-    # take column 0 horizontal cut output to each column (+ for strict average on the range, ++ for strict sum up)
-    p E+?+? <number>
-    # take column 0 to harden PRNG part vector output
-    p e
+    p2 o <offset>
+    # take sum columns each line on input stream
+    p2 G
     # take opposite type output string each on input stream
-    p F <bit number>
-    # cherry pick the column
-    p g <num>
+    p2 F <bit number>
     
      *** PRNG part ***
-    # make [-1,1]   PRNG stream
-    p [rR]  <proto>
-    # make {-1,0,1} PRNG stream
-    p [rR]b <proto>
-    # make {-1,1}   PRNG stream
-    p [rR]B <proto>
     # blend [-1,1]  PRNG stream
-    p [mn]<proto> <number of output columns>
+    p2 [mn]<proto> <number of output columns>
     # flip or not   PRNG stream
-    p [MN]<proto> <number of output columns>
-    
-     *** predictor part ***
-    # predict with Riemann measureable condition (c for difference output)
-    p 0c? <arg>
-    # predict with untangle combination condition (c for difference output)
-    p 1c? <arg>
-    # feed patternizable jammer input entropy (. for difference output)
-    p c.? <arg>
-    # trivial return to the average id. prediction (c for difference output)
-    p Ic?
-    # ddpmopt partial prediction (. for difference output)
-    p A.? <step>? <states>?
-    # minimum quare left hand side prediction (. for difference output)
-    p q.? <len>? <step>?
-    # PRNG blended ddpmopt partial prediction (. for difference output) (buffered)
-    p p.? <length>
+    p2 [MN]<proto> <number of output columns>
     
      *** vector operation part ***
     # input serial stream to vector stream
-    p f <dimension>
+    p2 f <dimension>
     # input vector stream to serial stream
-    p h
+    p2 h
     # input vector stream to pgm graphics output or its reverse
-    p [PY]-?
+    p2 [PY]-?
     # input vector stream to midi output
-    p Q
-    
-     *** multi process call part ***
-    # do double prediction on same input
-    p D <command0> <command1>
-    # do step prediction on same input
-    p K <step> <command>
-    # do each of all column input prediction parallel, take output column 0.
-    p H <command>
-    # do each of all column input prediction parallel, take output column 0 as a prediction value, prediction average * input stream average output.
-    p @ <command>
+    p2 Q
     
      *** other part ***
-    # multiple file load into same line columns
-    p L <file0> ...
-    # show output statistics whether 0<x<1 (+ for 0<x)
-    p T+
+    # pair of files load into same line columns (use /dev/stdin if you need)
+    p2 L <left> <right>
+    # show output statistics it's 0<x<1 (+ for 0<x)
+    p2 T+?
     
      *** graphics test ***
-    yes 0.5 | p f ... | head -n 1 | p [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
-    p P- ... dummy.p[gp]m ... dummy.p[gp]m > 0; <predictors>;
-    p L ... | ... | p lc | p lc | p V | p X | p f ... | p [PY]
-    
+    yes 0.5 | p2 f ... | head -n 1 | p2 [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
+    p2 P- ... dummy.p[gp]m | p2 lc | <predictors> | p2 V | p2 X | p2 f ... | p2 [PY]
+
      *** to hear some residue ***
-    p r | p l 0 | tee 0 | <predictor-tobe-loopback> > /dev/null
-    catgr 3 < 0 | p e 3 | p h | p t ... | p f 3 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out.mid
+    yes 1 | p2 m0 1 | p2 o -0.5 | tee 0 | <predictor> > /dev/null
+    catgr ... < 0 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -314,4 +264,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/11/30 test going to break the univeral like invariant or not by public upload.
 2025/12/04 merge latest ddpmopt result.
 2025/12/10 update readme, merge latest lieonn.
+2025/05/13 separate predictors into p0, p1.
 

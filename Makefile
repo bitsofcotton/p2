@@ -3,49 +3,66 @@ CXX=	clang++
 #CXX=	c++
 
 # compiler flags.
+CXXFLAGS+=	-Ofast -mtune=native -gfull
+#CXXFLAGS+=	-O3 -mtune=native -g3
+#CXXFLAGS+=	-O2 -g3
+# This doesn't work, we need operator >>, operator << with ongoing stdlibc++.
+#CXXFLAGS+=	-I/usr/local/include -mlong-double-128
+#CXXFLAGS+=	-Oz -mtune=native -gfull
+#CXXFLAGS+=	-O1 -mtune=native -gfull
+#CXXFLAGS+=	-O0 -mtune=native -gfull
+#CXXFLAGS+=	-mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -fno-omit-frame-pointer
+# XXX: this worse decreases multi thread performance.
+#      also this flag needs compile with -c then link with ld.
+#CXXFLAGS+=	-pg
+#CXXFLAGS+=	--analyze
+#CXXFLAGS+=      -D_LIBCPP_HARDENING_MODE_DEBUG
+MPFLAGS=	-I/usr/local/include -L/usr/local/lib -lomp -fopenmp
+#MPFLAGS=	-I/usr/local/include -L/usr/local/lib -lgomp -fopenmp
 CXXFLAGS+=	-std=c++11
 #CXXFLAGS+=	-std=gnu++98
-CXXFLAGS+=	-I..
-CXXFLAGS+=	-D_LIBCPP_ENABLE_ASSERTIONS
-MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lomp
-#MPFLAGS=	-fopenmp -I/usr/local/include -L/usr/local/lib -lgomp
-#CXXFLAGS+=	-pg
-#CXXFLAGS+=	-O0 -g3
-#CXXFLAGS+=	-O2 -mtune=native -gfull
-#CXXFLAGS+=	-Ofast -mtune=native -gfull
-CXXFLAGS+=	-O0 -mtune=native -gfull
-#CXXFLAGS+=	-Oz -mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -gfull -g0
-#LDFLAGS+=	-lc++
-LDFLAGS+=	-lestdc++
+LDFLAGS+=	-lc++ -L/usr/local/lib
+#LDFLAGS+=	-lestdc++ -L/usr/local/lib
+# Same as -mlong-double-128
+#LDFLAGS+=	-lquadmath -lm
 
-# lieonn.hh flags
-#CXXFLAGS+=	-D_BURN_=5
+# lieonn.hh compile options
 CXXFLAGS+=	-D_ARCFOUR_
+# N.B. this specify after to sum up results
+CXXFLAGS+=	-D_P_NOWALK_
+# N.B. on disk datastream with cache = _P_ONDISK_ elements.
+#CXXFLAGS+=	-D_P_ONDISK_=8192
+# N.B. GPGPU offloading, imcomplete might works with unified shared mem.
+#CXXFLAGS+=	-D_P_VULKAN_
+#MPFLAGS+=	-lomptarget
+#MPFLAGS+=	--offload-arch=gfx90a
+#MPFLAGS+=	-foffload=amdgcn-amdhsa
+#MPFLAGS+=	-foffload=nvptx-none
+# N.B. _SIMPLEALLOC_=align needs env VM_LIEONN=(mem usage MB).
+# XXX: pred function needs huge memory with this because resize(0) doesn't
+#      release memory.
+#CXXFLAGS+=	-D_SIMPLEALLOC_=64
+MPFLAGS+=	-lmimalloc
+# N.B. _FLOAT_BITS_=bits for internal integer only calculation.
+#CXXFLAGS+=	-D_FLOAT_BITS_=32
+# N.B. omit assertion, may have buggy but vasty speed up.
+#CXXFLAGS+=	-D_OMIT_ASSERT_
+# N.B. only use size_t and ssize_t for calculation, persistent.
+#CXXFLAGS+=	-D_PERSISTENT_
 # N.B. sed -e s/static\ inline//g | sed -e s/inline//g
 #CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
 
-# p2.cc flags
 CXXFLAGS+=	-D_GETENTROPY_
-CXXFLAGS+=	-D_FORK_
-CXXFLAGS+=	-D_ARCFOUR_
+
+CLEANFILES= *.o p2 p2-32
 
 clean:
-	@rm -rf p2 p2-32 p pp
+	@rm -rf ${CLEANFILES}
+
 all:	p2 p2-32
+
 p2:
 	${CXX} ${CXXFLAGS} -static -o p2 p2.cc
 p2-32:
-	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p2-32 p2.cc
-p:
-	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -o p p2.cc
-p32:
-	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=32 -o p32 p2.cc
-pp:
-	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_PERSISTENT_ -o pp p2.cc
-pp32:
-	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=64 -D_PERSISTENT_ -o pp32 p2.cc
-pp64:
-	${CXX} ${CXXFLAGS} -static -D_ONEBINARY_ -D_FLOAT_BITS_=128 -D_PERSISTENT_ -o pp64 p2.cc
-pmp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_ONEBINARY_ -o pmp p2.cc
+	${CXX} ${CXXFLAGS} -D_FLOAT_BITS_=32 -o p2-32 p2.cc
 
