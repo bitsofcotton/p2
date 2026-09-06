@@ -544,6 +544,13 @@ int main(int argc, const char* argv[]) {
         std::cout << endl;
         break;
       } case 'a': {
+        if(argv[1][1] == '-') {
+          for(int i = 0; i < in.size() / 2 - 1; i ++)
+            std::cout << (sgn<num_t>(in[i]) * in[i + in.size() / 2]) << ", ";
+          const int i(in.size() / 2 - 1);
+          std::cout << (sgn<num_t>(in[i]) * in[i + in.size() / 2]) << endl << flush;
+          break;
+        }
         // N.B. talk with gemini 2026/09 early, dual modal offset E[E[X],E[Y]].
         num_t E(int(0));
         num_t bE(int(1));

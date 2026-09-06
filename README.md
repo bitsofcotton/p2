@@ -2,7 +2,7 @@
 Predictor formatter and some of the toolset for non usual input streams.
 
 # Usage
-    make p2
+Usage:
      *** reformation part ***
     # take delta     on input stream
     p2 d
@@ -20,28 +20,26 @@ Predictor formatter and some of the toolset for non usual input streams.
     p2 X-?
     # take reform [-1,1] on input stream without offset
     p2 Z-?
-    # take inverse   on input stream
-    p2 i
     # take picked column      on input stream (H for first half, G for last half, c for chop)
     p2 l[cHG]? <col0index> ...
     # take difference affter math on input stream first half to last half
-    p2 O[+*]?
-    # take duplicate toeplitz on input stream
-    p2 z <column number>
+    p2 O+?
+    # take duplicate          on input stream (- for invertion)
+    p2 z-? <column number>
     # take multiply each      on input stream
     p2 t <ratio>
     # take offset   each      on input stream
     p2 o <offset>
-    # take sum columns each line on input stream
-    p2 G
     # take opposite type output string each on input stream
     p2 F <bit number>
+    # offset from average with hypothesis input is dual modal.
+    p2 a
     
      *** PRNG part ***
-    # blend [-1,1]  PRNG stream
-    p2 [mn]<proto> <number of output columns>
-    # flip or not   PRNG stream
-    p2 [MN]<proto> <number of output columns>
+    # make [-1,1] PRNG stream
+    p2 r <proto>
+    # make {-1,1} PRNG stream
+    p2 R <proto>
     
      *** vector operation part ***
     # input serial stream to vector stream
@@ -58,14 +56,22 @@ Predictor formatter and some of the toolset for non usual input streams.
     p2 L <left> <right>
     # show output statistics it's 0<x<1 (+ for 0<x)
     p2 T+?
+    # string2csv (* for masp chain)
+    p2 W*?
+    # csv2string
+    p2 w
+    # add all 1 csv footer
+    p2 A
+    # csv to serialize only single column
+    p2 V
     
      *** graphics test ***
-    yes 0.5 | p2 f ... | head -n 1 | p2 [PY] && mv rand_pgm-0.p[gp]m dummy.p[gp]m
-    p2 P- ... dummy.p[gp]m | p2 lc | <predictors> | p2 V | p2 X | p2 f ... | p2 [PY]
-
+    p2 P- ... | p2 A | p2 lc | <predictors> | p2 a | p2 V | p2 Z | p2 f ... | p2 [PY]
+     *** string test ***
+    cat | p2 W | p2 A | p2 lc | <predictors> | p2 a | p2 w
      *** to hear some residue ***
-    yes 1 | p2 m0 1 | p2 o -0.5 | tee 0 | <predictor> > /dev/null
-    catgr ... < 0 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out
+    p2 r ... | tee 0 | <predictors> > /dev/null
+    catgr ... < 0 | grep -v nan | grep -v "[ 0,  0,  0]" | uniq | grep ] | p Q > out.mid
 
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -265,4 +271,5 @@ Predictor formatter and some of the toolset for non usual input streams.
 2025/12/04 merge latest ddpmopt result.
 2025/12/10 update readme, merge latest lieonn.
 2025/05/13 separate predictors into p0, p1.
+2026/09/04 cut no used edge.
 
