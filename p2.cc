@@ -10,9 +10,21 @@
 #include <algorithm>
 #include <assert.h>
 #include <stdint.h>
+
 #if defined(_OPENMP)
 #include <omp.h>
 #endif
+
+#if defined(_P_VULKAN_)
+#include <vulkan/vulkan.h>
+#endif
+
+#if defined(_MIMALLOC_)
+#define MIMALLOC_OVERRIDE_H
+#define MIMALLOC_NEW_DELETE_H
+#include <mimalloc.h>
+#endif
+
 #if defined(_GETENTROPY_)
 #include <unistd.h>
 #endif
@@ -138,7 +150,7 @@ int main(int argc, const char* argv[]) {
       std::stringstream ss(s);
       ss >> b[(t ++) % b.size()];
       if(! (t %= b.size())) std::cout << b;
-      std::cout << std::flush;
+      std::cout << flush;
     }
     break;
   } case 'h': {
@@ -150,7 +162,7 @@ int main(int argc, const char* argv[]) {
       ss >> w;
       for(int i = 0; i < w.size(); i ++)
         std::cout << w[i] << endl;
-      std::cout << std::flush;
+      std::cout << flush;
     }
     break;
   } case 'z': {
@@ -159,41 +171,58 @@ int main(int argc, const char* argv[]) {
       if(argv[1][1] == '\0')
         for(int i = 0; i < std::atoi(argv[2]); i ++)
           for(int j = 0; j < in.size(); j ++)
-            std::cout << in[j] << ", " << std::flush;
+            std::cout << in[j] << ", " << flush;
       else if(argv[1][1] == '-')
         for(int i = 0; i < in.size() / std::atoi(argv[2]); i ++) {
           num_t x(in[i]);
-          std::vector<num_t> buf;
+          vector<num_t> buf;
           buf.reserve(std::atoi(argv[2]));
           for(int j = 1; j < std::atoi(argv[2]); j ++) {
             x += in[i + j * (in.size() / std::atoi(argv[2]))];
             buf.emplace_back(in[i + j * (in.size() / std::atoi(argv[2]))]);
           }
           sort(buf.begin(), buf.end());
-          std::cout << (abs(x) == num_t(int(0)) ? buf[buf.size() / 2] : x) << ", " << std::flush;
+          std::cout << (abs(x) == num_t(int(0)) ? buf[buf.size() / 2] : x) << ", " << flush;
         }
-      std::cout << std::endl;
+      else if(argv[1][1] == '4')
+        for(int i = 0; i < in.size() / std::atoi(argv[2]) / 4; i ++) {
+          num_t x(int(0));
+          vector<num_t> buf;
+          buf.reserve(std::atoi(argv[2]) * 4);
+          for(int j = 0; j < std::atoi(argv[2]); j ++)
+            for(int k = 0; k < 4; k ++) {
+              x += in[(i + j * (in.size() / std::atoi(argv[2]) / 4)) * 4 + k];
+              buf.emplace_back(in[(i + j * (in.size() / std::atoi(argv[2]) / 4)) * 4 + k]);
+            }
+          x /= num_t(std::atoi(argv[2]) * 4);
+          sort(buf.begin(), buf.end());
+          for(int j = 0; j < buf.size() / 2 && abs(x) == abs(num_t(int(0)));
+            j ++) x = (buf[buf.size() / 2 - j - 1] + buf[buf.size() / 2 + j]) /
+              num_t(int(2));
+          std::cout << x << ", " << flush;
+        }
+      std::cout << endl;
     }
     break;
   } case 'A': {
     int M(0);
     while(std::getline(std::cin, s, '\n')) {
       M = max(M, s2sv<num_t>(s).size());
-      std::cout << s << std::endl;
+      std::cout << s << endl;
     }
     for(int i = 0; i < M - 1; i ++) std::cout << num_t(int(1)) << ", ";
-    std::cout << num_t(int(1)) << std::endl;
+    std::cout << num_t(int(1)) << endl;
     break;
   } case 'P': case 'Y': {
     if(argv[1][1] == '-') {
       for(int i = 2; i < argc; i ++) {
-        std::vector<SimpleMatrix<num_t> > bitimg;
+        vector<SimpleMatrix<num_t> > bitimg;
         if(! loadp2or3<num_t>(bitimg, argv[i], false)) continue;
         for(int ii = 0; ii < bitimg.size(); ii ++)
           for(int jj = 0; jj < bitimg[ii].rows(); jj ++)
             for(int kk = 0; kk < bitimg[ii].cols(); kk ++)
               std::cout << unOffsetHalf<num_t>(bitimg[ii](jj, kk)) << ", ";
-        std::cout << endl << std::flush;
+        std::cout << endl << flush;
       }
       break;
     }
@@ -262,7 +291,7 @@ int main(int argc, const char* argv[]) {
     std::cout.write(const_cast<const char*>(&(buf = 0x2f)), sizeof(char));
     std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
     std::cout << "MTrk";
-    std::vector<char> track;
+    vector<char> track;
     const char tbl0[] = {0, 2, 4, 5, 7, 9, 11};
     const char  base(60);
     SimpleVector<char> walk;
@@ -321,18 +350,18 @@ int main(int argc, const char* argv[]) {
     std::cout.write(const_cast<const char*>(&(buf = 0x00)), sizeof(char));
     break;
   } case 'Z': case 'X': {
-    std::vector<std::string> buf;
+    vector<std::string> buf;
     while(std::getline(std::cin, s, '\n')) buf.emplace_back(s);
-    std::vector<std::vector<num_t> > sbuf;
-    std::vector<num_t> M;
-    std::vector<num_t> m;
+    vector<vector<num_t> > sbuf;
+    vector<num_t> M;
+    vector<num_t> m;
     sbuf.reserve(buf.size());
     for(int i = 0; i < buf.size(); i ++) {
       s = buf[i];
       int cnt(1);
       for(int i = 0; i < s.size(); i ++)
         if(s[i] == ',') cnt ++;
-      std::vector<num_t> in;
+      vector<num_t> in;
       in.resize(cnt);
       for(int i = 0, j = 0; i < s.size(); i ++) {
         std::stringstream ins(s.substr(i, s.size() - i));
@@ -372,7 +401,7 @@ int main(int argc, const char* argv[]) {
           std::cout << (sbuf[i][j] / M[j]) << ", ";
         std::cout << (sbuf[i][sbuf[i].size() - 1] / M[sbuf[i].size() - 1]) << endl;
       }
-      std::cout << std::flush;
+      std::cout << flush;
     } else if(argv[1][0] == 'X') {
       for(int i = 0; i < M.size(); i ++)
         if(M[i] == m[i]) M[i] = m[i] + num_t(int(1));
@@ -413,7 +442,7 @@ int main(int argc, const char* argv[]) {
       if(! std::getline(left,  s)) break;
       std::cout << s << ", ";
       if(! std::getline(right, s)) break;
-      std::cout << s << endl << std::flush;
+      std::cout << s << endl << flush;
     }
     left.close();
     right.close();
@@ -428,13 +457,13 @@ int main(int argc, const char* argv[]) {
         for(int k = 0; k < 8; k ++, ch <<= 1)
           std::cout << (ch & 0x80 ? num_t(int(1)) : - num_t(int(1)) ) << ", ";
       }
-      std::cout << std::endl;
+      std::cout << endl;
     }
     break;
   } default: {
     SimpleVector<num_t> b;
-    std::vector<int> bf;
-    std::vector<int> bg;
+    vector<int> bf;
+    vector<int> bg;
     num_t tt(int(0));
     {
       std::stringstream ss(2 < argc ? argv[2] : "");
@@ -571,14 +600,14 @@ int main(int argc, const char* argv[]) {
         }
         for(int i = 0; i < in.size() - 1; i ++)
           std::cout << (in[i] - E) << ", ";
-        std::cout << (in[in.size() - 1] - E) << std::endl;
+        std::cout << (in[in.size() - 1] - E) << endl;
         break;
       } case 'V':
         for(int i = 0; i < in.size(); i ++) std::cout << in[i] << endl;
         break;
       default: goto usage;
       }
-      std::cout << std::flush;
+      std::cout << flush;
       b = in;
       t ++;
     }
