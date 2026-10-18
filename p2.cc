@@ -179,34 +179,17 @@ int main(int argc, const char* argv[]) {
       else if(argv[1][1] == '-')
         for(int i = 0; i < in.size() / std::atoi(argv[2]); i ++) {
           num_t x(in[i]);
-          vector<num_t> buf;
-          buf.reserve(std::atoi(argv[2]));
-          for(int j = 0; j < std::atoi(argv[2]); j ++) {
-            // N.B. compat with p2 R... output, so each packed block elements
-            //      as argv[2], outputs columns / argv[2].
-            x += in[i * std::atoi(argv[2]) + j];
-            buf.emplace_back(in[i * std::atoi(argv[2]) + j]);
-          }
+          for(int j = 1; j < std::atoi(argv[2]); j ++)
+            // N.B. compat with p0 ... p2 z- output case.
+            // XXX: no compat with p2 R0 ... output.
+            x += in[i + j * (in.size() / std::atoi(argv[2]))];
           x /= num_t(std::atoi(argv[2]));
-          if(argv[1][2] == '-') std::cout << x;
-          else {
-            sort(buf.begin(), buf.end());
-            std::cout << (abs(x) == num_t(int(0)) ? buf[buf.size() / 2] : x);
-          }
+          std::cout << x;
           if(i == in.size() / std::atoi(argv[2]) - 1) std::cout << endl;
           else std::cout << ", ";
         }
       else goto usage;
     }
-    break;
-  } case 'A': {
-    int M(0);
-    while(std::getline(std::cin, s, '\n')) {
-      M = max(M, s2sv<num_t>(s).size());
-      std::cout << s << endl;
-    }
-    for(int i = 0; i < M - 1; i ++) std::cout << num_t(int(1)) << ", ";
-    std::cout << num_t(int(1)) << endl;
     break;
   } case 'P': case 'Y': {
     if(argv[1][1] == '-') {
@@ -475,10 +458,6 @@ int main(int argc, const char* argv[]) {
         if(t < std::atoi(argv[2])) break;
         std::cout << s << endl;
         break;
-      case 'D':
-        std::cout << s << endl;
-        std::cout << s << endl;
-        break;
       case 'd':
         for(int i = 0; i < b.size() - 1; i ++)
           std::cout << (in[i] - b[i]) << ", ";
@@ -493,13 +472,6 @@ int main(int argc, const char* argv[]) {
         for(int i = 0; i < b.size() - 1; i ++)
           std::cout << sgn<num_t>(in[i]) << ", ";
         std::cout << sgn<num_t>(in[in.size() - 1]) << endl;
-        break;
-      case '-':
-        for(int i = 0; i < b.size() - 1; i ++)
-          std::cout << (t & 1 ? (argv[1][1] == '0' ? num_t(int(0)) :
-            - in[i]) : in[i]) << ", ";
-        std::cout << (t & 1 ? (argv[1][1] == '0' ? num_t(int(0)) :
-          - in[in.size() - 1]) : in[in.size() - 1]) << endl;
         break;
       case 'l':
         if(argv[1][1] == 'c') {
@@ -582,36 +554,6 @@ int main(int argc, const char* argv[]) {
         }
         std::cout << endl;
         break;
-      } case 'a': {
-        if(argv[1][1] == '-') {
-          for(int i = 0; i < in.size() / 2 - 1; i ++)
-            std::cout << (in[i] * sgn<num_t>(in[i + in.size() / 2])) << ", ";
-          const int i(in.size() / 2 - 1);
-          std::cout << (in[i] * sgn<num_t>(in[i + in.size() / 2])) << endl;
-          break;
-        }
-        // N.B. talk with gemini 2026/09 early, dual modal offset E[E[X],E[Y]].
-        num_t E(int(0));
-        num_t bE(int(1));
-        while(SimpleMatrix<num_t>().epsilon() <= abs(E - bE)) {
-          bE = E;
-          for(int i = 0; i < in.size(); i ++) E += in[i];
-          E /= num_t(in.size());
-          num_t EL(int(0));
-          num_t ER(int(0));
-          int   cl(0);
-          int   cr(0);
-          for(int i = 0; i < in.size(); i ++)
-            if(in[i] < E) { EL += in[i]; cl ++; }
-            else { ER += in[i]; cr ++; }
-          if(cl) EL /= num_t(cl);
-          if(cr) ER /= num_t(cr);
-          E = (EL + ER) / num_t(int(2));
-        }
-        for(int i = 0; i < in.size() - 1; i ++)
-          std::cout << (in[i] - E) << ", ";
-        std::cout << (in[in.size() - 1] - E) << endl;
-        break;
       } case 'V':
         for(int i = 0; i < in.size(); i ++) std::cout << in[i] << endl;
         break;
@@ -635,11 +577,10 @@ int main(int argc, const char* argv[]) {
   cerr << "# take reform [-1,1] on input stream (X for offset)" << endl << argv[0] << " [XZ]-?" << endl;
   cerr << "# take picked column      on input stream (H for first half, c for chop)" << endl << argv[0] << " l[cH]? <col0index> ..." << endl;
   cerr << "# take difference affter math on input stream first half to last half" << endl << argv[0] << " O+?" << endl;
-  cerr << "# take duplicate          on input stream (--? for invertion)" << endl << argv[0] << " z-?-? <column number>" << endl;
+  cerr << "# take duplicate          on input stream" << endl << argv[0] << " z-? <column number>" << endl;
   cerr << "# take multiply each      on input stream" << endl << argv[0] << " t <ratio>" << endl;
   cerr << "# take offset   each      on input stream" << endl << argv[0] << " o <offset>" << endl;
   cerr << "# take opposite type output string each on input stream" << endl << argv[0] << " F <bit number>" << endl;
-  cerr << "# offset from average with hypothesis input is dual modal (- for first * sgn(last) )" << endl << argv[0] << " a-?" << endl;
   cerr << endl << " *** PRNG part ***" << endl;
   cerr << "# blend [-1,1] PRNG stream" << endl << argv[0] << " r<proto> <colnum>" << endl;
   cerr << "# blend {-1,1} PRNG stream" << endl << argv[0] << " R<proto> <colnum>" << endl;
@@ -653,15 +594,10 @@ int main(int argc, const char* argv[]) {
   cerr << "# show output statistics it's 0<x<1 (+ for 0<x)" << endl << argv[0] << " T+?" << endl;
   cerr << "# string2csv (+ for masp chain)" << endl << argv[0] << " W+?" << endl;
   cerr << "# csv2string" << endl << argv[0] << " w" << endl;
-  cerr << "# add all 1 csv footer" << endl << argv[0] << " A" << endl;
   cerr << "# csv to serialize only single column" << endl << argv[0] << " V" << endl;
-  cerr << endl << " *** graphics test ***" << endl;
-  cerr << argv[0] << " P- ... | " << argv[0] << " A | " << argv[0] << " lc | <predictors> | " << argv[0] << " a | " << argv[0] << " V | " << argv[0] << " Z | " << argv[0] << " f ... | " << argv[0] << " [PY]" << endl;
-  cerr << " *** string test ***" << endl;
-  cerr << "cat | " << argv[0] << " W+? | " << argv[0] << " A | " << argv[0] << " lc | <predictors> | " << argv[0] << " a | " << argv[0] << " w" << endl;
   cerr << " *** to hear some residue ***" << endl;
   cerr << "yes " << num_t(int(1)) << " | " << argv[0] << " r<proto> ... | tee 0 | <predictors> > /dev/null" << endl;
-  cerr << "catgr ... < 0 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | p Q > out.mid" << endl;
+  cerr << "catgr ... < 0 | grep -v nan | grep -v \"[ 0,  0,  0]\" | uniq | grep ] | " << argv[0] << " Q > out.mid" << endl;
   return - 1;
 }
 
