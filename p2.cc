@@ -16,8 +16,6 @@
 #endif
 
 #if defined(_MIMALLOC_)
-#define MIMALLOC_OVERRIDE_H
-#define MIMALLOC_NEW_DELETE_H
 #include <mimalloc.h>
 #endif
 
@@ -42,7 +40,7 @@
 
 #include "lieonn.hh"
 typedef myfloat num_t;
-lieonn_t lieonn;
+int revert_acc_regression;
 
 static inline num_t fl(int x, int M) {
   return (num_t(x % (2 * M + 1)) - num_t(M)) / num_t(M + 1);
@@ -563,10 +561,8 @@ int main(int argc, const char* argv[]) {
       t ++;
     }
   } }
-  lieonnStaticDestroy();
   return 0;
  usage:
-  lieonnStaticDestroy();
   cerr << "Usage:" << endl;
   cerr << " *** reformation part ***" << endl;
   cerr << "# take delta     on input stream" << endl << argv[0] << " d" << endl;
